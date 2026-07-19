@@ -1,4 +1,4 @@
-# DeskControl dev notes
+# XRDesk dev notes
 
 ## Handover essentials (read first)
 - The UI is intentionally calm, low-contrast, and macOS-inspired. Avoid adding bright colors or high-contrast elements unless explicitly requested.
@@ -34,11 +34,11 @@
 - Keep-screen-on and touchpad auto-dim live together in the Display section with their summaries.
 
 ## Key files to understand
-- Touchpad input and focus: `app/src/main/java/com/deskcontrol/TouchpadActivity.kt`
-- Touchpad processing: `app/src/main/java/com/deskcontrol/TouchpadProcessor.kt`
-- Accessibility injection + cursor overlay: `app/src/main/java/com/deskcontrol/ControlAccessibilityService.kt`
-- Settings persistence: `app/src/main/java/com/deskcontrol/SettingsStore.kt`
-- Settings UI: `app/src/main/java/com/deskcontrol/SettingsActivity.kt`
+- Touchpad input and focus: `app/src/main/java/com/xrdesk/TouchpadActivity.kt`
+- Touchpad processing: `app/src/main/java/com/xrdesk/TouchpadProcessor.kt`
+- Accessibility injection + cursor overlay: `app/src/main/java/com/xrdesk/ControlAccessibilityService.kt`
+- Settings persistence: `app/src/main/java/com/xrdesk/SettingsStore.kt`
+- Settings UI: `app/src/main/java/com/xrdesk/SettingsActivity.kt`
 - Main screen UI: `app/src/main/res/layout/activity_main.xml`
 - Touchpad UI: `app/src/main/res/layout/activity_touchpad.xml`
 
@@ -98,13 +98,13 @@
 - Touchpad: status bar hidden for full-height control area.
 
 ## Key files to revisit
-- Touchpad input: `app/src/main/java/com/deskcontrol/TouchpadActivity.kt`
-- Touchpad processing: `app/src/main/java/com/deskcontrol/TouchpadProcessor.kt`
-- Accessibility injection + cursor: `app/src/main/java/com/deskcontrol/ControlAccessibilityService.kt`
-- Settings persistence: `app/src/main/java/com/deskcontrol/SettingsStore.kt`
-- Settings UI: `app/src/main/java/com/deskcontrol/SettingsActivity.kt`
+- Touchpad input: `app/src/main/java/com/xrdesk/TouchpadActivity.kt`
+- Touchpad processing: `app/src/main/java/com/xrdesk/TouchpadProcessor.kt`
+- Accessibility injection + cursor: `app/src/main/java/com/xrdesk/ControlAccessibilityService.kt`
+- Settings persistence: `app/src/main/java/com/xrdesk/SettingsStore.kt`
+- Settings UI: `app/src/main/java/com/xrdesk/SettingsActivity.kt`
 - Settings preferences: `app/src/main/res/xml/settings_preferences.xml`
-- App picker + search/sort: `app/src/main/java/com/deskcontrol/AppPickerActivity.kt`
+- App picker + search/sort: `app/src/main/java/com/xrdesk/AppPickerActivity.kt`
 
 ## Gotchas
 - `performGlobalAction(GLOBAL_ACTION_BACK)` may have random latency on device (OS-level).

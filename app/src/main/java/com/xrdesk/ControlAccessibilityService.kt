@@ -1000,7 +1000,7 @@ class ControlAccessibilityService : AccessibilityService() {
     fun hasExternalDisplaySession(): Boolean = displayInfo != null
 
     fun dumpAllWindowsDebug() {
-        val tag = "DeskControl"
+        val tag = "XRDesk"
         val header = "=== WINDOW DIAGNOSTICS START ==="
         android.util.Log.wtf(tag, header)
         DiagnosticsLog.add(header)
@@ -1061,7 +1061,7 @@ class ControlAccessibilityService : AccessibilityService() {
         } else "n/a"
         val detail = "    [$source][$index] id=${win.displayId} pkg=$pkg type=${win.type} title=$title active=${win.isActive} focused=${win.isFocused}"
         DiagnosticsLog.add(detail)
-        android.util.Log.wtf("DeskControl", detail)
+        android.util.Log.wtf("XRDesk", detail)
     }
 
     fun injectKeyEvent(keycode: Int, longPress: Boolean = false): Boolean {
@@ -1177,7 +1177,7 @@ class ControlAccessibilityService : AccessibilityService() {
                 Thread {
                     val result = ShizukuShell.run("input", "-d", info.displayId.toString(), "keyevent", keycode.toString())
                     if (result.exitCode != 0) {
-                        android.util.Log.e("DeskControl", "D-Pad: Native command failed: ${result.error}")
+                        android.util.Log.e("XRDesk", "D-Pad: Native command failed: ${result.error}")
                         showToastOnExternalDisplay("Shizuku Error: ${result.error}")
                     }
                 }.start()
@@ -1223,7 +1223,7 @@ class ControlAccessibilityService : AccessibilityService() {
                     log.append("Window BEFORE: focused=${targetWindow.isFocused} active=${targetWindow.isActive}\n")
                 }
                 DiagnosticsLog.add(log.toString())
-                android.util.Log.i("DeskControl", log.toString())
+                android.util.Log.i("XRDesk", log.toString())
             }
 
             // Stability: Refresh node to ensure it's not stale
@@ -1245,7 +1245,7 @@ class ControlAccessibilityService : AccessibilityService() {
             if (DEBUG) {
                 val actionLog = "ACTION_FOCUS: $resFocus, ACTION_ACCESSIBILITY_FOCUS: $resAccFocus"
                 DiagnosticsLog.add(actionLog)
-                android.util.Log.i("DeskControl", actionLog)
+                android.util.Log.i("XRDesk", actionLog)
             }
 
             // Delayed verification
@@ -1287,7 +1287,7 @@ class ControlAccessibilityService : AccessibilityService() {
                     delayedLog.append("=== END VERIFICATION ===\n")
                     
                     DiagnosticsLog.add(delayedLog.toString())
-                    android.util.Log.i("DeskControl", delayedLog.toString())
+                    android.util.Log.i("XRDesk", delayedLog.toString())
                 } else if (DEBUG) {
                     DiagnosticsLog.add("D-Pad: Focus verified successfully at 100ms.")
                 }
@@ -1395,14 +1395,14 @@ class ControlAccessibilityService : AccessibilityService() {
             root.recycle()
         }
         
-        android.util.Log.d("DeskControl", "D-Pad: geometric search found ${allNodes.size} total candidates")
+        android.util.Log.d("XRDesk", "D-Pad: geometric search found ${allNodes.size} total candidates")
         if (allNodes.isEmpty()) {
-            android.util.Log.e("DeskControl", "D-Pad: No visible focusable/clickable nodes found in the target window hierarchy.")
+            android.util.Log.e("XRDesk", "D-Pad: No visible focusable/clickable nodes found in the target window hierarchy.")
         }
 
         val currentRect = Rect()
         current.getBoundsInScreen(currentRect)
-        android.util.Log.d("DeskControl", "D-Pad: currentRect=$currentRect")
+        android.util.Log.d("XRDesk", "D-Pad: currentRect=$currentRect")
 
         var bestNode: AccessibilityNodeInfo? = null
         var minDistance = Float.MAX_VALUE

@@ -73,9 +73,9 @@ Open the project in Android Studio and build it normally.
 
 ---
 
-## 🔥 What's New Compared to DeskControl?
+## 🔥 What's New Compared to Original?
 
-| Feature | DeskControl | XRDesk |
+| Feature | Original | XRDesk |
 |---------|:-----------:|:-------:|
 | Material Design 3 | ❌ | ✅ |
 | Material You | ❌ | ✅ |

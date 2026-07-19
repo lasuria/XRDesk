@@ -8,7 +8,7 @@
     <string name="accessibility_enabled">已启用</string>
     <string name="accessibility_required">需要启用</string>
     <string name="choose_app_for_display">为外接显示器选择应用</string>
-    <string name="open_touchpad">打开触控板</string>
+    <string name="open_touchpad">选择与控制</string>
     <string name="settings">设置</string>
 
     <string name="display_selector_title">显示器 %1$d</string>
@@ -82,7 +82,7 @@
     <string name="touchpad_shizuku_required_media">媒体键需要 Shizuku</string>
     <string name="touchpad_shizuku_required_menu">菜单键需要 Shizuku</string>
     <string name="touchpad_shizuku_intro_title">什么是 Shizuku？</string>
-    <string name="touchpad_shizuku_intro_message">Shizuku 让高级用户通过一次性授权获得系统级能力。\n\n当 Shizuku 在运行时，DeskControl 可自动启用无障碍，省去每次手动开启的步骤。</string>
+    <string name="touchpad_shizuku_intro_message">Shizuku 让高级用户通过一次性授权获得系统级能力。\n\n当 Shizuku 在运行时，XRDesk 可自动启用无障碍，省去每次手动开启的步骤。</string>
     <string name="touchpad_shizuku_intro_ok">知道了</string>
     <string name="touchpad_back_external_not_focused">外接屏未获得焦点。轻点一下聚焦后再按返回。</string>
     <string name="touchpad_back_external_window_missing">无法获取外接屏焦点，请点击窗口内容后再按返回。</string>
@@ -202,7 +202,7 @@
     <string name="settings_language">语言</string>
     <string name="settings_developer_section">开发者</string>
     <string name="settings_logs_title">查询日志</string>
-    <string name="settings_logs_summary">查看并复制诊断日志，便于反馈。</string>
+    <string name="settings_logs_summary">诊断信息与系统状态</string>
     <string name="settings_touchpad_auto_dim">使用触控板时自动调低亮度</string>
     <string name="settings_touchpad_auto_dim_summary">使用触控板 10 秒后自动调低亮度。</string>
     <string name="settings_touchpad_back_section">返回转发</string>
@@ -239,6 +239,8 @@
     <string name="language_system">跟随系统</string>
     <string name="language_english">English</string>
     <string name="language_chinese">简体中文</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_ukrainian">Українська</string>
     <string name="settings_cursor_section">光标</string>
     <string name="settings_cursor_size">光标大小</string>
     <string name="settings_cursor_scale_label">缩放</string>
@@ -299,7 +301,24 @@
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">版本 v.1.1.5.post2</string>
     <string name="about_whats_new">更新日志</string>
-    <string name="about_whats_new_summary">完整版本历史</string>
-    <string name="app_version_label">Version 1.0</string>
-    <string name="app_build_label">Build 2026.07.19</string>
+    <string name="app_version_label">Version 1.1.0</string>
+    <string name="app_build_label">构建 2026.07.20</string>
+    <string name="about_based_on_title">基于 DeskControl</string>
+    <string name="about_based_on_summary">原始项目 (DeskControl)</string>
+    <string name="about_xrdesk_title">关于项目</string>
+    <string name="about_xrdesk_summary">版本 1.1.0 • 构建 2026.07.20</string>
+    <string name="about_whats_new_summary">更新日志与发行说明</string>
+    <string name="about_4pda_label">4PDA 个人资料</string>
+    <string name="about_xrdesk_desc">XRDesk 是一款面向外接显示器和 XR 眼镜的现代 Android 遥控器和触控板。它允许您通过高度可定制的界面和先进s的输入处理来控制在副屏上运行的应用程序。</string>
+    <string name="changelog_v1_1_0_title">版本 1.1.0 (精简更新)</string>
+    <string name="changelog_v1_1_0_date">2026年7月</string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• 在“选择与控制”界面集成应用启动器。\n• 添加共享日志功能。\n• 重新设计“关于”部分并增加专用子页面。\n• 添加 GitHub 和 4PDA 快速链接。\n• 将“显示控制”重命名为“选择与控制”。\n• 改进导航与界面结构。\n• 优化多语言本地化支持。\n• 修复若干小问题并提高稳定性。]]></string>
+
+    <string name="changelog_v1_0_0_title">版本 1.0 (正式发布)</string>
+    <string name="changelog_v1_0_0_date">2026年7月</string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• 全面采用 Material Design 3 风格。\n• 支持 JSON 导出的高级主题系统。\n• 支持多个外部显示器。\n• 集成触控板与媒体控制。\n• 多语言支持：英语、俄语、乌克兰语、中文。]]></string>
+
+    <string name="changelog_v0_9_0_title">版本 0.9 (Beta)</string>
+    <string name="changelog_v0_9_0_date">2026年6月</string>
+    <string name="changelog_v0_9_0_content"><![CDATA[• 项目分支及基础结构建立。\n• 重新更名为 XRDesk。\n• 集成 Shizuku 以优化焦点管理。]]></string>
 </resources>

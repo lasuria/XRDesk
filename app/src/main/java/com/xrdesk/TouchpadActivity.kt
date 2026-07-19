@@ -625,51 +625,51 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         val activeDPad = if (pos == SettingsStore.DPAD_ABOVE) binding.dPadAbove else binding.dPadBelow
         
         activeDPad.btnDpadUp.setOnClickListener { 
-            android.util.Log.i("DeskControl", "BUTTON_CLICK: D-Pad UP")
+            android.util.Log.i("XRDesk", "BUTTON_CLICK: D-Pad UP")
             it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
             val service = ControlAccessibilityService.current()
             if (service == null) {
-                android.util.Log.e("DeskControl", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
+                android.util.Log.e("XRDesk", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
             } else {
                 service.navigateFocus(android.view.View.FOCUS_UP) 
             }
         }
         activeDPad.btnDpadDown.setOnClickListener { 
-            android.util.Log.i("DeskControl", "BUTTON_CLICK: D-Pad DOWN")
+            android.util.Log.i("XRDesk", "BUTTON_CLICK: D-Pad DOWN")
             it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
             val service = ControlAccessibilityService.current()
             if (service == null) {
-                android.util.Log.e("DeskControl", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
+                android.util.Log.e("XRDesk", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
             } else {
                 service.navigateFocus(android.view.View.FOCUS_DOWN) 
             }
         }
         activeDPad.btnDpadLeft.setOnClickListener { 
-            android.util.Log.i("DeskControl", "BUTTON_CLICK: D-Pad LEFT")
+            android.util.Log.i("XRDesk", "BUTTON_CLICK: D-Pad LEFT")
             it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
             val service = ControlAccessibilityService.current()
             if (service == null) {
-                android.util.Log.e("DeskControl", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
+                android.util.Log.e("XRDesk", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
             } else {
                 service.navigateFocus(android.view.View.FOCUS_LEFT) 
             }
         }
         activeDPad.btnDpadRight.setOnClickListener { 
-            android.util.Log.i("DeskControl", "BUTTON_CLICK: D-Pad RIGHT")
+            android.util.Log.i("XRDesk", "BUTTON_CLICK: D-Pad RIGHT")
             it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
             val service = ControlAccessibilityService.current()
             if (service == null) {
-                android.util.Log.e("DeskControl", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
+                android.util.Log.e("XRDesk", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
             } else {
                 service.navigateFocus(android.view.View.FOCUS_RIGHT) 
             }
         }
         activeDPad.btnDpadOk.setOnClickListener { 
-            android.util.Log.i("DeskControl", "BUTTON_CLICK: D-Pad OK")
+            android.util.Log.i("XRDesk", "BUTTON_CLICK: D-Pad OK")
             it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
             val service = ControlAccessibilityService.current()
             if (service == null) {
-                android.util.Log.e("DeskControl", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
+                android.util.Log.e("XRDesk", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
             } else {
                 service.clickFocused() 
             }

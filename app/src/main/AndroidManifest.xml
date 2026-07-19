@@ -48,6 +48,16 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".AboutBasedOnActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".AboutXRDeskActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".SettingsChangelogActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

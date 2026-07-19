@@ -8,7 +8,7 @@
     <string name="accessibility_enabled">Включено</string>
     <string name="accessibility_required">Требуется</string>
     <string name="choose_app_for_display">Запуск на внешнем дисплее</string>
-    <string name="open_touchpad">Управление дисплеем</string>
+    <string name="open_touchpad">Выбор и управление</string>
     <string name="settings">Настройки</string>
 
     <string name="display_selector_title">Дисплей %1$d</string>
@@ -223,7 +223,7 @@
     <string name="settings_language">Язык</string>
     <string name="settings_developer_section">Для разработчиков</string>
     <string name="settings_logs_title">Логи</string>
-    <string name="settings_logs_summary">Просмотр и копирование логов диагностики для поддержки.</string>
+    <string name="settings_logs_summary">Диагностика и статус системы</string>
     <string name="settings_touchpad_auto_dim">Автозатемнение при использовании тачпада</string>
     <string name="settings_touchpad_auto_dim_summary">Автоматически снижать яркость через 10 секунд работы тачпада.</string>
     <string name="settings_touchpad_back_section">Передача кнопки Назад</string>
@@ -322,7 +322,24 @@
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">версия v.1.1.5.post2</string>
     <string name="about_whats_new">Что нового</string>
-    <string name="about_whats_new_summary">Полная история версий</string>
-    <string name="app_version_label">Version 1.0</string>
-    <string name="app_build_label">Сборка 2026.07.19</string>
+    <string name="app_version_label">Version 1.1.0</string>
+    <string name="app_build_label">Сборка 2026.07.20</string>
+    <string name="about_based_on_title">Основано на DeskControl</string>
+    <string name="about_based_on_summary">Оригинальный проект (DeskControl)</string>
+    <string name="about_xrdesk_title">О проекте</string>
+    <string name="about_xrdesk_summary">Версия 1.1.0 • Сборка 2026.07.20</string>
+    <string name="about_whats_new_summary">Список изменений и примечания</string>
+    <string name="about_4pda_label">Профиль 4PDA</string>
+    <string name="about_xrdesk_desc">XRDesk — это современный пульт и тачпад для внешних дисплеев и XR-очков на Android. Он позволяет управлять приложениями на втором экране с помощью настраиваемого интерфейса и продвинутой обработки ввода.</string>
+    <string name="changelog_v1_1_0_title">Версия 1.1.0 (Обновление интерфейса)</string>
+    <string name="changelog_v1_1_0_date">Июль 2026</string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Добавлен интегрированный лаунчер внутри экрана «Выбор и управление».\n• Добавлена функция «Поделиться логами».\n• Переработан раздел «О приложении» с отдельными под-экранами.\n• Добавлены быстрые ссылки на GitHub и 4PDA.\n• «Управление дисплеем» переименовано в «Выбор и управление».\n• Улучшена навигация и организация разделов.\n• Улучшена локализация для всех языков.\n• Мелкие исправления и повышение стабильности.]]></string>
+
+    <string name="changelog_v1_0_0_title">Версия 1.0 (Первый релиз)</string>
+    <string name="changelog_v1_0_0_date">Июль 2026</string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• Полная реализация Material Design 3.\n• Продвинутая система тем с экспортом JSON.\n• Поддержка нескольких внешних дисплеев.\n• Тачпад и управление мультимедиа.\n• Многоязычность: Английский, Русский, Украинский, Китайский.]]></string>
+
+    <string name="changelog_v0_9_0_title">Версия 0.9 (Бета)</string>
+    <string name="changelog_v0_9_0_date">Июнь 2026</string>
+    <string name="changelog_v0_9_0_content"><![CDATA[• Форк проекта и базовая структура.\n• Переименование пакетов в XRDesk.\n• Интеграция Shizuku для управления фокусом.]]></string>
 </resources>

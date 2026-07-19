@@ -3,7 +3,7 @@ package com.xrdesk
 import android.content.Context
 
 object SettingsStore {
-    private const val PREFS_NAME = "deskcontrol_settings"
+    private const val PREFS_NAME = "xrdesk_settings"
     private const val PREF_APP_LANGUAGE = "app_language"
     private const val LANGUAGE_SYSTEM = "system"
     private const val LANGUAGE_ENGLISH = "en"

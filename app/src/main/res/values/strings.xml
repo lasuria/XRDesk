@@ -9,7 +9,7 @@
     <string name="accessibility_enabled">Enabled</string>
     <string name="accessibility_required">Required</string>
     <string name="choose_app_for_display">Launch on external display</string>
-    <string name="open_touchpad">Display Control</string>
+    <string name="open_touchpad">Select &amp; Control</string>
     <string name="settings">Settings</string>
 
     <string name="display_selector_title">Display %1$d</string>
@@ -225,7 +225,7 @@
     <string name="settings_language">Language</string>
     <string name="settings_developer_section">Developer</string>
     <string name="settings_logs_title">Logs</string>
-    <string name="settings_logs_summary">View and copy diagnostics logs for support.</string>
+    <string name="settings_logs_summary">Diagnostics and system status</string>
     <string name="settings_touchpad_auto_dim">Auto-dim while using touchpad</string>
     <string name="settings_touchpad_auto_dim_summary">Lower brightness automatically after 10 seconds of touchpad use.</string>
     <string name="settings_touchpad_back_section">Back forwarding</string>
@@ -321,15 +321,37 @@
     <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
     <string name="settings_about_title">About</string>
     <string name="settings_about_summary">App version and information</string>
-    <string name="about_application">Application</string>
-    <string name="about_original_project">Original project</string>
-    <string name="about_fork_project">GitHub Project (Fork)</string>
-    <string name="about_fork_project_summary">lasuria/XRDesk</string>
-    <string name="about_original_project_summary">v.1.1.5.post2</string>
+    <string name="about_based_on_title">Based on DeskControl</string>
+    <string name="about_based_on_summary">Original project (DeskControl)</string>
+    <string name="about_xrdesk_title">About Project</string>
+    <string name="about_xrdesk_summary">Version 1.1.0 • Build 2026.07.20</string>
+    <string name="about_original_project_name">DeskControl</string>
+    <string name="about_original_project_version">v1.1.5.post2</string>
+    <string name="about_original_project_desc">XRDesk is built upon the foundation of DeskControl, an open-source remote control for Android. We have extended it with a modern UI, enhanced theme engine, and specialized XR features.</string>
+    <string name="about_original_author">Original Author: exiarepairii</string>
+    <string name="about_fork_maintainer">Maintainer: lasuriia (Crea)</string>
+    <string name="about_license_label">License: GNU GPL v3.0</string>
+    <string name="about_github_label">View on GitHub</string>
+    <string name="about_issues_label">Report an Issue</string>
     <string name="about_whats_new">What\'s new</string>
-    <string name="about_whats_new_summary">Full version history</string>
-    <string name="app_version_label">Version 1.0</string>
-    <string name="app_build_label">Build 2026.07.19</string>
-    <string name="about_project_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
+    <string name="about_whats_new_summary">Changelog and release notes</string>
+    <string name="app_version_label">Version 1.1.0</string>
+    <string name="app_build_label">Build 2026.07.20</string>
+    <string name="about_project_url" translatable="false">https://github.com/exiarepairii/xrdesk</string>
+    <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
+    <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
+    <string name="about_4pda_label">4PDA Profile</string>
+    <string name="about_xrdesk_desc">XRDesk is a modern Android Remote &amp; Touchpad for External Displays and XR Glasses. It allows you to control applications running on secondary screens with a highly customizable interface and advanced input processing.</string>
     <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
+    <string name="changelog_v1_1_0_title">Version 1.1.0 (Refinement Update)</string>
+    <string name="changelog_v1_1_0_date">July 2026</string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Added an integrated app launcher inside the Select & Control screen.\n• Added Share Logs for quick log sharing.\n• Redesigned the About section with dedicated sub-pages.\n• Added quick links to GitHub and 4PDA profile.\n• Renamed Display Control to Select & Control.\n• Improved navigation and screen organization.\n• Improved localization for all supported languages.\n• Minor bug fixes and stability improvements.]]></string>
+
+    <string name="changelog_v1_0_0_title">Version 1.0 (Initial Release)</string>
+    <string name="changelog_v1_0_0_date">July 2026</string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• Full Material Design 3 implementation.\n• Advanced Theme System with JSON export.\n• Support for multiple external displays.\n• Touchpad and Media Controls.\n• Multilingual: English, Russian, Ukrainian, Chinese.]]></string>
+
+    <string name="changelog_v0_9_0_title">Version 0.9 (Beta)</string>
+    <string name="changelog_v0_9_0_date">June 2026</string>
+    <string name="changelog_v0_9_0_content"><![CDATA[• Initial project fork and structure.\n• Package renaming to XRDesk.\n• Integration of Shizuku for focus management.]]></string>
 </resources>

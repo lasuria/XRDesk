@@ -73,9 +73,9 @@ Open the project in Android Studio and build it normally.
 
 ---
 
-## 🔥 What's New Compared to DeskControl?
+## 🔥 What's New Compared to XRDesk?
 
-| Feature | DeskControl | XRDesk |
+| Feature | XRDesk | XRDesk |
 |---------|:-----------:|:-------:|
 | Material Design 3 | ❌ | ✅ |
 | Material You | ❌ | ✅ |
@@ -100,11 +100,11 @@ Open the project in Android Studio and build it normally.
 
 ## 🤝 Credits
 
-XRDesk is based on the open-source **DeskControl** project.
+XRDesk is based on the open-source **XRDesk** project.
 
 The original project provided the foundation, while XRDesk extends it with a redesigned interface, new customization options, XR-focused improvements, and additional functionality.
 
-Special thanks to the original DeskControl developers for making the project open source.
+Special thanks to the original XRDesk developers for making the project open source.
 
 ---
 

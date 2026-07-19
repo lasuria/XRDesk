@@ -1,5 +1,6 @@
 package com.xrdesk
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -20,22 +21,32 @@ class DiagnosticsActivity : AppCompatActivity() {
         binding.diagnosticsToolbar.setNavigationOnClickListener { finish() }
         binding.diagnosticsToolbar.inflateMenu(R.menu.diagnostics_menu)
         binding.diagnosticsToolbar.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.action_copy_logs) {
-                val clipboard = getSystemService(android.content.ClipboardManager::class.java)
-                val text = binding.diagnosticsText.text?.toString().orEmpty()
-                val clip = android.content.ClipData.newPlainText(
-                    getString(R.string.diagnostics_logs_label),
-                    text
-                )
-                clipboard?.setPrimaryClip(clip)
-                android.widget.Toast.makeText(
-                    this,
-                    getString(R.string.diagnostics_copy_logs_done),
-                    android.widget.Toast.LENGTH_SHORT
-                ).show()
-                true
-            } else {
-                false
+            when (item.itemId) {
+                R.id.action_copy_logs -> {
+                    val clipboard = getSystemService(android.content.ClipboardManager::class.java)
+                    val text = binding.diagnosticsText.text?.toString().orEmpty()
+                    val clip = android.content.ClipData.newPlainText(
+                        getString(R.string.diagnostics_logs_label),
+                        text
+                    )
+                    clipboard?.setPrimaryClip(clip)
+                    android.widget.Toast.makeText(
+                        this,
+                        getString(R.string.diagnostics_copy_logs_done),
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                    true
+                }
+                R.id.action_share_logs -> {
+                    val text = binding.diagnosticsText.text?.toString().orEmpty()
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, text)
+                    }
+                    startActivity(Intent.createChooser(intent, "Share Logs"))
+                    true
+                }
+                else -> false
             }
         }
     }

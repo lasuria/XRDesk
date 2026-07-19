@@ -58,7 +58,7 @@
                 android:id="@+id/touchpadTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/touchpad_title"
+                android:text="@string/open_touchpad"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:textColor="?attr/colorOnSurface"
                 android:textStyle="bold"
