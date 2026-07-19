@@ -118,6 +118,9 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             DiagnosticsLog.add("Touchpad: exit via toolbar")
             finish()
         }
+        binding.touchpadLaunch.setOnClickListener {
+            startActivity(Intent(this, AppPickerActivity::class.java))
+        }
         binding.touchpadBlackout.setOnClickListener {
             setBlackoutVisible(true)
         }

@@ -75,8 +75,8 @@ object ThemeHelper {
                 val bg = view.background
                 
                 // Specific Check for Card-like containers
-                val isKnownCard = id == R.id.statusCard || id == R.id.btnPickApp || 
-                                 id == R.id.btnTouchpad || id == R.id.btnSettings ||
+                val isKnownCard = id == R.id.statusCard || id == R.id.btnTouchpad || 
+                                 id == R.id.btnSettings || id == R.id.touchpadLaunch ||
                                  id == R.id.rowTheme || id == R.id.rowLanguage ||
                                  id == R.id.rowTouchpad || id == R.id.rowCursor ||
                                  id == R.id.rowDock || id == R.id.rowDiagnostics ||

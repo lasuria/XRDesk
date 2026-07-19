@@ -123,41 +123,10 @@
 
         <!-- Premium Action Cards -->
         <LinearLayout
-            android:id="@+id/btnPickApp"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/premium_card_clickable_bg"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="20dp">
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_apps_apple"
-                app:tint="?attr/colorOnSurfaceVariant" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_weight="1"
-                android:text="@string/choose_app_for_display"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnSurface"
-                android:fontFamily="sans-serif-medium" />
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_chevron_right_apple"
-                app:tint="?attr/colorOnSurfaceVariant" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/btnTouchpad"
             android:layout_width="match_parent"
             android:layout_height="72dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/premium_card_clickable_bg"
             android:clickable="true"
             android:focusable="true"

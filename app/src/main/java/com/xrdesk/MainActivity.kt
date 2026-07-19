@@ -29,9 +29,6 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root)
 
-        binding.btnPickApp.setOnClickListener {
-            startActivity(Intent(this, AppPickerActivity::class.java))
-        }
         binding.btnTouchpad.setOnClickListener {
             startActivity(Intent(this, TouchpadActivity::class.java))
         }
