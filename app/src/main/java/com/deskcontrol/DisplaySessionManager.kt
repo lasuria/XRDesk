@@ -8,6 +8,7 @@ import android.view.Display
 object DisplaySessionManager {
     data class ExternalDisplayInfo(
         val displayId: Int,
+        val name: String,
         val width: Int,
         val height: Int,
         val densityDpi: Int,
@@ -148,6 +149,7 @@ object DisplaySessionManager {
         display.getRealMetrics(metrics)
         return ExternalDisplayInfo(
             displayId = display.displayId,
+            name = display.name ?: "Unknown Display",
             width = metrics.widthPixels,
             height = metrics.heightPixels,
             densityDpi = metrics.densityDpi,

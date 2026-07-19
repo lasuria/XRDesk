@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="backgroundGraphite">#111416</color>
-    <color name="surfaceGraphite">#161A1D</color>
+    <!-- Dark Theme (Amoled Black) -->
+    <color name="backgroundGraphite">#000000</color>
+    <color name="surfaceGraphite">#000000</color>
     <color name="surfaceGlass">#1FFFFFFF</color>
     <color name="surfaceStroke">#22FFFFFF</color>
     <color name="textPrimary">#D4D8DB</color>

@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         setContentView(binding.root)
         DiagnosticsLog.add("Main: create displayId=${display?.displayId ?: -1}")
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root)
 
         binding.btnPickApp.setOnClickListener {
@@ -52,11 +53,7 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     override fun onDisplayChanged(info: DisplaySessionManager.ExternalDisplayInfo?) {
         externalDisplayConnected = info != null
-        binding.statusDisplayValue.text = if (externalDisplayConnected) {
-            getString(R.string.external_display_connected)
-        } else {
-            getString(R.string.external_display_not_connected)
-        }
+        updateDisplayInfoUI()
         updateSecondaryActions()
     }
 
@@ -66,15 +63,69 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     ) {
         availableDisplays = displays
         this.selectedDisplayId = selectedDisplayId
+        updateDisplayInfoUI()
         updateDisplaySelector()
+    }
+
+    private fun updateDisplayInfoUI() {
+        val displayType = XrDeviceDetector.getExternalDisplayType(this)
+
+        if (displayType == XrDeviceDetector.ExternalDisplayType.NONE) {
+            binding.iconDisplay.setImageResource(R.drawable.ic_xr_display)
+            binding.statusDisplayValue.text = getString(R.string.external_display_not_connected)
+            binding.deviceStatusLabel.isVisible = false
+            
+            // Apply neutral tint to the monitor icon
+            val color = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorOnSurfaceVariant)
+            binding.iconDisplay.setColorFilter(color)
+        } else {
+            // Pick the icon based on detected type
+            if (displayType == XrDeviceDetector.ExternalDisplayType.XR_GLASSES) {
+                binding.iconDisplay.setImageResource(R.drawable.ic_xr_glasses)
+                binding.deviceStatusLabel.text = "XR Glasses Connected"
+            } else {
+                binding.iconDisplay.setImageResource(R.drawable.ic_external_monitor)
+                binding.deviceStatusLabel.text = "External monitor connected"
+            }
+            
+            // Format resolution with descriptive labels
+            val resolutionText = availableDisplays.joinToString("\n") { 
+                formatResolution(it.width, it.height)
+            }
+            binding.statusDisplayValue.text = resolutionText
+            binding.statusDisplayValue.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_LabelSmall)
+            
+            binding.deviceStatusLabel.isVisible = true
+            
+            // Reset tint to allow mono vector handling
+            binding.iconDisplay.setColorFilter(null)
+            binding.iconDisplay.imageTintList = null
+        }
+    }
+
+    private fun formatResolution(width: Int, height: Int): String {
+        return when {
+            width >= 3840 || height >= 2160 -> "4K (UltraHD)"
+            width >= 2560 || height >= 1440 -> "2K (QHD)"
+            width >= 1920 || height >= 1080 -> "1080p (FullHD)"
+            width >= 1280 || height >= 720 -> "720p (HD)"
+            else -> "${width}×${height}"
+        }
     }
 
     private fun updateAccessibilityState() {
         val accessibilityEnabled = ControlAccessibilityService.isEnabled(this)
-        binding.statusAccessibilityValue.text = if (accessibilityEnabled) {
-            getString(R.string.accessibility_enabled)
-        } else {
-            getString(R.string.accessibility_required)
+        
+        binding.accessibilityContainer.isVisible = !accessibilityEnabled
+        binding.accessibilityDivider.isVisible = !accessibilityEnabled
+        
+        if (!accessibilityEnabled) {
+            binding.statusAccessibilityValue.text = getString(R.string.accessibility_required)
+            binding.statusAccessibilityValue.setTextColor(getColor(R.color.apple_red))
+            binding.statusAccessibilityValue.setTypeface(null, android.graphics.Typeface.BOLD)
+            
+            val color = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorOnSurfaceVariant)
+            binding.iconAccessibility.setColorFilter(color)
         }
     }
 
@@ -84,7 +135,7 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     }
 
     private fun updateDisplaySelector() {
-        val showSelector = availableDisplays.isNotEmpty()
+        val showSelector = availableDisplays.size > 1
         binding.displaySelector.isVisible = showSelector
         if (!showSelector) return
 

@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deskcontrol.databinding.ActivityAppPickerBinding
@@ -19,20 +20,23 @@ class AppPickerActivity : AppCompatActivity() {
     private var allEntries: List<AppEntry> = emptyList()
     private var pickMode = false
     private var pickSlotIndex = 0
+    private var currentlySelectedPackage: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAppPickerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root)
 
         pickMode = intent.getBooleanExtra(EXTRA_PICK_MODE, false)
         pickSlotIndex = intent.getIntExtra(EXTRA_PICK_SLOT, 0)
+        currentlySelectedPackage = intent.getStringExtra(EXTRA_CURRENT_PACKAGE)
 
-        binding.appList.layoutManager = LinearLayoutManager(this)
+        binding.appList.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 3)
         allEntries = loadLaunchableApps()
-        adapter = AppAdapter(allEntries) { entry ->
+        adapter = AppAdapter(allEntries, currentlySelectedPackage) { entry ->
             if (pickMode) {
                 val data = android.content.Intent().apply {
                     putExtra(EXTRA_PICK_PACKAGE, entry.packageName)
@@ -120,6 +124,7 @@ class AppPickerActivity : AppCompatActivity() {
 
     private class AppAdapter(
         private var items: List<AppEntry>,
+        private val selectedPackage: String?,
         private val onClick: (AppEntry) -> Unit
     ) : RecyclerView.Adapter<AppAdapter.AppViewHolder>() {
 
@@ -134,7 +139,7 @@ class AppPickerActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: AppViewHolder, position: Int) {
-            holder.bind(items[position])
+            holder.bind(items[position], items[position].packageName == selectedPackage)
         }
 
         override fun getItemCount(): Int = items.size
@@ -144,11 +149,26 @@ class AppPickerActivity : AppCompatActivity() {
             private val onClick: (AppEntry) -> Unit
         ) : RecyclerView.ViewHolder(binding.root) {
 
-            fun bind(entry: AppEntry) {
+            fun bind(entry: AppEntry, isSelected: Boolean) {
                 binding.appName.text = entry.label
                 binding.appPackage.text = entry.packageName
                 binding.appIcon.setImageDrawable(entry.icon)
                 binding.root.setOnClickListener { onClick(entry) }
+                
+                binding.selectedCheckmark.isVisible = isSelected
+                binding.chevronIcon.isVisible = !isSelected
+                
+                if (isSelected) {
+                    val context = binding.root.context
+                    val premiumCard = androidx.core.content.ContextCompat.getDrawable(context, R.drawable.premium_card_bg)
+                    binding.appItemRoot.background = premiumCard
+                    // Add accent border logic if needed, but premium_card_bg already has a border.
+                    // We could apply a custom tint to the border if we had a dedicated drawable.
+                } else {
+                    val context = binding.root.context
+                    val clickableCard = androidx.core.content.ContextCompat.getDrawable(context, R.drawable.premium_card_clickable_bg)
+                    binding.appItemRoot.background = clickableCard
+                }
             }
         }
     }
@@ -159,5 +179,6 @@ class AppPickerActivity : AppCompatActivity() {
         const val EXTRA_PICK_PACKAGE = "extra_pick_package"
         const val EXTRA_PICK_LABEL = "extra_pick_label"
         const val EXTRA_PICK_SLOT = "extra_pick_slot"
+        const val EXTRA_CURRENT_PACKAGE = "extra_current_package"
     }
 }

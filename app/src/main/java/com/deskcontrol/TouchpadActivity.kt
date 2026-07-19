@@ -60,15 +60,12 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     private var touchpadActive = false
     private var touchState = TouchState.IDLE
     private var suppressSingleUntilUp = false
-    private var shizukuBinderReady = false
     private var shizukuEnableInFlight = false
     private val shizukuBinderListener = Shizuku.OnBinderReceivedListener {
-        shizukuBinderReady = true
-        updateShizukuButton()
+        updateShizukuUI()
     }
     private val shizukuDeadListener = Shizuku.OnBinderDeadListener {
-        shizukuBinderReady = false
-        updateShizukuButton()
+        updateShizukuUI()
     }
     private val shizukuPermissionListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
         if (requestCode != SHIZUKU_PERMISSION_REQUEST) return@OnRequestPermissionResultListener
@@ -80,7 +77,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                 getString(R.string.touchpad_shizuku_permission_denied),
                 Toast.LENGTH_SHORT
             ).show()
-            updateShizukuButton()
+            updateShizukuUI()
         }
     }
 
@@ -90,19 +87,14 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         setContentView(binding.root)
         DiagnosticsLog.add("Touchpad: create displayId=${display?.displayId ?: -1}")
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root, includeTop = false)
         applyToolbarInsets()
         val insetsController = WindowInsetsControllerCompat(window, binding.root)
         insetsController.hide(WindowInsetsCompat.Type.statusBars())
         insetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        insetsController.isAppearanceLightStatusBars = false
-        insetsController.isAppearanceLightNavigationBars = false
-        val touchpadBg = ContextCompat.getColor(this, R.color.touchpadBackground)
-        @Suppress("DEPRECATION")
-        window.statusBarColor = touchpadBg
-        @Suppress("DEPRECATION")
-        window.navigationBarColor = touchpadBg
+
         if (Build.VERSION.SDK_INT >= 29) {
             window.isNavigationBarContrastEnforced = false
         }
@@ -143,8 +135,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         Shizuku.addBinderReceivedListener(shizukuBinderListener)
         Shizuku.addBinderDeadListener(shizukuDeadListener)
         Shizuku.addRequestPermissionResultListener(shizukuPermissionListener)
-        refreshShizukuBinderState()
-        updateShizukuButton()
+        updateShizukuUI()
 
         binding.touchpadArea.setOnTouchListener { _, event ->
             handleTouch(event)
@@ -224,6 +215,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         }
 
         setupTuningControls()
+        setupDPad()
         setTouchpadActive(false)
         showTouchpadIntroIfNeeded()
 
@@ -285,7 +277,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     override fun onStart() {
         super.onStart()
         DisplaySessionManager.addListener(this)
-        refreshShizukuBinderState()
+        updateShizukuUI()
         updateAccessibilityGate()
     }
 
@@ -619,16 +611,104 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             }
     }
 
+    private fun setupDPad() {
+        val pos = SettingsStore.dPadPosition
+        val dPadAbove = binding.dPadAbove.root
+        val dPadBelow = binding.dPadBelow.root
+
+        dPadAbove.isVisible = pos == SettingsStore.DPAD_ABOVE
+        dPadBelow.isVisible = pos == SettingsStore.DPAD_BELOW
+
+        val activeDPad = if (pos == SettingsStore.DPAD_ABOVE) binding.dPadAbove else binding.dPadBelow
+        
+        activeDPad.btnDpadUp.setOnClickListener { 
+            android.util.Log.i("DeskControl", "BUTTON_CLICK: D-Pad UP")
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+            val service = ControlAccessibilityService.current()
+            if (service == null) {
+                android.util.Log.e("DeskControl", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
+            } else {
+                service.navigateFocus(android.view.View.FOCUS_UP) 
+            }
+        }
+        activeDPad.btnDpadDown.setOnClickListener { 
+            android.util.Log.i("DeskControl", "BUTTON_CLICK: D-Pad DOWN")
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+            val service = ControlAccessibilityService.current()
+            if (service == null) {
+                android.util.Log.e("DeskControl", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
+            } else {
+                service.navigateFocus(android.view.View.FOCUS_DOWN) 
+            }
+        }
+        activeDPad.btnDpadLeft.setOnClickListener { 
+            android.util.Log.i("DeskControl", "BUTTON_CLICK: D-Pad LEFT")
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+            val service = ControlAccessibilityService.current()
+            if (service == null) {
+                android.util.Log.e("DeskControl", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
+            } else {
+                service.navigateFocus(android.view.View.FOCUS_LEFT) 
+            }
+        }
+        activeDPad.btnDpadRight.setOnClickListener { 
+            android.util.Log.i("DeskControl", "BUTTON_CLICK: D-Pad RIGHT")
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+            val service = ControlAccessibilityService.current()
+            if (service == null) {
+                android.util.Log.e("DeskControl", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
+            } else {
+                service.navigateFocus(android.view.View.FOCUS_RIGHT) 
+            }
+        }
+        activeDPad.btnDpadOk.setOnClickListener { 
+            android.util.Log.i("DeskControl", "BUTTON_CLICK: D-Pad OK")
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+            val service = ControlAccessibilityService.current()
+            if (service == null) {
+                android.util.Log.e("DeskControl", "BUTTON_ERROR: ControlAccessibilityService is NOT running/current is null")
+            } else {
+                service.clickFocused() 
+            }
+        }
+
+        // Expanded Remote Buttons
+        activeDPad.btnRemotePlayPause.setOnClickListener {
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+            ControlAccessibilityService.current()?.injectKeyEvent(85) // KEYCODE_MEDIA_PLAY_PAUSE
+        }
+        activeDPad.btnRemotePlayPause.setOnLongClickListener {
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
+            ControlAccessibilityService.current()?.injectKeyEvent(85, longPress = true)
+            true
+        }
+        
+        activeDPad.btnRemoteRewind.setOnClickListener {
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+            ControlAccessibilityService.current()?.injectKeyEvent(89) // KEYCODE_MEDIA_REWIND
+        }
+        activeDPad.btnRemoteRewind.setOnLongClickListener {
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
+            ControlAccessibilityService.current()?.injectKeyEvent(89, longPress = true)
+            true
+        }
+
+        activeDPad.btnRemoteFastForward.setOnClickListener {
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY)
+            ControlAccessibilityService.current()?.injectKeyEvent(90) // KEYCODE_MEDIA_FAST_FORWARD
+        }
+        activeDPad.btnRemoteFastForward.setOnLongClickListener {
+            it.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
+            ControlAccessibilityService.current()?.injectKeyEvent(90, longPress = true)
+            true
+        }
+    }
+
     private fun setTouchpadActive(active: Boolean) {
         val wasActive = touchpadActive
         touchpadActive = active
         binding.touchpadArea.isActivated = active
-        val hintColorRes = if (active) {
-            R.color.touchpadHintActive
-        } else {
-            R.color.touchpadHintInactive
-        }
-        binding.touchpadHint.setTextColor(ContextCompat.getColor(this, hintColorRes))
+
         if (wasActive != active) {
             DiagnosticsLog.add("Touchpad: active=$active")
             if (active) {
@@ -739,39 +819,46 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         binding.touchpadArea.isEnabled = enabled
         binding.tuningPanel.isEnabled = enabled
         setTouchpadActive(false)
-        updateShizukuButton()
+        updateShizukuUI()
     }
 
-    private fun updateShizukuButton() {
+    private fun updateShizukuUI() {
         if (!this::binding.isInitialized) return
-        refreshShizukuBinderState()
-        val available = isShizukuAvailable()
-        val alpha = if (available) 1f else 0.5f
+        val alive = ShizukuShell.isAlive()
+        
+        // Update Enable button
+        val alpha = if (alive) 1f else 0.5f
         binding.btnEnableAccessibilityShizuku.alpha = alpha
         binding.btnEnableAccessibilityShizuku.isEnabled = !shizukuEnableInFlight
-    }
 
-    private fun refreshShizukuBinderState() {
-        shizukuBinderReady = shizukuBinderReady || isShizukuBinderAlive()
+        // Update D-Pad visual state based on Shizuku
+        val dpadAlpha = if (alive) 1f else 0.6f
+        binding.dPadAbove.root.alpha = dpadAlpha
+        binding.dPadBelow.root.alpha = dpadAlpha
     }
 
     private fun requestAccessibilityViaShizuku() {
-        val available = isShizukuAvailable()
-        if (!available) {
-            showShizukuIntroDialog()
+        if (!ShizukuShell.isAlive()) {
+            if (!isShizukuInstalled()) {
+                showShizukuIntroDialog()
+            } else {
+                Toast.makeText(this, "Shizuku is not running", Toast.LENGTH_SHORT).show()
+            }
             return
         }
+
         val permission = try {
             Shizuku.checkSelfPermission()
         } catch (e: Throwable) {
-            DiagnosticsLog.add("Shizuku: not running (${e.javaClass.simpleName})")
             showShizukuIntroDialog()
             return
         }
+
         if (permission == PackageManager.PERMISSION_GRANTED) {
             enableAccessibilityWithShizuku()
             return
         }
+        
         if (Shizuku.shouldShowRequestPermissionRationale()) {
             Toast.makeText(
                 this,
@@ -783,20 +870,28 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         try {
             Shizuku.requestPermission(SHIZUKU_PERMISSION_REQUEST)
         } catch (e: Throwable) {
-            DiagnosticsLog.add("Shizuku: requestPermission failed ${e.javaClass.simpleName}")
             showShizukuIntroDialog()
+        }
+    }
+
+    private fun isShizukuInstalled(): Boolean {
+        return try {
+            packageManager.getPackageInfo("moe.shizuku.privileged.api", 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
     }
 
     private fun enableAccessibilityWithShizuku() {
         if (shizukuEnableInFlight) return
         shizukuEnableInFlight = true
-        updateShizukuButton()
+        updateShizukuUI()
         Thread {
             val success = enableAccessibilityWithShizukuInternal()
             runOnUiThread {
                 shizukuEnableInFlight = false
-                updateShizukuButton()
+                updateShizukuUI()
                 if (success) {
                     Toast.makeText(
                         this,
@@ -823,30 +918,19 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
         )
         val updated = mergeAccessibilityServices(current, component)
-        val setServices = runShizukuCommand(
-            arrayOf(
-                "settings",
-                "put",
-                "secure",
-                "enabled_accessibility_services",
-                updated
-            )
-        )
+        
+        val setServices = ShizukuShell.runSettingsCommand("enabled_accessibility_services", updated)
         if (setServices.exitCode != 0) {
-            DiagnosticsLog.add(
-                "Shizuku: enable services failed code=${setServices.exitCode} err=${setServices.error}"
-            )
+            DiagnosticsLog.add("Shizuku: enable services failed code=${setServices.exitCode} err=${setServices.error}")
             return false
         }
-        val enable = runShizukuCommand(
-            arrayOf("settings", "put", "secure", "accessibility_enabled", "1")
-        )
+        
+        val enable = ShizukuShell.runSettingsCommand("accessibility_enabled", "1")
         if (enable.exitCode != 0) {
-            DiagnosticsLog.add(
-                "Shizuku: enable accessibility flag failed code=${enable.exitCode} err=${enable.error}"
-            )
+            DiagnosticsLog.add("Shizuku: enable accessibility flag failed code=${enable.exitCode} err=${enable.error}")
             return false
         }
+        
         SystemClock.sleep(150)
         return ControlAccessibilityService.isEnabled(this)
     }
@@ -862,42 +946,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         return (entries + component).joinToString(":")
     }
 
-    private fun runShizukuCommand(args: Array<String>): ShizukuCommandResult {
-        return try {
-            val process = newShizukuProcess(args)
-                ?: return ShizukuCommandResult(-1, "", "newProcess unavailable")
-            val output = process.inputStream.bufferedReader().use { it.readText() }.trim()
-            val error = process.errorStream.bufferedReader().use { it.readText() }.trim()
-            val exitCode = process.waitFor()
-            ShizukuCommandResult(exitCode, output, error)
-        } catch (e: Exception) {
-            ShizukuCommandResult(-1, "", e.message ?: "unknown")
-        }
-    }
-
-    private fun isShizukuBinderAlive(): Boolean {
-        return try {
-            val cls = Shizuku::class.java
-            val method = cls.declaredMethods.firstOrNull { candidate ->
-                (candidate.name == "pingBinder" || candidate.name == "isBinderAlive") &&
-                    candidate.parameterTypes.isEmpty()
-            } ?: return false
-            method.isAccessible = true
-            (method.invoke(null) as? Boolean) == true
-        } catch (_: Exception) {
-            false
-        }
-    }
-
-    private fun isShizukuAvailable(): Boolean {
-        return try {
-            Shizuku.checkSelfPermission()
-            true
-        } catch (_: Throwable) {
-            false
-        }
-    }
-
     private fun showShizukuIntroDialog() {
         androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle(R.string.touchpad_shizuku_intro_title)
@@ -906,25 +954,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                 dialog.dismiss()
             }
             .show()
-    }
-
-    private fun newShizukuProcess(args: Array<String>): Process? {
-        return try {
-            val method = Shizuku::class.java.declaredMethods.firstOrNull { candidate ->
-                candidate.name == "newProcess" && candidate.parameterTypes.size == 3
-            } ?: return null
-            method.isAccessible = true
-            val paramTypes = method.parameterTypes
-            val envArg = if (paramTypes[1].isArray) {
-                null
-            } else {
-                null
-            }
-            @Suppress("UNCHECKED_CAST")
-            method.invoke(null, args, envArg, null) as? Process
-        } catch (_: Exception) {
-            null
-        }
     }
 
     private fun updateKeepScreenOn(visible: Boolean) {
@@ -1082,11 +1111,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         private const val SHIZUKU_PERMISSION_REQUEST = 1201
     }
 
-    private data class ShizukuCommandResult(
-        val exitCode: Int,
-        val output: String,
-        val error: String
-    )
 
     private enum class TouchState {
         IDLE,

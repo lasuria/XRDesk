@@ -2,225 +2,303 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/touchpadBackground">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <!-- Apple Style Toolbar -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/touchpadToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="6dp"
-            android:gravity="center_vertical"
-            android:background="@color/touchpadBackground">
+            android:minHeight="56dp"
+            android:paddingHorizontal="8dp">
 
-            <ImageButton
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="56dp" />
+
+            <LinearLayout
                 android:id="@+id/touchpadBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/touchpad_back_button"
-                android:scaleType="center"
-                android:src="@drawable/ic_back"
-                android:tint="@color/touchpadToolbarText" />
+                app:layout_constraintBottom_toTopOf="@+id/guideline_toolbar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_back_ios"
+                    android:contentDescription="@string/touchpad_back_button"
+                    app:tint="?attr/colorPrimary" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/btnBackText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/touchpad_back_button"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/touchpadTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|start"
-                android:text="@string/touchpad_title"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="@color/touchpadToolbarText" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/touchpadBlackout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="@string/touchpad_title"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/colorOnSurface"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/guideline_toolbar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/touchpadBlackout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/apple_button_bg"
                 android:clickable="true"
                 android:focusable="true"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="6dp"
-                android:text="@string/touchpad_blackout"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="@color/touchpadToolbarText" />
-        </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="@+id/touchpadBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/touchpadBack">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_power_apple"
+                    android:contentDescription="@string/touchpad_blackout"
+                    app:tint="@color/apple_red" />
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <LinearLayout
-                android:id="@+id/touchpadContent"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="24dp">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/touchpadHint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/touchpad_hint"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="@color/touchpadHintInactive" />
-
-                <FrameLayout
-                    android:id="@+id/touchpadArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/touchpad_area_bg" />
+                android:fillViewport="true">
 
                 <LinearLayout
-                    android:id="@+id/tuningPanel"
+                    android:id="@+id/touchpadContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:paddingHorizontal="16dp"
+                    android:paddingBottom="24dp">
 
-                    <TextView
-                        android:id="@+id/tuningHeader"
-                        android:layout_width="match_parent"
+                    <!-- D-Pad Panel Above -->
+                    <include
+                        android:id="@+id/dPadAbove"
+                        layout="@layout/layout_dpad"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/touchpad_tuning"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/labelBaseGain"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
-                        android:text="@string/touchpad_base_gain" />
+                        android:visibility="gone" />
 
-                    <SeekBar
-                        android:id="@+id/sliderBaseGain"
+                    <!-- Touchpad Area -->
+                    <FrameLayout
+                        android:id="@+id/touchpadArea"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/apple_touchpad_bg" />
 
-                    <TextView
-                        android:id="@+id/labelAccel"
+                    <!-- D-Pad Panel Below -->
+                    <include
+                        android:id="@+id/dPadBelow"
+                        layout="@layout/layout_dpad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="8dp"
+                        android:visibility="gone" />
+
+                    <!-- Tuning Panel -->
+                    <LinearLayout
+                        android:id="@+id/tuningPanel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/touchpad_acceleration" />
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:background="@drawable/apple_card_bg"
+                        android:padding="20dp"
+                        android:layout_marginTop="8dp">
 
-                    <SeekBar
-                        android:id="@+id/sliderAccel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/touchpad_tuning"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold"
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
 
-                    <TextView
-                        android:id="@+id/labelSpeed"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/touchpad_speed_for_max_accel" />
+                        <TextView
+                            android:id="@+id/labelBaseGain"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+                        <SeekBar
+                            android:id="@+id/sliderBaseGain"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp" />
 
-                    <SeekBar
-                        android:id="@+id/sliderSpeed"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/labelAccel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+                        <SeekBar
+                            android:id="@+id/sliderAccel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp" />
 
-                    <TextView
-                        android:id="@+id/labelJitter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/touchpad_jitter_threshold" />
+                        <TextView
+                            android:id="@+id/labelSpeed"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+                        <SeekBar
+                            android:id="@+id/sliderSpeed"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp" />
 
-                    <SeekBar
-                        android:id="@+id/sliderJitter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/labelJitter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+                        <SeekBar
+                            android:id="@+id/sliderJitter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp" />
 
-                    <TextView
-                        android:id="@+id/labelSmoothing"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/touchpad_smoothing" />
+                        <TextView
+                            android:id="@+id/labelSmoothing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+                        <SeekBar
+                            android:id="@+id/sliderSmoothing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp" />
 
-                    <SeekBar
-                        android:id="@+id/sliderSmoothing"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/labelScroll"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textAppearance="?attr/textAppearanceBodySmall" />
+                        <SeekBar
+                            android:id="@+id/sliderScroll"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp" />
 
-                    <TextView
-                        android:id="@+id/labelScroll"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/touchpad_scroll_step" />
+                    </LinearLayout>
 
-                    <SeekBar
-                        android:id="@+id/sliderScroll"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
                 </LinearLayout>
-            </LinearLayout>
+            </ScrollView>
 
+            <!-- Accessibility Gate Overlay -->
             <LinearLayout
                 android:id="@+id/accessibilityGate"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#B0000000"
+                android:background="?attr/colorSurface"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="24dp"
+                android:padding="32dp"
                 android:visibility="gone"
                 android:clickable="true"
                 android:focusable="true">
 
                 <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginBottom="16dp"
-                    android:contentDescription="@string/touchpad_accessibility_content_description"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="24dp"
                     android:src="@drawable/ic_accessibility"
-                    android:tint="?attr/colorOnSurfaceVariant" />
+                    android:contentDescription="Accessibility required"
+                    app:tint="?attr/colorOnSurface" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/touchpad_accessibility_required"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:gravity="center"
                     android:text="@string/touchpad_accessibility_hint"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnOpenAccessibility"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/touchpad_open_accessibility_settings" />
+                    android:layout_height="56dp"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/touchpad_open_accessibility_settings"
+                    app:cornerRadius="14dp"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:textColor="?attr/colorOnPrimary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnEnableAccessibilityShizuku"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
                     android:layout_marginTop="12dp"
                     style="?attr/materialButtonOutlinedStyle"
-                    android:text="@string/touchpad_enable_accessibility_shizuku" />
+                    android:text="@string/touchpad_enable_accessibility_shizuku"
+                    app:cornerRadius="14dp"
+                    android:textColor="?attr/colorOnSurface"
+                    app:strokeColor="?attr/colorOutline" />
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

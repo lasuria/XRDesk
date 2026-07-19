@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/diagnosticsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,19 +10,21 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/diagnosticsToolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:minHeight="48dp"
+        android:layout_height="56dp"
+        android:minHeight="56dp"
         android:paddingHorizontal="16dp"
         android:title="@string/diagnostics_title"
         app:titleTextColor="?attr/colorOnSurface"
+        app:titleCentered="true"
         app:contentInsetStartWithNavigation="0dp"
         app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="#8A8A8A" />
+        app:navigationIconTint="?attr/colorOnSurfaceVariant" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,21 +32,45 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/diagnosticsLabel"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/diagnostics_details_label"
-                android:textAppearance="?attr/textAppearanceTitleSmall" />
+                android:text="System Status"
+                android:textAppearance="?attr/textAppearanceTitleSmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:fontFamily="sans-serif-medium"
+                android:textAllCaps="true"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="12dp" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/diagnosticsText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/empty_text"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+                android:background="@drawable/premium_card_bg"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/diagnosticsLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/diagnostics_details_label"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:id="@+id/diagnosticsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/empty_text"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:lineSpacingExtra="4dp" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

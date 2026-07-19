@@ -25,6 +25,7 @@ class AppDrawerActivity : AppCompatActivity() {
         }
         binding = ActivityAppDrawerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        ThemeHelper.applyTheme(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         applyEdgeToEdgePadding(binding.root)
 

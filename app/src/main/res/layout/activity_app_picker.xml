@@ -9,43 +9,56 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/appPickerToolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:minHeight="48dp"
+        android:layout_height="56dp"
+        android:minHeight="56dp"
         android:paddingHorizontal="16dp"
         android:title="@string/app_picker_title"
         app:titleTextColor="?attr/colorOnSurface"
+        app:titleCentered="true"
         app:contentInsetStartWithNavigation="0dp"
         app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="#8A8A8A" />
+        app:navigationIconTint="?attr/colorOnSurfaceVariant" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingHorizontal="16dp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/searchContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:hint="@string/app_search_hint"
-            app:boxBackgroundMode="filled"
-            app:boxStrokeColor="?attr/colorPrimary">
+            app:boxBackgroundColor="?attr/colorSurfaceContainer"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeColor="?attr/colorOutline"
+            app:boxCornerRadiusTopStart="24dp"
+            app:boxCornerRadiusTopEnd="24dp"
+            app:boxCornerRadiusBottomStart="24dp"
+            app:boxCornerRadiusBottomEnd="24dp"
+            app:hintTextColor="?attr/colorOnSurfaceVariant"
+            app:startIconDrawable="@drawable/ic_search_apple"
+            app:startIconTint="?attr/colorOnSurfaceVariant">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/searchInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionSearch"
-                android:inputType="text" />
+                android:inputType="text"
+                android:paddingVertical="16dp"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorOnSurface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/appList"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            android:clipToPadding="false"
+            android:paddingBottom="24dp" />
     </LinearLayout>
 </LinearLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">DeskControl</string>
+    <string name="app_name" translatable="false">XRDesk</string>
     <string name="accessibility_service_description">Enable to show a cursor on the external display and inject touch/keyboard input.</string>
 
     <string name="external_display_label">External display</string>
@@ -8,8 +8,8 @@
     <string name="accessibility_label">Accessibility</string>
     <string name="accessibility_enabled">Enabled</string>
     <string name="accessibility_required">Required</string>
-    <string name="choose_app_for_display">Choose app for external display</string>
-    <string name="open_touchpad">Open touchpad</string>
+    <string name="choose_app_for_display">Launch on external display</string>
+    <string name="open_touchpad">Display Control</string>
     <string name="settings">Settings</string>
 
     <string name="display_selector_title">Display %1$d</string>
@@ -38,7 +38,7 @@
     <string name="app_launch_detail_security_exception">SecurityException</string>
     <string name="app_launch_detail_unknown_failure">Unknown launch failure</string>
 
-    <string name="diagnostics_title">Diagnostics</string>
+    <string name="diagnostics_title">Logs</string>
     <string name="diagnostics_details_label">Details</string>
     <string name="diagnostics_external_display_not_connected">External display: not connected</string>
     <string name="diagnostics_external_display_info">External display: id=%1$d, size=%2$dx%3$d, dpi=%4$d, rotation=%5$d</string>
@@ -60,7 +60,10 @@
 
     <string name="touchpad_title">Touchpad</string>
     <string name="touchpad_blackout">Screen off</string>
+    <string name="touchpad_play_pause_button">Play/Pause</string>
     <string name="touchpad_back_button">Back</string>
+    <string name="touchpad_rewind_button">Rewind</string>
+    <string name="touchpad_fast_forward_button">Fast Forward</string>
     <string name="touchpad_hint">Tap the rectangle to activate; Back is forwarded to the external display.\nSlide: move cursor; press and slide: drag; two fingers: scroll.</string>
     <string name="touchpad_tuning">Touchpad tuning</string>
     <string name="touchpad_base_gain">Base gain</string>
@@ -80,8 +83,10 @@
     <string name="touchpad_shizuku_permission_rationale">Grant Shizuku permission to enable accessibility.</string>
     <string name="touchpad_shizuku_enable_success">Accessibility enabled</string>
     <string name="touchpad_shizuku_enable_failed">Failed to enable accessibility via Shizuku</string>
+    <string name="touchpad_shizuku_required_media">Media key requires Shizuku</string>
+    <string name="touchpad_shizuku_required_menu">Menu key requires Shizuku</string>
     <string name="touchpad_shizuku_intro_title">What is Shizuku?</string>
-    <string name="touchpad_shizuku_intro_message">Shizuku lets advanced users grant system-level access with a one-time authorization.\n\nIf Shizuku is running, DeskControl can enable accessibility automatically so you don’t have to do it manually each time.</string>
+    <string name="touchpad_shizuku_intro_message">Shizuku lets advanced users grant system-level access with a one-time authorization.\n\nIf Shizuku is running, XRDesk can enable accessibility automatically so you don’t have to do it manually each time.</string>
     <string name="touchpad_shizuku_intro_ok">Got it</string>
     <string name="touchpad_back_external_not_focused">External display not focused. Tap once to focus, then press Back.</string>
     <string name="touchpad_back_external_window_missing">Unable to get focus on the external display. Tap the window content, then press Back again.</string>
@@ -112,17 +117,109 @@
     <string name="touchpad_intro_dim_behavior">Auto-dim: after 10s inside the touchpad area, the screen dims. It restores when you tap outside the touchpad area or leave this screen.</string>
     <string name="touchpad_intro_back_behavior">Back: when the touchpad area is active, Back is forwarded to the external app.</string>
     <string name="touchpad_intro_exit_hint">Exit: tap the top-left back arrow, or tap outside the touchpad area and then press Back.</string>
+    <string name="touchpad_placeholder_activate">Tap here to activate</string>
+    <string name="touchpad_instruction_compact">Tap the touchpad to activate. Back is sent to the external display.</string>
     <string name="touchpad_intro_message">%1$s\n%2$s\n%3$s\n\n%4$s\n%5$s\n%6$s</string>
     <string name="touchpad_blackout_unlock_hint">Swipe up to unlock</string>
 
     <string name="settings_title">Settings</string>
+    <string name="settings_category_appearance_title">Appearance</string>
+    <string name="settings_category_appearance_summary">Theme and language</string>
+    <string name="settings_category_touchpad_title">Touchpad</string>
+    <string name="settings_category_touchpad_summary">D-Pad, Scrolling and focus</string>
+    <string name="settings_category_cursor_title">Cursor</string>
+    <string name="settings_category_cursor_summary">Size, color, speed and auto-hide</string>
+    <string name="settings_category_dock_title">Dock</string>
+    <string name="settings_category_dock_summary">Pinned apps and panel size</string>
+    <string name="settings_category_advanced_title">Logs</string>
+    <string name="settings_category_advanced_summary">Logs and support</string>
+    <string name="settings_dpad_title">D-Pad Navigation</string>
+    <string name="settings_dpad_position">D-Pad Position</string>
+    <string name="settings_dpad_model">Navigation Model</string>
+    <string name="dpad_model_accessibility">Accessibility (Safe)</string>
+    <string name="dpad_model_native">Native (TV Style, needs Shizuku)</string>
+    <string name="dpad_pos_hidden">Hidden</string>
+    <string name="dpad_pos_above">Above touchpad</string>
+    <string name="dpad_pos_below">Below touchpad</string>
+
     <string name="settings_display_section">Display</string>
     <string name="settings_touchpad_section">Touchpad</string>
-    <string name="settings_theme">Theme</string>
+    <string name="settings_theme">Themes</string>
     <string name="settings_dark_mode">Theme</string>
-    <string name="theme_system">System</string>
-    <string name="theme_dark">Dark mode</string>
-    <string name="theme_light">Light mode</string>
+    <string name="theme_dark">Dark Theme</string>
+    <string name="theme_light">Light Theme</string>
+    <string name="theme_amoled">AMOLED</string>
+    <string name="theme_custom">Custom Theme</string>
+    <string name="theme_editor_title">Theme Editor</string>
+    <string name="customize_theme_section">Customize Theme</string>
+
+    <string name="theme_monochrome_title">Monochrome Theme</string>
+    <string name="theme_monochrome_summary">Sync all colors to foreground</string>
+
+    <string name="theme_group_background">Background</string>
+    <string name="theme_group_surfaces">Surfaces</string>
+    <string name="theme_group_text">Text</string>
+    <string name="theme_group_icons">Icons</string>
+    <string name="theme_group_accent">Accent</string>
+    <string name="theme_group_dividers">Dividers</string>
+    <string name="theme_group_system_ui">System UI</string>
+    <string name="theme_group_extra">Extra</string>
+    <string name="theme_group_live_preview">Live Preview</string>
+
+    <string name="theme_item_background">Background</string>
+    <string name="theme_item_cards">Cards</string>
+    <string name="theme_item_dialogs">Dialogs</string>
+    <string name="theme_item_bottom_sheets">Bottom Sheets</string>
+    <string name="theme_item_toolbar">Toolbar</string>
+    <string name="theme_item_text_primary">Primary Text</string>
+    <string name="theme_item_text_secondary">Secondary Text</string>
+    <string name="theme_item_text_disabled">Disabled Text</string>
+    <string name="theme_item_icon_primary">Primary Icons</string>
+    <string name="theme_item_icon_secondary">Secondary Icons</string>
+    <string name="theme_item_icon_disabled">Disabled Icons</string>
+    <string name="theme_item_accent_color">Accent Color</string>
+    <string name="theme_item_accent_text">Accent Text</string>
+    <string name="theme_item_outline">Outline</string>
+    <string name="theme_item_divider">Divider</string>
+    <string name="theme_item_status_bar">Status Bar</string>
+    <string name="theme_item_navigation_bar">Navigation Bar</string>
+    <string name="theme_item_light_status_icons">Light Status Bar Icons</string>
+    <string name="theme_item_light_nav_icons">Light Navigation Bar Icons</string>
+    <string name="theme_item_error">Error</string>
+    <string name="theme_item_warning">Warning</string>
+    <string name="theme_item_success">Success</string>
+    <string name="theme_item_info">Info</string>
+
+    <string name="theme_btn_load_light">Load Light Preset</string>
+    <string name="theme_btn_load_dark">Load Dark Preset</string>
+    <string name="theme_btn_load_amoled">Load AMOLED Preset</string>
+    <string name="theme_btn_load_material_you">Load Material You Preset</string>
+    <string name="theme_btn_reset_all">Reset All</string>
+    <string name="theme_btn_export">Export</string>
+    <string name="theme_btn_import">Import</string>
+    <string name="theme_btn_apply">Apply</string>
+
+    <string name="theme_export_success">JSON copied to clipboard</string>
+    <string name="theme_json_label">Theme JSON</string>
+    <string name="theme_import_title">Import Theme</string>
+    <string name="theme_import_hint">Paste JSON here:</string>
+    <string name="theme_import_error">Invalid JSON</string>
+
+    <string name="color_picker_title">Select Color</string>
+    <string name="color_picker_select">Select</string>
+    <string name="color_picker_cancel">Cancel</string>
+    <string name="color_picker_hex_hint">HEX Color</string>
+    <string name="color_picker_palette">Palette</string>
+    <string name="color_picker_red">Red: %d</string>
+    <string name="color_picker_green">Green: %d</string>
+    <string name="color_picker_blue">Blue: %d</string>
+
+    <string name="theme_preview_headline">Headline Text</string>
+    <string name="theme_preview_subtext">This is how secondary text looks like.</string>
+    <string name="theme_preview_option_primary">Primary Option</string>
+    <string name="theme_preview_option_secondary">Secondary Option</string>
+    <string name="theme_preview_button">Action Button</string>
+
     <string name="settings_keep_screen_on">Keep screen on while using touchpad</string>
     <string name="settings_keep_screen_on_summary">Prevent auto-lock while the touchpad is active.</string>
     <string name="settings_language">Language</string>
@@ -165,6 +262,8 @@
     <string name="language_system">System</string>
     <string name="language_english">English</string>
     <string name="language_chinese">简体中文</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_ukrainian">Українська</string>
     <string name="settings_cursor_section">Cursor</string>
     <string name="settings_cursor_size">Cursor size</string>
     <string name="settings_cursor_scale_label">Scale</string>
@@ -220,4 +319,14 @@
     <string name="empty_text" translatable="false"></string>
     <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
     <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
+    <string name="settings_about_title">About</string>
+    <string name="settings_about_summary">App version and information</string>
+    <string name="about_application">Application</string>
+    <string name="about_original_project">Original project</string>
+    <string name="about_original_project_summary">v.1.1.5.post2</string>
+    <string name="about_whats_new">What\'s new</string>
+    <string name="about_whats_new_summary">Full version history</string>
+    <string name="app_version_label">Version 1.0</string>
+    <string name="app_build_label">Build 2026.07.19</string>
+    <string name="about_project_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
 </resources>

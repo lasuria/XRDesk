@@ -22,6 +22,8 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityWindowInfo
+import android.view.KeyEvent
+import android.media.AudioManager
 import android.widget.Toast
 import java.util.ArrayDeque
 import kotlin.math.abs
@@ -72,6 +74,7 @@ class ControlAccessibilityService : AccessibilityService() {
         private const val DIRECT_SCROLL_MIN_PRIMARY_PX = 8f
         private const val FOCUS_NUDGE_DISTANCE_DP = 8f
         private const val FOCUS_NUDGE_DURATION_MS = 56L
+        private const val DEBUG = true
         @Volatile
         private var instance: ControlAccessibilityService? = null
         @Volatile
@@ -671,7 +674,7 @@ class ControlAccessibilityService : AccessibilityService() {
         val now = SystemClock.uptimeMillis()
         DiagnosticsLog.add("Back: execute $reason t=$now")
         DiagnosticsLog.add(
-            "Back: gestureInFlight=$gesturesInFlight dragActive=${dragStroke != null} " +
+            "Back: gesturesInFlight=$gesturesInFlight dragActive=${dragStroke != null} " +
                 "scrollActive=${scrollStroke != null}"
         )
         val info = displayInfo
@@ -972,6 +975,520 @@ class ControlAccessibilityService : AccessibilityService() {
 
     fun hasExternalDisplaySession(): Boolean = displayInfo != null
 
+    fun dumpAllWindowsDebug() {
+        val tag = "DeskControl"
+        val header = "=== WINDOW DIAGNOSTICS START ==="
+        android.util.Log.wtf(tag, header)
+        DiagnosticsLog.add(header)
+        
+        try {
+            val sdk = android.os.Build.VERSION.SDK_INT
+            DiagnosticsLog.add("SDK_INT=$sdk")
+
+            val currentDisplayId = displayInfo?.displayId ?: -1
+            DiagnosticsLog.add("Target DisplayID (from DisplayManager): $currentDisplayId")
+
+            // Check DisplayManager's perspective
+            val dm = getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+            val allDisplays = dm.displays
+            DiagnosticsLog.add("DisplayManager sees ${allDisplays.size} displays:")
+            allDisplays.forEach { d ->
+                DiagnosticsLog.add("  - ID=${d.displayId} Name=${d.name} Flags=${Integer.toHexString(d.flags)}")
+            }
+
+            // 1. Check default windows property
+            val defaultWindows = windows ?: emptyList()
+            DiagnosticsLog.add("getWindows().size=${defaultWindows.size}")
+            defaultWindows.forEachIndexed { index, win ->
+                logWindowToDiagnostics("Default", index, win)
+            }
+
+            // 2. Check all displays (API 30+)
+            if (sdk >= Build.VERSION_CODES.R) {
+                val allWindowsSparse = getWindowsOnAllDisplays()
+                val displaysSeen = allWindowsSparse.size()
+                DiagnosticsLog.add("getWindowsOnAllDisplays().displaysSeen=$displaysSeen")
+                
+                for (i in 0 until displaysSeen) {
+                    val dId = allWindowsSparse.keyAt(i)
+                    val windowList = allWindowsSparse.valueAt(i)
+                    DiagnosticsLog.add("  Display $dId has ${windowList.size} windows:")
+                    windowList.forEachIndexed { index, win ->
+                        logWindowToDiagnostics("AllDisplays", index, win)
+                    }
+                }
+            }
+        } catch (e: Throwable) {
+            val err = "FATAL: dumpAllWindowsDebug crashed: ${e.message}"
+            android.util.Log.wtf(tag, err, e)
+            DiagnosticsLog.add(err)
+        } finally {
+            val footer = "=== WINDOW DIAGNOSTICS END ==="
+            android.util.Log.wtf(tag, footer)
+            DiagnosticsLog.add(footer)
+        }
+    }
+
+    private fun logWindowToDiagnostics(source: String, index: Int, win: AccessibilityWindowInfo) {
+        val rootNode = try { win.root } catch (e: Exception) { null }
+        val pkg = rootNode?.packageName ?: "unknown"
+        val title = if (Build.VERSION.SDK_INT >= 24) {
+            try { win.title ?: "no-title" } catch(e: Exception) { "n/a" }
+        } else "n/a"
+        val detail = "    [$source][$index] id=${win.displayId} pkg=$pkg type=${win.type} title=$title active=${win.isActive} focused=${win.isFocused}"
+        DiagnosticsLog.add(detail)
+        android.util.Log.wtf("DeskControl", detail)
+    }
+
+    fun injectKeyEvent(keycode: Int, longPress: Boolean = false): Boolean {
+        val info = displayInfo ?: return false
+        
+        if (DEBUG) {
+            DiagnosticsLog.add("KeyEvent: code=$keycode long=$longPress display=${info.displayId}")
+        }
+
+        val shizukuAlive = ShizukuShell.isAlive()
+
+        // 1. Primary Path: Shizuku Injection
+        if (shizukuAlive) {
+            if (DEBUG) DiagnosticsLog.add("KeyEvent: using Shizuku path")
+            Thread {
+                val dId = info.displayId.toString()
+                val cmd = if (longPress) {
+                    arrayOf("input", "-d", dId, "keyevent", "--longpress", keycode.toString())
+                } else {
+                    arrayOf("input", "-d", dId, "keyevent", keycode.toString())
+                }
+                
+                val result = ShizukuShell.run(*cmd)
+                if (result.exitCode != 0 && DEBUG) {
+                    DiagnosticsLog.add("KeyEvent: Shizuku failed code=${result.exitCode} err=${result.error}")
+                }
+            }.start()
+            return true
+        }
+
+        // 2. Fallback Paths (Shizuku is NOT alive)
+        if (DEBUG) DiagnosticsLog.add("KeyEvent: Shizuku not available, trying fallbacks")
+
+        when (keycode) {
+            KeyEvent.KEYCODE_BACK -> {
+                if (DEBUG) DiagnosticsLog.add("KeyEvent: Back Shizuku missing, trying smart Accessibility")
+                
+                val snapshot = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    val all = getWindowsOnAllDisplays()
+                    val list = mutableListOf<AccessibilityWindowInfo>()
+                    for (i in 0 until all.size()) { list.addAll(all.valueAt(i)) }
+                    list
+                } else {
+                    windows?.toList().orEmpty()
+                }
+
+                val targetWindows = snapshot.filter { it.displayId == info.displayId }
+                val focused = findCurrentFocusedNode(targetWindows)
+                
+                if (focused != null) {
+                    // Try DISMISS (dialogs, menus)
+                    if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_DISMISS)) {
+                        if (DEBUG) DiagnosticsLog.add("Back: smart Accessibility ACTION_DISMISS success")
+                        return true
+                    }
+                    // Try COLLAPSE (dropdowns, expandable lists)
+                    if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_COLLAPSE)) {
+                        if (DEBUG) DiagnosticsLog.add("Back: smart Accessibility ACTION_COLLAPSE success")
+                        return true
+                    }
+                }
+
+                if (DEBUG) DiagnosticsLog.add("Back: smart Accessibility failed, using GLOBAL_ACTION_BACK")
+                return performGlobalAction(GLOBAL_ACTION_BACK)
+            }
+            KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
+                if (DEBUG) DiagnosticsLog.add("KeyEvent: Media fallback (AudioManager)")
+                val am = getSystemService(Context.AUDIO_SERVICE) as? AudioManager
+                if (am != null) {
+                    val downTime = SystemClock.uptimeMillis()
+                    val downEvent = KeyEvent(downTime, downTime, KeyEvent.ACTION_DOWN, keycode, 0)
+                    val upEvent = KeyEvent(downTime, SystemClock.uptimeMillis(), KeyEvent.ACTION_UP, keycode, 0)
+                    
+                    am.dispatchMediaKeyEvent(downEvent)
+                    am.dispatchMediaKeyEvent(upEvent)
+                    return true
+                } else {
+                    if (DEBUG) DiagnosticsLog.add("KeyEvent: Media rejected (AudioManager missing)")
+                    showToastOnExternalDisplay(getString(R.string.touchpad_shizuku_required_media))
+                    return false
+                }
+            }
+            else -> {
+                if (DEBUG) DiagnosticsLog.add("KeyEvent: No fallback for keycode $keycode")
+                return false
+            }
+        }
+    }
+
+    /**
+     * POC/Legacy method - now delegates to injectKeyEvent
+     */
+    fun injectNativeKeyPoC(keycode: Int): Boolean {
+        return injectKeyEvent(keycode)
+    }
+
+    fun navigateFocus(direction: Int): Boolean {
+        val info = displayInfo ?: return false
+        
+        // 1. Try Native KeyEvent via Shizuku (Highest priority for TV behavior)
+        if (ShizukuShell.isAlive()) {
+            val keycode = when (direction) {
+                android.view.View.FOCUS_UP -> 19
+                android.view.View.FOCUS_DOWN -> 20
+                android.view.View.FOCUS_LEFT -> 21
+                android.view.View.FOCUS_RIGHT -> 22
+                else -> -1
+            }
+            if (keycode != -1) {
+                Thread {
+                    val result = ShizukuShell.run("input", "-d", info.displayId.toString(), "keyevent", keycode.toString())
+                    if (result.exitCode != 0) {
+                        android.util.Log.e("DeskControl", "D-Pad: Native command failed: ${result.error}")
+                        showToastOnExternalDisplay("Shizuku Error: ${result.error}")
+                    }
+                }.start()
+                return true
+            }
+        }
+
+        // 2. Fallback to Accessibility navigation if Shizuku is missing
+        val snapshot = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val all = getWindowsOnAllDisplays()
+            val list = mutableListOf<AccessibilityWindowInfo>()
+            for (i in 0 until all.size()) { list.addAll(all.valueAt(i)) }
+            list
+        } else {
+            windows?.toList().orEmpty()
+        }
+
+        val targetWindows = snapshot.filter { it.displayId == info.displayId }
+        if (targetWindows.isEmpty()) return false
+
+        var current = findCurrentFocusedNode(targetWindows)
+        if (current == null) {
+            current = findNodeAtPointOnDisplay(targetWindows, cursorX.toInt(), cursorY.toInt())
+                ?: findFirstFocusableOnDisplay(targetWindows)
+        }
+        
+        if (current == null) return false
+
+        val nextFocus = current.focusSearch(direction)
+        if (nextFocus != null) {
+            val targetWindow = targetWindows.find { it.displayId == info.displayId && (it.isFocused || it.isActive) }
+                ?: targetWindows.firstOrNull { it.displayId == info.displayId }
+
+            if (DEBUG) {
+                val log = StringBuilder()
+                log.append("\n=== FOCUS NAVIGATION DEBUG ===\n")
+                log.append("Direction: $direction (UP=33, DOWN=130, LEFT=17, RIGHT=66)\n")
+                log.append("Target Node BEFORE: ${getNodeDescription(nextFocus)}\n")
+                
+                if (targetWindow != null) {
+                    log.append("Window BEFORE: focused=${targetWindow.isFocused} active=${targetWindow.isActive}\n")
+                }
+                DiagnosticsLog.add(log.toString())
+                android.util.Log.i("DeskControl", log.toString())
+            }
+
+            // Stability: Refresh node to ensure it's not stale
+            val isFresh = nextFocus.refresh()
+            if (!isFresh && DEBUG) {
+                DiagnosticsLog.add("STABILITY: Node became STALE before action.")
+            }
+
+            // Stability: Verify node is still valid for focus
+            val canFocus = nextFocus.isVisibleToUser && nextFocus.isFocusable && nextFocus.isEnabled
+            if (!canFocus && DEBUG) {
+                DiagnosticsLog.add("STABILITY: Node not focusable: visible=${nextFocus.isVisibleToUser} focusable=${nextFocus.isFocusable} enabled=${nextFocus.isEnabled}")
+            }
+
+            val resFocus = nextFocus.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
+            val resAccFocus = nextFocus.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
+            
+            if (DEBUG) {
+                val actionLog = "ACTION_FOCUS: $resFocus, ACTION_ACCESSIBILITY_FOCUS: $resAccFocus"
+                DiagnosticsLog.add(actionLog)
+                android.util.Log.i("DeskControl", actionLog)
+            }
+
+            // Delayed verification
+            handler.postDelayed({
+                val refreshSnapshot = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    val all = getWindowsOnAllDisplays()
+                    val list = mutableListOf<AccessibilityWindowInfo>()
+                    for (i in 0 until all.size()) { list.addAll(all.valueAt(i)) }
+                    list
+                } else {
+                    windows?.toList().orEmpty()
+                }
+                val refreshTargetWindows = refreshSnapshot.filter { it.displayId == info.displayId }
+                
+                var inputFocused: AccessibilityNodeInfo? = null
+                var accFocused: AccessibilityNodeInfo? = null
+                
+                for (win in refreshTargetWindows) {
+                    val root = try { win.root } catch (e: Exception) { null } ?: continue
+                    if (inputFocused == null) inputFocused = root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
+                    if (accFocused == null) accFocused = root.findFocus(AccessibilityNodeInfo.FOCUS_ACCESSIBILITY)
+                }
+
+                val matched = (inputFocused != null && isSameNode(inputFocused, nextFocus)) || 
+                              (accFocused != null && isSameNode(accFocused, nextFocus))
+                
+                if (!matched && DEBUG) {
+                    val delayedLog = StringBuilder()
+                    delayedLog.append("\n=== FOCUS REJECTED OR LOST (100ms) ===\n")
+                    delayedLog.append("Target Node: ${getNodeDescription(nextFocus)}\n")
+                    delayedLog.append("Actual INPUT Focus: ${getNodeDescription(inputFocused)}\n")
+                    delayedLog.append("Actual ACC Focus: ${getNodeDescription(accFocused)}\n")
+                    
+                    if (inputFocused != null || accFocused != null) {
+                        delayedLog.append("REASON: Application REDIRECTED focus or node was RECREATED.\n")
+                    } else {
+                        delayedLog.append("REASON: Application REJECTED focus or window lost focus.\n")
+                    }
+                    delayedLog.append("=== END VERIFICATION ===\n")
+                    
+                    DiagnosticsLog.add(delayedLog.toString())
+                    android.util.Log.i("DeskControl", delayedLog.toString())
+                } else if (DEBUG) {
+                    DiagnosticsLog.add("D-Pad: Focus verified successfully at 100ms.")
+                }
+            }, 100)
+
+            return true
+        }
+
+        val bestNode = performGeometricFocusSearch(targetWindows, current, direction)
+        if (bestNode != null) {
+            val success = bestNode.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS) ||
+                          bestNode.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
+            if (success) {
+                DiagnosticsLog.add("D-Pad: geometric search success")
+                return true
+            }
+        }
+
+        return false
+    }
+
+    fun clickFocused(): Boolean {
+        val info = displayInfo ?: return false
+        
+        // 1. Try Native KeyEvent via Shizuku
+        if (ShizukuShell.isAlive()) {
+            Thread {
+                val result = ShizukuShell.run("input", "-d", info.displayId.toString(), "keyevent", "23")
+                if (result.exitCode != 0) {
+                    showToastOnExternalDisplay("Shizuku Error: ${result.error}")
+                }
+            }.start()
+            return true
+        }
+
+        // 2. Fallback to Accessibility Actions
+        val snapshot = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val all = getWindowsOnAllDisplays()
+            val list = mutableListOf<AccessibilityWindowInfo>()
+            for (i in 0 until all.size()) { list.addAll(all.valueAt(i)) }
+            list
+        } else {
+            windows?.toList().orEmpty()
+        }
+
+        val targetWindows = snapshot.filter { it.displayId == info.displayId }
+        val focused = findCurrentFocusedNode(targetWindows)
+
+        if (focused != null) {
+            if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_CLICK)) return true
+            
+            val rect = Rect()
+            focused.getBoundsInScreen(rect)
+            dispatchTap(rect.centerX().toFloat(), rect.centerY().toFloat(), info.displayId)
+            return true
+        }
+
+        tapAtCursor()
+        return true
+    }
+
+    private fun findCurrentFocusedNode(windows: List<AccessibilityWindowInfo>): AccessibilityNodeInfo? {
+        for (win in windows) {
+            val root = try { win.root } catch (e: Exception) { null } ?: continue
+            val focused = root.findFocus(AccessibilityNodeInfo.FOCUS_ACCESSIBILITY)
+                ?: root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
+            if (focused != null) return focused
+        }
+        return null
+    }
+
+    private fun findNodeAtPointOnDisplay(windows: List<AccessibilityWindowInfo>, x: Int, y: Int): AccessibilityNodeInfo? {
+        for (win in windows) {
+            val root = try { win.root } catch (e: Exception) { null } ?: continue
+            val hit = findNodeAtPoint(root, x, y)
+            if (hit != null) return hit
+        }
+        return null
+    }
+
+    private fun findFirstFocusableOnDisplay(windows: List<AccessibilityWindowInfo>): AccessibilityNodeInfo? {
+        for (win in windows) {
+            val root = try { win.root } catch (e: Exception) { null } ?: continue
+            val node = findFocusableNode(root)
+            if (node != null) return node
+        }
+        return null
+    }
+
+    private fun performGeometricFocusSearch(
+        windows: List<AccessibilityWindowInfo>,
+        current: AccessibilityNodeInfo,
+        direction: Int
+    ): AccessibilityNodeInfo? {
+        val allNodes = mutableListOf<AccessibilityNodeInfo>()
+        for (win in windows) {
+            val root = try { win.root } catch (e: Exception) { null }
+            root?.let { collectAllFocusableNodes(it, allNodes) }
+        }
+        
+        android.util.Log.d("DeskControl", "D-Pad: geometric search found ${allNodes.size} total candidates")
+        if (allNodes.isEmpty()) {
+            android.util.Log.e("DeskControl", "D-Pad: No visible focusable/clickable nodes found in the target window hierarchy.")
+        }
+
+        val currentRect = Rect()
+        current.getBoundsInScreen(currentRect)
+        android.util.Log.d("DeskControl", "D-Pad: currentRect=$currentRect")
+
+        var bestNode: AccessibilityNodeInfo? = null
+        var minDistance = Float.MAX_VALUE
+
+        for (node in allNodes) {
+            if (isSameNode(node, current)) continue
+            val nodeRect = Rect()
+            node.getBoundsInScreen(nodeRect)
+
+            // Allow a small overlap (5dp) to be more forgiving with alignment
+            val margin = (resources.displayMetrics.density * 5).toInt()
+
+            val isCandidate = when (direction) {
+                android.view.View.FOCUS_UP -> nodeRect.centerY() < currentRect.centerY() - margin
+                android.view.View.FOCUS_DOWN -> nodeRect.centerY() > currentRect.centerY() + margin
+                android.view.View.FOCUS_LEFT -> nodeRect.centerX() < currentRect.centerX() - margin
+                android.view.View.FOCUS_RIGHT -> nodeRect.centerX() > currentRect.centerX() + margin
+                else -> false
+            }
+
+            if (isCandidate) {
+                val dist = calculateGeometricDistance(currentRect, nodeRect, direction)
+                if (dist < minDistance) {
+                    minDistance = dist
+                    bestNode = node
+                }
+            }
+        }
+        return bestNode
+    }
+
+    private fun isSameNode(a: AccessibilityNodeInfo, b: AccessibilityNodeInfo): Boolean {
+        val ra = Rect()
+        val rb = Rect()
+        a.getBoundsInScreen(ra)
+        b.getBoundsInScreen(rb)
+        
+        return ra == rb && 
+               a.className == b.className && 
+               a.text == b.text &&
+               a.viewIdResourceName == b.viewIdResourceName &&
+               a.contentDescription == b.contentDescription &&
+               a.packageName == b.packageName &&
+               a.windowId == b.windowId
+    }
+
+    private fun getNodeDescription(node: AccessibilityNodeInfo?): String {
+        if (node == null) return "null"
+        val rect = Rect()
+        node.getBoundsInScreen(rect)
+        return buildString {
+            append("[${node.className}] ")
+            append("id=${node.viewIdResourceName} ")
+            append("text=\"${node.text}\" ")
+            append("desc=\"${node.contentDescription}\" ")
+            append("bounds=$rect ")
+            append("pkg=${node.packageName} ")
+            append("win=${node.windowId} ")
+            append("focusable=${node.isFocusable} ")
+            append("visible=${node.isVisibleToUser} ")
+            append("enabled=${node.isEnabled} ")
+            append("focused=${node.isFocused} ")
+            append("accFocused=${node.isAccessibilityFocused}")
+        }
+    }
+
+    private fun collectAllFocusableNodes(root: AccessibilityNodeInfo, list: MutableList<AccessibilityNodeInfo>) {
+        if ((root.isFocusable || root.isClickable) && root.isVisibleToUser) {
+            list.add(AccessibilityNodeInfo.obtain(root))
+        }
+        for (i in 0 until root.childCount) {
+            val child = root.getChild(i)
+            if (child != null) {
+                collectAllFocusableNodes(child, list)
+            }
+        }
+    }
+
+    private fun calculateGeometricDistance(src: Rect, dest: Rect, direction: Int): Float {
+        val dx = (dest.centerX() - src.centerX()).toFloat()
+        val dy = (dest.centerY() - src.centerY()).toFloat()
+        return when (direction) {
+            android.view.View.FOCUS_UP, android.view.View.FOCUS_DOWN -> abs(dy) + abs(dx) * 2f
+            android.view.View.FOCUS_LEFT, android.view.View.FOCUS_RIGHT -> abs(dx) + abs(dy) * 2f
+            else -> abs(dx) + abs(dy)
+        }
+    }
+
+    private fun performFallbackDpadGesture(direction: Int) {
+        val density = resources.displayMetrics.density
+        val step = 60f * density
+        var dx = 0f
+        var dy = 0f
+        when (direction) {
+            android.view.View.FOCUS_UP -> dy = -step
+            android.view.View.FOCUS_DOWN -> dy = step
+            android.view.View.FOCUS_LEFT -> dx = -step
+            android.view.View.FOCUS_RIGHT -> dx = step
+        }
+        moveCursorBy(dx, dy)
+    }
+
+    private fun performActionWithParentFallback(node: AccessibilityNodeInfo, action: Int): Boolean {
+        var current: AccessibilityNodeInfo? = node
+        while (current != null) {
+            if (current.performAction(action)) return true
+            current = current.parent
+        }
+        return false
+    }
+
+    private fun logNode(prefix: String, node: AccessibilityNodeInfo?) {
+        if (node == null) {
+            DiagnosticsLog.add("$prefix: null")
+            return
+        }
+        val rect = Rect()
+        node.getBoundsInScreen(rect)
+        val text = node.text?.toString() ?: node.contentDescription?.toString() ?: "no-text"
+        val id = node.viewIdResourceName ?: "no-id"
+        DiagnosticsLog.add("$prefix: [${node.className}] \"$text\" id=$id bounds=$rect clickable=${node.isClickable}")
+    }
+
     fun setTextOnFocused(text: String): Boolean {
         val info = displayInfo ?: return recordInjection(
             false,
@@ -1055,33 +1572,21 @@ class ControlAccessibilityService : AccessibilityService() {
             }
             return
         }
-        val windowContext = if (Build.VERSION.SDK_INT >= 30) {
-            try {
-                createWindowContext(
-                    display,
-                    WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
-                    null
-                )
-            } catch (e: NoSuchMethodError) {
-                createDisplayContext(display)
-            }
-        } else {
-            createDisplayContext(display)
-        }
-        overlayWindowContext = windowContext
-        val wm = windowContext.getSystemService(WindowManager::class.java)
+        
+        overlayWindowContext = createDisplayContext(display)
+        val wm = overlayWindowContext!!.getSystemService(WindowManager::class.java)
         windowManager = wm
 
         if (SettingsStore.switchBarEnabled) {
             switchBarController = SwitchBarController(
                 this,
-                windowContext,
+                overlayWindowContext!!,
                 wm,
                 info
             )
         }
 
-        val view = CursorOverlayView(windowContext)
+        val view = CursorOverlayView(overlayWindowContext!!)
         overlayView = view
         cursorVisible = true
         view.alpha = SettingsStore.cursorAlpha
@@ -1654,4 +2159,6 @@ class ControlAccessibilityService : AccessibilityService() {
             // Not supported on this API level.
         }
     }
+
+
 }

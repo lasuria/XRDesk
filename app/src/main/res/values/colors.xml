@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="backgroundGraphite">#ECEDED</color>
-    <color name="surfaceGraphite">#F1F2F2</color>
+    <!-- Default Light Theme (4PDA Style) -->
+    <color name="backgroundGraphite">#ebeff2</color>
+    <color name="surfaceGraphite">#FFFFFF</color>
     <color name="surfaceGlass">#CCFFFFFF</color>
-    <color name="surfaceStroke">#1F000000</color>
+    <color name="surfaceStroke">#d9e1e6</color>
     <color name="textPrimary">#1F2326</color>
-    <color name="textSecondary">#556067</color>
+    <color name="textSecondary">#5a6d80</color>
+
+    <color name="pdaPrimary">#3b5e8c</color>
+
     <color name="segTrack">#24000000</color>
     <color name="segHighlight">#4DFFFFFF</color>
     <color name="touchpadBackground">@color/backgroundGraphite</color>
     <color name="touchpadHintActive">@color/textSecondary</color>
     <color name="touchpadHintInactive">@color/textPrimary</color>
     <color name="touchpadToolbarText">@color/textSecondary</color>
+
+    <color name="black">#000000</color>
+    <color name="falloutGreen">#EBEBF5</color>
+
+    <!-- Premium Pixel Palette -->
+    <color name="premium_bg">#FFFFFF</color>
+    <color name="premium_card">#EEF2F5</color>
+    <color name="premium_border">#D7DDE4</color>
+    <color name="premium_text_primary">#1B1B1B</color>
+    <color name="premium_text_secondary">#6B7280</color>
+    <color name="premium_icon">#64748B</color>
+    <color name="premium_divider">#E2E8F0</color>
 </resources>

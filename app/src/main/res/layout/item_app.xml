@@ -1,40 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/appItemRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="16dp"
-    android:foreground="?attr/selectableItemBackground"
-    android:gravity="center_vertical">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="12dp"
+    android:layout_margin="4dp"
+    android:background="@drawable/premium_card_clickable_bg"
+    android:clickable="true"
+    android:focusable="true">
+
+    <FrameLayout
+        android:layout_width="56dp"
+        android:layout_height="56dp">
+
+        <ImageView
+            android:id="@+id/appIcon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_icon_content_description" />
+
+        <ImageView
+            android:id="@+id/selectedCheckmark"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_ok"
+            android:visibility="gone"
+            app:tint="?attr/colorPrimary"
+            android:background="?attr/colorSurfaceContainer"
+            android:padding="2dp" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/app_placeholder_name"
+        android:textAppearance="?attr/textAppearanceLabelSmall"
+        android:textColor="?attr/colorOnSurface"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/appPackage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <ImageView
-        android:id="@+id/appIcon"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:contentDescription="@string/app_icon_content_description" />
-
-    <LinearLayout
+        android:id="@+id/chevronIcon"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:visibility="gone" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/appName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_placeholder_name"
-            android:textAppearance="?attr/textAppearanceBodyLarge" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/appPackage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/app_placeholder_package"
-            android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="?attr/colorOnSurfaceVariant" />
-
-    </LinearLayout>
 </LinearLayout>

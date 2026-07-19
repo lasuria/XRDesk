@@ -1,20 +1,43 @@
 <resources>
     <style name="Theme.DeskControl" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#7FB7AE</item>
-        <item name="colorOnPrimary">#101817</item>
-        <item name="colorSecondary">#7FB7AE</item>
-        <item name="colorOnSecondary">#101817</item>
-        <item name="colorSurface">@color/surfaceGraphite</item>
-        <item name="colorSurfaceContainer">@color/surfaceGraphite</item>
-        <item name="colorSurfaceContainerLow">@color/surfaceGraphite</item>
-        <item name="colorSurfaceContainerHigh">@color/surfaceGraphite</item>
-        <item name="colorOnSurface">@color/textPrimary</item>
-        <item name="colorOnSurfaceVariant">@color/textSecondary</item>
-        <item name="colorOutline">@color/surfaceStroke</item>
-        <item name="colorOutlineVariant">@color/surfaceStroke</item>
-        <item name="android:statusBarColor">@color/backgroundGraphite</item>
-        <item name="android:navigationBarColor">@color/backgroundGraphite</item>
+        <item name="colorPrimary">#0B57D0</item> <!-- Pixel Blue -->
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#0B57D0</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#1B1B1B</item>
+
+        <item name="colorSurfaceContainer">#EEF2F5</item> <!-- Premium Card Color -->
+        <item name="colorSurfaceContainerHigh">#E2E8F0</item>
+
+        <item name="colorOnSurfaceVariant">#6B7280</item>
+        <item name="colorOutline">#D7DDE4</item>
+        <item name="colorOutlineVariant">#E2E8F0</item>
+
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+    <style name="Theme.DeskControl.Amoled" parent="Theme.DeskControl">
+        <item name="colorPrimary">@color/falloutGreen</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <item name="android:windowBackground">@color/black</item>
+        <item name="colorSurface">@color/black</item>
+        <item name="colorOnSurface">@color/falloutGreen</item>
+
+        <item name="colorSurfaceContainer">#111111</item>
+        <item name="colorSurfaceContainerHigh">#1A1A1A</item>
+
+        <item name="colorOnSurfaceVariant">@color/falloutGreen</item>
+        <item name="colorOutline">@color/falloutGreen</item>
+
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
     </style>
 </resources>

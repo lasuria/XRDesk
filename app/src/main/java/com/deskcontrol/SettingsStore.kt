@@ -8,9 +8,23 @@ object SettingsStore {
     private const val LANGUAGE_SYSTEM = "system"
     private const val LANGUAGE_ENGLISH = "en"
     private const val LANGUAGE_CHINESE = "zh-CN"
+    private const val LANGUAGE_RUSSIAN = "ru"
+    private const val LANGUAGE_UKRAINIAN = "uk"
     private const val BASE_SCROLL_SPEED = 0.4f
 
-    var nightMode = androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+    const val THEME_LIGHT = androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+    const val THEME_DARK = androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+    const val THEME_AMOLED = 3
+    const val THEME_CUSTOM = 4
+    const val THEME_MATERIAL_YOU = 5
+
+    const val DPAD_HIDDEN = 0
+    const val DPAD_ABOVE = 1
+    const val DPAD_BELOW = 2
+
+    var nightMode = THEME_DARK
+        private set
+    var dPadPosition = DPAD_ABOVE
         private set
     var cursorScale = 1.0f
         private set
@@ -32,8 +46,10 @@ object SettingsStore {
         private set
     var touchpadScrollSpeed = 1.0f
         private set
+
     private const val PREF_SCROLL_SPEED_SCALE = "tp_scroll_scale"
     private const val PREF_SCROLL_SPEED_LEGACY = "tp_scroll_speed"
+
     var touchpadScrollInverted = true
         private set
     var touchpadScrollStepDp = 6.0f
@@ -50,12 +66,17 @@ object SettingsStore {
         private set
     var switchBarScale = 1.0f
         private set
+
     private const val DRAG_BOOST_MIN = 0.8f
     private const val DRAG_BOOST_MAX = 2.0f
 
     fun init(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        nightMode = prefs.getInt("night_mode", nightMode)
+        nightMode = prefs.getInt("night_mode", THEME_DARK)
+        // If legacy THEME_SYSTEM (-1) was stored, migrate it to THEME_DARK
+        if (nightMode == -1) {
+            nightMode = THEME_DARK
+        }
         cursorScale = prefs.getFloat("cursor_scale", cursorScale)
         cursorAlpha = prefs.getFloat("cursor_alpha", cursorAlpha)
         cursorHideDelayMs = prefs.getLong("cursor_hide_delay_ms", cursorHideDelayMs)
@@ -95,6 +116,7 @@ object SettingsStore {
         switchBarEnabled = prefs.getBoolean("switch_bar_enabled", switchBarEnabled)
         switchBarScale = prefs.getFloat("switch_bar_scale", switchBarScale)
             .coerceIn(0.7f, 1.3f)
+        dPadPosition = prefs.getInt("dpad_position", dPadPosition)
 
         TouchpadTuning.baseGain = prefs.getFloat("tp_base_gain", TouchpadTuning.baseGain)
         TouchpadTuning.maxAccelGain = prefs.getFloat("tp_max_accel", TouchpadTuning.maxAccelGain)
@@ -109,7 +131,35 @@ object SettingsStore {
     fun setNightMode(context: Context, value: Int) {
         nightMode = value
         persist(context) { putInt("night_mode", value) }
-        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(value)
+        
+        ThemeEngine.applyPreset(context, value)
+
+        val modeToApply = when (value) {
+            THEME_AMOLED -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+            THEME_CUSTOM -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+            else -> value
+        }
+        
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(modeToApply)
+        DeskControlApp.recreateAllActivities()
+    }
+
+    fun getCustomThemeColors(context: Context): ThemeColors {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val json = prefs.getString("custom_theme_json", null)
+        return if (json != null) {
+            try {
+                ThemeColors.fromJson(json)
+            } catch (e: Exception) {
+                ThemeEngine.getPreset(THEME_DARK)
+            }
+        } else {
+            ThemeEngine.getPreset(THEME_DARK)
+        }
+    }
+
+    fun setCustomThemeColors(context: Context, colors: ThemeColors) {
+        persist(context) { putString("custom_theme_json", colors.toJson()) }
     }
 
     fun setCursorScale(context: Context, value: Float) {
@@ -210,6 +260,11 @@ object SettingsStore {
         ControlAccessibilityService.requestSwitchBarRefresh()
     }
 
+    fun setDPadPosition(context: Context, value: Int) {
+        dPadPosition = value
+        persist(context) { putInt("dpad_position", value) }
+    }
+
     fun setAppLanguage(context: Context, languageTag: String) {
         appLanguageTag = languageTag
         persist(context) { putString(PREF_APP_LANGUAGE, languageTag) }
@@ -228,6 +283,8 @@ object SettingsStore {
     fun isLanguageSystem(): Boolean = appLanguageTag == LANGUAGE_SYSTEM
     fun isLanguageEnglish(): Boolean = appLanguageTag == LANGUAGE_ENGLISH
     fun isLanguageChinese(): Boolean = appLanguageTag == LANGUAGE_CHINESE
+    fun isLanguageRussian(): Boolean = appLanguageTag == LANGUAGE_RUSSIAN
+    fun isLanguageUkrainian(): Boolean = appLanguageTag == LANGUAGE_UKRAINIAN
 
     fun setPointerSpeed(context: Context, value: Float) {
         TouchpadTuning.baseGain = value

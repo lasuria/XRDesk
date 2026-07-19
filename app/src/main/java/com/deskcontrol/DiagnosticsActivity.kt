@@ -14,6 +14,7 @@ class DiagnosticsActivity : AppCompatActivity() {
         binding = ActivityDiagnosticsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root)
         binding.diagnosticsToolbar.title = getString(R.string.diagnostics_title)
         binding.diagnosticsToolbar.setNavigationOnClickListener { finish() }
