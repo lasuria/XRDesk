@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Stylized XR Logo -->
+    <group android:translateX="54" android:translateY="54">
+
+        <!-- Arc Top -->
+        <path
+            android:strokeWidth="2.5"
+            android:strokeLineCap="round"
+            android:pathData="M-30,-22 c10,-8 50,-8 60,0">
+            <aapt:attr name="android:strokeColor">
+                <gradient android:startX="-30" android:startY="-25" android:endX="30" android:endY="-25" android:type="linear">
+                    <item android:offset="0" android:color="#2196F3" />
+                    <item android:offset="1" android:color="#9C27B0" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- Main "X" and "R" Stylized Shape -->
+        <!-- This is a simplified artistic interpretation of the provided 3D-ish XR logo -->
+        <path
+            android:pathData="M-35,15 L-15,-15 C-12,-18 -8,-18 -5,-15 L15,15 M-15,-15 L10,-15 C20,-15 25,-10 25,0 C25,10 20,15 10,15 L0,15 M10,15 L25,35">
+            <aapt:attr name="android:strokeColor">
+                <gradient android:startX="-35" android:startY="0" android:endX="25" android:endY="0" android:type="linear">
+                    <item android:offset="0" android:color="#2196F3" />
+                    <item android:offset="1" android:color="#9C27B0" />
+                </gradient>
+            </aapt:attr>
+            <aapt:attr name="android:fillColor">
+                <gradient android:startX="-35" android:startY="0" android:endX="25" android:endY="0" android:type="linear">
+                    <item android:offset="0" android:color="#2196F3" />
+                    <item android:offset="1" android:color="#9C27B0" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- Precise "XR" joined path attempt -->
+        <path
+            android:pathData="M-32,18 c-2,0 -4,-2 -4,-4 L-14,-22 c1,-1 3,-1 4,0 L8,18 c1,1 1,3 0,4 c-1,1 -3,1 -4,0 L-12,-4 L-28,18 c-1,1 -3,1 -4,0 z M0,-22 h18 c8,0 14,6 14,14 c0,6 -4,11 -10,13 L34,30 c1,1 1,3 0,4 c-1,1 -3,1 -4,0 L14,12 H0 c-2,0 -4,-2 -4,-4 v-26 c0,-2 2,-4 4,-4 z M4,1 c0,4 3,6 8,6 h4 c4,0 6,-2 6,-6 c0,-4 -2,-6 -6,-6 H12 c-5,0 -8,2 -8,6 z">
+             <aapt:attr name="android:fillColor">
+                <gradient android:startX="-35" android:startY="0" android:endX="35" android:endY="0" android:type="linear">
+                    <item android:offset="0" android:color="#2196F3" />
+                    <item android:offset="1" android:color="#9C27B0" />
+                </gradient>
+            </aapt:attr>
+        </path>
+
+        <!-- Bottom Details -->
+        <group android:translateY="38">
+            <!-- Three Dots -->
+            <path android:fillColor="#BDBDBD" android:pathData="M-4,0 m-1.5,0 a1.5,1.5 0,1 1,3 0 a1.5,1.5 0,1 1,-3 0 M0,0 m-1.5,0 a1.5,1.5 0,1 1,3 0 a1.5,1.5 0,1 1,-3 0 M4,0 m-1.5,0 a1.5,1.5 0,1 1,3 0 a1.5,1.5 0,1 1,-3 0" />
+            <!-- Pill Line -->
+            <path android:fillColor="#BDBDBD" android:pathData="M-10,6 h20 c1,0 2,0.8 2,2 s-1,2 -2,2 h-20 c-1,0 -2,-0.8 -2,-2 s1,-2 2,-2 z" />
+        </group>
+
+    </group>
+
+</vector>

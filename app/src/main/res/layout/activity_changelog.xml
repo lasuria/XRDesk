@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/changelogRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorSurface">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/settingsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="56dp"
+        android:paddingHorizontal="16dp"
+        android:title="@string/about_whats_new"
+        app:titleTextColor="?attr/colorOnSurface"
+        app:titleCentered="true"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="?attr/colorOnSurfaceVariant" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/premium_card_bg"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_version_label"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/about_original_project_summary"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Major Features"
+                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                    android:textColor="?attr/colorPrimary"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="• Advanced Theme System: Fully customizable colors for every UI element.\n• Monochrome Mode: Quick toggle for high-contrast/terminal styles.\n• JSON Import/Export: Share and backup your custom themes.\n• Full Localization: Complete support for English, Russian, Ukrainian, and Chinese.\n• Media Controls: Dedicated Play/Pause button with long-press support.\n• Refined Icons: High-quality custom vector icons for all settings.\n• Enhanced Navigation: Toolbar back labels and centered titles for better clarity.\n• Redesigned Settings: Simplified layout and reorganized categories."
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    android:lineSpacingExtra="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Improvements &amp; Fixes"
+                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                    android:textColor="?attr/colorPrimary"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="• Fixed building errors related to malformed XML resources.\n• Fixed broken search icon in App Picker.\n• Fixed missing toolbar titles in various settings screens.\n• Moved Logs to the About section for a cleaner main menu.\n• Optimized theme engine for instant live previews.\n• Stability and performance improvements."
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    android:lineSpacingExtra="4dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

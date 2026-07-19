@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorSurface">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/settingsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:minHeight="56dp"
+        android:paddingHorizontal="16dp"
+        android:title="@string/settings_language"
+        app:titleTextColor="?attr/colorOnSurface"
+        app:titleCentered="true"
+        app:contentInsetStartWithNavigation="0dp"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="?attr/colorOnSurfaceVariant" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <RadioGroup
+                android:id="@+id/languageRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/premium_card_bg"
+                android:padding="16dp">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/langSystem"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/language_system"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/langEn"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/language_english"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/langZh"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/language_chinese"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/langRu"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/language_russian"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/langUk"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:text="@string/language_ukrainian"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

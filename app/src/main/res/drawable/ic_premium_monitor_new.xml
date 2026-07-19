@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Premium High-Quality Monitor (Matched to Glasses Icon Scale) -->
+
+    <!-- Monitor Body -->
+    <path
+        android:strokeColor="?attr/colorOnSurface"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M21,14.5H3c-0.8,0-1.5-0.7-1.5-1.5V4.5c0-0.8,0.7-1.5,1.5-1.5h18c0.8,0,1.5,0.7,1.5,1.5V13C22.5,13.8,21.8,14.5,21,14.5z" />
+
+    <!-- Screen Inner Detail -->
+    <path
+        android:strokeColor="?attr/colorOnSurfaceVariant"
+        android:strokeWidth="0.8"
+        android:pathData="M2.8,4.2h18.4v8.5H2.8V4.2z" />
+
+    <!-- Modern V-Stand -->
+    <path
+        android:strokeColor="?attr/colorOnSurface"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M12,14.5v4" />
+    <path
+        android:strokeColor="?attr/colorOnSurface"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M7,20.5l5-2l5,2" />
+
+    <!-- Small Power LED -->
+    <path
+        android:fillColor="?attr/colorOnSurfaceVariant"
+        android:pathData="M20,13.2h1v0.5h-1V13.2z" />
+</vector>

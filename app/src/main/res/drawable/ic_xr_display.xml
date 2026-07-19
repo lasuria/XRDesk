@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Monitor -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="?attr/colorOnSurface"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="
+            M4,4
+            H20
+            C21.1,4 22,4.9 22,6
+            V13
+            C22,14.1 21.1,15 20,15
+            H4
+            C2.9,15 2,14.1 2,13
+            V6
+            C2,4.9 2.9,4 4,4
+            Z"/>
+
+    <!-- Left XR lens -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="?attr/colorOnSurface"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="
+            M6.4,7.8
+            H9.0
+            C9.7,7.8 10.2,8.3 10.2,9.0
+            V9.7
+            C10.2,10.4 9.7,10.9 9.0,10.9
+            H6.4
+            C5.7,10.9 5.2,10.4 5.2,9.7
+            V9.0
+            C5.2,8.3 5.7,7.8 6.4,7.8
+            Z"/>
+
+    <!-- Right XR lens -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="?attr/colorOnSurface"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="
+            M15.0,7.8
+            H17.6
+            C18.3,7.8 18.8,8.3 18.8,9.0
+            V9.7
+            C18.8,10.4 18.3,10.9 17.6,10.9
+            H15.0
+            C14.3,10.9 13.8,10.4 13.8,9.7
+            V9.0
+            C13.8,8.3 14.3,7.8 15.0,7.8
+            Z"/>
+
+    <!-- Bridge -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="?attr/colorOnSurface"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M10.2,9.35H13.8"/>
+
+    <!-- Stand -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="?attr/colorOnSurface"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M12,15V18"/>
+
+    <!-- Base -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="?attr/colorOnSurface"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M9,20H15"/>
+
+</vector>

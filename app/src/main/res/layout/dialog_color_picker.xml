@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <View
+            android:id="@+id/colorPreview"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/black" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:hint="@string/color_picker_hex_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/hexInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapCharacters"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/color_picker_palette"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
+        android:layout_marginBottom="8dp" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/paletteGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+        <!-- Will add standard colors programmatically -->
+    </com.google.android.material.chip.ChipGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/labelRed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/color_picker_red"
+            android:textAppearance="?attr/textAppearanceBodySmall" />
+        <SeekBar
+            android:id="@+id/seekRed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255" />
+
+        <TextView
+            android:id="@+id/labelGreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/color_picker_green"
+            android:textAppearance="?attr/textAppearanceBodySmall" />
+        <SeekBar
+            android:id="@+id/seekGreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255" />
+
+        <TextView
+            android:id="@+id/labelBlue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/color_picker_blue"
+            android:textAppearance="?attr/textAppearanceBodySmall" />
+        <SeekBar
+            android:id="@+id/seekBlue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255" />
+    </LinearLayout>
+</LinearLayout>
