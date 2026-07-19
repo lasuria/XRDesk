@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.DeskControl" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.XRDesk" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">#0B57D0</item> <!-- Pixel Blue -->
         <item name="colorOnPrimary">#FFFFFF</item>
         <item name="colorSecondary">#0B57D0</item>
@@ -21,7 +21,7 @@
         <item name="android:windowLightNavigationBar">true</item>
     </style>
 
-    <style name="Theme.DeskControl.Amoled" parent="Theme.DeskControl">
+    <style name="Theme.XRDesk.Amoled" parent="Theme.XRDesk">
         <item name="colorPrimary">@color/falloutGreen</item>
         <item name="colorOnPrimary">@color/black</item>
 

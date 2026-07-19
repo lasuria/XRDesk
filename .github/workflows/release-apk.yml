@@ -23,12 +23,12 @@ jobs:
 
       - name: Decode release keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$GITHUB_WORKSPACE/deskcontrol-release.jks"
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$GITHUB_WORKSPACE/xrdesk-release.jks"
 
       - name: Build release APK
         run: ./gradlew assembleRelease
         env:
-          KEYSTORE_PATH: ${{ github.workspace }}/deskcontrol-release.jks
+          KEYSTORE_PATH: ${{ github.workspace }}/xrdesk-release.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
@@ -38,7 +38,7 @@ jobs:
         run: |
           APK_PATH=$(ls app/build/outputs/apk/release/*.apk | head -n 1)
           TAG_NAME="${GITHUB_REF_NAME}"
-          RENAMED_PATH="app/build/outputs/apk/release/deskcontrol-${TAG_NAME}.apk"
+          RENAMED_PATH="app/build/outputs/apk/release/xrdesk-${TAG_NAME}.apk"
           mv "$APK_PATH" "$RENAMED_PATH"
           echo "path=$RENAMED_PATH" >> $GITHUB_OUTPUT
 

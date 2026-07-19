@@ -11,11 +11,11 @@
     </queries>
 
     <application
-        android:name=".DeskControlApp"
+        android:name=".XRDeskApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.DeskControl">
+        android:theme="@style/Theme.XRDesk">
 
         <activity
             android:name=".DiagnosticsActivity"

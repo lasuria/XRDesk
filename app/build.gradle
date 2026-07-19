@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.deskcontrol"
+    namespace = "com.xrdesk"
     compileSdk = 35
 
     def keystorePath = System.getenv("KEYSTORE_PATH") ?: project.findProperty("KEYSTORE_PATH")
@@ -24,7 +24,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.deskcontrol"
+        applicationId = "com.xrdesk"
         minSdk = 30
         targetSdk = 35
         versionCode = 20

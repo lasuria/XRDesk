@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.DeskControl" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.XRDesk" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">#D3E3FD</item> <!-- Pixel Light Blue -->
         <item name="colorOnPrimary">#041E49</item>
 
