@@ -84,7 +84,6 @@ Open the project in Android Studio and build it normally.
 | Monochrome Mode | ❌ | ✅ |
 | Theme Import / Export | ❌ | ✅ |
 | Improved Remote UI | ❌ | ✅ |
-| XR Glasses Support | Limited | ✅ |
 | Modern Settings UI | ❌ | ✅ |
 
 ---
