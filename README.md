@@ -1,81 +1,118 @@
-# DeskControl
+<div align="center">
 
-DeskControl turns your phone into a touchpad and keyboard for a single app
-running on a wired external display. It targets Android 11+ and uses an
-AccessibilityService to render the cursor and inject input.
+# XRDesk
 
-[中文说明](README_zh.md)
+### Modern Android Remote & Touchpad for External Displays and XR Glasses
 
-## Highlights
+Turn your Android device into a touchpad and remote control for applications running on an external display.
 
-- Launch any installed app onto a wired external display.
-- Control the external app with a phone touchpad (move, click, drag).
-- Per-display cursor overlay with auto-hide and tuning controls.
-- Clean teardown when the external display disconnects.
+![Android](https://img.shields.io/badge/Android-11%2B-3DDC84?logo=android&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.x-7F52FF?logo=kotlin&logoColor=white)
+![Material Design 3](https://img.shields.io/badge/Material%203-UI-4285F4)
+![License](https://img.shields.io/badge/License-GPL--3.0-blue)
 
-## Requirements
+</div>
 
-- Android 11+ (minSdk 30).
-- Wired Type-C external display.
-- Accessibility service enabled (required for cursor and input injection).
+---
 
-## Quick Start
+## ✨ Features
 
-1. Connect the wired external display.
-2. Launch DeskControl and enable the accessibility service if prompted.
-3. Pick an app to launch on the external display.
-4. Open Touchpad and control the external app.
+- 🎮 Touchpad mode
+- 🕹️ Modern Remote Control interface
+- 🥽 XR glasses support
+- 🖥️ External monitor support
+- 🎨 Material Design 3 UI
+- 🌈 Material You
+- 🌙 AMOLED theme
+- ☀️ Light theme
+- 🌑 Dark theme
+- 🎨 Custom Theme Editor
+- ⚫ Monochrome mode
+- 💾 Theme import/export (JSON)
+- 🌍 Multi-language support
+- ▶️ Media controls
+- ⚡ Smooth and responsive interface
 
-## Touchpad Usage
+---
 
-- Move: slide one finger in the touchpad area.
-- Click: tap once in the touchpad area.
-- Slide & drag: double-tap, then slide (vibration confirms).
-- Auto-dim: after 10s inside the touchpad area, the screen dims. It restores
-  when you tap outside the touchpad area or leave the screen.
-- Back: when the touchpad area is active, Back is forwarded to the external app.
-- Exit: tap the top-left back arrow, or tap outside the touchpad area and then press Back.
+## 🥽 Supported Devices
 
-## Build
+### XR Glasses
+
+- XREAL Air
+- XREAL Air 2
+- XREAL Air 2 Pro
+- XREAL Air 2 Ultra
+- VITURE One
+- VITURE Pro
+
+### External Displays
+
+- USB-C DisplayPort monitors
+- TVs
+- Portable displays
+- XR glasses
+
+---
+
+## 📋 Requirements
+
+- Android 11 or newer (API 30+)
+- USB-C DisplayPort Alt Mode (for external displays)
+- Wireless ADB or Shizuku (depending on the selected features)
+
+---
+
+## 🚀 Building
+
+Clone the repository:
 
 ```bash
-./gradlew assembleDebug
+git clone https://github.com/lasuria/XRDesk.git
 ```
 
-Install the APK:
+Open the project in Android Studio and build it normally.
 
-```bash
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-```
+---
 
-## Settings
+## 🔥 What's New Compared to DeskControl?
 
-- Cursor size, opacity, color, and auto-hide delay.
-- Touchpad sensitivity, acceleration, jitter, smoothing, and scroll step.
-- Keep screen on while using touchpad.
-- Auto-dim touchpad after 10 seconds (per-window brightness only).
+| Feature | DeskControl | XRDesk |
+|---------|:-----------:|:-------:|
+| Material Design 3 | ❌ | ✅ |
+| Material You | ❌ | ✅ |
+| AMOLED Theme | ❌ | ✅ |
+| Theme Editor | ❌ | ✅ |
+| Monochrome Mode | ❌ | ✅ |
+| Theme Import / Export | ❌ | ✅ |
+| Improved Remote UI | ❌ | ✅ |
+| XR Glasses Support | Limited | ✅ |
+| Modern Settings UI | ❌ | ✅ |
 
-## Project Layout
+---
 
-- `DisplaySessionManager`: external display tracking and selection.
-- `AppLauncher`: launch routing and failure diagnostics.
-- `TouchpadActivity`: touchpad UI and input logic.
-- `ControlAccessibilityService`: cursor overlay and gesture/text injection.
-- `CursorOverlayView`: cursor rendering and animation.
-- `DiagnosticsActivity`: status and recent failure history.
+## 🛠️ Technologies
 
-## Permissions and Notes
+- Kotlin
+- Android SDK
+- AndroidX
+- Material Design 3
+- ViewBinding
 
-- Uses `AccessibilityService` for gesture injection and `ACTION_SET_TEXT`.
-- Cursor overlay uses `TYPE_ACCESSIBILITY_OVERLAY` and is non-touchable.
-- The overlay is attached to the external display via `createWindowContext`.
+---
 
-## Limitations
+## 🤝 Credits
 
-- Android 11+ only.
-- Requires device support for secondary-display activities.
-- Some apps do not allow launch on a secondary display.
+XRDesk is based on the open-source **DeskControl** project.
 
-## License
+The original project provided the foundation, while XRDesk extends it with a redesigned interface, new customization options, XR-focused improvements, and additional functionality.
 
-See `LICENSE`.
+Special thanks to the original DeskControl developers for making the project open source.
+
+---
+
+## 📄 License
+
+This project is licensed under the **GNU General Public License v3.0**.
+
+See the [LICENSE](LICENSE) file for details.
