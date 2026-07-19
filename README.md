@@ -8,7 +8,7 @@ Turn your Android device into a touchpad and remote control for applications run
 
 ![Android](https://img.shields.io/badge/Android-11%2B-3DDC84?logo=android&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.x-7F52FF?logo=kotlin&logoColor=white)
-![Material Design 3](https://img.shields.io/badge/Material--Design--3-Supported-4285F4)
+![Material Design 3](https://img.shields.io/static/v1?label=Material%20Design%203&message=Supported&color=4285F4)
 ![License](https://img.shields.io/badge/License-GPL--3.0-blue)
 
 </div>
