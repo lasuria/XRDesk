@@ -59,7 +59,6 @@ Turn your Android device into a touchpad and remote control for applications run
 
 - Android 11 or newer (API 30+)
 - USB-C DisplayPort Alt Mode (for external displays)
-- Wireless ADB or Shizuku (depending on the selected features)
 
 ---
 
