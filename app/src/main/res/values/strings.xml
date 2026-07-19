@@ -323,10 +323,13 @@
     <string name="settings_about_summary">App version and information</string>
     <string name="about_application">Application</string>
     <string name="about_original_project">Original project</string>
+    <string name="about_fork_project">GitHub Project (Fork)</string>
+    <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">v.1.1.5.post2</string>
     <string name="about_whats_new">What\'s new</string>
     <string name="about_whats_new_summary">Full version history</string>
     <string name="app_version_label">Version 1.0</string>
     <string name="app_build_label">Build 2026.07.19</string>
     <string name="about_project_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
+    <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
 </resources>

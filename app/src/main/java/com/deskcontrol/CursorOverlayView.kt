@@ -45,6 +45,8 @@ class CursorOverlayView @JvmOverloads constructor(
     private val handler = Handler(Looper.getMainLooper())
     private var decayRunnable: Runnable? = null
     private var outlineDrawable: android.graphics.drawable.Drawable? = null
+    private var lastDrawSize = -1
+    private var lastOffset = -1f
     private var isAttached = false
 
     fun setBaseSizePx(value: Int) {
@@ -85,20 +87,26 @@ class CursorOverlayView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         val drawable = arrowDrawable ?: return
+        
         val drawSize = (baseSizePx * currentScale).roundToInt().coerceAtLeast(1)
+        val offset = (drawSize * 0.08f).coerceAtLeast(1f)
+        
+        if (drawSize != lastDrawSize || offset != lastOffset) {
+            shadowDrawable?.setBounds(0, 0, drawSize, drawSize)
+            outlineDrawable?.setBounds(0, 0, drawSize, drawSize)
+            drawable.setBounds(0, 0, drawSize, drawSize)
+            lastDrawSize = drawSize
+            lastOffset = offset
+        }
+
         shadowDrawable?.let { shadow ->
-            val offset = max(1, (drawSize * 0.08f).roundToInt())
             canvas.save()
-            canvas.translate(offset.toFloat(), offset.toFloat())
-            shadow.setBounds(0, 0, drawSize, drawSize)
+            canvas.translate(offset, offset)
             shadow.draw(canvas)
             canvas.restore()
         }
-        outlineDrawable?.let { outline ->
-            outline.setBounds(0, 0, drawSize, drawSize)
-            outline.draw(canvas)
-        }
-        drawable.setBounds(0, 0, drawSize, drawSize)
+        
+        outlineDrawable?.draw(canvas)
         drawable.draw(canvas)
     }
 
@@ -109,9 +117,17 @@ class CursorOverlayView @JvmOverloads constructor(
                 return@Runnable
             }
             val now = SystemClock.uptimeMillis()
-            if (now - lastMovementTime >= HOLD_MS && speedEma < SPEED_THRESHOLD_PX_S) {
+            val idleTime = now - lastMovementTime
+            
+            if (idleTime >= HOLD_MS) {
+                // If we've been idle long enough, return to base scale
+                speedEma = 0f
                 animateScaleTo(1f)
+                
+                // Do NOT call scheduleDecay() here. The loop ends.
+                // It will be restarted by onCursorMoved() when movement resumes.
             } else {
+                // Still moving or very recently moved, check again later
                 scheduleDecay()
             }
         }

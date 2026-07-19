@@ -159,6 +159,8 @@ class ControlAccessibilityService : AccessibilityService() {
     private var cursorVisible = true
     private var forceCursorVisible = false
     private var lastMoveTime = 0L
+    private var lastParamsX = -1
+    private var lastParamsY = -1
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -789,24 +791,30 @@ class ControlAccessibilityService : AccessibilityService() {
             return false
         }
         if (tryFocusAtCursor(root, info)) {
+            root.recycle()
             DiagnosticsLog.add("Back: focus activation via cursor hit")
             return true
         }
         val candidates = collectFocusableNodes(root, maxCount = 3)
         if (candidates.isEmpty()) {
+            root.recycle()
             DiagnosticsLog.add("Back: focus activation skipped (no focusable node)")
             return false
         }
         for (node in candidates) {
             val focused = node.performAction(AccessibilityNodeInfo.ACTION_FOCUS) ||
                 node.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
+            node.recycle()
             if (focused) {
+                candidates.drop(candidates.indexOf(node) + 1).forEach { it.recycle() }
+                root.recycle()
                 DiagnosticsLog.add("Back: focus activation via node success=true")
                 return true
             }
         }
         val rootFocused = root.performAction(AccessibilityNodeInfo.ACTION_FOCUS) ||
             root.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
+        root.recycle()
         DiagnosticsLog.add("Back: focus activation via node success=$rootFocused")
         return rootFocused
     }
@@ -819,12 +827,20 @@ class ControlAccessibilityService : AccessibilityService() {
         val mapped = CoordinateMapper.mapForRotation(clamped.x, clamped.y, info)
         val hitNode = findNodeAtPoint(root, mapped.x.toInt(), mapped.y.toInt())
         val focusTarget = when {
-            hitNode == null -> if (root.isFocusable) root else findFocusableNode(root)
-            hitNode.isFocusable -> hitNode
+            hitNode == null -> if (root.isFocusable) AccessibilityNodeInfo.obtain(root) else findFocusableNode(root)
+            hitNode.isFocusable -> AccessibilityNodeInfo.obtain(hitNode)
             else -> findFocusableAncestor(hitNode) ?: findFocusableNode(root)
-        } ?: return false
-        return focusTarget.performAction(AccessibilityNodeInfo.ACTION_FOCUS) ||
+        }
+        
+        hitNode?.recycle()
+        
+        if (focusTarget == null) return false
+        
+        val success = focusTarget.performAction(AccessibilityNodeInfo.ACTION_FOCUS) ||
             focusTarget.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
+        
+        focusTarget.recycle()
+        return success
     }
 
     private fun tryTaskFocus(): Boolean {
@@ -934,11 +950,11 @@ class ControlAccessibilityService : AccessibilityService() {
     ): List<AccessibilityNodeInfo> {
         val results = ArrayList<AccessibilityNodeInfo>(maxCount)
         if (root.isFocusable && root.isVisibleToUser) {
-            results.add(root)
+            results.add(AccessibilityNodeInfo.obtain(root))
             if (results.size >= maxCount) return results
         }
         val queue: ArrayDeque<AccessibilityNodeInfo> = ArrayDeque()
-        queue.add(root)
+        queue.add(AccessibilityNodeInfo.obtain(root))
         var visited = 0
         while (queue.isNotEmpty() && results.size < maxCount && visited < 200) {
             val node = queue.removeFirst()
@@ -947,12 +963,20 @@ class ControlAccessibilityService : AccessibilityService() {
             for (i in 0 until count) {
                 val child = node.getChild(i) ?: continue
                 if (child.isFocusable && child.isVisibleToUser) {
-                    results.add(child)
-                    if (results.size >= maxCount) return results
+                    results.add(AccessibilityNodeInfo.obtain(child))
+                    if (results.size >= maxCount) {
+                        child.recycle()
+                        node.recycle()
+                        queue.forEach { it.recycle() }
+                        return results
+                    }
                 }
                 queue.add(child)
             }
+            node.recycle()
         }
+        // Cleanup queue if we exit due to visited limit or exhaustion
+        queue.forEach { it.recycle() }
         return results
     }
 
@@ -1090,14 +1114,17 @@ class ControlAccessibilityService : AccessibilityService() {
                 if (focused != null) {
                     // Try DISMISS (dialogs, menus)
                     if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_DISMISS)) {
+                        focused.recycle()
                         if (DEBUG) DiagnosticsLog.add("Back: smart Accessibility ACTION_DISMISS success")
                         return true
                     }
                     // Try COLLAPSE (dropdowns, expandable lists)
                     if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_COLLAPSE)) {
+                        focused.recycle()
                         if (DEBUG) DiagnosticsLog.add("Back: smart Accessibility ACTION_COLLAPSE success")
                         return true
                     }
+                    focused.recycle()
                 }
 
                 if (DEBUG) DiagnosticsLog.add("Back: smart Accessibility failed, using GLOBAL_ACTION_BACK")
@@ -1180,6 +1207,8 @@ class ControlAccessibilityService : AccessibilityService() {
         if (current == null) return false
 
         val nextFocus = current.focusSearch(direction)
+        current.recycle()
+        
         if (nextFocus != null) {
             val targetWindow = targetWindows.find { it.displayId == info.displayId && (it.isFocused || it.isActive) }
                 ?: targetWindows.firstOrNull { it.displayId == info.displayId }
@@ -1211,6 +1240,7 @@ class ControlAccessibilityService : AccessibilityService() {
 
             val resFocus = nextFocus.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
             val resAccFocus = nextFocus.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
+            nextFocus.recycle()
             
             if (DEBUG) {
                 val actionLog = "ACTION_FOCUS: $resFocus, ACTION_ACCESSIBILITY_FOCUS: $resAccFocus"
@@ -1270,6 +1300,7 @@ class ControlAccessibilityService : AccessibilityService() {
         if (bestNode != null) {
             val success = bestNode.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS) ||
                           bestNode.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
+            bestNode.recycle()
             if (success) {
                 DiagnosticsLog.add("D-Pad: geometric search success")
                 return true
@@ -1307,11 +1338,15 @@ class ControlAccessibilityService : AccessibilityService() {
         val focused = findCurrentFocusedNode(targetWindows)
 
         if (focused != null) {
-            if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_CLICK)) return true
+            if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_CLICK)) {
+                focused.recycle()
+                return true
+            }
             
             val rect = Rect()
             focused.getBoundsInScreen(rect)
             dispatchTap(rect.centerX().toFloat(), rect.centerY().toFloat(), info.displayId)
+            focused.recycle()
             return true
         }
 
@@ -1324,6 +1359,7 @@ class ControlAccessibilityService : AccessibilityService() {
             val root = try { win.root } catch (e: Exception) { null } ?: continue
             val focused = root.findFocus(AccessibilityNodeInfo.FOCUS_ACCESSIBILITY)
                 ?: root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
+            root.recycle()
             if (focused != null) return focused
         }
         return null
@@ -1354,8 +1390,9 @@ class ControlAccessibilityService : AccessibilityService() {
     ): AccessibilityNodeInfo? {
         val allNodes = mutableListOf<AccessibilityNodeInfo>()
         for (win in windows) {
-            val root = try { win.root } catch (e: Exception) { null }
-            root?.let { collectAllFocusableNodes(it, allNodes) }
+            val root = try { win.root } catch (e: Exception) { null } ?: continue
+            collectAllFocusableNodes(root, allNodes)
+            root.recycle()
         }
         
         android.util.Log.d("DeskControl", "D-Pad: geometric search found ${allNodes.size} total candidates")
@@ -1371,7 +1408,10 @@ class ControlAccessibilityService : AccessibilityService() {
         var minDistance = Float.MAX_VALUE
 
         for (node in allNodes) {
-            if (isSameNode(node, current)) continue
+            if (isSameNode(node, current)) {
+                node.recycle()
+                continue
+            }
             val nodeRect = Rect()
             node.getBoundsInScreen(nodeRect)
 
@@ -1390,9 +1430,12 @@ class ControlAccessibilityService : AccessibilityService() {
                 val dist = calculateGeometricDistance(currentRect, nodeRect, direction)
                 if (dist < minDistance) {
                     minDistance = dist
-                    bestNode = node
+                    bestNode?.recycle()
+                    bestNode = node // bestNode now owns this node
+                    continue
                 }
             }
+            node.recycle()
         }
         return bestNode
     }
@@ -1440,6 +1483,7 @@ class ControlAccessibilityService : AccessibilityService() {
             val child = root.getChild(i)
             if (child != null) {
                 collectAllFocusableNodes(child, list)
+                child.recycle()
             }
         }
     }
@@ -1469,10 +1513,15 @@ class ControlAccessibilityService : AccessibilityService() {
     }
 
     private fun performActionWithParentFallback(node: AccessibilityNodeInfo, action: Int): Boolean {
-        var current: AccessibilityNodeInfo? = node
+        var current: AccessibilityNodeInfo? = AccessibilityNodeInfo.obtain(node)
         while (current != null) {
-            if (current.performAction(action)) return true
-            current = current.parent
+            if (current.performAction(action)) {
+                current.recycle()
+                return true
+            }
+            val parent = current.parent
+            current.recycle()
+            current = parent
         }
         return false
     }
@@ -1508,6 +1557,7 @@ class ControlAccessibilityService : AccessibilityService() {
                     target.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
                 }
                 if (!target.actionList.any { it.id == AccessibilityNodeInfo.ACTION_SET_TEXT }) {
+                    target.recycle()
                     return recordInjection(
                         false,
                         getString(R.string.injection_action_set_text_not_supported)
@@ -1516,6 +1566,7 @@ class ControlAccessibilityService : AccessibilityService() {
                 val args = Bundle()
                 args.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, text)
                 val success = target.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, args)
+                target.recycle()
                 return recordInjection(
                     success,
                     if (success) {
@@ -1531,15 +1582,17 @@ class ControlAccessibilityService : AccessibilityService() {
 
     private fun findEditableNode(root: AccessibilityNodeInfo): AccessibilityNodeInfo? {
         val queue = ArrayDeque<AccessibilityNodeInfo>()
-        queue.add(root)
+        queue.add(AccessibilityNodeInfo.obtain(root))
         while (queue.isNotEmpty()) {
             val node = queue.removeFirst()
             if (node.isEditable) {
+                queue.forEach { it.recycle() }
                 return node
             }
             for (i in 0 until node.childCount) {
                 node.getChild(i)?.let { queue.add(it) }
             }
+            node.recycle()
         }
         return null
     }
@@ -1723,11 +1776,24 @@ class ControlAccessibilityService : AccessibilityService() {
     private fun updateOverlayPosition() {
         val view = overlayView ?: return
         val wm = windowManager ?: return
+        
+        // If cursor is not visible, don't waste CPU/IPC updating its position
+        if (!cursorVisible && !forceCursorVisible) return
+        
         val params = view.layoutParams as WindowManager.LayoutParams
         val tipOffset = cursorTipOffsetPx()
-        params.x = (cursorX - tipOffset.x).toInt()
-        params.y = (cursorY - tipOffset.y).toInt()
-        wm.updateViewLayout(view, params)
+        val newX = (cursorX - tipOffset.x).toInt()
+        val newY = (cursorY - tipOffset.y).toInt()
+        
+        // Only update if the integer pixel position has actually changed
+        if (newX == lastParamsX && newY == lastParamsY) return
+        
+        params.x = newX
+        params.y = newY
+        lastParamsX = newX
+        lastParamsY = newY
+        
+        runCatching { wm.updateViewLayout(view, params) }
     }
 
     private fun notifyCursorSpeed(dx: Float, dy: Float) {
@@ -2065,14 +2131,22 @@ class ControlAccessibilityService : AccessibilityService() {
             ?: targetWindows.firstOrNull()
         val root = window?.root ?: return null
         val hitNode = findNodeAtPoint(root, x.toInt(), y.toInt())
-        var node: AccessibilityNodeInfo? = hitNode ?: root
-        while (node != null) {
-            if (node.isScrollable && node.isVisibleToUser) {
-                return node
+        
+        var current: AccessibilityNodeInfo? = if (hitNode != null) hitNode else AccessibilityNodeInfo.obtain(root)
+        
+        while (current != null) {
+            if (current.isScrollable && current.isVisibleToUser) {
+                root.recycle()
+                return current
             }
-            node = node.parent
+            val parent = current.parent
+            current.recycle()
+            current = parent
         }
-        return findScrollableNode(root)
+        
+        val scrollable = findScrollableNode(root)
+        root.recycle()
+        return scrollable
     }
 
     private fun findNodeAtPoint(
@@ -2080,64 +2154,84 @@ class ControlAccessibilityService : AccessibilityService() {
         x: Int,
         y: Int
     ): AccessibilityNodeInfo? {
-        val queue = ArrayDeque<Pair<AccessibilityNodeInfo, Int>>()
-        queue.add(root to 0)
+        val queue = ArrayDeque<AccessibilityNodeInfo>()
+        val depths = ArrayDeque<Int>()
+        
+        queue.add(AccessibilityNodeInfo.obtain(root))
+        depths.add(0)
+        
         var best: AccessibilityNodeInfo? = null
         var bestDepth = -1
         val rect = Rect()
+        
         while (queue.isNotEmpty()) {
-            val (node, depth) = queue.removeFirst()
+            val node = queue.removeFirst()
+            val depth = depths.removeFirst()
+            
             node.getBoundsInScreen(rect)
             if (rect.contains(x, y)) {
                 if (depth >= bestDepth) {
-                    best = node
+                    best?.recycle()
+                    best = AccessibilityNodeInfo.obtain(node)
                     bestDepth = depth
                 }
                 for (i in 0 until node.childCount) {
-                    node.getChild(i)?.let { queue.add(it to depth + 1) }
+                    val child = node.getChild(i)
+                    if (child != null) {
+                        queue.add(child)
+                        depths.add(depth + 1)
+                    }
                 }
             }
+            node.recycle()
         }
         return best
     }
 
     private fun findScrollableNode(root: AccessibilityNodeInfo): AccessibilityNodeInfo? {
         val queue = ArrayDeque<AccessibilityNodeInfo>()
-        queue.add(root)
+        queue.add(AccessibilityNodeInfo.obtain(root))
         while (queue.isNotEmpty()) {
             val node = queue.removeFirst()
             if (node.isScrollable && node.isVisibleToUser) {
+                // Return this node, clear the rest of the queue
+                queue.forEach { it.recycle() }
                 return node
             }
             for (i in 0 until node.childCount) {
                 node.getChild(i)?.let { queue.add(it) }
             }
+            node.recycle()
         }
         return null
     }
 
     private fun findFocusableNode(root: AccessibilityNodeInfo): AccessibilityNodeInfo? {
         val queue = ArrayDeque<AccessibilityNodeInfo>()
-        queue.add(root)
+        queue.add(AccessibilityNodeInfo.obtain(root))
         while (queue.isNotEmpty()) {
             val node = queue.removeFirst()
             if (node.isFocusable && node.isVisibleToUser) {
+                queue.forEach { it.recycle() }
                 return node
             }
             for (i in 0 until node.childCount) {
                 node.getChild(i)?.let { queue.add(it) }
             }
+            node.recycle()
         }
         return null
     }
 
     private fun findFocusableAncestor(node: AccessibilityNodeInfo): AccessibilityNodeInfo? {
-        var current: AccessibilityNodeInfo? = node
+        var current: AccessibilityNodeInfo? = AccessibilityNodeInfo.obtain(node)
         while (current != null) {
             if (current.isFocusable && current.isVisibleToUser) {
                 return current
             }
-            current = current.parent
+            val parent = current.parent
+            current.recycle()
+            current = parent
         }
         return null
     }
