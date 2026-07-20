@@ -3,6 +3,7 @@ package com.xrdesk
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import com.xrdesk.databinding.ActivityThemeEditorBinding
@@ -12,6 +13,7 @@ import com.xrdesk.databinding.ItemSwitchPreferenceBinding
 /**
  * Activity for editing the Custom theme colors.
  * Supports monochrome mode and importing/exporting theme JSON.
+ * Simplified to 8 key Material 3 / Pixel roles.
  */
 class ThemeEditorActivity : BaseSettingsActivity() {
 
@@ -53,10 +55,6 @@ class ThemeEditorActivity : BaseSettingsActivity() {
         }
         binding.btnResetAmoled.setOnClickListener {
             customColors = ThemeEngine.getPreset(SettingsStore.THEME_AMOLED)
-            applyLoadedColors()
-        }
-        binding.btnResetMaterialYou.setOnClickListener {
-            customColors = ThemeEngine.getPreset(SettingsStore.THEME_MATERIAL_YOU)
             applyLoadedColors()
         }
         binding.btnResetAll.setOnClickListener {
@@ -120,66 +118,65 @@ class ThemeEditorActivity : BaseSettingsActivity() {
     }
 
     private fun populateCategories() {
-        binding.containerBackground.removeAllViews()
         binding.containerSurfaces.removeAllViews()
-        binding.containerText.removeAllViews()
-        binding.containerIcons.removeAllViews()
+        binding.containerContent.removeAllViews()
         binding.containerAccent.removeAllViews()
-        binding.containerDividers.removeAllViews()
         binding.containerSystemUI.removeAllViews()
-        binding.containerExtra.removeAllViews()
-
-        // Background
-        addColorItem(binding.containerBackground, getString(R.string.theme_item_background), customColors.background) { 
-            customColors.background = it 
-        }
 
         // Surfaces
-        addColorItem(binding.containerSurfaces, getString(R.string.theme_item_cards), customColors.surfaceCard) { customColors.surfaceCard = it }
-        addColorItem(binding.containerSurfaces, getString(R.string.theme_item_dialogs), customColors.surfaceDialog) { customColors.surfaceDialog = it }
-        addColorItem(binding.containerSurfaces, getString(R.string.theme_item_bottom_sheets), customColors.surfaceBottomSheet) { customColors.surfaceBottomSheet = it }
-        addColorItem(binding.containerSurfaces, getString(R.string.theme_item_toolbar), customColors.surfaceToolbar) { customColors.surfaceToolbar = it }
-
-        // Text
-        addColorItem(binding.containerText, getString(R.string.theme_item_text_primary), customColors.textPrimary) { customColors.textPrimary = it }
-        if (!customColors.isMonochrome) {
-            addColorItem(binding.containerText, getString(R.string.theme_item_text_secondary), customColors.textSecondary) { customColors.textSecondary = it }
-            addColorItem(binding.containerText, getString(R.string.theme_item_text_disabled), customColors.textDisabled) { customColors.textDisabled = it }
+        addColorItem(binding.containerSurfaces, getString(R.string.theme_item_background), customColors.background) { 
+            customColors.background = it 
+        }
+        addColorItem(binding.containerSurfaces, getString(R.string.theme_item_cards), customColors.surface) { 
+            customColors.surface = it 
         }
 
-        // Icons
+        // Content
+        addColorItem(binding.containerContent, getString(R.string.theme_item_text_primary), customColors.textPrimary) { 
+            customColors.textPrimary = it 
+        }
         if (!customColors.isMonochrome) {
-            addColorItem(binding.containerIcons, getString(R.string.theme_item_icon_primary), customColors.iconPrimary) { customColors.iconPrimary = it }
-            addColorItem(binding.containerIcons, getString(R.string.theme_item_icon_secondary), customColors.iconSecondary) { customColors.iconSecondary = it }
-            addColorItem(binding.containerIcons, getString(R.string.theme_item_icon_disabled), customColors.iconDisabled) { customColors.iconDisabled = it }
+            addColorItem(binding.containerContent, getString(R.string.theme_item_text_secondary), customColors.textSecondary) { 
+                customColors.textSecondary = it 
+            }
+            addColorItem(binding.containerContent, getString(R.string.theme_item_divider), customColors.divider) { 
+                customColors.divider = it 
+            }
         }
 
         // Accent
         if (!customColors.isMonochrome) {
-            addColorItem(binding.containerAccent, getString(R.string.theme_item_accent_color), customColors.accentColor) { customColors.accentColor = it }
+            addColorItem(binding.containerAccent, getString(R.string.theme_item_accent_color), customColors.accent) { 
+                customColors.accent = it 
+            }
         }
-        addColorItem(binding.containerAccent, getString(R.string.theme_item_accent_text), customColors.accentText) { customColors.accentText = it }
-
-        // Dividers
-        if (!customColors.isMonochrome) {
-            addColorItem(binding.containerDividers, getString(R.string.theme_item_outline), customColors.outline) { customColors.outline = it }
-            addColorItem(binding.containerDividers, getString(R.string.theme_item_divider), customColors.divider) { customColors.divider = it }
+        addColorItem(binding.containerAccent, getString(R.string.theme_item_accent_text), customColors.onAccent) { 
+            customColors.onAccent = it 
         }
 
         // System UI
-        addColorItem(binding.containerSystemUI, getString(R.string.theme_item_status_bar), customColors.statusBar) { customColors.statusBar = it }
-        addColorItem(binding.containerSystemUI, getString(R.string.theme_item_navigation_bar), customColors.navigationBar) { customColors.navigationBar = it }
-        addSwitchItem(binding.containerSystemUI, getString(R.string.theme_item_light_status_icons), customColors.lightStatusBarIcons) { customColors.lightStatusBarIcons = it }
-        addSwitchItem(binding.containerSystemUI, getString(R.string.theme_item_light_nav_icons), customColors.lightNavigationBarIcons) { customColors.lightNavigationBarIcons = it }
-
-        // Extra
-        addColorItem(binding.containerExtra, getString(R.string.theme_item_error), customColors.colorError) { customColors.colorError = it }
-        addColorItem(binding.containerExtra, getString(R.string.theme_item_warning), customColors.colorWarning) { customColors.colorWarning = it }
-        addColorItem(binding.containerExtra, getString(R.string.theme_item_success), customColors.colorSuccess) { customColors.colorSuccess = it }
-        addColorItem(binding.containerExtra, getString(R.string.theme_item_info), customColors.colorInfo) { customColors.colorInfo = it }
+        addSwitchItem(binding.containerSystemUI, getString(R.string.theme_item_light_status_icons), customColors.lightStatusIcons) { 
+            customColors.lightStatusIcons = it 
+        }
+        addSwitchItem(binding.containerSystemUI, getString(R.string.theme_item_light_nav_icons), customColors.lightNavIcons) { 
+            customColors.lightNavIcons = it 
+        }
     }
 
     private fun addColorItem(container: LinearLayout, title: String, color: Int, onSelected: (Int) -> Unit) {
+        if (container.childCount > 0) {
+            val divider = View(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    dpToPx(1)
+                ).apply {
+                    marginStart = dpToPx(40)
+                }
+                setBackgroundColor(customColors.divider)
+            }
+            container.addView(divider)
+        }
+
         val itemBinding = ItemColorPreferenceBinding.inflate(LayoutInflater.from(this), container, false)
         itemBinding.title.text = title
         itemBinding.colorPreview.setBackgroundColor(color)
@@ -195,6 +192,19 @@ class ThemeEditorActivity : BaseSettingsActivity() {
     }
 
     private fun addSwitchItem(container: LinearLayout, title: String, checked: Boolean, onChecked: (Boolean) -> Unit) {
+        if (container.childCount > 0) {
+            val divider = View(this).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    dpToPx(1)
+                ).apply {
+                    marginStart = dpToPx(40)
+                }
+                setBackgroundColor(customColors.divider)
+            }
+            container.addView(divider)
+        }
+
         val itemBinding = ItemSwitchPreferenceBinding.inflate(LayoutInflater.from(this), container, false)
         itemBinding.title.text = title
         itemBinding.switchWidget.isChecked = checked
@@ -214,28 +224,28 @@ class ThemeEditorActivity : BaseSettingsActivity() {
         val preview = binding.layoutPreview
         
         preview.previewCard.setCardBackgroundColor(colors.background)
-        preview.previewCard.strokeColor = colors.outline
+        preview.previewCard.strokeColor = colors.divider
         
-        preview.previewToolbar.setBackgroundColor(colors.surfaceToolbar)
+        preview.previewToolbar.setBackgroundColor(colors.background)
         preview.previewToolbar.setTitleTextColor(colors.textPrimary)
         
-        preview.previewContentCard.setCardBackgroundColor(colors.surfaceCard)
-        preview.previewContentCard.strokeColor = colors.outline
+        preview.previewContentCard.setCardBackgroundColor(colors.surface)
+        preview.previewContentCard.strokeColor = colors.divider
         
         preview.previewTitle.setTextColor(colors.textPrimary)
         preview.previewSubtitle.setTextColor(colors.textSecondary)
         preview.previewDivider.setBackgroundColor(colors.divider)
         
-        preview.previewIconPrimary.imageTintList = ColorStateList.valueOf(colors.iconPrimary)
+        preview.previewIconPrimary.imageTintList = ColorStateList.valueOf(colors.textPrimary)
         preview.previewLabelPrimary.setTextColor(colors.textPrimary)
         
-        preview.previewIconSecondary.imageTintList = ColorStateList.valueOf(colors.iconSecondary)
+        preview.previewIconSecondary.imageTintList = ColorStateList.valueOf(colors.textSecondary)
         preview.previewLabelSecondary.setTextColor(colors.textSecondary)
         
-        preview.previewButton.backgroundTintList = ColorStateList.valueOf(colors.accentColor)
-        preview.previewButton.setTextColor(colors.accentText)
+        preview.previewButton.backgroundTintList = ColorStateList.valueOf(colors.accent)
+        preview.previewButton.setTextColor(colors.onAccent)
         
-        preview.previewSwitch.thumbTintList = ColorStateList.valueOf(colors.accentColor)
+        preview.previewSwitch.thumbTintList = ColorStateList.valueOf(colors.accent)
     }
 
     private fun save() {

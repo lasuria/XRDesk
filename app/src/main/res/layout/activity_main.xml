@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,75 +14,87 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Premium Device Card -->
-        <LinearLayout
+        <!-- Connection Status Card -->
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/statusCard"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="132dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/comp_surface_xl"
-            android:orientation="vertical"
-            android:padding="28dp"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/iconDisplay"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/ic_premium_monitor_new" />
-
-            <TextView
-                android:id="@+id/statusDisplayValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/external_display_not_connected"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnSurface"
-                android:fontFamily="sans-serif-medium"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/deviceStatusLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="External monitor connected"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:textAlignment="center"
-                android:visibility="gone" />
+            app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
 
             <LinearLayout
-                android:id="@+id/accessibilityContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
                 <ImageView
-                    android:id="@+id/iconAccessibility"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_accessibility"
-                    app:tint="?attr/colorOnSurfaceVariant" />
+                    android:id="@+id/iconDisplay"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:src="@drawable/ic_premium_monitor_new" />
+
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    android:text="@string/accessibility_label"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
-                <TextView
-                    android:id="@+id/statusAccessibilityValue"
+                    android:id="@+id/statusDisplayValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/accessibility_required"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="@color/apple_red"
-                    android:fontFamily="sans-serif-medium" />
+                    android:layout_marginTop="12dp"
+                    android:text="@string/external_display_not_connected"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/deviceStatusLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="External monitor connected"
+                    android:textAppearance="?attr/textAppearanceLabelSmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Accessibility Warning (Integrated into vertical flow) -->
+        <LinearLayout
+            android:id="@+id/accessibilityContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/iconAccessibility"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_accessibility"
+                app:tint="?attr/colorOnSurfaceVariant" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:text="@string/accessibility_label"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+            <TextView
+                android:id="@+id/statusAccessibilityValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/accessibility_required"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textColor="?attr/colorError"
+                android:fontFamily="sans-serif-medium" />
         </LinearLayout>
 
         <!-- Display Selector -->
@@ -104,70 +118,88 @@
                 android:orientation="horizontal" />
         </FrameLayout>
 
-        <!-- Premium Action Cards -->
-        <LinearLayout
-            android:id="@+id/btnTouchpad"
+        <!-- Main Action: Touchpad -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginTop="28dp"
-            android:background="@drawable/comp_surface_xl_clickable"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="20dp">
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_touchpad"
-                app:tint="?attr/colorPrimary" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_weight="1"
-                android:text="@string/open_touchpad"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnSurface"
-                android:fontFamily="sans-serif-medium" />
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_chevron_right_apple"
-                app:tint="?attr/colorOnSurfaceVariant"
-                android:alpha="0.7" />
-        </LinearLayout>
+            android:layout_height="64dp"
+            android:layout_marginTop="32dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
 
-        <LinearLayout
-            android:id="@+id/btnSettings"
+            <LinearLayout
+                android:id="@+id/btnTouchpad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_touchpad"
+                    app:tint="?attr/colorPrimary" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="1"
+                    android:text="@string/open_touchpad"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    android:fontFamily="sans-serif-medium" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right_apple"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.6" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Secondary Action: Settings -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/comp_surface_xl_clickable"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="20dp">
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_settings_apple"
-                app:tint="?attr/colorOnSurfaceVariant" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_weight="1"
-                android:text="@string/settings"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnSurface"
-                android:fontFamily="sans-serif-medium" />
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_chevron_right_apple"
-                app:tint="?attr/colorOnSurfaceVariant"
-                android:alpha="0.7" />
-        </LinearLayout>
+            android:layout_height="56dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:id="@+id/btnSettings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_settings_apple"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_weight="1"
+                    android:text="@string/settings"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right_apple"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.6" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 </ScrollView>

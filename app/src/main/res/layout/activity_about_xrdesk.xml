@@ -10,10 +10,11 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/settingsToolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:minHeight="56dp"
-        android:paddingHorizontal="16dp"
+        android:layout_height="64dp"
+        android:minHeight="64dp"
+        android:paddingHorizontal="12dp"
         android:title="@string/about_xrdesk_title"
+        app:titleTextAppearance="?attr/textAppearanceHeadlineSmall"
         app:titleTextColor="?attr/colorOnSurface"
         app:titleCentered="true"
         app:contentInsetStartWithNavigation="0dp"
@@ -24,20 +25,24 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingBottom="40dp">
 
+            <!-- Description -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/comp_surface_xl"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:paddingHorizontal="24dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="32dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -51,51 +56,135 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="@string/about_fork_maintainer"
+                    android:text="@string/about_fork_author_label"
                     android:textAppearance="?attr/textAppearanceLabelLarge"
-                    android:textColor="?attr/colorOnSurface"
-                    android:fontFamily="sans-serif-medium" />
+                    android:textColor="?attr/colorPrimary" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/about_license_label"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/about_fork_maintainer"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/about_license_title"
+                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                    android:textColor="?attr/colorPrimary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/about_license_content"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnGitHub"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="32dp"
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginHorizontal="24dp" android:background="?attr/colorOutlineVariant" />
+
+            <!-- GitHub -->
+            <LinearLayout
+                android:id="@+id/btnGitHub"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_open_in_new_apple"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="20dp"
                     android:text="@string/about_github_label"
-                    app:icon="@drawable/ic_open_in_new_apple"
-                    app:iconGravity="textStart"
-                    app:cornerRadius="16dp" />
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right_apple"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.6" />
+            </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn4PDA"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="12dp"
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:layout_marginEnd="24dp" android:background="?attr/colorOutlineVariant" />
+
+            <!-- 4PDA -->
+            <LinearLayout
+                android:id="@+id/btn4PDA"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_hand_apple"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="20dp"
                     android:text="@string/about_4pda_label"
-                    style="?attr/materialButtonOutlinedStyle"
-                    app:icon="@drawable/ic_hand_apple"
-                    app:iconGravity="textStart"
-                    app:cornerRadius="16dp" />
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right_apple"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.6" />
+            </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnIssues"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="12dp"
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:layout_marginEnd="24dp" android:background="?attr/colorOutlineVariant" />
+
+            <!-- Report Issue -->
+            <LinearLayout
+                android:id="@+id/btnIssues"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_logs_apple"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="20dp"
                     android:text="@string/about_issues_label"
-                    style="?attr/materialButtonOutlinedStyle"
-                    app:icon="@drawable/ic_logs_apple"
-                    app:iconGravity="textStart"
-                    app:cornerRadius="16dp" />
-
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right_apple"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.6" />
             </LinearLayout>
 
         </LinearLayout>

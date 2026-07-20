@@ -9,270 +9,123 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/settingsToolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="64dp"
+        android:minHeight="64dp"
+        android:paddingHorizontal="12dp"
         app:title="@string/theme_editor_title"
         app:titleCentered="true"
-        app:navigationIcon="@drawable/ic_back" />
+        app:titleTextAppearance="?attr/textAppearanceHeadlineSmall"
+        app:titleTextColor="?attr/colorOnSurface"
+        app:contentInsetStartWithNavigation="0dp"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="?attr/colorOnSurfaceVariant" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="32dp">
+            android:paddingBottom="40dp">
 
             <!-- Monochrome Mode -->
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
+                android:id="@+id/rowMonochrome"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp">
+                android:layout_height="68dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="16dp">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/theme_monochrome_title"
-                            android:textAppearance="?attr/textAppearanceTitleMedium" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/theme_monochrome_summary"
-                            android:textAppearance="?attr/textAppearanceBodySmall" />
-                    </LinearLayout>
-
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switchMonochrome"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@string/theme_monochrome_title"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/theme_monochrome_summary"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Group: Background -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/theme_group_background"
-                android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:textColor="?attr/colorPrimary" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:id="@+id/containerBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchMonochrome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             <!-- Group: Surfaces -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/theme_group_surfaces"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorPrimary" />
+            <LinearLayout android:id="@+id/containerSurfaces" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:id="@+id/containerSurfaces"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Group: Text -->
+            <!-- Group: Content -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/theme_group_text"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorPrimary" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:id="@+id/containerText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Group: Icons -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/theme_group_icons"
-                android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:textColor="?attr/colorPrimary" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:id="@+id/containerIcons"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </com.google.android.material.card.MaterialCardView>
+            <LinearLayout android:id="@+id/containerContent" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
 
             <!-- Group: Accent -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/theme_group_accent"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorPrimary" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:id="@+id/containerAccent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Group: Dividers -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/theme_group_dividers"
-                android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:textColor="?attr/colorPrimary" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:id="@+id/containerDividers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </com.google.android.material.card.MaterialCardView>
+            <LinearLayout android:id="@+id/containerAccent" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
 
             <!-- Group: System UI -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/theme_group_system_ui"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorPrimary" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:id="@+id/containerSystemUI"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Group: Extra -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/theme_group_extra"
-                android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:textColor="?attr/colorPrimary" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:id="@+id/containerExtra"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </com.google.android.material.card.MaterialCardView>
+            <LinearLayout android:id="@+id/containerSystemUI" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" />
 
             <!-- Live Preview -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="12dp"
                 android:text="@string/theme_group_live_preview"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorPrimary" />
@@ -282,58 +135,53 @@
                 layout="@layout/view_theme_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
+                android:layout_marginHorizontal="24dp" />
 
-            <!-- Reset Options -->
+            <!-- Load Presets Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/theme_group_load"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorPrimary" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:orientation="vertical">
+                android:layout_marginHorizontal="24dp"
+                android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnResetLight"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="56dp"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:text="@string/theme_btn_load_light"
-                    app:cornerRadius="14dp" />
+                    android:layout_weight="1"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:text="@string/theme_preset_light"
+                    app:cornerRadius="20dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnResetDark"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="56dp"
-                    android:layout_marginTop="8dp"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:text="@string/theme_btn_load_dark"
-                    app:cornerRadius="14dp" />
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:text="@string/theme_preset_dark"
+                    app:cornerRadius="20dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnResetAmoled"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="56dp"
-                    android:layout_marginTop="8dp"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:text="@string/theme_btn_load_amoled"
-                    app:cornerRadius="14dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnResetMaterialYou"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="8dp"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:text="@string/theme_btn_load_material_you"
-                    app:cornerRadius="14dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnResetAll"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="8dp"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:text="@string/theme_btn_reset_all"
-                    android:textColor="@color/apple_red" />
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:text="@string/theme_preset_amoled"
+                    app:cornerRadius="20dp" />
             </LinearLayout>
 
             <!-- Export / Import -->
@@ -341,6 +189,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:paddingHorizontal="24dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
@@ -350,18 +199,29 @@
                     android:layout_weight="1"
                     style="@style/Widget.Material3.Button.TonalButton"
                     android:text="@string/theme_btn_export"
-                    app:cornerRadius="14dp" />
+                    app:cornerRadius="20dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnImport"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="8dp"
                     style="@style/Widget.Material3.Button.TonalButton"
                     android:text="@string/theme_btn_import"
-                    app:cornerRadius="14dp" />
+                    app:cornerRadius="20dp" />
             </LinearLayout>
+
+            <!-- Final Action: Reset All -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnResetAll"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="24dp"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:text="@string/theme_btn_reset_all"
+                android:textColor="?attr/colorError" />
 
         </LinearLayout>
     </ScrollView>

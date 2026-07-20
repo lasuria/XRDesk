@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?attr/colorSurface">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/settingsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:minHeight="64dp"
+        android:paddingHorizontal="12dp"
+        android:title="@string/settings_language"
+        app:titleTextAppearance="?attr/textAppearanceHeadlineSmall"
+        app:titleTextColor="?attr/colorOnSurface"
+        app:titleCentered="true"
+        app:contentInsetStartWithNavigation="0dp"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="?attr/colorOnSurfaceVariant" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="24dp"
+            android:paddingBottom="32dp">
+
+            <RadioGroup
+                android:id="@+id/languageRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/langSystem"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="0dp"
+                    android:text="@string/language_system"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    app:buttonTint="?attr/colorPrimary" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/langEn"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="0dp"
+                    android:text="English"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    app:buttonTint="?attr/colorPrimary" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/langZh"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="0dp"
+                    android:text="简体中文"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    app:buttonTint="?attr/colorPrimary" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/langRu"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="0dp"
+                    android:text="Русский"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    app:buttonTint="?attr/colorPrimary" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/langUk"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="0dp"
+                    android:text="Українська"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface"
+                    app:buttonTint="?attr/colorPrimary" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

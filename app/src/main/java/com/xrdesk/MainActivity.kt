@@ -66,23 +66,23 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     private fun updateDisplayInfoUI() {
         val displayType = XrDeviceDetector.getExternalDisplayType(this)
+        val colors = ThemeEngine.getColors()
 
         if (displayType == XrDeviceDetector.ExternalDisplayType.NONE) {
-            binding.iconDisplay.setImageResource(R.drawable.ic_xr_display)
+            binding.iconDisplay.setImageResource(R.drawable.ic_premium_monitor_new)
             binding.statusDisplayValue.text = getString(R.string.external_display_not_connected)
             binding.deviceStatusLabel.isVisible = false
             
-            // Apply neutral tint to the monitor icon
-            val color = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorOnSurfaceVariant)
-            binding.iconDisplay.setColorFilter(color)
+            // Apply Material Red (Error) tint to the monitor icon
+            binding.iconDisplay.setColorFilter(colors.colorError)
         } else {
             // Pick the icon based on detected type
             if (displayType == XrDeviceDetector.ExternalDisplayType.XR_GLASSES) {
                 binding.iconDisplay.setImageResource(R.drawable.ic_xr_glasses)
                 binding.deviceStatusLabel.text = "XR Glasses Connected"
             } else {
-                binding.iconDisplay.setImageResource(R.drawable.ic_external_monitor)
-                binding.deviceStatusLabel.text = "External monitor connected"
+                binding.iconDisplay.setImageResource(R.drawable.ic_premium_monitor_new)
+                binding.deviceStatusLabel.text = getString(R.string.external_display_connected)
             }
             
             // Format resolution with descriptive labels
@@ -94,9 +94,8 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             
             binding.deviceStatusLabel.isVisible = true
             
-            // Reset tint to allow mono vector handling
-            binding.iconDisplay.setColorFilter(null)
-            binding.iconDisplay.imageTintList = null
+            // Apply Material Green (Success) tint
+            binding.iconDisplay.setColorFilter(colors.colorSuccess)
         }
     }
 

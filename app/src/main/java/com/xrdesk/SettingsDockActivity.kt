@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.slider.Slider
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.materialswitch.MaterialSwitch
 
 class SettingsDockActivity : BaseSettingsActivity() {
 
@@ -32,7 +32,7 @@ class SettingsDockActivity : BaseSettingsActivity() {
         setupToolbar(R.id.settingsToolbar, getString(R.string.settings_category_dock_title))
         applyEdgeToEdge(findViewById(R.id.settingsDockRoot))
 
-        val switchBarEnabledSwitch = findViewById<SwitchMaterial>(R.id.switchSwitchBarEnabled)
+        val switchBarEnabledSwitch = findViewById<MaterialSwitch>(R.id.switchSwitchBarEnabled)
         val switchBarScaleSlider = findViewById<Slider>(R.id.sliderSwitchBarScale)
         val switchBarScaleValue = findViewById<TextView>(R.id.switchBarScaleValue)
         val switchBarSlot1 = findViewById<android.view.View>(R.id.switchBarSlot1)
@@ -83,7 +83,7 @@ class SettingsDockActivity : BaseSettingsActivity() {
                 val currentPkg = slots.getOrNull(index)
                 val intent = Intent(this, AppPickerActivity::class.java).apply {
                     putExtra(AppPickerActivity.EXTRA_PICK_MODE, true)
-                    putExtra(AppPickerActivity.EXTRA_PICK_TITLE, getString(R.string.settings_switch_bar_pick_title, index + 1))
+                    putExtra(AppPickerActivity.EXTRA_PICK_TITLE, getString(R.string.settings_switch_bar_app_add_slot, index + 1))
                     putExtra(AppPickerActivity.EXTRA_PICK_SLOT, index)
                     putExtra(AppPickerActivity.EXTRA_CURRENT_PACKAGE, currentPkg)
                 }
@@ -94,17 +94,32 @@ class SettingsDockActivity : BaseSettingsActivity() {
 
     private fun refreshSwitchBarSlotLabels() {
         val slots = SwitchBarStore.getFavoriteSlots(this)
+        val pm = packageManager
         switchBarSlotIcons.forEachIndexed { index, imageView ->
             val pkg = slots.getOrNull(index)
             val labelView = switchBarSlotLabels[index]
             if (pkg.isNullOrBlank()) {
                 imageView.setImageResource(R.drawable.ic_add)
-                labelView.text = "Slot ${index + 1}: Select application"
+                labelView.text = getString(R.string.settings_switch_bar_app_pick_placeholder)
             } else {
-                val icon = switchBarIconMap[pkg]
-                if (icon != null) imageView.setImageDrawable(icon)
-                else imageView.setImageResource(R.drawable.ic_add)
-                labelView.text = switchBarLabelMap[pkg] ?: pkg
+                // Try map first, then direct PackageManager lookup
+                val icon = switchBarIconMap[pkg] ?: try {
+                    pm.getApplicationIcon(pkg)
+                } catch (e: Exception) {
+                    null
+                }
+                
+                if (icon != null) {
+                    imageView.setImageDrawable(icon)
+                } else {
+                    imageView.setImageResource(R.drawable.ic_add)
+                }
+
+                labelView.text = switchBarLabelMap[pkg] ?: try {
+                    pm.getApplicationLabel(pm.getApplicationInfo(pkg, 0)).toString()
+                } catch (e: Exception) {
+                    pkg
+                }
             }
         }
     }

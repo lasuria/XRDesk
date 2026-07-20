@@ -6,7 +6,7 @@ import android.widget.RadioGroup
 class SettingsLanguageActivity : BaseSettingsActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings_language)
+        setContentView(R.layout.activity_settings_language_v2)
         setupToolbar(R.id.settingsToolbar, getString(R.string.settings_language))
         applyEdgeToEdge(findViewById(android.R.id.content))
 

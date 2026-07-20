@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.google.android.material.slider.Slider
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.materialswitch.MaterialSwitch
 
 class SettingsTouchpadActivity : BaseSettingsActivity() {
 
@@ -14,18 +14,18 @@ class SettingsTouchpadActivity : BaseSettingsActivity() {
         setupToolbar(R.id.settingsToolbar, getString(R.string.settings_category_touchpad_title))
         applyEdgeToEdge(findViewById(R.id.settingsTouchpadRoot))
 
-        val keepScreenOnSwitch = findViewById<SwitchMaterial>(R.id.switchKeepScreenOn)
-        val touchpadAutoDimSwitch = findViewById<SwitchMaterial>(R.id.switchTouchpadAutoDim)
+        val keepScreenOnSwitch = findViewById<MaterialSwitch>(R.id.switchKeepScreenOn)
+        val touchpadAutoDimSwitch = findViewById<MaterialSwitch>(R.id.switchTouchpadAutoDim)
         val autoDimSliderContainer = findViewById<android.view.View>(R.id.autoDimSliderContainer)
         val touchpadDimLevelValue = findViewById<TextView>(R.id.touchpadDimLevelValue)
         val touchpadDimLevelSlider = findViewById<Slider>(R.id.sliderTouchpadDimLevel)
-        val touchpadAutoFocusSwitch = findViewById<SwitchMaterial>(R.id.switchTouchpadAutoFocus)
-        val touchpadScrollInvertSwitch = findViewById<SwitchMaterial>(R.id.switchTouchpadScrollInvert)
+        val touchpadAutoFocusSwitch = findViewById<MaterialSwitch>(R.id.switchTouchpadAutoFocus)
+        val touchpadScrollInvertSwitch = findViewById<MaterialSwitch>(R.id.switchTouchpadScrollInvert)
         val touchpadScrollSpeedValue = findViewById<TextView>(R.id.touchpadScrollSpeedValue)
         val touchpadScrollSpeedSlider = findViewById<Slider>(R.id.sliderTouchpadScrollSpeed)
         val touchpadScrollDistanceValue = findViewById<TextView>(R.id.touchpadScrollDistanceValue)
         val touchpadScrollDistanceSlider = findViewById<Slider>(R.id.sliderTouchpadScrollDistance)
-        val touchpadScrollGestureSwitch = findViewById<SwitchMaterial>(R.id.switchTouchpadScrollGesture)
+        val touchpadScrollGestureSwitch = findViewById<MaterialSwitch>(R.id.switchTouchpadScrollGesture)
         val touchpadScrollGestureGainValue = findViewById<TextView>(R.id.touchpadScrollGestureGainValue)
         val touchpadScrollGestureGainSlider = findViewById<Slider>(R.id.sliderTouchpadScrollGestureGain)
         val touchpadScrollGestureStepValue = findViewById<TextView>(R.id.touchpadScrollGestureStepValue)
@@ -33,7 +33,7 @@ class SettingsTouchpadActivity : BaseSettingsActivity() {
         val touchpadDragBoostValue = findViewById<TextView>(R.id.touchpadDragBoostValue)
         val touchpadDragBoostSlider = findViewById<Slider>(R.id.sliderTouchpadDragBoost)
         val dpadDropdown = findViewById<com.google.android.material.textfield.MaterialAutoCompleteTextView>(R.id.dpadDropdown)
-        val touchpadAutoLockSwitch = findViewById<SwitchMaterial>(R.id.switchTouchpadAutoLock)
+        val touchpadAutoLockSwitch = findViewById<MaterialSwitch>(R.id.switchTouchpadAutoLock)
         val autoLockSliderContainer = findViewById<android.view.View>(R.id.autoLockSliderContainer)
         val touchpadAutoLockValue = findViewById<TextView>(R.id.touchpadAutoLockValue)
         val touchpadAutoLockSlider = findViewById<Slider>(R.id.sliderTouchpadAutoLock)

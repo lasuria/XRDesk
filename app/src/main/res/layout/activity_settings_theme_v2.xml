@@ -9,65 +9,101 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/settingsToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="56dp"
-        android:paddingHorizontal="16dp"
-        app:title="@string/settings_theme"
+        android:layout_height="64dp"
+        android:minHeight="64dp"
+        android:paddingHorizontal="12dp"
+        android:title="@string/settings_theme"
+        app:titleTextAppearance="?attr/textAppearanceHeadlineSmall"
         app:titleTextColor="?attr/colorOnSurface"
         app:titleCentered="true"
+        app:contentInsetStartWithNavigation="0dp"
         app:navigationIcon="@drawable/ic_back"
         app:navigationIconTint="?attr/colorOnSurfaceVariant" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingTop="24dp"
+            android:paddingBottom="32dp">
 
             <RadioGroup
                 android:id="@+id/themeRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/comp_surface_xl"
-                android:padding="16dp">
+                android:paddingHorizontal="24dp">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/radioLight"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="0dp"
                     android:text="@string/theme_light"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
-                    android:textColor="?attr/colorOnSurface" />
+                    android:textColor="?attr/colorOnSurface"
+                    app:buttonTint="?attr/colorPrimary" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="?attr/colorOutlineVariant" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/radioDark"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="0dp"
                     android:text="@string/theme_dark"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
-                    android:textColor="?attr/colorOnSurface" />
+                    android:textColor="?attr/colorOnSurface"
+                    app:buttonTint="?attr/colorPrimary" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="?attr/colorOutlineVariant" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/radioAmoled"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="0dp"
                     android:text="@string/theme_amoled"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
-                    android:textColor="?attr/colorOnSurface" />
+                    android:textColor="?attr/colorOnSurface"
+                    app:buttonTint="?attr/colorPrimary" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="?attr/colorOutlineVariant" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/radioCustom"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="0dp"
                     android:text="@string/theme_custom"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
-                    android:textColor="?attr/colorOnSurface" />
+                    android:textColor="?attr/colorOnSurface"
+                    app:buttonTint="?attr/colorPrimary" />
 
             </RadioGroup>
 
@@ -76,48 +112,42 @@
                 android:id="@+id/sectionCustomize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:orientation="vertical"
+                android:paddingHorizontal="24dp"
                 android:visibility="gone">
 
-                <TextView
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/customize_theme_section"
-                    android:textAppearance="?attr/textAppearanceLabelLarge"
-                    android:textColor="?attr/colorPrimary" />
+                    android:layout_height="1dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:id="@+id/btnOpenEditor"
                     android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/comp_surface_xl_clickable"
+                    android:layout_height="64dp"
+                    android:background="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
-                    android:paddingHorizontal="20dp">
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_appearance"
-                        android:contentDescription="@string/theme_editor_title"
-                        app:tint="?attr/colorOnSurfaceVariant" />
+                    android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_weight="1"
+                        android:layout_marginStart="40dp"
                         android:text="@string/theme_editor_title"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface"
-                        android:fontFamily="sans-serif-medium" />
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface" />
+
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_chevron_right_apple"
-                        app:tint="?attr/colorOnSurfaceVariant" />
+                        app:tint="?attr/colorOnSurfaceVariant"
+                        android:alpha="0.6" />
                 </LinearLayout>
             </LinearLayout>
 

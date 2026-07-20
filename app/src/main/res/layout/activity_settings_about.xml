@@ -10,10 +10,11 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/settingsToolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:minHeight="56dp"
-        android:paddingHorizontal="16dp"
+        android:layout_height="64dp"
+        android:minHeight="64dp"
+        android:paddingHorizontal="12dp"
         android:title="@string/settings_about_title"
+        app:titleTextAppearance="?attr/textAppearanceHeadlineSmall"
         app:titleTextColor="?attr/colorOnSurface"
         app:titleCentered="true"
         app:contentInsetStartWithNavigation="0dp"
@@ -24,23 +25,25 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingBottom="32dp">
 
-            <!-- Application Card (Header) -->
+            <!-- Application Header -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/comp_surface_xl"
                 android:orientation="vertical"
-                android:padding="20dp"
+                android:padding="24dp"
                 android:gravity="center_horizontal"
-                android:layout_marginBottom="24dp">
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="16dp">
 
                 <ImageView
                     android:layout_width="64dp"
@@ -75,149 +78,138 @@
 
             </LinearLayout>
 
-            <!-- Navigation Cards -->
+            <!-- About the project -->
             <LinearLayout
                 android:id="@+id/rowXRDesk"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/comp_surface_xl_clickable"
+                android:layout_height="56dp"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="20dp"
+                android:paddingHorizontal="24dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="12dp">
+                android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_info_apple"
                     app:tint="?attr/colorOnSurfaceVariant" />
-                <LinearLayout
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/about_xrdesk_title"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface"
-                        android:fontFamily="sans-serif-medium" />
-                </LinearLayout>
+                    android:layout_marginStart="40dp"
+                    android:text="@string/about_xrdesk_title"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_chevron_right_apple"
-                    app:tint="?attr/colorOnSurfaceVariant" />
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.6" />
             </LinearLayout>
 
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:layout_marginEnd="24dp" android:background="?attr/colorOutlineVariant" />
+
+            <!-- Based on DeskControl -->
             <LinearLayout
                 android:id="@+id/rowBasedOn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/comp_surface_xl_clickable"
+                android:layout_height="56dp"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="20dp"
+                android:paddingHorizontal="24dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="12dp">
+                android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_history_apple"
                     app:tint="?attr/colorOnSurfaceVariant" />
-                <LinearLayout
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/about_based_on_title"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface"
-                        android:fontFamily="sans-serif-medium" />
-                </LinearLayout>
+                    android:layout_marginStart="40dp"
+                    android:text="@string/about_based_on_title"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_chevron_right_apple"
-                    app:tint="?attr/colorOnSurfaceVariant" />
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.6" />
             </LinearLayout>
 
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:layout_marginEnd="24dp" android:background="?attr/colorOutlineVariant" />
+
+            <!-- What's new -->
             <LinearLayout
                 android:id="@+id/rowWhatsNew"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/comp_surface_xl_clickable"
+                android:layout_height="56dp"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="20dp"
+                android:paddingHorizontal="24dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="12dp">
+                android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_hand_apple"
                     app:tint="?attr/colorOnSurfaceVariant" />
-                <LinearLayout
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/about_whats_new"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface"
-                        android:fontFamily="sans-serif-medium" />
-                </LinearLayout>
+                    android:layout_marginStart="40dp"
+                    android:text="@string/about_whats_new"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_chevron_right_apple"
-                    app:tint="?attr/colorOnSurfaceVariant" />
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.6" />
             </LinearLayout>
 
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:layout_marginEnd="24dp" android:background="?attr/colorOutlineVariant" />
+
+            <!-- Diagnostics/Journal -->
             <LinearLayout
                 android:id="@+id/rowDiagnostics"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/comp_surface_xl_clickable"
+                android:layout_height="56dp"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="20dp"
+                android:paddingHorizontal="24dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="12dp">
+                android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/ic_logs_apple"
                     app:tint="?attr/colorOnSurfaceVariant" />
-                <LinearLayout
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/diagnostics_title"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface"
-                        android:fontFamily="sans-serif-medium" />
-                </LinearLayout>
+                    android:layout_marginStart="40dp"
+                    android:text="@string/diagnostics_title"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_chevron_right_apple"
-                    app:tint="?attr/colorOnSurfaceVariant" />
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.6" />
             </LinearLayout>
 
         </LinearLayout>

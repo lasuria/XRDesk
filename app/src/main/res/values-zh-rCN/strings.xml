@@ -36,7 +36,8 @@
     <string name="app_launch_detail_security_exception">被系统阻止启动</string>
     <string name="app_launch_detail_unknown_failure">未知启动失败</string>
 
-    <string name="diagnostics_title">诊断</string>
+    <string name="diagnostics_title">日志</string>
+    <string name="diagnostics_system_status">系统状态</string>
     <string name="diagnostics_details_label">详情</string>
     <string name="diagnostics_external_display_not_connected">外接显示器：未连接</string>
     <string name="diagnostics_external_display_info">外接显示器：id=%1$d，尺寸=%2$dx%3$d，dpi=%4$d，旋转=%5$d</string>
@@ -128,6 +129,11 @@
     <string name="theme_amoled">AMOLED</string>
     <string name="theme_custom">自定义主题</string>
     <string name="theme_editor_title">主题编辑器</string>
+    <string name="theme_group_load">加载</string>
+    <string name="theme_btn_light">浅色</string>
+    <string name="theme_btn_dark">深色</string>
+    <string name="theme_btn_amoled">AMOLED</string>
+    <string name="theme_action_save">保存</string>
     <string name="customize_theme_section">自定义主题</string>
 
     <string name="theme_monochrome_title">单色主题</string>
@@ -174,6 +180,9 @@
     <string name="theme_btn_reset_all">重置所有</string>
     <string name="theme_btn_export">导出</string>
     <string name="theme_btn_import">导入</string>
+    <string name="theme_preset_light">浅色</string>
+    <string name="theme_preset_dark">深色</string>
+    <string name="theme_preset_amoled">AMOLED</string>
     <string name="theme_btn_apply">应用</string>
 
     <string name="theme_export_success">JSON 已复制到剪贴板</string>
@@ -308,7 +317,9 @@
     <string name="auto_lock_5m">5 分钟</string>
     <string name="auto_lock_7m">7 分钟</string>
     <string name="auto_lock_10m">10 分钟</string>
-    <string name="about_application">应用</string>
+    <string name="about_license_title">许可证</string>
+    <string name="about_license_content">GNU General Public License v3.0 (GPL-3.0)</string>
+    <string name="about_fork_author_label">作者</string>
     <string name="about_original_project">原始项目</string>
     <string name="about_fork_project">GitHub 项目 (Fork)</string>
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
@@ -325,13 +336,13 @@
     <string name="about_xrdesk_desc">XRDesk 是一款面向外接显示器和 XR 眼镜的现代 Android 遥控器和触控板。它允许您通过高度可定制的界面和先进s的输入处理来控制在副屏上运行的应用程序。</string>
     <string name="changelog_v1_1_0_title">版本 1.1.0</string>
     <string name="changelog_v1_1_0_date">2026年7月</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[🚀 新功能\n• 在“选择与控制”界面集成应用启动器。\n• 添加共享日志功能。\n• 添加使用触控板时闲置自动锁定屏幕的功能。\n• 可配置的闲置超时时间（15 秒至 10 分钟）。\n• 与遥控器的任何交互都会自动重置闲置计时器。\n• 重新设计“关于”部分并增加专用子页面。\n• 添加 GitHub 和 4PDA 快速链接。\n\n🎨 改进\n• 将“显示控制”重命名为“选择与控制”。\n• 细化 Material Design 3 表面层次结构（色调提升优于边框）。\n• 统一形状（24dp 圆角）、间距和排版。\n• 设置界面更整洁，视觉层次更明确，无冗余分割线。\n• 更新了 D-Pad 设计，采用现代色调表面。\n• 改进了触控目标（最小 48dp）和无障碍性。\n• 所有主题的一致性更好。\n\n🛠 修复\n• 修复若干小问题并提高稳定性。\n\n仅视觉改进。UI 磨光部分无功能变更。]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Material Design 3 UI 优化。\n• 全应用视觉语言统一。\n• 主题和语言屏幕转换为原生 Material Design 选择列表。\n• 精细化间距、排版和组件尺寸。\n• 改进导航层级。\n• 增强连接状态指示器。\n• 提高日志和信息页面的可读性。\n• 整体 UX 打磨和一致性改进。]]></string>
 
-    <string name="changelog_v1_0_0_title">版本 1.0 (正式发布)</string>
+    <string name="changelog_v1_0_5_title">版本 1.0.5</string>
+    <string name="changelog_v1_0_5_date">2026年7月</string>
+    <string name="changelog_v1_0_5_content"><![CDATA[• 添加闲置后自动锁定屏幕功能。\n• 可配置的闲置超时。\n• 添加常驻应用支持。\n• 添加快速日志共享。\n• 扩展“关于”页面。\n• 错误修复和稳定性改进。]]></string>
+
+    <string name="changelog_v1_0_0_title">版本 1.0.0</string>
     <string name="changelog_v1_0_0_date">2026年7月</string>
-    <string name="changelog_v1_0_0_content"><![CDATA[• 全面采用 Material Design 3 风格。\n• 支持 JSON 导出的高级主题系统。\n• 支持多个外部显示器。\n• 集成触控板与媒体控制。\n• 多语言支持：英语、俄语、乌克兰语、中文。]]></string>
-
-    <string name="changelog_v0_9_0_title">版本 0.9 (Beta)</string>
-    <string name="changelog_v0_9_0_date">2026年6月</string>
-    <string name="changelog_v0_9_0_content"><![CDATA[• 项目分支及基础结构建立。\n• 重新更名为 XRDesk。\n• 集成 Shizuku 以优化焦点管理。]]></string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• XRDesk 首个版本。\n• 基于 DeskControl 的分支。\n• XRDesk 品牌化。\n• 自定义主题编辑器。\n• 主题 JSON 导出/导入。\n• 浅色、深色和 AMOLED 主题。\n• 英语、俄语、乌克兰语和中文支持。\n• 初始“关于”部分。]]></string>
 </resources>

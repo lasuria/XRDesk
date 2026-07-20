@@ -10,7 +10,7 @@
 
         <item name="colorSurfaceContainerLowest">#FFFFFF</item>
         <item name="colorSurfaceContainerLow">#F7F9FC</item>
-        <item name="colorSurfaceContainer">#ECEFF5</item>
+        <item name="colorSurfaceContainer">#EBEEF4</item>
         <item name="colorSurfaceContainerHigh">#E2E8F0</item>
         <item name="colorSurfaceContainerHighest">#DEE1E6</item>
 

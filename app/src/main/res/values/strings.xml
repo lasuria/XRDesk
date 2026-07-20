@@ -4,7 +4,7 @@
 
     <string name="external_display_label">External display</string>
     <string name="external_display_connected">Connected</string>
-    <string name="external_display_not_connected">Not connected</string>
+    <string name="external_display_not_connected">Waiting for connection</string>
     <string name="accessibility_label">Accessibility</string>
     <string name="accessibility_enabled">Enabled</string>
     <string name="accessibility_required">Required</string>
@@ -39,6 +39,7 @@
     <string name="app_launch_detail_unknown_failure">Unknown launch failure</string>
 
     <string name="diagnostics_title">Logs</string>
+    <string name="diagnostics_system_status">System Status</string>
     <string name="diagnostics_details_label">Details</string>
     <string name="diagnostics_external_display_not_connected">External display: not connected</string>
     <string name="diagnostics_external_display_info">External display: id=%1$d, size=%2$dx%3$d, dpi=%4$d, rotation=%5$d</string>
@@ -108,7 +109,12 @@
     <string name="settings_switch_bar_apps">Pinned apps</string>
     <string name="settings_switch_bar_app_add_slot">Add pinned app %1$d</string>
     <string name="settings_switch_bar_app_add">Add pinned app</string>
-    <string name="settings_switch_bar_pick_title">Pick app for slot %1$d</string>
+    <string name="settings_switch_bar_app_pick_placeholder">Select application</string>
+    <string name="settings_section_display">Display</string>
+    <string name="settings_section_navigation">Navigation</string>
+    <string name="settings_section_scrolling">Scrolling</string>
+    <string name="settings_section_interaction">Interaction</string>
+    <string name="settings_section_developer">Developer</string>
     <string name="touchpad_intro_title">Touchpad tips</string>
     <string name="touchpad_intro_got_it">Got it</string>
     <string name="touchpad_intro_gesture_move">Move: slide one finger</string>
@@ -151,6 +157,11 @@
     <string name="theme_amoled">AMOLED</string>
     <string name="theme_custom">Custom Theme</string>
     <string name="theme_editor_title">Theme Editor</string>
+    <string name="theme_group_load">Load</string>
+    <string name="theme_btn_light">Light</string>
+    <string name="theme_btn_dark">Dark</string>
+    <string name="theme_btn_amoled">AMOLED</string>
+    <string name="theme_action_save">Save</string>
     <string name="customize_theme_section">Customize Theme</string>
 
     <string name="theme_monochrome_title">Monochrome Theme</string>
@@ -197,6 +208,9 @@
     <string name="theme_btn_reset_all">Reset All</string>
     <string name="theme_btn_export">Export</string>
     <string name="theme_btn_import">Import</string>
+    <string name="theme_preset_light">Light</string>
+    <string name="theme_preset_dark">Dark</string>
+    <string name="theme_preset_amoled">AMOLED</string>
     <string name="theme_btn_apply">Apply</string>
 
     <string name="theme_export_success">JSON copied to clipboard</string>
@@ -321,6 +335,7 @@
     <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
     <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
     <string name="settings_about_title">About</string>
+    <string name="settings_section_information">Information</string>
     <string name="settings_about_summary">App version and information</string>
     <string name="settings_touchpad_auto_lock_title">Auto-lock after inactivity</string>
     <string name="settings_touchpad_auto_lock_summary">Automatically locks the remote device after the selected period of inactivity while using the Touchpad.</string>
@@ -343,14 +358,15 @@
     <string name="about_original_project_desc">XRDesk is built upon the foundation of DeskControl, an open-source remote control for Android. We have extended it with a modern UI, enhanced theme engine, and specialized XR features.</string>
     <string name="about_original_author">Original Author: exiarepairii</string>
     <string name="about_fork_maintainer">Maintainer: lasuriia (Crea)</string>
-    <string name="about_license_label">License: GNU GPL v3.0</string>
+    <string name="about_fork_author_label">Author</string>
+    <string name="about_license_title">License</string>
+    <string name="about_license_content">GNU General Public License v3.0 (GPL-3.0)</string>
     <string name="about_github_label">View on GitHub</string>
     <string name="about_issues_label">Report an Issue</string>
     <string name="about_whats_new">What\'s new</string>
     <string name="about_whats_new_summary">Changelog and release notes</string>
     <string name="app_version_label">Version 1.1.0</string>
     <string name="app_build_label">Build 2026.07.20</string>
-    <string name="about_project_url" translatable="false">https://github.com/exiarepairii/xrdesk</string>
     <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
     <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
     <string name="about_4pda_label">4PDA Profile</string>
@@ -358,13 +374,13 @@
     <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
     <string name="changelog_v1_1_0_title">Version 1.1.0</string>
     <string name="changelog_v1_1_0_date">July 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[🚀 New Features\n• Added an integrated app launcher inside the Select & Control screen.\n• Added Share Logs for quick log sharing.\n• Added automatic screen lock after inactivity while using the Touchpad.\n• Configurable inactivity timeout (15 seconds to 10 minutes).\n• Any interaction with the remote automatically resets the inactivity timer.\n• Redesigned the About section with dedicated sub-pages.\n• Added quick links to GitHub and 4PDA profile.\n\n🎨 Improvements\n• Renamed Display Control to Select & Control.\n• Refined Material Design 3 surface hierarchy.\n• Unified shapes, spacing and typography.\n• Cleaner settings screens.\n• Updated D-Pad design.\n• Improved touch targets and accessibility.\n• Better consistency across all themes.\n\n🛠 Fixes\n• Minor bug fixes and stability improvements.\n\nVisual improvements only. No functionality changes in UI polish section.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Material Design 3 UI refinement.\n• Unified visual language across the entire application.\n• Converted Themes and Language screens to native Material Design selection lists.\n• Refined spacing, typography and component sizing.\n• Improved navigation hierarchy.\n• Enhanced connection status indicators.\n• Improved readability of logs and information pages.\n• Overall UX polish and consistency improvements.]]></string>
 
-    <string name="changelog_v1_0_0_title">Version 1.0 (Initial Release)</string>
+    <string name="changelog_v1_0_5_title">Version 1.0.5</string>
+    <string name="changelog_v1_0_5_date">July 2026</string>
+    <string name="changelog_v1_0_5_content"><![CDATA[• Added screen auto-lock on inactivity.\n• Added inactivity timeout configuration.\n• Added pinned applications support.\n• Added quick log sharing.\n• Expanded About pages.\n• Bug fixes and stability improvements.]]></string>
+
+    <string name="changelog_v1_0_0_title">Version 1.0.0</string>
     <string name="changelog_v1_0_0_date">July 2026</string>
-    <string name="changelog_v1_0_0_content"><![CDATA[• Full Material Design 3 implementation.\n• Advanced Theme System with JSON export.\n• Support for multiple external displays.\n• Touchpad and Media Controls.\n• Multilingual: English, Russian, Ukrainian, Chinese.]]></string>
-
-    <string name="changelog_v0_9_0_title">Version 0.9 (Beta)</string>
-    <string name="changelog_v0_9_0_date">June 2026</string>
-    <string name="changelog_v0_9_0_content"><![CDATA[• Initial project fork and structure.\n• Package renaming to XRDesk.\n• Integration of Shizuku for focus management.]]></string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• Initial XRDesk release.\n• Fork of DeskControl.\n• XRDesk branding.\n• Custom Theme Editor.\n• Theme import/export (JSON).\n• Light, Dark and AMOLED themes.\n• English, Russian, Ukrainian and Chinese languages.\n• Initial About section.]]></string>
 </resources>

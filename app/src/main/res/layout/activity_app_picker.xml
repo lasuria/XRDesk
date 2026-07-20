@@ -32,8 +32,7 @@
             android:layout_marginTop="16dp"
             android:hint="@string/app_search_hint"
             app:boxBackgroundColor="?attr/colorSurfaceContainer"
-            app:boxStrokeWidth="1dp"
-            app:boxStrokeColor="?attr/colorOutline"
+            app:boxStrokeWidth="0dp"
             app:boxCornerRadiusTopStart="24dp"
             app:boxCornerRadiusTopEnd="24dp"
             app:boxCornerRadiusBottomStart="24dp"
@@ -48,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:paddingVertical="16dp"
+                android:paddingVertical="12dp"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textColor="?attr/colorOnSurface" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -57,7 +56,7 @@
             android:id="@+id/appList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:clipToPadding="false"
             android:paddingBottom="24dp" />
     </LinearLayout>

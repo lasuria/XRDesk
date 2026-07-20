@@ -6,9 +6,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="12dp"
-    android:layout_margin="4dp"
-    android:background="@drawable/comp_surface_xl_clickable"
+    android:padding="8dp"
+    android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
 
@@ -30,7 +29,7 @@
             android:src="@drawable/ic_ok"
             android:visibility="gone"
             app:tint="?attr/colorPrimary"
-            android:background="?attr/colorSurfaceContainer"
+            android:background="?attr/colorSurface"
             android:padding="2dp" />
     </FrameLayout>
 
@@ -40,11 +39,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/app_placeholder_name"
-        android:textAppearance="?attr/textAppearanceLabelSmall"
+        android:textAppearance="?attr/textAppearanceLabelMedium"
         android:textColor="?attr/colorOnSurface"
-        android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:maxLines="2"
+        android:minLines="2"
         android:ellipsize="end" />
 
     <TextView
@@ -52,11 +51,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/chevronIcon"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
-
 </LinearLayout>

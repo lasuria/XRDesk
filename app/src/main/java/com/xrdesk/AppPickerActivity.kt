@@ -156,19 +156,8 @@ class AppPickerActivity : AppCompatActivity() {
                 binding.root.setOnClickListener { onClick(entry) }
                 
                 binding.selectedCheckmark.isVisible = isSelected
-                binding.chevronIcon.isVisible = !isSelected
                 
-                if (isSelected) {
-                    val context = binding.root.context
-                    val premiumCard = androidx.core.content.ContextCompat.getDrawable(context, R.drawable.comp_surface_xl)
-                    binding.appItemRoot.background = premiumCard
-                    // Add accent border logic if needed, but comp_surface_xl already has a border.
-                    // We could apply a custom tint to the border if we had a dedicated drawable.
-                } else {
-                    val context = binding.root.context
-                    val clickableCard = androidx.core.content.ContextCompat.getDrawable(context, R.drawable.comp_surface_xl_clickable)
-                    binding.appItemRoot.background = clickableCard
-                }
+                // No card backgrounds for lighter grid
             }
         }
     }

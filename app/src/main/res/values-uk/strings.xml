@@ -36,7 +36,8 @@
     <string name="app_launch_detail_security_exception">SecurityException</string>
     <string name="app_launch_detail_unknown_failure">Невідома помилка запуску</string>
 
-    <string name="diagnostics_title">Логи</string>
+    <string name="diagnostics_title">Журнал</string>
+    <string name="diagnostics_system_status">Статус системи</string>
     <string name="diagnostics_details_label">Подробиці</string>
     <string name="diagnostics_external_display_not_connected">Зовнішній дисплей: не підключено</string>
     <string name="diagnostics_external_display_info">Зовнішній дисплей: id=%1$d, розмір=%2$dx%3$d, dpi=%4$d, поворот=%5$d</string>
@@ -106,7 +107,12 @@
     <string name="settings_switch_bar_apps">Закріплені додатки</string>
     <string name="settings_switch_bar_app_add_slot">Додати додаток у слот %1$d</string>
     <string name="settings_switch_bar_app_add">Додати додаток</string>
-    <string name="settings_switch_bar_pick_title">Виберіть додаток для слота %1$d</string>
+    <string name="settings_switch_bar_app_pick_placeholder">Вибрати додаток</string>
+    <string name="settings_section_display">Екран</string>
+    <string name="settings_section_navigation">Навігація</string>
+    <string name="settings_section_scrolling">Прокручування</string>
+    <string name="settings_section_interaction">Взаємодія</string>
+    <string name="settings_section_developer">Розробник</string>
     <string name="touchpad_intro_title">Поради щодо тачпада</string>
     <string name="touchpad_intro_got_it">Зрозуміло</string>
     <string name="touchpad_intro_gesture_move">Рух: ведіть одним пальцем</string>
@@ -149,6 +155,11 @@
     <string name="theme_amoled">AMOLED</string>
     <string name="theme_custom">Власна тема</string>
     <string name="theme_editor_title">Редактор тем</string>
+    <string name="theme_group_load">Завантажити</string>
+    <string name="theme_btn_light">Світла</string>
+    <string name="theme_btn_dark">Темна</string>
+    <string name="theme_btn_amoled">AMOLED</string>
+    <string name="theme_action_save">Зберегти</string>
     <string name="customize_theme_section">Налаштувати тему</string>
 
     <string name="theme_monochrome_title">Монохромна тема</string>
@@ -195,6 +206,9 @@
     <string name="theme_btn_reset_all">Скинути все</string>
     <string name="theme_btn_export">Експорт</string>
     <string name="theme_btn_import">Імпорт</string>
+    <string name="theme_preset_light">Світла</string>
+    <string name="theme_preset_dark">Темна</string>
+    <string name="theme_preset_amoled">AMOLED</string>
     <string name="theme_btn_apply">Застосувати</string>
 
     <string name="theme_export_success">JSON скопійовано в буфер обміну</string>
@@ -329,30 +343,32 @@
     <string name="auto_lock_5m">5 хвилин</string>
     <string name="auto_lock_7m">7 хвилин</string>
     <string name="auto_lock_10m">10 хвилин</string>
-    <string name="about_application">Додаток</string>
+    <string name="about_fork_author_label">Автор</string>
+    <string name="about_license_title">Ліцензія</string>
+    <string name="about_license_content">GNU General Public License v3.0 (GPL-3.0)</string>
     <string name="about_original_project">Оригінальний проект</string>
     <string name="about_fork_project">GitHub проект (Форк)</string>
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">версія v.1.1.5.post2</string>
     <string name="about_whats_new">Що нового</string>
-    <string name="app_version_label">Version 1.1.0</string>
+    <string name="app_version_label">Версія 1.1.0</string>
     <string name="app_build_label">Збірка 2026.07.20</string>
+    <string name="about_xrdesk_summary">Версія 1.1.0 • Збірка 2026.07.20</string>
     <string name="about_based_on_title">Засновано на DeskControl</string>
     <string name="about_based_on_summary">Оригінальний проект (DeskControl)</string>
     <string name="about_xrdesk_title">Про проект</string>
-    <string name="about_xrdesk_summary">Версія 1.1.0 • Збірка 2026.07.20</string>
     <string name="about_whats_new_summary">Історія версій та змін</string>
     <string name="about_4pda_label">Профіль 4PDA</string>
     <string name="about_xrdesk_desc">XRDesk — це сучасний пульт та тачпад для зовнішніх дисплеїв та XR-окулярів на Android. Він дозволяє керувати додатками на другому екрані за допомогою налаштовуваного інтерфейсу та просунутої обробки введення.</string>
     <string name="changelog_v1_1_0_title">Версія 1.1.0</string>
     <string name="changelog_v1_1_0_date">Липень 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[🚀 Нове\n• Інтегрований лаунчер всередині екрана «Вибір і керування».\n• Функція «Поділитися логами».\n• Автоблокування екрана при бездіяльності на тачпаді.\n• Настроюваний час бездіяльності (від 15 секунд до 10 хвилин).\n• Скидання таймера при будь-якій взаємодії з пультом.\n• Перероблений розділ «Про додаток» з вкладеними сторінками.\n• Посилання на GitHub та профіль автора на 4PDA.\n\n🎨 Покращення\n• Перейменування «Управління дисплеєм» на «Вибір і керування».\n• Оновлена ієрархія поверхонь Material Design 3.\n• Уніфіковані форми, відступи та типографіка.\n• Чистіший дизайн налаштувань.\n• Оновлений дизайн пульта (D-Pad).\n• Покращені області натискання та доступність.\n• Краща узгодженість між темами.\n\n🛠 Виправлення\n• Дрібні виправлення та підвищення стабільності.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Оновлення інтерфейсу до Material Design 3.\n• Єдиний візуальний стиль у всьому додатку.\n• Екрани тем та мов замінені на нативні списки вибору.\n• Уточнені відступи, типографіка та розміри компонентів.\n• Покращена ієрархія навігації.\n• Додані індикатори стану підключення.\n• Покращена читабельність логів та сторінок з інформацією.\n• Загальне полірування UX та виправлення невідповідностей.]]></string>
 
-    <string name="changelog_v1_0_0_title">Версія 1.0 (Перший реліз)</string>
+    <string name="changelog_v1_0_5_title">Версія 1.0.5</string>
+    <string name="changelog_v1_0_5_date">Липень 2026</string>
+    <string name="changelog_v1_0_5_content"><![CDATA[• Додано автоблокування екрана при бездіяльності.\n• Налаштування тайм-ауту бездіяльності.\n• Підтримка закріплених додатків.\n• Швидке надсилання логів.\n• Розширені сторінки «Про додаток».\n• Виправлення помилок та підвищення стабільності.]]></string>
+
+    <string name="changelog_v1_0_0_title">Версія 1.0.0</string>
     <string name="changelog_v1_0_0_date">Липень 2026</string>
-    <string name="changelog_v1_0_0_content"><![CDATA[• Повна реалізація Material Design 3.\n• Просунута система тем з експортом JSON.\n• Підтримка кількох зовнішніх дисплеїв.\n• Тачпад та управління мультимедіа.\n• Багатомовність: Англійська, Російська, Українська, Китайська.]]></string>
-
-    <string name="changelog_v0_9_0_title">Версія 0.9 (Бета)</string>
-    <string name="changelog_v0_9_0_date">Червень 2026</string>
-    <string name="changelog_v0_9_0_content"><![CDATA[• Форк проекту та базова структура.\n• Перейменування пакетів на XRDesk.\n• Інтеграція Shizuku для управління фокусом.]]></string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• Перший реліз XRDesk.\n• Форк DeskControl.\n• Брендинг XRDesk.\n• Редактор тем.\n• Імпорт/експорт тем (JSON).\n• Світла, Темна та AMOLED теми.\n• Англійська, російська, українська та китайська мови.\n• Початковий розділ «Про додаток».]]></string>
 </resources>
