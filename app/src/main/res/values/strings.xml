@@ -110,10 +110,14 @@
     <string name="settings_switch_bar_app_add_slot">Add pinned app %1$d</string>
     <string name="settings_switch_bar_app_add">Add pinned app</string>
     <string name="settings_switch_bar_app_pick_placeholder">Select application</string>
-    <string name="settings_section_display">Display</string>
+    <string name="settings_section_display">Screen</string>
+    <string name="settings_section_brightness">Brightness</string>
+    <string name="settings_section_security">Security</string>
     <string name="settings_section_navigation">Navigation</string>
     <string name="settings_section_scrolling">Scrolling</string>
     <string name="settings_section_interaction">Interaction</string>
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="settings_section_behavior">Behavior</string>
     <string name="settings_section_developer">Developer</string>
     <string name="touchpad_intro_title">Touchpad tips</string>
     <string name="touchpad_intro_got_it">Got it</string>
@@ -131,6 +135,8 @@
     <string name="settings_title">Settings</string>
     <string name="settings_category_appearance_title">Appearance</string>
     <string name="settings_category_appearance_summary">Theme and language</string>
+    <string name="settings_category_display_title">Display</string>
+    <string name="settings_category_display_summary">Screen, brightness and lock</string>
     <string name="settings_category_touchpad_title">Touchpad</string>
     <string name="settings_category_touchpad_summary">D-Pad, Scrolling and focus</string>
     <string name="settings_category_cursor_title">Cursor</string>
@@ -352,7 +358,7 @@
     <string name="about_based_on_title">Based on DeskControl</string>
     <string name="about_based_on_summary">Original project (DeskControl)</string>
     <string name="about_xrdesk_title">About Project</string>
-    <string name="about_xrdesk_summary">Version 1.1.0 • Build 2026.07.20</string>
+    <string name="about_xrdesk_summary">Version 1.1.5 • Build 2026.07.21</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk is built upon the foundation of DeskControl, an open-source remote control for Android. We have extended it with a modern UI, enhanced theme engine, and specialized XR features.</string>
@@ -361,17 +367,25 @@
     <string name="about_fork_author_label">Author</string>
     <string name="about_license_title">License</string>
     <string name="about_license_content">GNU General Public License v3.0 (GPL-3.0)</string>
+    <string name="about_original_project">Original Project</string>
+    <string name="about_fork_project">GitHub Project (Fork)</string>
+    <string name="about_fork_project_summary">lasuria/XRDesk</string>
+    <string name="about_original_project_summary">version v.1.1.5.post2</string>
     <string name="about_github_label">View on GitHub</string>
     <string name="about_issues_label">Report an Issue</string>
     <string name="about_whats_new">What\'s new</string>
     <string name="about_whats_new_summary">Changelog and release notes</string>
-    <string name="app_version_label">Version 1.1.0</string>
-    <string name="app_build_label">Build 2026.07.20</string>
+    <string name="app_version_label">Version 1.1.5</string>
+    <string name="app_build_label">Build 2026.07.21</string>
     <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
     <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
     <string name="about_4pda_label">4PDA Profile</string>
     <string name="about_xrdesk_desc">XRDesk is a modern Android Remote &amp; Touchpad for External Displays and XR Glasses. It allows you to control applications running on secondary screens with a highly customizable interface and advanced input processing.</string>
     <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
+    <string name="changelog_v1_1_5_title">Version 1.1.5</string>
+    <string name="changelog_v1_1_5_date">July 2026</string>
+    <string name="changelog_v1_1_5_content"><![CDATA[• Completely redesigned Theme Editor.\n• Reorganized settings into Screen, Touchpad and Cursor sections.\n• Unified the design of switches, buttons and controls.\n• Updated Theme Editor to match the application\'s Material Design 3 style.\n• Improved navigation and settings layout.\n• Improved translations and localization.\n• Various UI and UX improvements.]]></string>
+
     <string name="changelog_v1_1_0_title">Version 1.1.0</string>
     <string name="changelog_v1_1_0_date">July 2026</string>
     <string name="changelog_v1_1_0_content"><![CDATA[• Material Design 3 UI refinement.\n• Unified visual language across the entire application.\n• Converted Themes and Language screens to native Material Design selection lists.\n• Refined spacing, typography and component sizing.\n• Improved navigation hierarchy.\n• Enhanced connection status indicators.\n• Improved readability of logs and information pages.\n• Overall UX polish and consistency improvements.]]></string>

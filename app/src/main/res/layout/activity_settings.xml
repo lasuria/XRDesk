@@ -104,6 +104,40 @@
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:layout_marginEnd="24dp" android:background="?attr/colorOutlineVariant" />
 
+            <!-- Display Row -->
+            <LinearLayout
+                android:id="@+id/rowDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingHorizontal="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_monitor_apple"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/settings_category_display_title"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurface" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right_apple"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:alpha="0.6" />
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="64dp" android:layout_marginEnd="24dp" android:background="?attr/colorOutlineVariant" />
+
             <!-- Touchpad Row -->
             <LinearLayout
                 android:id="@+id/rowTouchpad"

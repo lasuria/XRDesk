@@ -325,15 +325,19 @@
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">版本 v.1.1.5.post2</string>
     <string name="about_whats_new">更新日志</string>
-    <string name="app_version_label">Version 1.1.0</string>
-    <string name="app_build_label">构建 2026.07.20</string>
+    <string name="app_version_label">Version 1.1.5</string>
+    <string name="app_build_label">构建 2026.07.21</string>
     <string name="about_based_on_title">基于 DeskControl</string>
     <string name="about_based_on_summary">原始项目 (DeskControl)</string>
     <string name="about_xrdesk_title">关于项目</string>
-    <string name="about_xrdesk_summary">版本 1.1.0 • 构建 2026.07.20</string>
+    <string name="about_xrdesk_summary">版本 1.1.5 • 构建 2026.07.21</string>
     <string name="about_whats_new_summary">更新日志与发行说明</string>
     <string name="about_4pda_label">4PDA 个人资料</string>
     <string name="about_xrdesk_desc">XRDesk 是一款面向外接显示器和 XR 眼镜的现代 Android 遥控器和触控板。它允许您通过高度可定制的界面和先进s的输入处理来控制在副屏上运行的应用程序。</string>
+    <string name="changelog_v1_1_5_title">版本 1.1.5</string>
+    <string name="changelog_v1_1_5_date">2026年7月</string>
+    <string name="changelog_v1_1_5_content"><![CDATA[• 完全重新设计的主题编辑器。\n• 设置重新组织为显示、触控板和光标部分。\n• 统一了开关、按钮和控制件的设计。\n• 更新了主题编辑器以匹配应用的 Material Design 3 风格。\n• 改进了导航和设置布局。\n• 改进了翻译和本地化。\n• 多项 UI 和 UX 改进。]]></string>
+
     <string name="changelog_v1_1_0_title">版本 1.1.0</string>
     <string name="changelog_v1_1_0_date">2026年7月</string>
     <string name="changelog_v1_1_0_content"><![CDATA[• Material Design 3 UI 优化。\n• 全应用视觉语言统一。\n• 主题和语言屏幕转换为原生 Material Design 选择列表。\n• 精细化间距、排版和组件尺寸。\n• 改进导航层级。\n• 增强连接状态指示器。\n• 提高日志和信息页面的可读性。\n• 整体 UX 打磨和一致性改进。]]></string>

@@ -109,9 +109,13 @@
     <string name="settings_switch_bar_app_add">Добавить приложение</string>
     <string name="settings_switch_bar_app_pick_placeholder">Выбрать приложение</string>
     <string name="settings_section_display">Экран</string>
+    <string name="settings_section_brightness">Яркость</string>
+    <string name="settings_section_security">Безопасность</string>
     <string name="settings_section_navigation">Навигация</string>
     <string name="settings_section_scrolling">Прокрутка</string>
     <string name="settings_section_interaction">Взаимодействие</string>
+    <string name="settings_section_appearance">Внешний вид</string>
+    <string name="settings_section_behavior">Поведение</string>
     <string name="settings_section_developer">Разработчик</string>
     <string name="touchpad_intro_title">Советы по тачпаду</string>
     <string name="touchpad_intro_got_it">Понятно</string>
@@ -129,6 +133,8 @@
     <string name="settings_title">Настройки</string>
     <string name="settings_category_appearance_title">Внешний вид</string>
     <string name="settings_category_appearance_summary">Тема и язык приложения</string>
+    <string name="settings_category_display_title">Экран</string>
+    <string name="settings_category_display_summary">Яркость, сон и блокировка</string>
     <string name="settings_category_touchpad_title">Тачпад</string>
     <string name="settings_category_touchpad_summary">Прокрутка, фокус и автозатемнение</string>
     <string name="settings_category_cursor_title">Курсор</string>
@@ -351,15 +357,19 @@
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">версия v.1.1.5.post2</string>
     <string name="about_whats_new">Что нового</string>
-    <string name="app_version_label">Версия 1.1.0</string>
-    <string name="app_build_label">Сборка 2026.07.20</string>
-    <string name="about_xrdesk_summary">Версия 1.1.0 • Сборка 2026.07.20</string>
+    <string name="app_version_label">Версия 1.1.5</string>
+    <string name="app_build_label">Сборка 2026.07.21</string>
+    <string name="about_xrdesk_summary">Версия 1.1.5 • Сборка 2026.07.21</string>
     <string name="about_based_on_title">Основано на DeskControl</string>
     <string name="about_based_on_summary">Оригинальный проект (DeskControl)</string>
     <string name="about_xrdesk_title">О проекте</string>
     <string name="about_whats_new_summary">Список изменений и примечания</string>
     <string name="about_4pda_label">Профиль 4PDA</string>
     <string name="about_xrdesk_desc">XRDesk — это современный пульт и тачпад для внешних дисплеев и XR-очков на Android. Он позволяет управлять приложениями на втором экране с помощью настраиваемого интерфейса и продвинутой обработки ввода.</string>
+    <string name="changelog_v1_1_5_title">Версия 1.1.5</string>
+    <string name="changelog_v1_1_5_date">Июль 2026</string>
+    <string name="changelog_v1_1_5_content"><![CDATA[• Полностью переработан Редактор тем.\n• Настройки разделены на Экран, Тачпад и Курсор.\n• Унифицирован дизайн переключателей, кнопок и элементов управления.\n• Редактор тем приведен к общему стилю Material Design 3.\n• Улучшена навигация и структура параметров.\n• Обновлены переводы и локализация.\n• Различные улучшения интерфейса и UX.]]></string>
+
     <string name="changelog_v1_1_0_title">Версия 1.1.0</string>
     <string name="changelog_v1_1_0_date">Июль 2026</string>
     <string name="changelog_v1_1_0_content"><![CDATA[• Обновление интерфейса до Material Design 3.\n• Единый визуальный стиль во всем приложении.\n• Экраны тем и языков заменены на нативные списки выбора.\n• Уточнены отступы, типографика и размеры компонентов.\n• Улучшена иерархия навигации.\n• Добавлены индикаторы состояния подключения.\n• Улучшена читаемость логов и страниц с информацией.\n• Общая полировка UX и исправление несоответствий.]]></string>

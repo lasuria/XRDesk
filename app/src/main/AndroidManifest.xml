@@ -63,6 +63,11 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".SettingsDisplayActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".SettingsTouchpadActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

@@ -351,15 +351,19 @@
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">версія v.1.1.5.post2</string>
     <string name="about_whats_new">Що нового</string>
-    <string name="app_version_label">Версія 1.1.0</string>
-    <string name="app_build_label">Збірка 2026.07.20</string>
-    <string name="about_xrdesk_summary">Версія 1.1.0 • Збірка 2026.07.20</string>
+    <string name="app_version_label">Версія 1.1.5</string>
+    <string name="app_build_label">Збірка 2026.07.21</string>
+    <string name="about_xrdesk_summary">Версія 1.1.5 • Збірка 2026.07.21</string>
     <string name="about_based_on_title">Засновано на DeskControl</string>
     <string name="about_based_on_summary">Оригінальний проект (DeskControl)</string>
     <string name="about_xrdesk_title">Про проект</string>
     <string name="about_whats_new_summary">Історія версій та змін</string>
     <string name="about_4pda_label">Профіль 4PDA</string>
     <string name="about_xrdesk_desc">XRDesk — це сучасний пульт та тачпад для зовнішніх дисплеїв та XR-окулярів на Android. Він дозволяє керувати додатками на другому екрані за допомогою налаштовуваного інтерфейсу та просунутої обробки введення.</string>
+    <string name="changelog_v1_1_5_title">Версія 1.1.5</string>
+    <string name="changelog_v1_1_5_date">Липень 2026</string>
+    <string name="changelog_v1_1_5_content"><![CDATA[• Повністю перероблено Редактор тем.\n• Налаштування розділені на Екран, Тачпад та Курсор.\n• Уніфіковано дизайн перемикачів, кнопок та елементів керування.\n• Редактор тем приведено до загального стилю Material Design 3.\n• Покращено навігацію та структуру параметрів.\n• Оновлено переклади та локалізацію.\n• Різноманітні покращення інтерфейсу та UX.]]></string>
+
     <string name="changelog_v1_1_0_title">Версія 1.1.0</string>
     <string name="changelog_v1_1_0_date">Липень 2026</string>
     <string name="changelog_v1_1_0_content"><![CDATA[• Оновлення інтерфейсу до Material Design 3.\n• Єдиний візуальний стиль у всьому додатку.\n• Екрани тем та мов замінені на нативні списки вибору.\n• Уточнені відступи, типографіка та розміри компонентів.\n• Покращена ієрархія навігації.\n• Додані індикатори стану підключення.\n• Покращена читабельність логів та сторінок з інформацією.\n• Загальне полірування UX та виправлення невідповідностей.]]></string>

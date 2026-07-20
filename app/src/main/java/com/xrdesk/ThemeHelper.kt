@@ -81,14 +81,16 @@ object ThemeHelper {
                 if (isKnownCard) {
                     view.background = createCardDrawable(view.context, colors, clickable = view.isClickable)
                 } else if (bg != null && (bg is GradientDrawable || bg is RippleDrawable)) {
-                    // Exclude flat rows from card injection
-                    if (id != R.id.btnOpenEditor && id != R.id.themeRadioGroup &&
-                        id != R.id.switchBarSlot1 && id != R.id.switchBarSlot2 && id != R.id.switchBarSlot3 &&
-                        id != R.id.rowXRDesk && id != R.id.rowBasedOn && id != R.id.rowWhatsNew && id != R.id.rowDiagnostics &&
-                        id != R.id.rowTheme && id != R.id.rowLanguage && id != R.id.rowTouchpad && 
-                        id != R.id.rowCursor && id != R.id.rowDock && id != R.id.rowAbout &&
-                        id != R.id.btnGitHub && id != R.id.btn4PDA && id != R.id.btnIssues &&
-                        id != R.id.rowMonochrome && id != R.id.rowColorPreference && id != R.id.rowSwitchPreference) {
+                    // Exclude specific views that should remain flat even if they have a ripple/shape
+                    val activityName = view.context?.javaClass?.simpleName ?: ""
+                    val isFlatActivity = activityName == "ThemeEditorActivity" || activityName == "SettingsActivity" || 
+                                       activityName == "SettingsLanguageActivity" || activityName == "SettingsThemeActivity" ||
+                                       activityName == "SettingsTouchpadActivity" || activityName == "SettingsCursorActivity" ||
+                                       activityName == "SettingsDockActivity" || activityName == "SettingsAboutActivity" ||
+                                       activityName == "AboutXRDeskActivity" || activityName == "AboutBasedOnActivity" ||
+                                       activityName == "DiagnosticsActivity" || activityName == "SettingsChangelogActivity"
+
+                    if (!isKnownCard && !isFlatActivity) {
                         view.background = createCardDrawable(view.context, colors, clickable = view.isClickable)
                     }
                 } else if (view !is android.widget.ScrollView && view !is android.widget.ListView) {

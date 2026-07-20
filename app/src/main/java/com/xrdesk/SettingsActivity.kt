@@ -19,6 +19,10 @@ class SettingsActivity : BaseSettingsActivity() {
             startActivity(Intent(this, SettingsLanguageActivity::class.java))
         }
 
+        findViewById<android.view.View>(R.id.rowDisplay).setOnClickListener {
+            startActivity(Intent(this, SettingsDisplayActivity::class.java))
+        }
+
         findViewById<android.view.View>(R.id.rowTouchpad).setOnClickListener {
             startActivity(Intent(this, SettingsTouchpadActivity::class.java))
         }

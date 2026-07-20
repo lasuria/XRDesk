@@ -7,8 +7,8 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import com.xrdesk.databinding.ActivityThemeEditorBinding
-import com.xrdesk.databinding.ItemColorPreferenceBinding
-import com.xrdesk.databinding.ItemSwitchPreferenceBinding
+import com.xrdesk.databinding.ItemColorPreferenceV2Binding
+import com.xrdesk.databinding.ItemSwitchPreferenceV2Binding
 
 /**
  * Activity for editing the Custom theme colors.
@@ -177,7 +177,7 @@ class ThemeEditorActivity : BaseSettingsActivity() {
             container.addView(divider)
         }
 
-        val itemBinding = ItemColorPreferenceBinding.inflate(LayoutInflater.from(this), container, false)
+        val itemBinding = ItemColorPreferenceV2Binding.inflate(LayoutInflater.from(this), container, false)
         itemBinding.title.text = title
         itemBinding.colorPreview.setBackgroundColor(color)
         itemBinding.root.setOnClickListener {
@@ -205,7 +205,7 @@ class ThemeEditorActivity : BaseSettingsActivity() {
             container.addView(divider)
         }
 
-        val itemBinding = ItemSwitchPreferenceBinding.inflate(LayoutInflater.from(this), container, false)
+        val itemBinding = ItemSwitchPreferenceV2Binding.inflate(LayoutInflater.from(this), container, false)
         itemBinding.title.text = title
         itemBinding.switchWidget.isChecked = checked
         itemBinding.switchWidget.setOnCheckedChangeListener { _, isChecked ->
