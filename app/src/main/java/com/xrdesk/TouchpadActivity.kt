@@ -32,6 +32,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     private lateinit var binding: ActivityTouchpadBinding
     private val processor = TouchpadProcessor(TouchpadTuning)
     private val handler = Handler(Looper.getMainLooper())
+    private var autoLockRunnable: Runnable? = null
     private var dimRunnable: Runnable? = null
     private var dimAnimator: ValueAnimator? = null
     private var originalWindowBrightness: Float = 0f
@@ -222,6 +223,13 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         setTouchpadActive(false)
         showTouchpadIntroIfNeeded()
 
+        autoLockRunnable = Runnable {
+            if (!binding.blackoutOverlay.isVisible) {
+                DiagnosticsLog.add("Touchpad: auto-lock triggered")
+                setBlackoutVisible(true)
+            }
+        }
+
         onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -287,6 +295,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     override fun onResume() {
         super.onResume()
         updateKeepScreenOn(true)
+        resetAutoLockTimer()
         if (touchpadActive) {
             startAutoDimSession()
         } else {
@@ -301,6 +310,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     override fun onPause() {
         stopAutoDimSession()
+        cancelAutoLockTimer()
         cancelLongPress()
         exitScrollMode()
         updateKeepScreenOn(false)
@@ -330,6 +340,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     override fun onDestroy() {
         stopAutoDimSession()
+        cancelAutoLockTimer()
         cancelLongPress()
         exitScrollMode()
         Shizuku.removeBinderReceivedListener(shizukuBinderListener)
@@ -338,7 +349,17 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         super.onDestroy()
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            resetAutoLockTimer()
+        } else {
+            cancelAutoLockTimer()
+        }
+    }
+
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        resetAutoLockTimer()
         if (binding.blackoutOverlay.isVisible) {
             return super.dispatchTouchEvent(event)
         }
@@ -354,6 +375,16 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             }
         }
         return super.dispatchTouchEvent(event)
+    }
+
+    override fun dispatchKeyEvent(event: android.view.KeyEvent): Boolean {
+        resetAutoLockTimer()
+        return super.dispatchKeyEvent(event)
+    }
+
+    override fun onGenericMotionEvent(event: MotionEvent): Boolean {
+        resetAutoLockTimer()
+        return super.onGenericMotionEvent(event)
     }
 
     private fun handleTouch(event: MotionEvent) {
@@ -517,6 +548,11 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             binding.blackoutOverlay.translationY = 0f
         }
         binding.blackoutOverlay.isVisible = visible
+        if (!visible) {
+            resetAutoLockTimer()
+        } else {
+            cancelAutoLockTimer()
+        }
         DiagnosticsLog.add("Touchpad: blackout=$visible")
     }
 
@@ -1099,6 +1135,18 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     private fun cancelDimAnimator() {
         dimAnimator?.cancel()
         dimAnimator = null
+    }
+
+    private fun resetAutoLockTimer() {
+        cancelAutoLockTimer()
+        if (SettingsStore.touchpadAutoLockEnabled && !binding.blackoutOverlay.isVisible) {
+            val timeout = SettingsStore.touchpadAutoLockTimeoutMs
+            autoLockRunnable?.let { handler.postDelayed(it, timeout) }
+        }
+    }
+
+    private fun cancelAutoLockTimer() {
+        autoLockRunnable?.let { handler.removeCallbacks(it) }
     }
 
     companion object {

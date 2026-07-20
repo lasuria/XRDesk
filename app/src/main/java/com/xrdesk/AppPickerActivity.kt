@@ -160,13 +160,13 @@ class AppPickerActivity : AppCompatActivity() {
                 
                 if (isSelected) {
                     val context = binding.root.context
-                    val premiumCard = androidx.core.content.ContextCompat.getDrawable(context, R.drawable.premium_card_bg)
+                    val premiumCard = androidx.core.content.ContextCompat.getDrawable(context, R.drawable.comp_surface_xl)
                     binding.appItemRoot.background = premiumCard
-                    // Add accent border logic if needed, but premium_card_bg already has a border.
+                    // Add accent border logic if needed, but comp_surface_xl already has a border.
                     // We could apply a custom tint to the border if we had a dedicated drawable.
                 } else {
                     val context = binding.root.context
-                    val clickableCard = androidx.core.content.ContextCompat.getDrawable(context, R.drawable.premium_card_clickable_bg)
+                    val clickableCard = androidx.core.content.ContextCompat.getDrawable(context, R.drawable.comp_surface_xl_clickable)
                     binding.appItemRoot.background = clickableCard
                 }
             }

@@ -3,7 +3,7 @@
 
     <string name="external_display_label">Зовнішній дисплей</string>
     <string name="external_display_connected">Підключено</string>
-    <string name="external_display_not_connected">Не підключено</string>
+    <string name="external_display_not_connected">Очікування підключення</string>
     <string name="accessibility_label">Спеціальні можливості</string>
     <string name="accessibility_enabled">Увімкнено</string>
     <string name="accessibility_required">Потрібно</string>
@@ -270,6 +270,7 @@
     <string name="settings_cursor_speed">Швидкість курсора</string>
     <string name="settings_cursor_auto_hide">Автоприховування курсора</string>
     <string name="settings_hide_delay">Затримка приховування</string>
+    <string name="settings_timeout_label">Тайм-аут</string>
     <string name="settings_on">Увімк</string>
     <string name="settings_off">Вимк</string>
     <string name="settings_cursor_opacity_value">%1$d%%</string>
@@ -316,6 +317,18 @@
     <string name="settings_cursor_hide_delay_default">2.5s</string>
     <string name="settings_about_title">Про додаток</string>
     <string name="settings_about_summary">Версія та інформація</string>
+    <string name="settings_touchpad_auto_lock_title">Автоблокування при бездіяльності</string>
+    <string name="settings_touchpad_auto_lock_summary">Автоматично блокує віддалений пристрій після обраного періоду бездіяльності під час використання тачпада.</string>
+    <string name="auto_lock_disabled">Вимкнено</string>
+    <string name="auto_lock_15s">15 секунд</string>
+    <string name="auto_lock_30s">30 секунд</string>
+    <string name="auto_lock_45s">45 секунд</string>
+    <string name="auto_lock_1m">1 хвилина</string>
+    <string name="auto_lock_2m">2 хвилини</string>
+    <string name="auto_lock_3m">3 хвилини</string>
+    <string name="auto_lock_5m">5 хвилин</string>
+    <string name="auto_lock_7m">7 хвилин</string>
+    <string name="auto_lock_10m">10 хвилин</string>
     <string name="about_application">Додаток</string>
     <string name="about_original_project">Оригінальний проект</string>
     <string name="about_fork_project">GitHub проект (Форк)</string>
@@ -331,9 +344,9 @@
     <string name="about_whats_new_summary">Історія версій та змін</string>
     <string name="about_4pda_label">Профіль 4PDA</string>
     <string name="about_xrdesk_desc">XRDesk — це сучасний пульт та тачпад для зовнішніх дисплеїв та XR-окулярів на Android. Він дозволяє керувати додатками на другому екрані за допомогою налаштовуваного інтерфейсу та просунутої обробки введення.</string>
-    <string name="changelog_v1_1_0_title">Версія 1.1.0 (Оновлення інтерфейсу)</string>
+    <string name="changelog_v1_1_0_title">Версія 1.1.0</string>
     <string name="changelog_v1_1_0_date">Липень 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• Додано інтегрований лаунчер всередині екрана «Вибір і керування».\n• Додано функцію «Поділитися логами».\n• Перероблено розділ «Про додаток» з окремими під-екранами.\n• Додано швидкі посилання на GitHub та 4PDA.\n• «Управління дисплеєм» перейменовано на «Вибір і керування».\n• Покращено навігацію та організацію розділів.\n• Покращено локалізацію для всіх мов.\n• Дрібні виправлення та підвищення стабільності.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[🚀 Нове\n• Інтегрований лаунчер всередині екрана «Вибір і керування».\n• Функція «Поділитися логами».\n• Автоблокування екрана при бездіяльності на тачпаді.\n• Настроюваний час бездіяльності (від 15 секунд до 10 хвилин).\n• Скидання таймера при будь-якій взаємодії з пультом.\n• Перероблений розділ «Про додаток» з вкладеними сторінками.\n• Посилання на GitHub та профіль автора на 4PDA.\n\n🎨 Покращення\n• Перейменування «Управління дисплеєм» на «Вибір і керування».\n• Оновлена ієрархія поверхонь Material Design 3.\n• Уніфіковані форми, відступи та типографіка.\n• Чистіший дизайн налаштувань.\n• Оновлений дизайн пульта (D-Pad).\n• Покращені області натискання та доступність.\n• Краща узгодженість між темами.\n\n🛠 Виправлення\n• Дрібні виправлення та підвищення стабільності.]]></string>
 
     <string name="changelog_v1_0_0_title">Версія 1.0 (Перший реліз)</string>
     <string name="changelog_v1_0_0_date">Липень 2026</string>

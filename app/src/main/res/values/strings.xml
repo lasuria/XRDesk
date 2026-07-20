@@ -272,6 +272,7 @@
     <string name="settings_cursor_speed">Cursor speed</string>
     <string name="settings_cursor_auto_hide">Cursor auto-hide</string>
     <string name="settings_hide_delay">Hide delay</string>
+    <string name="settings_timeout_label">Timeout</string>
     <string name="settings_on">On</string>
     <string name="settings_off">Off</string>
     <string name="settings_cursor_opacity_value">%1$d%%</string>
@@ -321,6 +322,18 @@
     <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
     <string name="settings_about_title">About</string>
     <string name="settings_about_summary">App version and information</string>
+    <string name="settings_touchpad_auto_lock_title">Auto-lock after inactivity</string>
+    <string name="settings_touchpad_auto_lock_summary">Automatically locks the remote device after the selected period of inactivity while using the Touchpad.</string>
+    <string name="auto_lock_disabled">Disabled</string>
+    <string name="auto_lock_15s">15 seconds</string>
+    <string name="auto_lock_30s">30 seconds</string>
+    <string name="auto_lock_45s">45 seconds</string>
+    <string name="auto_lock_1m">1 minute</string>
+    <string name="auto_lock_2m">2 minutes</string>
+    <string name="auto_lock_3m">3 minutes</string>
+    <string name="auto_lock_5m">5 minutes</string>
+    <string name="auto_lock_7m">7 minutes</string>
+    <string name="auto_lock_10m">10 minutes</string>
     <string name="about_based_on_title">Based on DeskControl</string>
     <string name="about_based_on_summary">Original project (DeskControl)</string>
     <string name="about_xrdesk_title">About Project</string>
@@ -343,9 +356,9 @@
     <string name="about_4pda_label">4PDA Profile</string>
     <string name="about_xrdesk_desc">XRDesk is a modern Android Remote &amp; Touchpad for External Displays and XR Glasses. It allows you to control applications running on secondary screens with a highly customizable interface and advanced input processing.</string>
     <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
-    <string name="changelog_v1_1_0_title">Version 1.1.0 (Refinement Update)</string>
+    <string name="changelog_v1_1_0_title">Version 1.1.0</string>
     <string name="changelog_v1_1_0_date">July 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• Added an integrated app launcher inside the Select & Control screen.\n• Added Share Logs for quick log sharing.\n• Redesigned the About section with dedicated sub-pages.\n• Added quick links to GitHub and 4PDA profile.\n• Renamed Display Control to Select & Control.\n• Improved navigation and screen organization.\n• Improved localization for all supported languages.\n• Minor bug fixes and stability improvements.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[🚀 New Features\n• Added an integrated app launcher inside the Select & Control screen.\n• Added Share Logs for quick log sharing.\n• Added automatic screen lock after inactivity while using the Touchpad.\n• Configurable inactivity timeout (15 seconds to 10 minutes).\n• Any interaction with the remote automatically resets the inactivity timer.\n• Redesigned the About section with dedicated sub-pages.\n• Added quick links to GitHub and 4PDA profile.\n\n🎨 Improvements\n• Renamed Display Control to Select & Control.\n• Refined Material Design 3 surface hierarchy.\n• Unified shapes, spacing and typography.\n• Cleaner settings screens.\n• Updated D-Pad design.\n• Improved touch targets and accessibility.\n• Better consistency across all themes.\n\n🛠 Fixes\n• Minor bug fixes and stability improvements.\n\nVisual improvements only. No functionality changes in UI polish section.]]></string>
 
     <string name="changelog_v1_0_0_title">Version 1.0 (Initial Release)</string>
     <string name="changelog_v1_0_0_date">July 2026</string>

@@ -35,7 +35,7 @@
                 android:id="@+id/languageRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_bg"
+                android:background="@drawable/comp_surface_xl"
                 android:padding="16dp">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
@@ -46,11 +46,6 @@
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurface" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant" />
-
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/langEn"
                     android:layout_width="match_parent"
@@ -58,11 +53,6 @@
                     android:text="@string/language_english"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurface" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/langZh"
@@ -72,11 +62,6 @@
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurface" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant" />
-
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/langRu"
                     android:layout_width="match_parent"
@@ -84,11 +69,6 @@
                     android:text="@string/language_russian"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurface" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/langUk"

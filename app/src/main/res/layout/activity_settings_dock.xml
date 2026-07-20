@@ -35,7 +35,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_bg"
+                android:background="@drawable/comp_surface_xl"
                 android:orientation="vertical"
                 android:padding="20dp">
 
@@ -49,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/settings_switch_bar_enabled"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textColor="?attr/colorOnSurface"
                         android:fontFamily="sans-serif-medium" />
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -65,12 +65,6 @@
                     android:textAppearance="?attr/textAppearanceBodySmall"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="24dp"
-                    android:background="?attr/colorOutlineVariant" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -84,7 +78,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/settings_switch_bar_scale"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textColor="?attr/colorOnSurface"
                             android:fontFamily="sans-serif-medium" />
                         <TextView
@@ -105,11 +99,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginBottom="12dp"
                 android:text="@string/settings_switch_bar_apps"
-                android:textAppearance="?attr/textAppearanceTitleSmall"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorOnSurfaceVariant"
                 android:textAllCaps="true"
                 android:fontFamily="sans-serif-medium" />
@@ -119,7 +113,7 @@
                 android:id="@+id/switchBarSlot1"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/premium_card_clickable_bg"
+                android:background="@drawable/comp_surface_xl_clickable"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
@@ -138,7 +132,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="20dp"
                     android:text="Slot 1: Select application"
-                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
                     android:textColor="?attr/colorOnSurface" />
                 <ImageView
                     android:layout_width="20dp"
@@ -151,7 +145,7 @@
                 android:id="@+id/switchBarSlot2"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/premium_card_clickable_bg"
+                android:background="@drawable/comp_surface_xl_clickable"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
@@ -170,7 +164,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="20dp"
                     android:text="Slot 2: Select application"
-                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
                     android:textColor="?attr/colorOnSurface" />
                 <ImageView
                     android:layout_width="20dp"
@@ -183,7 +177,7 @@
                 android:id="@+id/switchBarSlot3"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/premium_card_clickable_bg"
+                android:background="@drawable/comp_surface_xl_clickable"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
@@ -202,7 +196,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="20dp"
                     android:text="Slot 3: Select application"
-                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
                     android:textColor="?attr/colorOnSurface" />
                 <ImageView
                     android:layout_width="20dp"

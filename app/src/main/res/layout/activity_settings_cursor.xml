@@ -35,7 +35,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_bg"
+                android:background="@drawable/comp_surface_xl"
                 android:orientation="vertical"
                 android:padding="20dp">
 
@@ -53,7 +53,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/settings_cursor_size"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textColor="?attr/colorOnSurface"
                             android:fontFamily="sans-serif-medium" />
                         <TextView
@@ -70,18 +70,12 @@
                         android:layout_marginTop="12dp" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="24dp"
-                    android:background="?attr/colorOutlineVariant" />
-
                 <!-- Cursor Color -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_cursor_color"
-                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
                     android:textColor="?attr/colorOnSurface"
                     android:fontFamily="sans-serif-medium" />
 
@@ -110,12 +104,6 @@
                         app:cornerRadius="12dp" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="24dp"
-                    android:background="?attr/colorOutlineVariant" />
-
                 <!-- Opacity -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -130,7 +118,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/settings_cursor_opacity"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textColor="?attr/colorOnSurface"
                             android:fontFamily="sans-serif-medium" />
                         <TextView
@@ -147,12 +135,6 @@
                         android:layout_marginTop="12dp" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="24dp"
-                    android:background="?attr/colorOutlineVariant" />
-
                 <!-- Cursor Speed -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -167,7 +149,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/settings_cursor_speed"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textColor="?attr/colorOnSurface"
                             android:fontFamily="sans-serif-medium" />
                         <TextView
@@ -184,12 +166,6 @@
                         android:layout_marginTop="12dp" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="24dp"
-                    android:background="?attr/colorOutlineVariant" />
-
                 <!-- Auto Hide -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -201,7 +177,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/settings_cursor_auto_hide"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textColor="?attr/colorOnSurface"
                         android:fontFamily="sans-serif-medium" />
                     <com.google.android.material.switchmaterial.SwitchMaterial

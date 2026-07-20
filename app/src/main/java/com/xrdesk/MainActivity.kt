@@ -114,7 +114,6 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         val accessibilityEnabled = ControlAccessibilityService.isEnabled(this)
         
         binding.accessibilityContainer.isVisible = !accessibilityEnabled
-        binding.accessibilityDivider.isVisible = !accessibilityEnabled
         
         if (!accessibilityEnabled) {
             binding.statusAccessibilityValue.text = getString(R.string.accessibility_required)

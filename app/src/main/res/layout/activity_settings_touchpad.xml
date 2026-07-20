@@ -32,29 +32,28 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Display Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Display"
-                android:textAppearance="?attr/textAppearanceTitleSmall"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                android:fontFamily="sans-serif-medium"
-                android:textAllCaps="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_bg"
+                android:background="@drawable/comp_surface_xl"
                 android:orientation="vertical"
-                android:padding="20dp"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="12dp"
                 android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="56dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
                     <TextView
@@ -70,23 +69,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/settings_keep_screen_on_summary"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="20dp"
-                    android:background="?attr/colorOutlineVariant" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="56dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
                     <TextView
@@ -102,19 +89,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/settings_touchpad_auto_dim_summary"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <LinearLayout
                     android:id="@+id/autoDimSliderContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:paddingVertical="8dp"
                     android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -138,7 +118,58 @@
                         android:id="@+id/sliderTouchpadDimLevel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/settings_touchpad_auto_lock_title"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"
+                        android:fontFamily="sans-serif-medium" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchTouchpadAutoLock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/autoLockSliderContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="8dp"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/settings_timeout_label"
+                            android:textAppearance="?attr/textAppearanceBodySmall"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+                        <TextView
+                            android:id="@+id/touchpadAutoLockValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?attr/textAppearanceBodySmall"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/sliderTouchpadAutoLock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -147,24 +178,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Navigation"
-                android:textAppearance="?attr/textAppearanceTitleSmall"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                android:fontFamily="sans-serif-medium"
-                android:textAllCaps="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_bg"
+                android:background="@drawable/comp_surface_xl"
                 android:orientation="vertical"
-                android:padding="20dp"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="12dp"
                 android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="56dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
                     <TextView
@@ -180,23 +211,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/settings_touchpad_auto_focus_summary"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="20dp"
-                    android:background="?attr/colorOutlineVariant" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="@string/settings_dpad_position"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurface"
@@ -207,6 +226,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"
                     app:boxBackgroundColor="@android:color/transparent"
                     app:boxStrokeColor="?attr/colorOutline"
                     app:hintEnabled="false">
@@ -227,17 +247,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Scrolling"
-                android:textAppearance="?attr/textAppearanceTitleSmall"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                android:fontFamily="sans-serif-medium"
-                android:textAllCaps="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_bg"
+                android:background="@drawable/comp_surface_xl"
                 android:orientation="vertical"
                 android:padding="20dp"
                 android:layout_marginBottom="24dp">
@@ -428,17 +446,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Interaction"
-                android:textAppearance="?attr/textAppearanceTitleSmall"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                android:fontFamily="sans-serif-medium"
-                android:textAllCaps="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_bg"
+                android:background="@drawable/comp_surface_xl"
                 android:orientation="vertical"
                 android:padding="20dp"
                 android:layout_marginBottom="24dp">

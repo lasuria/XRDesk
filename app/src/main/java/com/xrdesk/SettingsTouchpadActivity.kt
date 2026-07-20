@@ -33,6 +33,10 @@ class SettingsTouchpadActivity : BaseSettingsActivity() {
         val touchpadDragBoostValue = findViewById<TextView>(R.id.touchpadDragBoostValue)
         val touchpadDragBoostSlider = findViewById<Slider>(R.id.sliderTouchpadDragBoost)
         val dpadDropdown = findViewById<com.google.android.material.textfield.MaterialAutoCompleteTextView>(R.id.dpadDropdown)
+        val touchpadAutoLockSwitch = findViewById<SwitchMaterial>(R.id.switchTouchpadAutoLock)
+        val autoLockSliderContainer = findViewById<android.view.View>(R.id.autoLockSliderContainer)
+        val touchpadAutoLockValue = findViewById<TextView>(R.id.touchpadAutoLockValue)
+        val touchpadAutoLockSlider = findViewById<Slider>(R.id.sliderTouchpadAutoLock)
 
         keepScreenOnSwitch.isChecked = SettingsStore.keepScreenOn
         keepScreenOnSwitch.setOnCheckedChangeListener { _, isChecked -> SettingsStore.setKeepScreenOn(this, isChecked) }
@@ -166,6 +170,44 @@ class SettingsTouchpadActivity : BaseSettingsActivity() {
         dpadDropdown.setText(dpadOptions.find { it.first == SettingsStore.dPadPosition }?.second ?: dpadOptions[0].second, false)
         dpadDropdown.setOnItemClickListener { _, _, position, _ ->
             SettingsStore.setDPadPosition(this, dpadOptions[position].first)
+        }
+
+        // Auto-lock Timeout Setup
+        val lockTimeouts = listOf(15_000L, 30_000L, 45_000L, 60_000L, 120_000L, 180_000L, 300_000L, 420_000L, 600_000L)
+        val lockLabels = listOf(
+            R.string.auto_lock_15s,
+            R.string.auto_lock_30s,
+            R.string.auto_lock_45s,
+            R.string.auto_lock_1m,
+            R.string.auto_lock_2m,
+            R.string.auto_lock_3m,
+            R.string.auto_lock_5m,
+            R.string.auto_lock_7m,
+            R.string.auto_lock_10m
+        )
+
+        touchpadAutoLockSwitch.isChecked = SettingsStore.touchpadAutoLockEnabled
+        autoLockSliderContainer.isVisible = SettingsStore.touchpadAutoLockEnabled
+        touchpadAutoLockSwitch.setOnCheckedChangeListener { _, isChecked ->
+            SettingsStore.setTouchpadAutoLockEnabled(this, isChecked)
+            autoLockSliderContainer.isVisible = isChecked
+        }
+
+        touchpadAutoLockSlider.valueFrom = 0f
+        touchpadAutoLockSlider.valueTo = (lockTimeouts.size - 1).toFloat()
+        touchpadAutoLockSlider.stepSize = 1f
+        
+        val currentTimeout = SettingsStore.touchpadAutoLockTimeoutMs
+        val currentIndex = lockTimeouts.indexOf(currentTimeout).coerceAtLeast(0)
+        touchpadAutoLockSlider.value = currentIndex.toFloat()
+        touchpadAutoLockValue.text = getString(lockLabels[currentIndex])
+
+        touchpadAutoLockSlider.addOnChangeListener { _, value, fromUser ->
+            val index = value.toInt().coerceIn(lockTimeouts.indices)
+            touchpadAutoLockValue.text = getString(lockLabels[index])
+            if (fromUser) {
+                SettingsStore.setTouchpadAutoLockTimeout(this, lockTimeouts[index])
+            }
         }
     }
 }

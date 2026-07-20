@@ -10,7 +10,7 @@
         android:id="@+id/dpadRing"
         android:layout_width="220dp"
         android:layout_height="220dp"
-        android:background="@drawable/apple_button_bg"
+        android:background="@drawable/comp_tonal_shape_oval"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -44,38 +44,46 @@
             android:layout_gravity="end"
             android:background="?attr/selectableItemBackgroundBorderless" />
 
-        <!-- Direction Dots -->
-        <View
-            android:layout_width="6dp"
-            android:layout_height="6dp"
+        <!-- Subtle Directional Icons (Modern MD3 approach) -->
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/apple_button_bg"
-            android:backgroundTint="?attr/colorOnSurfaceVariant" />
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_arrow_up"
+            android:importantForAccessibility="no"
+            app:tint="?attr/colorOnSurfaceVariant"
+            android:alpha="0.6" />
 
-        <View
-            android:layout_width="6dp"
-            android:layout_height="6dp"
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/apple_button_bg"
-            android:backgroundTint="?attr/colorOnSurfaceVariant" />
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_arrow_down"
+            android:importantForAccessibility="no"
+            app:tint="?attr/colorOnSurfaceVariant"
+            android:alpha="0.6" />
 
-        <View
-            android:layout_width="6dp"
-            android:layout_height="6dp"
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/apple_button_bg"
-            android:backgroundTint="?attr/colorOnSurfaceVariant" />
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_arrow_left"
+            android:importantForAccessibility="no"
+            app:tint="?attr/colorOnSurfaceVariant"
+            android:alpha="0.6" />
 
-        <View
-            android:layout_width="6dp"
-            android:layout_height="6dp"
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/apple_button_bg"
-            android:backgroundTint="?attr/colorOnSurfaceVariant" />
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_arrow_right"
+            android:importantForAccessibility="no"
+            app:tint="?attr/colorOnSurfaceVariant"
+            android:alpha="0.6" />
 
         <!-- Center Select Button -->
         <View
@@ -83,15 +91,8 @@
             android:layout_width="86dp"
             android:layout_height="86dp"
             android:layout_gravity="center"
-            android:background="@drawable/apple_button_bg" />
-
-        <!-- Small center dot -->
-        <View
-            android:layout_width="4dp"
-            android:layout_height="4dp"
-            android:layout_gravity="center"
-            android:background="@drawable/apple_button_bg"
-            android:backgroundTint="?attr/colorOnSurface" />
+            android:background="@drawable/comp_tonal_shape_oval"
+            android:backgroundTint="?attr/colorSurfaceContainerHighest" />
 
     </FrameLayout>
 
@@ -100,7 +101,7 @@
         android:id="@+id/remoteBottomRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +111,7 @@
             android:id="@+id/btnRemoteRewind"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:background="@drawable/apple_button_bg"
+            android:background="@drawable/comp_tonal_shape_oval"
             android:contentDescription="@string/touchpad_rewind_button"
             android:padding="16dp"
             android:scaleType="fitCenter"
@@ -123,7 +124,7 @@
             android:layout_height="64dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/apple_button_bg"
+            android:background="@drawable/comp_tonal_shape_oval"
             android:contentDescription="@string/touchpad_play_pause_button"
             android:padding="16dp"
             android:scaleType="fitCenter"
@@ -134,7 +135,7 @@
             android:id="@+id/btnRemoteFastForward"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:background="@drawable/apple_button_bg"
+            android:background="@drawable/comp_tonal_shape_oval"
             android:contentDescription="@string/touchpad_fast_forward_button"
             android:padding="16dp"
             android:scaleType="fitCenter"

@@ -37,15 +37,15 @@
                 android:id="@+id/rowTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_clickable_bg"
+                android:background="@drawable/comp_surface_xl_clickable"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="20dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="12dp">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/ic_appearance"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <LinearLayout
@@ -74,15 +74,15 @@
                 android:id="@+id/rowLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_clickable_bg"
+                android:background="@drawable/comp_surface_xl_clickable"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="20dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="12dp">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/ic_language_apple"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <LinearLayout
@@ -111,15 +111,15 @@
                 android:id="@+id/rowTouchpad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_clickable_bg"
+                android:background="@drawable/comp_surface_xl_clickable"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="20dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="12dp">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/ic_touchpad"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <LinearLayout
@@ -148,15 +148,15 @@
                 android:id="@+id/rowCursor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_clickable_bg"
+                android:background="@drawable/comp_surface_xl_clickable"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="20dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="12dp">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/ic_cursor"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <LinearLayout
@@ -185,15 +185,15 @@
                 android:id="@+id/rowDock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_clickable_bg"
+                android:background="@drawable/comp_surface_xl_clickable"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="20dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="12dp">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/ic_dock"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <LinearLayout
@@ -222,15 +222,15 @@
                 android:id="@+id/rowAbout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_clickable_bg"
+                android:background="@drawable/comp_surface_xl_clickable"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="20dp"
                 android:gravity="center_vertical"
                 android:layout_marginBottom="16dp">
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/ic_info_apple"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <LinearLayout

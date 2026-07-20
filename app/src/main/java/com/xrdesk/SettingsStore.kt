@@ -66,6 +66,10 @@ object SettingsStore {
         private set
     var switchBarScale = 1.0f
         private set
+    var touchpadAutoLockEnabled = false
+        private set
+    var touchpadAutoLockTimeoutMs = 60_000L
+        private set
 
     private const val DRAG_BOOST_MIN = 0.8f
     private const val DRAG_BOOST_MAX = 2.0f
@@ -116,6 +120,8 @@ object SettingsStore {
         switchBarEnabled = prefs.getBoolean("switch_bar_enabled", switchBarEnabled)
         switchBarScale = prefs.getFloat("switch_bar_scale", switchBarScale)
             .coerceIn(0.7f, 1.3f)
+        touchpadAutoLockEnabled = prefs.getBoolean("tp_auto_lock_enabled", false)
+        touchpadAutoLockTimeoutMs = prefs.getLong("tp_auto_lock_timeout", 60_000L)
         dPadPosition = prefs.getInt("dpad_position", dPadPosition)
 
         TouchpadTuning.baseGain = prefs.getFloat("tp_base_gain", TouchpadTuning.baseGain)
@@ -258,6 +264,16 @@ object SettingsStore {
         switchBarScale = clamped
         persist(context) { putFloat("switch_bar_scale", clamped) }
         ControlAccessibilityService.requestSwitchBarRefresh()
+    }
+
+    fun setTouchpadAutoLockEnabled(context: Context, enabled: Boolean) {
+        touchpadAutoLockEnabled = enabled
+        persist(context) { putBoolean("tp_auto_lock_enabled", enabled) }
+    }
+
+    fun setTouchpadAutoLockTimeout(context: Context, valueMs: Long) {
+        touchpadAutoLockTimeoutMs = valueMs
+        persist(context) { putLong("tp_auto_lock_timeout", valueMs) }
     }
 
     fun setDPadPosition(context: Context, value: Int) {

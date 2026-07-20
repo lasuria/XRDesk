@@ -8,7 +8,7 @@
     android:gravity="center"
     android:padding="12dp"
     android:layout_margin="4dp"
-    android:background="@drawable/premium_card_clickable_bg"
+    android:background="@drawable/comp_surface_xl_clickable"
     android:clickable="true"
     android:focusable="true">
 

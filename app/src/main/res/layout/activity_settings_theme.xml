@@ -34,7 +34,7 @@
                 android:id="@+id/themeRadioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/premium_card_bg"
+                android:background="@drawable/comp_surface_xl"
                 android:padding="16dp">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
@@ -45,11 +45,6 @@
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurface" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant" />
-
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/radioDark"
                     android:layout_width="match_parent"
@@ -58,11 +53,6 @@
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurface" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant" />
-
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/radioAmoled"
                     android:layout_width="match_parent"
@@ -70,12 +60,6 @@
                     android:text="@string/theme_amoled"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurface" />
-
-                <View
-                    android:id="@+id/dividerCustom"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?attr/colorOutlineVariant" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/radioCustom"
@@ -92,7 +76,7 @@
                 android:id="@+id/sectionCustomize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="12dp"
                 android:orientation="vertical"
                 android:visibility="gone">
 
@@ -109,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="72dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/premium_card_clickable_bg"
+                    android:background="@drawable/comp_surface_xl_clickable"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -126,7 +110,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         android:text="@string/theme_editor_title"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textColor="?attr/colorOnSurface"
                         android:fontFamily="sans-serif-medium" />
                     <ImageView

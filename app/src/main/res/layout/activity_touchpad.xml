@@ -69,10 +69,10 @@
 
             <FrameLayout
                 android:id="@+id/touchpadLaunch"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/apple_button_bg"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/comp_tonal_shape_oval"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="@+id/touchpadBack"
@@ -80,8 +80,8 @@
                 app:layout_constraintTop_toTopOf="@+id/touchpadBack">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_all_apps"
                     android:contentDescription="@string/choose_app_for_display"
@@ -90,10 +90,10 @@
 
             <FrameLayout
                 android:id="@+id/touchpadBlackout"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/apple_button_bg"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/comp_tonal_shape_oval"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="@+id/touchpadBack"
@@ -101,8 +101,8 @@
                 app:layout_constraintTop_toTopOf="@+id/touchpadBack">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_power_apple"
                     android:contentDescription="@string/touchpad_blackout"
