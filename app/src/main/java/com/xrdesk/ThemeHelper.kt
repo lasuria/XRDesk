@@ -105,10 +105,13 @@ object ThemeHelper {
                 }
             }
             is ImageView -> {
+                val id = view.id
                 // Secondary icons (alpha or specific ID)
-                if (view.alpha < 1f || view.id == R.id.iconAccessibility) {
+                if (id == R.id.appLogo) {
+                    view.imageTintList = null
+                } else if (view.alpha < 1f || id == R.id.iconAccessibility) {
                     view.imageTintList = ColorStateList.valueOf(colors.textSecondary)
-                } else if (view.id == R.id.iconDisplay) {
+                } else if (id == R.id.iconDisplay) {
                     // Main display icon remains color-coded for connection
                 } else {
                     view.imageTintList = ColorStateList.valueOf(colors.textPrimary)

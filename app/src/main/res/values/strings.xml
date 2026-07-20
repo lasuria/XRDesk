@@ -114,6 +114,10 @@
     <string name="settings_section_brightness">Brightness</string>
     <string name="settings_section_security">Security</string>
     <string name="settings_section_navigation">Navigation</string>
+    <string name="settings_touchpad_two_finger_gestures">Two-finger gestures</string>
+    <string name="settings_touchpad_two_finger_summary">Enable scrolling and secondary controls with two fingers.</string>
+    <string name="settings_touchpad_three_finger_gestures">Three-finger gestures</string>
+    <string name="settings_touchpad_three_finger_summary">Enable physical swipe simulation using three fingers.</string>
     <string name="settings_section_scrolling">Scrolling</string>
     <string name="settings_section_interaction">Interaction</string>
     <string name="settings_section_appearance">Appearance</string>
@@ -249,8 +253,8 @@
     <string name="settings_touchpad_auto_dim">Auto-dim while using touchpad</string>
     <string name="settings_touchpad_auto_dim_summary">Lower brightness automatically after 10 seconds of touchpad use.</string>
     <string name="settings_touchpad_back_section">Back forwarding</string>
-    <string name="settings_touchpad_auto_focus">Auto acquire focus</string>
-    <string name="settings_touchpad_auto_focus_summary">When external app focus is missing, use a gentle edge nudge to recover focus before forwarding Back.</string>
+    <string name="settings_touchpad_auto_focus">Automatic focus</string>
+    <string name="settings_touchpad_auto_focus_summary">Automatically activates the window on the external display. Ensures the \"Back\" button and clicks work reliably.</string>
     <string name="settings_touchpad_dim_level">Minimum brightness</string>
     <string name="settings_touchpad_dim_level_value">%1$d%%</string>
     <string name="settings_touchpad_dim_level_default">18%</string>
@@ -263,8 +267,8 @@
     <string name="settings_touchpad_scroll_distance_value">%1$.1f dp</string>
     <string name="settings_touchpad_scroll_distance_default">6.0 dp</string>
     <string name="settings_touchpad_scroll_distance_summary">Lower = easier to trigger continuous scrolling. Higher = more stable and slower.</string>
-    <string name="settings_touchpad_scroll_invert">Natural direction</string>
-    <string name="settings_touchpad_scroll_invert_summary">On: two-finger up moves content up.</string>
+    <string name="settings_touchpad_scroll_invert">Natural scrolling</string>
+    <string name="settings_touchpad_scroll_invert_summary">Enable for smartphone-style touch scrolling. Disable for traditional mouse-style behavior.</string>
     <string name="settings_touchpad_drag_boost">Long-press drag acceleration</string>
     <string name="settings_touchpad_drag_boost_value">%1$.1fx</string>
     <string name="settings_touchpad_drag_boost_default">1.2x</string>

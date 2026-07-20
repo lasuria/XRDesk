@@ -112,6 +112,10 @@
     <string name="settings_section_brightness">Яркость</string>
     <string name="settings_section_security">Безопасность</string>
     <string name="settings_section_navigation">Навигация</string>
+    <string name="settings_touchpad_two_finger_gestures">Жесты двумя пальцами</string>
+    <string name="settings_touchpad_two_finger_summary">Включает прокрутку и управление списками двумя пальцами.</string>
+    <string name="settings_touchpad_three_finger_gestures">Жесты тремя пальцами</string>
+    <string name="settings_touchpad_three_finger_summary">Включает имитацию физического свайпа тремя пальцами (Touch Scroll).</string>
     <string name="settings_section_scrolling">Прокрутка</string>
     <string name="settings_section_interaction">Взаимодействие</string>
     <string name="settings_section_appearance">Внешний вид</string>
@@ -248,7 +252,7 @@
     <string name="settings_touchpad_auto_dim_summary">Автоматически снижать яркость через 10 секунд работы тачпада.</string>
     <string name="settings_touchpad_back_section">Передача кнопки Назад</string>
     <string name="settings_touchpad_auto_focus">Автоматический фокус</string>
-    <string name="settings_touchpad_auto_focus_summary">Если фокус во внешнем приложении утерян, использовать мягкое касание края для возврата фокуса перед передачей Назад.</string>
+    <string name="settings_touchpad_auto_focus_summary">Автоматически активирует окно на внешнем дисплее. Помогает кнопке «Назад» работать корректно.</string>
     <string name="settings_touchpad_dim_level">Минимальная яркость</string>
     <string name="settings_touchpad_dim_level_value">%1$d%%</string>
     <string name="settings_touchpad_dim_level_default">18%</string>
@@ -261,8 +265,8 @@
     <string name="settings_touchpad_scroll_distance_value">%1$.1f dp</string>
     <string name="settings_touchpad_scroll_distance_default">6.0 dp</string>
     <string name="settings_touchpad_scroll_distance_summary">Ниже = легче вызвать непрерывную прокрутку. Выше = стабильнее и медленнее.</string>
-    <string name="settings_touchpad_scroll_invert">Естественное направление</string>
-    <string name="settings_touchpad_scroll_invert_summary">Вкл: ведение пальцами вверх перемещает контент вверх.</string>
+    <string name="settings_touchpad_scroll_invert">Естественная прокрутка</string>
+    <string name="settings_touchpad_scroll_invert_summary">Включите для прокрутки как на экране смартфона. Выключите для классического поведения мыши.</string>
     <string name="settings_touchpad_drag_boost">Ускорение при перетаскивании</string>
     <string name="settings_touchpad_drag_boost_value">%1$.1fx</string>
     <string name="settings_touchpad_drag_boost_default">1.2x</string>

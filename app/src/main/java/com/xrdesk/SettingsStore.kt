@@ -77,7 +77,6 @@ object SettingsStore {
     fun init(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         nightMode = prefs.getInt("night_mode", THEME_DARK)
-        // If legacy THEME_SYSTEM (-1) was stored, migrate it to THEME_DARK
         if (nightMode == -1) {
             nightMode = THEME_DARK
         }
@@ -137,15 +136,12 @@ object SettingsStore {
     fun setNightMode(context: Context, value: Int) {
         nightMode = value
         persist(context) { putInt("night_mode", value) }
-        
         ThemeEngine.applyPreset(context, value)
-
         val modeToApply = when (value) {
             THEME_AMOLED -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
             THEME_CUSTOM -> androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
             else -> value
         }
-        
         androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(modeToApply)
         XRDeskApp.recreateAllActivities()
     }
