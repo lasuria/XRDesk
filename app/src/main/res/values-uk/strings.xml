@@ -57,6 +57,11 @@
     <string name="host_change_app">Змінити додаток</string>
     <string name="host_end_session">Завершити сесію</string>
 
+    <string name="display_type_xr_glasses">XR-окуляри</string>
+    <string name="display_type_external">Зовнішній дисплей</string>
+    <string name="display_capability_refresh_rate">%1$d Гц</string>
+    <string name="display_capability_hdr">HDR</string>
+
     <string name="touchpad_title">Тачпад</string>
     <string name="touchpad_blackout">Екран вимкнено</string>
     <string name="touchpad_play_pause_button">Відтв./Пауза</string>
@@ -109,7 +114,16 @@
     <string name="settings_switch_bar_app_add">Додати додаток</string>
     <string name="settings_switch_bar_app_pick_placeholder">Вибрати додаток</string>
     <string name="settings_section_display">Екран</string>
+    <string name="settings_section_brightness">Яскравість</string>
+    <string name="settings_section_security">Безпека</string>
+    <string name="settings_section_typography">Типографіка</string>
+    <string name="settings_text_size">Розмір тексту</string>
+    <string name="settings_text_size_value">%1$d%%</string>
     <string name="settings_section_navigation">Навігація</string>
+    <string name="settings_touchpad_two_finger_gestures">Жести двома пальцями</string>
+    <string name="settings_touchpad_two_finger_summary">Включає прокручування та управління списками двома пальцями.</string>
+    <string name="settings_touchpad_three_finger_gestures">Жести трьома пальцями</string>
+    <string name="settings_touchpad_three_finger_summary">Включає імітацію фізичного свайпа трьома пальцями (Touch Scroll).</string>
     <string name="settings_section_scrolling">Прокручування</string>
     <string name="settings_section_interaction">Взаємодія</string>
     <string name="settings_section_developer">Розробник</string>
@@ -129,6 +143,8 @@
     <string name="settings_title">Налаштування</string>
     <string name="settings_category_appearance_title">Зовнішній вигляд</string>
     <string name="settings_category_appearance_summary">Тема та мова додатка</string>
+    <string name="settings_category_display_title">Екран</string>
+    <string name="settings_category_display_summary">Яскравість, сон та блокування</string>
     <string name="settings_category_touchpad_title">Тачпад</string>
     <string name="settings_category_touchpad_summary">Прокручування, фокус та автозатемнення</string>
     <string name="settings_category_cursor_title">Курсор</string>
@@ -242,7 +258,7 @@
     <string name="settings_touchpad_auto_dim_summary">Автоматично знижувати яскравість через 10 секунд роботи тачпада.</string>
     <string name="settings_touchpad_back_section">Передача кнопки Назад</string>
     <string name="settings_touchpad_auto_focus">Автоматичний фокус</string>
-    <string name="settings_touchpad_auto_focus_summary">Якщо фокус у зовнішньому додатку втрачено, використовувати м’яке торкання краю для повернення фокусу перед передачею Назад.</string>
+    <string name="settings_touchpad_auto_focus_summary">Автоматично активує окно на зовнішньому дисплеї. Допомагає кнопці «Назад» працювати коректно.</string>
     <string name="settings_touchpad_dim_level">Мінімальна яскравість</string>
     <string name="settings_touchpad_dim_level_value">%1$d%%</string>
     <string name="settings_touchpad_dim_level_default">18%</string>
@@ -256,7 +272,7 @@
     <string name="settings_touchpad_scroll_distance_default">6.0 dp</string>
     <string name="settings_touchpad_scroll_distance_summary">Нижче = легше викликати безперервне прокручування. Вище = стабільніше та повільніше.</string>
     <string name="settings_touchpad_scroll_invert">Природний напрямок</string>
-    <string name="settings_touchpad_scroll_invert_summary">Увімк: ведення пальцями вгору переміщує контент вгору.</string>
+    <string name="settings_touchpad_scroll_invert_summary">Увімкніть для прокрутки як на екрані смартфона. Вимкніть для класичної поведінки миші.</string>
     <string name="settings_touchpad_drag_boost">Прискорення при перетягуванні</string>
     <string name="settings_touchpad_drag_boost_value">%1$.1fx</string>
     <string name="settings_touchpad_drag_boost_default">1.2x</string>
@@ -329,7 +345,11 @@
     <string name="settings_cursor_speed_default">0.9x</string>
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
+    <string name="empty_text" translatable="false"></string>
+    <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
+    <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
     <string name="settings_about_title">Про додаток</string>
+    <string name="settings_section_information">Інформація</string>
     <string name="settings_about_summary">Версія та інформація</string>
     <string name="settings_touchpad_auto_lock_title">Автоблокування при бездіяльності</string>
     <string name="settings_touchpad_auto_lock_summary">Автоматично блокує віддалений пристрій після обраного періоду бездіяльності під час використання тачпада.</string>
@@ -351,28 +371,24 @@
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">версія v.1.1.5.post2</string>
     <string name="about_whats_new">Що нового</string>
-    <string name="app_version_label">Версія 1.1.5</string>
-    <string name="app_build_label">Збірка 2026.07.21</string>
-    <string name="about_xrdesk_summary">Версія 1.1.5 • Збірка 2026.07.21</string>
-    <string name="about_based_on_title">Засновано на DeskControl</string>
-    <string name="about_based_on_summary">Оригінальний проект (DeskControl)</string>
-    <string name="about_xrdesk_title">Про проект</string>
+    <string name="app_version_label">Версія 1.1</string>
+    <string name="app_build_label">Останнє оновлення 2026.07.21</string>
+    <string name="about_xrdesk_summary">Версія 1.1 • Останнє оновлення 2026.07.21</string>
+    <string name="about_original_project_name">DeskControl</string>
+    <string name="about_original_project_version">v1.1.5.post2</string>
+    <string name="about_original_project_desc">XRDesk побудований на базі DeskControl — пульта дистанційного керування для Android з відкритим вихідним кодом. Ми розширили його сучасним інтерфейсом, покращеним движком тем та спеціальними функціями для XR.</string>
+    <string name="about_original_author">Оригінальний автор: exiarepairii</string>
+    <string name="about_fork_maintainer">Підтримка: lasuriia (Crea)</string>
+    <string name="about_github_label">Відкрити на GitHub</string>
+    <string name="about_issues_label">Повідомити про помилку</string>
     <string name="about_whats_new_summary">Історія версій та змін</string>
     <string name="about_4pda_label">Профіль 4PDA</string>
     <string name="about_xrdesk_desc">XRDesk — це сучасний пульт та тачпад для зовнішніх дисплеїв та XR-окулярів на Android. Він дозволяє керувати додатками на другому екрані за допомогою налаштовуваного інтерфейсу та просунутої обробки введення.</string>
-    <string name="changelog_v1_1_5_title">Версія 1.1.5</string>
-    <string name="changelog_v1_1_5_date">Липень 2026</string>
-    <string name="changelog_v1_1_5_content"><![CDATA[• Повністю перероблено Редактор тем.\n• Налаштування розділені на Екран, Тачпад та Курсор.\n• Уніфіковано дизайн перемикачів, кнопок та елементів керування.\n• Редактор тем приведено до загального стилю Material Design 3.\n• Покращено навігацію та структуру параметрів.\n• Оновлено переклади та локалізацію.\n• Різноманітні покращення інтерфейсу та UX.]]></string>
-
     <string name="changelog_v1_1_0_title">Версія 1.1.0</string>
     <string name="changelog_v1_1_0_date">Липень 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• Оновлення інтерфейсу до Material Design 3.\n• Єдиний візуальний стиль у всьому додатку.\n• Екрани тем та мов замінені на нативні списки вибору.\n• Уточнені відступи, типографіка та розміри компонентів.\n• Покращена ієрархія навігації.\n• Додані індикатори стану підключення.\n• Покращена читабельність логів та сторінок з інформацією.\n• Загальне полірування UX та виправлення невідповідностей.]]></string>
-
-    <string name="changelog_v1_0_5_title">Версія 1.0.5</string>
-    <string name="changelog_v1_0_5_date">Липень 2026</string>
-    <string name="changelog_v1_0_5_content"><![CDATA[• Додано автоблокування екрана при бездіяльності.\n• Налаштування тайм-ауту бездіяльності.\n• Підтримка закріплених додатків.\n• Швидке надсилання логів.\n• Розширені сторінки «Про додаток».\n• Виправлення помилок та підвищення стабільності.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Повне оновлення інтерфейсу до Material Design 3.\n• Перероблено Редактор тем.\n• Налаштування розділені на Екран, Тачпад та Курсор.\n• Уніфіковано дизайн перемикачів, кнопок та елементів керування.\n• Покращено навігацію та структуру параметрів.\n• Додані індикатори стану підключення.\n• Додано автоблокування екрана з налаштованим тайм-аутом.\n• Додана підтримка закріплених додатків.\n• Додана функція швидкого надсилання логів.\n• Розширені сторінки «Про додаток».\n• Оновлені іконки головного екрана.\n• Оптимізована Док-панель та відновлено відображення іконок.\n• Додано розпізнавання окулярів з виведенням моделі, роздільної здатності, частоти та HDR.\n• Оновлено переклади та локалізацію.\n• Різноманітні покращення UI, UX, продуктивності та стабільності.]]></string>
 
     <string name="changelog_v1_0_0_title">Версія 1.0.0</string>
     <string name="changelog_v1_0_0_date">Липень 2026</string>
-    <string name="changelog_v1_0_0_content"><![CDATA[• Перший реліз XRDesk.\n• Форк DeskControl.\n• Брендинг XRDesk.\n• Редактор тем.\n• Імпорт/експорт тем (JSON).\n• Світла, Темна та AMOLED теми.\n• Англійська, російська, українська та китайська мови.\n• Початковий розділ «Про додаток».]]></string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• Перший публічний реліз XRDesk.\n• Засновано на DeskControl.\n• Редактор власних тем.\n• Імпорт та експорт тем (JSON).\n• Світла, Темна та AMOLED теми.\n• Підтримка англійської, російської, української та китайської мов.\n• Початковий розділ «Про додаток».]]></string>
 </resources>

@@ -143,6 +143,7 @@
                     android:src="@drawable/ic_touchpad"
                     app:tint="?attr/colorPrimary" />
                 <TextView
+                    android:id="@+id/labelTouchpad"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -185,6 +186,7 @@
                     android:src="@drawable/ic_settings"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <TextView
+                    android:id="@+id/labelSettings"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"

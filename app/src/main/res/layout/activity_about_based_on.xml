@@ -46,10 +46,11 @@
                 android:gravity="center_horizontal">
 
                 <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_monitor"
-                    app:tint="?attr/colorPrimary" />
+                    android:id="@+id/deskControlLogo"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_launcher"
+                    android:tag="no_tint" />
 
                 <TextView
                     android:layout_width="wrap_content"

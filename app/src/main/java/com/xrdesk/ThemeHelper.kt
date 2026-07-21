@@ -70,6 +70,30 @@ object ThemeHelper {
                     view.iconTint = ColorStateList.valueOf(colors.onAccent)
                 }
             }
+            is MaterialSwitch -> {
+                val accent = colors.accent
+                val trackColor = ColorStateList(
+                    arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
+                    intArrayOf(accent, (accent and 0x00FFFFFF) or 0x30000000)
+                )
+                view.thumbTintList = ColorStateList.valueOf(accent)
+                view.trackTintList = trackColor
+            }
+            is com.google.android.material.slider.Slider -> {
+                view.thumbTintList = ColorStateList.valueOf(colors.accent)
+                view.trackActiveTintList = ColorStateList.valueOf(colors.accent)
+                view.trackInactiveTintList = ColorStateList.valueOf(colors.divider)
+            }
+            is com.google.android.material.textfield.TextInputLayout -> {
+                view.boxBackgroundColor = colors.surface
+                view.setHintTextColor(ColorStateList.valueOf(colors.textSecondary))
+                view.defaultHintTextColor = ColorStateList.valueOf(colors.textSecondary)
+                view.setEndIconTintList(ColorStateList.valueOf(colors.textSecondary))
+            }
+            is android.widget.AutoCompleteTextView -> {
+                view.setTextColor(colors.textPrimary)
+                view.setDropDownBackgroundDrawable(ColorDrawable(colors.surface))
+            }
             is ViewGroup -> {
                 val id = view.id
                 val bg = view.background
@@ -106,10 +130,18 @@ object ThemeHelper {
             }
             is ImageView -> {
                 val id = view.id
-                // Secondary icons (alpha or specific ID)
-                if (id == R.id.appLogo) {
+                val tag = view.tag as? String
+                
+                // Exclude specific icons from theme tinting (app icons, etc.)
+                val isAppIcon = id == R.id.appLogo || id == R.id.appIcon || id == R.id.deskControlLogo ||
+                               id == R.id.switchBarSlotIcon1 || id == R.id.switchBarSlotIcon2 || 
+                               id == R.id.switchBarSlotIcon3 || tag == "no_tint"
+
+                if (isAppIcon) {
                     view.imageTintList = null
                     view.colorFilter = null
+                } else if (id == R.id.selectedCheckmark) {
+                    view.setColorFilter(colors.accent)
                 } else if (view.alpha < 1f || id == R.id.iconAccessibility) {
                     view.imageTintList = ColorStateList.valueOf(colors.textSecondary)
                 } else if (id == R.id.iconDisplay) {
@@ -118,17 +150,50 @@ object ThemeHelper {
                     view.imageTintList = ColorStateList.valueOf(colors.textPrimary)
                 }
             }
+            is com.google.android.material.radiobutton.MaterialRadioButton -> {
+                val accentColor = colors.accent
+                val states = arrayOf(
+                    intArrayOf(android.R.attr.state_checked),
+                    intArrayOf(-android.R.attr.state_checked)
+                )
+                // Checked: Accent, Unchecked: Primary Text with some alpha for contrast
+                val buttonColors = intArrayOf(accentColor, (colors.textPrimary and 0x00FFFFFF) or 0x7F000000)
+                view.buttonTintList = ColorStateList(states, buttonColors)
+                view.setTextColor(colors.textPrimary)
+                view.typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
+                view.alpha = 1.0f
+            }
+            is com.google.android.material.checkbox.MaterialCheckBox -> {
+                val accentColor = colors.accent
+                val states = arrayOf(
+                    intArrayOf(android.R.attr.state_checked),
+                    intArrayOf(-android.R.attr.state_checked)
+                )
+                val buttonColors = intArrayOf(accentColor, colors.textSecondary)
+                view.buttonTintList = ColorStateList(states, buttonColors)
+                view.setTextColor(colors.textPrimary)
+                view.typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
+                view.alpha = 1.0f
+            }
             is TextView -> {
+                // Apply font uniformity
+                view.typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
+                
                 if (view.layoutParams != null && (view.layoutParams.height in 1..dpToPx(view.context, 2))) {
                     view.setBackgroundColor(colors.divider)
                 } else {
+                    // Primary text by default, with 100% alpha for maximum readability
+                    // Only use secondary for very specific, non-critical labels
+                    val isSecondaryId = view.alpha < 0.9f
+                    
                     if (!view.isEnabled) {
                         view.setTextColor(colors.textSecondary)
                         view.alpha = 0.5f
-                    } else if (view.alpha < 1f || view.currentTextColor == 0x8A000000.toInt() || view.currentTextColor == 0x8AFFFFFF.toInt()) {
+                    } else if (isSecondaryId) {
                         view.setTextColor(colors.textSecondary)
                     } else {
                         view.setTextColor(colors.textPrimary)
+                        view.alpha = 1.0f
                     }
                 }
             }

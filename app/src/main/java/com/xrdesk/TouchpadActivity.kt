@@ -87,8 +87,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         binding = ActivityTouchpadBinding.inflate(layoutInflater)
         setContentView(binding.root)
         DiagnosticsLog.add("Touchpad: create displayId=${display?.displayId ?: -1}")
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root, includeTop = false)
         applyToolbarInsets()
         val insetsController = WindowInsetsControllerCompat(window, binding.root)

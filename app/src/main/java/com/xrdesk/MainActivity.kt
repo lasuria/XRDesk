@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root)
+        
+        // Pre-load app catalog to prevent stutters in Dock/Settings
+        LaunchableAppCatalog.preLoad(this)
 
         binding.btnTouchpad.setOnClickListener {
             startActivity(Intent(this, TouchpadActivity::class.java))
@@ -67,31 +70,58 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     private fun updateDisplayInfoUI() {
         val displayType = XrDeviceDetector.getExternalDisplayType(this)
         val colors = ThemeEngine.getColors()
+        val primaryColor = colors.textPrimary
+
+        // Reset all labels to 100% Alpha and theme's Primary Text
+        binding.statusDisplayValue.setTextColor(primaryColor)
+        binding.statusDisplayValue.alpha = 1.0f
+        binding.deviceStatusLabel.setTextColor(primaryColor)
+        binding.deviceStatusLabel.alpha = 1.0f
+        binding.labelTouchpad.setTextColor(primaryColor)
+        binding.labelTouchpad.alpha = 1.0f
+        binding.labelSettings.setTextColor(primaryColor)
+        binding.labelSettings.alpha = 1.0f
 
         if (displayType == XrDeviceDetector.ExternalDisplayType.NONE) {
             binding.iconDisplay.setImageResource(R.drawable.monitor_disconnected)
             binding.statusDisplayValue.text = getString(R.string.external_display_not_connected)
+            binding.statusDisplayValue.textSize = 20f
             binding.deviceStatusLabel.isVisible = false
             
             // Apply Gray (Secondary) tint when disconnected
             binding.iconDisplay.setColorFilter(colors.textSecondary)
         } else {
-            // Pick the icon based on detected type
-            if (displayType == XrDeviceDetector.ExternalDisplayType.XR_GLASSES) {
+            // 1. Primary Line: Device Model or Generic Type (BIGGER)
+            val deviceName = XrDeviceDetector.getDetectedDeviceName()
+            val primaryText = if (displayType == XrDeviceDetector.ExternalDisplayType.XR_GLASSES) {
                 binding.iconDisplay.setImageResource(R.drawable.glasses_connected)
-                binding.deviceStatusLabel.text = "XR Glasses Connected"
+                deviceName ?: getString(R.string.display_type_xr_glasses)
             } else {
                 binding.iconDisplay.setImageResource(R.drawable.monitor_connected)
+                getString(R.string.display_type_external)
+            }
+            binding.statusDisplayValue.text = primaryText
+            binding.statusDisplayValue.textSize = 20f
+            binding.statusDisplayValue.typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
+
+            // 2. Secondary Line: Capabilities (SMALLER)
+            val info = availableDisplays.firstOrNull { it.displayId == selectedDisplayId }
+            if (info != null) {
+                val components = mutableListOf<String>()
+                components.add(formatResolution(info.width, info.height))
+                if (info.refreshRate > 0) {
+                    components.add(getString(R.string.display_capability_refresh_rate, info.refreshRate.toInt()))
+                }
+                if (info.isHdr) {
+                    components.add(getString(R.string.display_capability_hdr))
+                }
+                binding.deviceStatusLabel.text = components.joinToString(" • ")
+            } else {
                 binding.deviceStatusLabel.text = getString(R.string.external_display_connected)
             }
             
-            // Format resolution with descriptive labels
-            val resolutionText = availableDisplays.joinToString("\n") { 
-                formatResolution(it.width, it.height)
-            }
-            binding.statusDisplayValue.text = resolutionText
-            binding.statusDisplayValue.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_LabelSmall)
-            
+            binding.deviceStatusLabel.textSize = 12f
+            binding.deviceStatusLabel.typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
             binding.deviceStatusLabel.isVisible = true
             
             // Apply Green (Success) tint when connected
@@ -101,10 +131,10 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     private fun formatResolution(width: Int, height: Int): String {
         return when {
-            width >= 3840 || height >= 2160 -> "4K (UltraHD)"
-            width >= 2560 || height >= 1440 -> "2K (QHD)"
-            width >= 1920 || height >= 1080 -> "1080p (FullHD)"
-            width >= 1280 || height >= 720 -> "720p (HD)"
+            width >= 3840 || height >= 2160 -> "4K"
+            width >= 2560 || height >= 1440 -> "1440p"
+            width >= 1920 || height >= 1080 -> "1080p"
+            width >= 1280 || height >= 720 -> "720p"
             else -> "${width}×${height}"
         }
     }

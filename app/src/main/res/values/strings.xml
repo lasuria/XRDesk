@@ -59,6 +59,11 @@
     <string name="host_change_app">Change app</string>
     <string name="host_end_session">End session</string>
 
+    <string name="display_type_xr_glasses">XR Glasses</string>
+    <string name="display_type_external">External Display</string>
+    <string name="display_capability_refresh_rate">%1$d Hz</string>
+    <string name="display_capability_hdr">HDR</string>
+
     <string name="touchpad_title">Touchpad</string>
     <string name="touchpad_blackout">Screen off</string>
     <string name="touchpad_play_pause_button">Play/Pause</string>
@@ -362,7 +367,7 @@
     <string name="about_based_on_title">Based on DeskControl</string>
     <string name="about_based_on_summary">Original project (DeskControl)</string>
     <string name="about_xrdesk_title">About Project</string>
-    <string name="about_xrdesk_summary">Version 1.1.5 • Build 2026.07.21</string>
+    <string name="about_xrdesk_summary">Version 1.1 • Last update 2026.07.21</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk is built upon the foundation of DeskControl, an open-source remote control for Android. We have extended it with a modern UI, enhanced theme engine, and specialized XR features.</string>
@@ -379,26 +384,18 @@
     <string name="about_issues_label">Report an Issue</string>
     <string name="about_whats_new">What\'s new</string>
     <string name="about_whats_new_summary">Changelog and release notes</string>
-    <string name="app_version_label">Version 1.1.5</string>
-    <string name="app_build_label">Build 2026.07.21</string>
+    <string name="app_version_label">Version 1.1</string>
+    <string name="app_build_label">Last update 2026.07.21</string>
     <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
     <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
     <string name="about_4pda_label">4PDA Profile</string>
     <string name="about_xrdesk_desc">XRDesk is a modern Android Remote &amp; Touchpad for External Displays and XR Glasses. It allows you to control applications running on secondary screens with a highly customizable interface and advanced input processing.</string>
     <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
-    <string name="changelog_v1_1_5_title">Version 1.1.5</string>
-    <string name="changelog_v1_1_5_date">July 2026</string>
-    <string name="changelog_v1_1_5_content"><![CDATA[• Completely redesigned Theme Editor.\n• Reorganized settings into Screen, Touchpad and Cursor sections.\n• Unified the design of switches, buttons and controls.\n• Updated Theme Editor to match the application\'s Material Design 3 style.\n• Improved navigation and settings layout.\n• Improved translations and localization.\n• Various UI and UX improvements.]]></string>
-
     <string name="changelog_v1_1_0_title">Version 1.1.0</string>
     <string name="changelog_v1_1_0_date">July 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• Material Design 3 UI refinement.\n• Unified visual language across the entire application.\n• Converted Themes and Language screens to native Material Design selection lists.\n• Refined spacing, typography and component sizing.\n• Improved navigation hierarchy.\n• Enhanced connection status indicators.\n• Improved readability of logs and information pages.\n• Overall UX polish and consistency improvements.]]></string>
-
-    <string name="changelog_v1_0_5_title">Version 1.0.5</string>
-    <string name="changelog_v1_0_5_date">July 2026</string>
-    <string name="changelog_v1_0_5_content"><![CDATA[• Added screen auto-lock on inactivity.\n• Added inactivity timeout configuration.\n• Added pinned applications support.\n• Added quick log sharing.\n• Expanded About pages.\n• Bug fixes and stability improvements.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Complete Material Design 3 interface overhaul.\n• Redesigned Theme Editor.\n• Reorganized Settings into Screen, Touchpad, and Cursor sections.\n• Unified the design of switches, buttons, and controls.\n• Improved navigation and settings layout.\n• Added connection status indicators.\n• Added screen auto-lock with configurable inactivity timeout.\n• Added pinned applications support.\n• Added quick log sharing.\n• Expanded About pages.\n• Redesigned the main screen icons.\n• Optimized the dock layout and restored application icons.\n• Added XR glasses detection with device model, display resolution, refresh rate, and HDR support.\n• Updated translations and localization.\n• Various UI, UX, performance, and stability improvements.]]></string>
 
     <string name="changelog_v1_0_0_title">Version 1.0.0</string>
     <string name="changelog_v1_0_0_date">July 2026</string>
-    <string name="changelog_v1_0_0_content"><![CDATA[• Initial XRDesk release.\n• Fork of DeskControl.\n• XRDesk branding.\n• Custom Theme Editor.\n• Theme import/export (JSON).\n• Light, Dark and AMOLED themes.\n• English, Russian, Ukrainian and Chinese languages.\n• Initial About section.]]></string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• Initial public XRDesk release.\n• Based on DeskControl.\n• Custom Theme Editor.\n• Theme import/export (JSON).\n• Light, Dark, and AMOLED themes.\n• English, Russian, Ukrainian, and Chinese language support.\n• Initial About section.]]></string>
 </resources>

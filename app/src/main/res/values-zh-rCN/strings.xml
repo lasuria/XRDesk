@@ -21,6 +21,7 @@
     <string name="switch_bar_all_apps">全部应用</string>
     <string name="app_icon_content_description">应用图标</string>
     <string name="app_placeholder_name">应用名称</string>
+    <string name="app_placeholder_package" translatable="false">com.example</string>
     <string name="app_launched_toast">已启动 %1$s</string>
     <string name="app_launch_failed_generic">启动失败</string>
     <string name="app_launch_failed_with_detail">%1$s: %2$s</string>
@@ -57,10 +58,17 @@
     <string name="host_change_app">更换应用</string>
     <string name="host_end_session">结束会话</string>
 
+    <string name="display_type_xr_glasses">XR 眼镜</string>
+    <string name="display_type_external">外接显示器</string>
+    <string name="display_capability_refresh_rate">%1$d Hz</string>
+    <string name="display_capability_hdr">HDR</string>
+
     <string name="touchpad_title">触控板</string>
     <string name="touchpad_blackout">熄屏</string>
     <string name="touchpad_play_pause_button">播放/暂停</string>
     <string name="touchpad_back_button">返回</string>
+    <string name="touchpad_rewind_button">倒回</string>
+    <string name="touchpad_fast_forward_button">快进</string>
     <string name="touchpad_hint">点击矩形区域激活，激活后返回操作自动转发到外屏\n滑动:移动光标; 长按滑动:拖拽; 双指:滚动</string>
     <string name="touchpad_tuning">触控板调节</string>
     <string name="touchpad_base_gain">基础增益</string>
@@ -98,6 +106,22 @@
 
     <string name="settings_switch_bar_section">Dock</string>
     <string name="settings_switch_bar_enabled">显示 Dock</string>
+    <string name="settings_section_display">显示</string>
+    <string name="settings_section_brightness">亮度</string>
+    <string name="settings_section_security">安全</string>
+    <string name="settings_section_typography">字体排版</string>
+    <string name="settings_text_size">字体大小</string>
+    <string name="settings_text_size_value">%1$d%%</string>
+    <string name="settings_section_navigation">导航</string>
+    <string name="settings_touchpad_two_finger_gestures">双指手势</string>
+    <string name="settings_touchpad_two_finger_summary">启用双指滚动和次要控制。</string>
+    <string name="settings_touchpad_three_finger_gestures">三指手势</string>
+    <string name="settings_touchpad_three_finger_summary">使用三指启用物理滑动模拟。</string>
+    <string name="settings_section_scrolling">滚动</string>
+    <string name="settings_section_interaction">交互</string>
+    <string name="settings_section_appearance">外观</string>
+    <string name="settings_section_behavior">行为</string>
+    <string name="settings_section_developer">开发者</string>
     <string name="settings_switch_bar_hint">指针移动到底部唤出 Dock。</string>
     <string name="settings_switch_bar_scale">Dock 大小</string>
     <string name="settings_switch_bar_scale_default">100%</string>
@@ -105,13 +129,13 @@
     <string name="settings_switch_bar_apps">常驻应用</string>
     <string name="settings_switch_bar_app_add">添加常驻应用</string>
     <string name="settings_switch_bar_app_add_slot">添加常驻应用 %1$d</string>
-    <string name="settings_switch_bar_pick_title">选择常驻应用 %1$d</string>
+    <string name="settings_switch_bar_app_pick_placeholder">选择应用</string>
     <string name="touchpad_intro_title">触控板提示</string>
     <string name="touchpad_intro_got_it">知道了</string>
     <string name="touchpad_intro_gesture_move">移动：单指滑动</string>
     <string name="touchpad_intro_gesture_tap">点击：单击</string>
     <string name="touchpad_intro_gesture_drag">拖拽：按住后滑动。滚动：双指滑动。</string>
-    <string name="touchpad_intro_dim_behavior">自动调暗：在触控板区域内停留 10 秒后降低亮度，点触控板区域外或离开本页会恢复。</string>
+    <string name="touchpad_intro_dim_behavior">自动调暗：在触控板区域内停留 10 秒后降低亮度，点触控板区域外 or 离开本页会恢复。</string>
     <string name="touchpad_intro_back_behavior">返回键：触控板区域激活时会转发到外接应用。</string>
     <string name="touchpad_intro_exit_hint">退出：点左上角返回箭头，或先点触控板区域外再按返回键。</string>
     <string name="touchpad_placeholder_activate">点击此处激活</string>
@@ -303,7 +327,11 @@
     <string name="settings_cursor_speed_default">0.9x</string>
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
+    <string name="empty_text" translatable="false"></string>
+    <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
+    <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
     <string name="settings_about_title">关于</string>
+    <string name="settings_section_information">信息</string>
     <string name="settings_about_summary">版本和信息</string>
     <string name="settings_touchpad_auto_lock_title">闲置自动锁定</string>
     <string name="settings_touchpad_auto_lock_summary">使用触控板时，在选定的闲置时间后自动锁定远程设备。</string>
@@ -315,7 +343,7 @@
     <string name="auto_lock_2m">2 分钟</string>
     <string name="auto_lock_3m">3 分钟</string>
     <string name="auto_lock_5m">5 分钟</string>
-    <string name="auto_lock_7m">7 分钟</string>
+    <string name="auto_lock_7m">7 秒</string>
     <string name="auto_lock_10m">10 分钟</string>
     <string name="about_license_title">许可证</string>
     <string name="about_license_content">GNU General Public License v3.0 (GPL-3.0)</string>
@@ -325,28 +353,23 @@
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">版本 v.1.1.5.post2</string>
     <string name="about_whats_new">更新日志</string>
-    <string name="app_version_label">Version 1.1.5</string>
-    <string name="app_build_label">构建 2026.07.21</string>
+    <string name="about_github_label">查看 GitHub</string>
+    <string name="about_issues_label">反馈问题</string>
+    <string name="app_version_label">版本 1.1</string>
+    <string name="app_build_label">最后更新 2026.07.21</string>
     <string name="about_based_on_title">基于 DeskControl</string>
     <string name="about_based_on_summary">原始项目 (DeskControl)</string>
     <string name="about_xrdesk_title">关于项目</string>
-    <string name="about_xrdesk_summary">版本 1.1.5 • 构建 2026.07.21</string>
+    <string name="about_xrdesk_summary">版本 1.1 • 最后更新 2026.07.21</string>
     <string name="about_whats_new_summary">更新日志与发行说明</string>
     <string name="about_4pda_label">4PDA 个人资料</string>
-    <string name="about_xrdesk_desc">XRDesk 是一款面向外接显示器和 XR 眼镜的现代 Android 遥控器和触控板。它允许您通过高度可定制的界面和先进s的输入处理来控制在副屏上运行的应用程序。</string>
-    <string name="changelog_v1_1_5_title">版本 1.1.5</string>
-    <string name="changelog_v1_1_5_date">2026年7月</string>
-    <string name="changelog_v1_1_5_content"><![CDATA[• 完全重新设计的主题编辑器。\n• 设置重新组织为显示、触控板和光标部分。\n• 统一了开关、按钮和控制件的设计。\n• 更新了主题编辑器以匹配应用的 Material Design 3 风格。\n• 改进了导航和设置布局。\n• 改进了翻译和本地化。\n• 多项 UI 和 UX 改进。]]></string>
-
+    <string name="about_xrdesk_desc">XRDesk 是一款面向外接显示器和 XR 眼镜的现代 Android 遥控器和触控板。它允许您通过高度可定制的界面和先进的输入处理来控制在副屏上运行的应用程序。</string>
+    <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
     <string name="changelog_v1_1_0_title">版本 1.1.0</string>
     <string name="changelog_v1_1_0_date">2026年7月</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• Material Design 3 UI 优化。\n• 全应用视觉语言统一。\n• 主题和语言屏幕转换为原生 Material Design 选择列表。\n• 精细化间距、排版和组件尺寸。\n• 改进导航层级。\n• 增强连接状态指示器。\n• 提高日志和信息页面的可读性。\n• 整体 UX 打磨和一致性改进。]]></string>
-
-    <string name="changelog_v1_0_5_title">版本 1.0.5</string>
-    <string name="changelog_v1_0_5_date">2026年7月</string>
-    <string name="changelog_v1_0_5_content"><![CDATA[• 添加闲置后自动锁定屏幕功能。\n• 可配置的闲置超时。\n• 添加常驻应用支持。\n• 添加快速日志共享。\n• 扩展“关于”页面。\n• 错误修复和稳定性改进。]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• 完整的 Material Design 3 界面重塑。\n• 重新设计的主题编辑器。\n• 将设置重新组织为显示、触控板和光标部分。\n• 统一了开关、按钮和控制件的设计。\n• 改进了导航和设置布局。\n• 添加了连接状态指示器。\n• 添加了带有可配置闲置超时的自动锁屏功能。\n• 添加了常驻应用支持。\n• 添加了快速日志共享。\n• 扩展了“关于”页面。\n• 重新设计了主屏幕图标。\n• 优化了 Dock 布局并恢复了应用图标。\n• 增加了 XR 眼镜检测，支持显示设备型号、分辨率、刷新率和 HDR。\n• 更新了翻译和本地化。\n• 各项 UI、UX、性能和稳定性改进。]]></string>
 
     <string name="changelog_v1_0_0_title">版本 1.0.0</string>
     <string name="changelog_v1_0_0_date">2026年7月</string>
-    <string name="changelog_v1_0_0_content"><![CDATA[• XRDesk 首个版本。\n• 基于 DeskControl 的分支。\n• XRDesk 品牌化。\n• 自定义主题编辑器。\n• 主题 JSON 导出/导入。\n• 浅色、深色和 AMOLED 主题。\n• 英语、俄语、乌克兰语和中文支持。\n• 初始“关于”部分。]]></string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• XRDesk 首次公开发布。\n• 基于 DeskControl。\n• 自定义主题编辑器。\n• 主题 JSON 导出/导入。\n• 浅色、深色和 AMOLED 主题。\n• 支持英语、俄语、乌克兰语和中文支持。\n• 初始“关于”部分。]]></string>
 </resources>

@@ -12,7 +12,9 @@ object DisplaySessionManager {
         val width: Int,
         val height: Int,
         val densityDpi: Int,
-        val rotation: Int
+        val rotation: Int,
+        val refreshRate: Float,
+        val isHdr: Boolean
     )
 
     interface Listener {
@@ -80,6 +82,7 @@ object DisplaySessionManager {
     private fun refreshDisplays() {
         val dm = displayManager
         val allDisplays = dm?.getDisplays()?.toList().orEmpty()
+        
         DiagnosticsLog.add("DisplayAll: count=${allDisplays.size} ${formatDisplays(allDisplays)}")
         val presentationDisplays = dm
             ?.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION)
@@ -147,13 +150,19 @@ object DisplaySessionManager {
     private fun buildInfo(display: Display): ExternalDisplayInfo {
         val metrics = DisplayMetrics()
         display.getRealMetrics(metrics)
+        
+        val hdrCaps = display.hdrCapabilities
+        val hasHdr = hdrCaps != null && hdrCaps.supportedHdrTypes.isNotEmpty()
+        
         return ExternalDisplayInfo(
             displayId = display.displayId,
             name = display.name ?: "Unknown Display",
             width = metrics.widthPixels,
             height = metrics.heightPixels,
             densityDpi = metrics.densityDpi,
-            rotation = display.rotation
+            rotation = display.rotation,
+            refreshRate = display.refreshRate,
+            isHdr = hasHdr
         )
     }
 

@@ -26,8 +26,6 @@ class AppPickerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAppPickerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root)
 
         pickMode = intent.getBooleanExtra(EXTRA_PICK_MODE, false)
@@ -78,23 +76,13 @@ class AppPickerActivity : AppCompatActivity() {
     }
 
     private fun loadLaunchableApps(): List<AppEntry> {
-        val pm = packageManager
-        val intent = android.content.Intent(android.content.Intent.ACTION_MAIN).apply {
-            addCategory(android.content.Intent.CATEGORY_LAUNCHER)
-        }
-        val apps = if (android.os.Build.VERSION.SDK_INT >= 33) {
-            pm.queryIntentActivities(intent, PackageManager.ResolveInfoFlags.of(0))
-        } else {
-            @Suppress("DEPRECATION")
-            pm.queryIntentActivities(intent, 0)
-        }
-        return apps.map { resolveInfo ->
-            val appInfo = resolveInfo.activityInfo.applicationInfo
+        val apps = LaunchableAppCatalog.get(this)
+        return apps.map { app ->
             AppEntry(
-                label = resolveInfo.loadLabel(pm).toString(),
-                packageName = appInfo.packageName,
-                icon = resolveInfo.loadIcon(pm),
-                launchCount = AppLaunchHistory.getCount(this, appInfo.packageName)
+                label = app.label,
+                packageName = app.packageName,
+                icon = app.icon,
+                launchCount = AppLaunchHistory.getCount(this, app.packageName)
             )
         }.distinctBy { it.packageName }
             .sortedWith(

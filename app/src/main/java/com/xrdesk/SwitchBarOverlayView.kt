@@ -180,6 +180,7 @@ class SwitchBarOverlayView @JvmOverloads constructor(
             }
             scaleType = ImageView.ScaleType.FIT_CENTER
             setImageDrawable(iconDrawable)
+            tag = "no_tint"
         }
         container.addView(imageView)
         return container

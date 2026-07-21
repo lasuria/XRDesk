@@ -57,6 +57,11 @@
     <string name="host_change_app">Сменить приложение</string>
     <string name="host_end_session">Завершить сессию</string>
 
+    <string name="display_type_xr_glasses">XR-очки</string>
+    <string name="display_type_external">Внешний дисплей</string>
+    <string name="display_capability_refresh_rate">%1$d Гц</string>
+    <string name="display_capability_hdr">HDR</string>
+
     <string name="touchpad_title">Тачпад</string>
     <string name="touchpad_blackout">Экран выключен</string>
     <string name="touchpad_play_pause_button">Воспр./Пауза</string>
@@ -111,6 +116,9 @@
     <string name="settings_section_display">Экран</string>
     <string name="settings_section_brightness">Яркость</string>
     <string name="settings_section_security">Безопасность</string>
+    <string name="settings_section_typography">Типографика</string>
+    <string name="settings_text_size">Масштаб интерфейса</string>
+    <string name="settings_text_size_value">%1$d%%</string>
     <string name="settings_section_navigation">Навигация</string>
     <string name="settings_touchpad_two_finger_gestures">Жесты двумя пальцами</string>
     <string name="settings_touchpad_two_finger_summary">Включает прокрутку и управление списками двумя пальцами.</string>
@@ -339,7 +347,11 @@
     <string name="settings_cursor_speed_default">0.9x</string>
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
+    <string name="empty_text" translatable="false"></string>
+    <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
+    <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
     <string name="settings_about_title">О приложении</string>
+    <string name="settings_section_information">Информация</string>
     <string name="settings_about_summary">Версия и информация</string>
     <string name="settings_touchpad_auto_lock_title">Автоблокировка при бездействии</string>
     <string name="settings_touchpad_auto_lock_summary">Автоматически блокирует удаленное устройство после выбранного периода бездействия при использовании тачпада.</string>
@@ -353,6 +365,15 @@
     <string name="auto_lock_5m">5 минут</string>
     <string name="auto_lock_7m">7 минут</string>
     <string name="auto_lock_10m">10 минут</string>
+    <string name="about_based_on_title">Основано на DeskControl</string>
+    <string name="about_based_on_summary">Оригинальный проект (DeskControl)</string>
+    <string name="about_xrdesk_title">О проекте</string>
+    <string name="about_xrdesk_summary">Версия 1.1 • Последнее обновление 2026.07.21</string>
+    <string name="about_original_project_name">DeskControl</string>
+    <string name="about_original_project_version">v1.1.5.post2</string>
+    <string name="about_original_project_desc">XRDesk построен на базе DeskControl — пульта дистанционного управления для Android с открытым исходным кодом. Мы расширили его современным интерфейсом, улучшенным движком тем и специальными функциями для XR.</string>
+    <string name="about_original_author">Оригинальный автор: exiarepairii</string>
+    <string name="about_fork_maintainer">Поддержка: lasuriia (Crea)</string>
     <string name="about_fork_author_label">Автор</string>
     <string name="about_license_title">Лицензия</string>
     <string name="about_license_content">GNU General Public License v3.0 (GPL-3.0)</string>
@@ -360,29 +381,22 @@
     <string name="about_fork_project">GitHub проект (Форк)</string>
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">версия v.1.1.5.post2</string>
+    <string name="about_github_label">Открыть на GitHub</string>
+    <string name="about_issues_label">Сообщить об ошибке</string>
     <string name="about_whats_new">Что нового</string>
-    <string name="app_version_label">Версия 1.1.5</string>
-    <string name="app_build_label">Сборка 2026.07.21</string>
-    <string name="about_xrdesk_summary">Версия 1.1.5 • Сборка 2026.07.21</string>
-    <string name="about_based_on_title">Основано на DeskControl</string>
-    <string name="about_based_on_summary">Оригинальный проект (DeskControl)</string>
-    <string name="about_xrdesk_title">О проекте</string>
     <string name="about_whats_new_summary">Список изменений и примечания</string>
+    <string name="app_version_label">Версия 1.1</string>
+    <string name="app_build_label">Последнее обновление 2026.07.21</string>
+    <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
+    <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
     <string name="about_4pda_label">Профиль 4PDA</string>
     <string name="about_xrdesk_desc">XRDesk — это современный пульт и тачпад для внешних дисплеев и XR-очков на Android. Он позволяет управлять приложениями на втором экране с помощью настраиваемого интерфейса и продвинутой обработки ввода.</string>
-    <string name="changelog_v1_1_5_title">Версия 1.1.5</string>
-    <string name="changelog_v1_1_5_date">Июль 2026</string>
-    <string name="changelog_v1_1_5_content"><![CDATA[• Полностью переработан Редактор тем.\n• Настройки разделены на Экран, Тачпад и Курсор.\n• Унифицирован дизайн переключателей, кнопок и элементов управления.\n• Редактор тем приведен к общему стилю Material Design 3.\n• Улучшена навигация и структура параметров.\n• Обновлены переводы и локализация.\n• Различные улучшения интерфейса и UX.]]></string>
-
+    <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
     <string name="changelog_v1_1_0_title">Версия 1.1.0</string>
     <string name="changelog_v1_1_0_date">Июль 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• Обновление интерфейса до Material Design 3.\n• Единый визуальный стиль во всем приложении.\n• Экраны тем и языков заменены на нативные списки выбора.\n• Уточнены отступы, типографика и размеры компонентов.\n• Улучшена иерархия навигации.\n• Добавлены индикаторы состояния подключения.\n• Улучшена читаемость логов и страниц с информацией.\n• Общая полировка UX и исправление несоответствий.]]></string>
-
-    <string name="changelog_v1_0_5_title">Версия 1.0.5</string>
-    <string name="changelog_v1_0_5_date">Июль 2026</string>
-    <string name="changelog_v1_0_5_content"><![CDATA[• Добавлена автоблокировка экрана при бездействии.\n• Настройка тайм-аута бездействия.\n• Поддержка закрепленных приложений.\n• Быстрая отправка логов.\n• Расширены страницы «О приложении».\n• Исправления ошибок и повышение стабильности.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Полное обновление интерфейса до Material Design 3.\n• Переработан Редактор тем.\n• Настройки разделены на Экран, Тачпад и Курсор.\n• Унифицирован дизайн переключателей, кнопок и элементов управления.\n• Улучшена навигация и структура параметров.\n• Добавлены индикаторы состояния подключения.\n• Добавлена автоблокировка экрана с настраиваемым тайм-аутом.\n• Добавлена поддержка закрепленных приложений.\n• Добавлена функция быстрой отправки логов.\n• Расширены страницы «О приложении».\n• Обновлены иконки главного экрана.\n• Оптимизирована Док-панель и восстановлено отображение иконок.\n• Добавлено распознавание очков с выводом модели, разрешения, частоты и HDR.\n• Обновлены переводы и локализация.\n• Различные улучшения UI, UX, производительности и стабильности.]]></string>
 
     <string name="changelog_v1_0_0_title">Версия 1.0.0</string>
     <string name="changelog_v1_0_0_date">Июль 2026</string>
-    <string name="changelog_v1_0_0_content"><![CDATA[• Первый релиз XRDesk.\n• Форк DeskControl.\n• Брендинг XRDesk.\n• Редактор тем.\n• Импорт/экспорт тем (JSON).\n• Светлая, Темная и AMOLED темы.\n• Английский, русский, украинский и китайский языки.\n• Начальный раздел «О приложении».]]></string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• Первый публичный релиз XRDesk.\n• Основано на DeskControl.\n• Редактор пользовательских тем.\n• Импорт и экспорт тем (JSON).\n• Светлая, Темная и AMOLED темы.\n• Поддержка английского, русского, украинского и китайского языков.\n• Начальный раздел «О приложении».]]></string>
 </resources>
