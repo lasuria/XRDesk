@@ -69,19 +69,19 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         val colors = ThemeEngine.getColors()
 
         if (displayType == XrDeviceDetector.ExternalDisplayType.NONE) {
-            binding.iconDisplay.setImageResource(R.drawable.ic_premium_monitor_new)
+            binding.iconDisplay.setImageResource(R.drawable.monitor_disconnected)
             binding.statusDisplayValue.text = getString(R.string.external_display_not_connected)
             binding.deviceStatusLabel.isVisible = false
             
-            // Apply Material Red (Error) tint to the monitor icon
-            binding.iconDisplay.setColorFilter(colors.colorError)
+            // Apply Gray (Secondary) tint when disconnected
+            binding.iconDisplay.setColorFilter(colors.textSecondary)
         } else {
             // Pick the icon based on detected type
             if (displayType == XrDeviceDetector.ExternalDisplayType.XR_GLASSES) {
-                binding.iconDisplay.setImageResource(R.drawable.ic_xr_glasses)
+                binding.iconDisplay.setImageResource(R.drawable.glasses_connected)
                 binding.deviceStatusLabel.text = "XR Glasses Connected"
             } else {
-                binding.iconDisplay.setImageResource(R.drawable.ic_premium_monitor_new)
+                binding.iconDisplay.setImageResource(R.drawable.monitor_connected)
                 binding.deviceStatusLabel.text = getString(R.string.external_display_connected)
             }
             
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             
             binding.deviceStatusLabel.isVisible = true
             
-            // Apply Material Green (Success) tint
+            // Apply Green (Success) tint when connected
             binding.iconDisplay.setColorFilter(colors.colorSuccess)
         }
     }

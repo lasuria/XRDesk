@@ -48,7 +48,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_monitor_apple"
+                    android:src="@drawable/ic_monitor"
                     app:tint="?attr/colorPrimary" />
 
                 <TextView
@@ -116,7 +116,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_open_in_new_apple"
+                    android:src="@drawable/ic_open_in_new"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <TextView
                     android:layout_width="0dp"
@@ -129,7 +129,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>

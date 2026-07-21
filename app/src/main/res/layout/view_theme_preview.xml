@@ -116,7 +116,7 @@
                                 android:id="@+id/previewIconSecondary"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:src="@drawable/ic_settings_apple"
+                                android:src="@drawable/ic_settings"
                                 android:contentDescription="@string/theme_preview_option_secondary"
                                 app:tint="?attr/colorOnSurfaceVariant" />
 

@@ -18,7 +18,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/statusCard"
             android:layout_width="match_parent"
-            android:layout_height="132dp"
+            android:layout_height="148dp"
             android:layout_marginTop="12dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
             app:cardCornerRadius="20dp"
@@ -34,9 +34,9 @@
 
                 <ImageView
                     android:id="@+id/iconDisplay"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:src="@drawable/ic_premium_monitor_new" />
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:src="@drawable/monitor_disconnected" />
 
                 <TextView
                     android:id="@+id/statusDisplayValue"
@@ -154,7 +154,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>
@@ -182,7 +182,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_settings_apple"
+                    android:src="@drawable/ic_settings"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <TextView
                     android:layout_width="0dp"
@@ -195,7 +195,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>

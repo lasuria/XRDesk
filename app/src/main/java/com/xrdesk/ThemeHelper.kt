@@ -109,6 +109,7 @@ object ThemeHelper {
                 // Secondary icons (alpha or specific ID)
                 if (id == R.id.appLogo) {
                     view.imageTintList = null
+                    view.colorFilter = null
                 } else if (view.alpha < 1f || id == R.id.iconAccessibility) {
                     view.imageTintList = ColorStateList.valueOf(colors.textSecondary)
                 } else if (id == R.id.iconDisplay) {

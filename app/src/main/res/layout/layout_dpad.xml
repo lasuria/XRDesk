@@ -128,7 +128,7 @@
             android:contentDescription="@string/touchpad_play_pause_button"
             android:padding="16dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_play_pause_apple"
+            android:src="@drawable/ic_play_pause"
             app:tint="?attr/colorOnSurface" />
 
         <ImageButton

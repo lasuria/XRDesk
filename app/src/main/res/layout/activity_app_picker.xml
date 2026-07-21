@@ -38,7 +38,7 @@
             app:boxCornerRadiusBottomStart="24dp"
             app:boxCornerRadiusBottomEnd="24dp"
             app:hintTextColor="?attr/colorOnSurfaceVariant"
-            app:startIconDrawable="@drawable/ic_search_apple"
+            app:startIconDrawable="@drawable/ic_search"
             app:startIconTint="?attr/colorOnSurfaceVariant">
 
             <com.google.android.material.textfield.TextInputEditText

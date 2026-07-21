@@ -101,7 +101,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_open_in_new_apple"
+                    android:src="@drawable/ic_open_in_new"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <TextView
                     android:layout_width="0dp"
@@ -114,7 +114,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>
@@ -135,7 +135,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_hand_apple"
+                    android:src="@drawable/ic_hand"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <TextView
                     android:layout_width="0dp"
@@ -148,7 +148,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>
@@ -169,7 +169,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_logs_apple"
+                    android:src="@drawable/ic_logs"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <TextView
                     android:layout_width="0dp"
@@ -182,7 +182,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>

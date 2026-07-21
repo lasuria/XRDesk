@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_share_logs"
         android:title="Share"
-        android:icon="@drawable/ic_open_in_new_apple"
+        android:icon="@drawable/ic_open_in_new"
         app:showAsAction="always" />
 
     <item

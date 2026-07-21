@@ -63,7 +63,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>
@@ -84,7 +84,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_language_apple"
+                    android:src="@drawable/ic_language"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <TextView
                     android:layout_width="0dp"
@@ -97,7 +97,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>
@@ -118,7 +118,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_monitor_apple"
+                    android:src="@drawable/ic_monitor"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <TextView
                     android:layout_width="0dp"
@@ -131,7 +131,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>
@@ -165,7 +165,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>
@@ -199,7 +199,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>
@@ -233,7 +233,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>
@@ -256,7 +256,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_info_apple"
+                    android:src="@drawable/ic_info"
                     app:tint="?attr/colorOnSurfaceVariant" />
                 <LinearLayout
                     android:layout_width="0dp"
@@ -281,7 +281,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_chevron_right_apple"
+                    android:src="@drawable/ic_chevron_right"
                     app:tint="?attr/colorOnSurfaceVariant"
                     android:alpha="0.6" />
             </LinearLayout>
