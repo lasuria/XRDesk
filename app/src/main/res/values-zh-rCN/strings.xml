@@ -106,22 +106,6 @@
 
     <string name="settings_switch_bar_section">Dock</string>
     <string name="settings_switch_bar_enabled">显示 Dock</string>
-    <string name="settings_section_display">显示</string>
-    <string name="settings_section_brightness">亮度</string>
-    <string name="settings_section_security">安全</string>
-    <string name="settings_section_typography">字体排版</string>
-    <string name="settings_text_size">字体大小</string>
-    <string name="settings_text_size_value">%1$d%%</string>
-    <string name="settings_section_navigation">导航</string>
-    <string name="settings_touchpad_two_finger_gestures">双指手势</string>
-    <string name="settings_touchpad_two_finger_summary">启用双指滚动和次要控制。</string>
-    <string name="settings_touchpad_three_finger_gestures">三指手势</string>
-    <string name="settings_touchpad_three_finger_summary">使用三指启用物理滑动模拟。</string>
-    <string name="settings_section_scrolling">滚动</string>
-    <string name="settings_section_interaction">交互</string>
-    <string name="settings_section_appearance">外观</string>
-    <string name="settings_section_behavior">行为</string>
-    <string name="settings_section_developer">开发者</string>
     <string name="settings_switch_bar_hint">指针移动到底部唤出 Dock。</string>
     <string name="settings_switch_bar_scale">Dock 大小</string>
     <string name="settings_switch_bar_scale_default">100%</string>
@@ -144,6 +128,27 @@
     <string name="touchpad_blackout_unlock_hint">向上滑动解锁</string>
 
     <string name="settings_title">设置</string>
+    <string name="settings_category_appearance_title">外观</string>
+    <string name="settings_category_appearance_summary">主题和语言</string>
+    <string name="settings_category_display_title">显示</string>
+    <string name="settings_category_display_summary">屏幕、亮度和锁定</string>
+    <string name="settings_category_touchpad_title">触控板</string>
+    <string name="settings_category_touchpad_summary">D-Pad、滚动和焦点</string>
+    <string name="settings_category_cursor_title">光标</string>
+    <string name="settings_category_cursor_summary">Size、颜色、速度和自动隐藏</string>
+    <string name="settings_category_dock_title">Dock</string>
+    <string name="settings_category_dock_summary">常驻应用和面板大小</string>
+    <string name="settings_category_advanced_title">日志</string>
+    <string name="settings_category_advanced_summary">日志和支持</string>
+    <string name="settings_dpad_title">D-Pad 导航</string>
+    <string name="settings_dpad_position">D-Pad 位置</string>
+    <string name="settings_dpad_model">导航模式</string>
+    <string name="dpad_model_accessibility">无障碍（安全）</string>
+    <string name="dpad_model_native">原生（TV 风格，需要 Shizuku）</string>
+    <string name="dpad_pos_hidden">已隐藏</string>
+    <string name="dpad_pos_above">在触控板上方</string>
+    <string name="dpad_pos_below">在触控板下方</string>
+
     <string name="settings_display_section">显示</string>
     <string name="settings_touchpad_section">触控板</string>
     <string name="settings_theme">主题</string>
@@ -345,29 +350,112 @@
     <string name="auto_lock_5m">5 分钟</string>
     <string name="auto_lock_7m">7 秒</string>
     <string name="auto_lock_10m">10 分钟</string>
+
+    <string name="settings_hud_title">HUD 设置</string>
+    <string name="settings_hud_enable">启用 HUD</string>
+    <string name="settings_hud_section_panel">状态面板</string>
+    <string name="settings_hud_status_panel">启用状态面板</string>
+    <string name="settings_hud_position">HUD 位置</string>
+    <string name="settings_hud_size">HUD 大小</string>
+    <string name="settings_hud_edge">触发边缘</string>
+    <string name="settings_hud_layout">面板布局</string>
+    <string name="settings_hud_manage_widgets">管理小部件</string>
+    <string name="settings_hud_zone">激活区域</string>
+    <string name="settings_hud_delay">隐藏延迟</string>
+    <string name="settings_hud_section_notifications">通知</string>
+    <string name="settings_hud_enable_notifications">启用通知</string>
+    <string name="settings_hud_grant_notifications">授予通知权限</string>
+    <string name="settings_hud_grant_location">授予位置权限</string>
+    <string name="settings_hud_grant_bluetooth">授予蓝牙权限</string>
+    <string name="settings_hud_notification_size">通知大小</string>
+    <string name="settings_hud_preview">实时预览</string>
+    <string name="settings_hud_debug_title">HUD 调试</string>
+    <string name="settings_hud_debug_always">始终显示状态面板</string>
+    <string name="settings_hud_debug_zone">高亮激活区域</string>
+    <string name="settings_hud_debug_bounds">显示 HUD 边界</string>
+    <string name="settings_hud_debug_test">显示测试通知</string>
+    <string name="settings_hud_edge_top">顶部</string>
+    <string name="settings_hud_edge_bottom">底部</string>
+    <string name="settings_hud_edge_left">左侧</string>
+    <string name="settings_hud_edge_right">右侧</string>
+    <string name="settings_hud_edge_top_left">左上角</string>
+    <string name="settings_hud_edge_top_right">右上角</string>
+    <string name="settings_hud_edge_bottom_left">左下角</string>
+    <string name="settings_hud_edge_bottom_right">右下角</string>
+    <string name="settings_hud_edge_all">所有侧面</string>
+    <string name="settings_hud_reset">重置 HUD 设置</string>
+
+    <string name="settings_permissions_title">权限</string>
+    <string name="perm_notifications_title">通知</string>
+    <string name="perm_notifications_desc">需要转发智能手机通知到外部显示器 HUD。</string>
+    <string name="perm_bluetooth_title">蓝牙</string>
+    <string name="perm_bluetooth_desc">需要在 HUD 中显示已连接设备名称和电池电量。</string>
+    <string name="perm_location_title">位置</string>
+    <string name="perm_location_desc">在现代 Android 版本上访问 WiFi SSID（网络名称）需要此权限。</string>
+    <string name="btn_grant">授予</string>
+    <string name="status_granted">已授予</string>
+    <string name="status_denied">已拒绝</string>
+
+    <string name="battery_status_charging">正在充电</string>
+    <string name="battery_status_discharging">正在放电</string>
+    <string name="status_ready">就绪</string>
+    <string name="status_no_devices">无设备</string>
+
+    <string name="about_fork_author_label">作者</string>
     <string name="about_license_title">许可证</string>
     <string name="about_license_content">GNU General Public License v3.0 (GPL-3.0)</string>
-    <string name="about_fork_author_label">作者</string>
     <string name="about_original_project">原始项目</string>
     <string name="about_fork_project">GitHub 项目 (Fork)</string>
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">版本 v.1.1.5.post2</string>
     <string name="about_whats_new">更新日志</string>
-    <string name="about_github_label">查看 GitHub</string>
-    <string name="about_issues_label">反馈问题</string>
-    <string name="app_version_label">版本 1.1</string>
+    <string name="app_version_label">版本 1.1.0</string>
     <string name="app_build_label">最后更新 2026.07.21</string>
+    <string name="about_xrdesk_summary">版本 1.1.0 • 最后更新 2026.07.21</string>
+    <string name="about_original_project_name">DeskControl</string>
+    <string name="about_original_project_version">v1.1.5.post2</string>
+    <string name="about_original_project_desc">XRDesk 是在 DeskControl 的基础上构建的，DeskControl 是一个开源的 Android 远程控制。我们通过现代 UI、增强的主题引擎和专业的 XR 功能扩展了它。</string>
+    <string name="about_original_author">原作者: exiarepairii</string>
+    <string name="about_fork_maintainer">维护者: lasuriia (Crea)</string>
+    <string name="about_github_label">在 GitHub 上查看</string>
+    <string name="about_issues_label">反馈问题</string>
+    <string name="about_whats_new_summary">版本历史与更改</string>
+    <string name="about_4pda_label">4PDA 个人资料</string>
+    <string name="about_xrdesk_desc">XRDesk 是一款面向外接显示器和 XR 眼镜的现代 Android 遥控器和触控板。它允许您通过高度可定制的界面和先进的输入处理来控制在副屏上运行的应用程序。</string>
     <string name="about_based_on_title">基于 DeskControl</string>
     <string name="about_based_on_summary">原始项目 (DeskControl)</string>
     <string name="about_xrdesk_title">关于项目</string>
-    <string name="about_xrdesk_summary">版本 1.1 • 最后更新 2026.07.21</string>
-    <string name="about_whats_new_summary">更新日志与发行说明</string>
-    <string name="about_4pda_label">4PDA 个人资料</string>
-    <string name="about_xrdesk_desc">XRDesk 是一款面向外接显示器和 XR 眼镜的现代 Android 遥控器和触控板。它允许您通过高度可定制的界面和先进的输入处理来控制在副屏上运行的应用程序。</string>
-    <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
+
+    <string name="hud_mode_detailed">详细</string>
+    <string name="hud_mode_compact">紧凑</string>
+    <string name="settings_hud_size_label">HUD 大小: %1$d dp</string>
+
+    <string name="dev_mode_title">开发者模式</string>
+    <string name="dev_section_hud">HUD 调试</string>
+    <string name="dev_section_diagnostics">诊断</string>
+    <string name="dev_section_about">关于</string>
+    <string name="dev_version_label">版本: %1$s</string>
+    <string name="dev_build_label">构建: %1$s</string>
+    <string name="dev_disable">禁用开发者模式</string>
+    <string name="dev_toast_steps">开发者模式：还剩 %1$d 步...</string>
+    <string name="dev_toast_enabled">开发者模式已启用</string>
+    <string name="dev_toast_already">开发者模式已处于开启状态</string>
+
+    <string name="net_airplane">飞行模式</string>
+    <string name="net_cellular">蜂窝网络</string>
+    <string name="net_none">无网络</string>
+
     <string name="changelog_v1_1_0_title">版本 1.1.0</string>
     <string name="changelog_v1_1_0_date">2026年7月</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• 完整的 Material Design 3 界面重塑。\n• 重新设计的主题编辑器。\n• 将设置重新组织为显示、触控板和光标部分。\n• 统一了开关、按钮和控制件的设计。\n• 改进了导航和设置布局。\n• 添加了连接状态指示器。\n• 添加了带有可配置闲置超时的自动锁屏功能。\n• 添加了常驻应用支持。\n• 添加了快速日志共享。\n• 扩展了“关于”页面。\n• 重新设计了主屏幕图标。\n• 优化了 Dock 布局并恢复了应用图标。\n• 增加了 XR 眼镜检测，支持显示设备型号、分辨率、刷新率和 HDR。\n• 更新了翻译和本地化。\n• 各项 UI、UX、性能和稳定性改进。]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• 全新的 XR HUD，包含两种核心模式。
+• 详细模式：系统状态的完整概览。
+• 紧凑模式：带有智能蓝牙隐藏功能的自适应行。
+• HUD 大小（60–120 dp）和位置自定义。
+• 设置中的实时预览。
+• Android 风格的完整“开发者模式”。
+• 带有搜索和过滤功能的高级日志查看器。
+• 提升了在 AR 眼镜中的可读性。
+• 修复了错误并提升了稳定性。]]></string>
 
     <string name="changelog_v1_0_0_title">版本 1.0.0</string>
     <string name="changelog_v1_0_0_date">2026年7月</string>

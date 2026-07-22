@@ -6,25 +6,45 @@ import java.util.Date
 import java.util.Locale
 
 object DiagnosticsLog {
-    private const val MAX_LINES = 200
-    private val lines = ArrayDeque<String>()
+    private const val MAX_LINES = 1000
+    private val lines = ArrayDeque<LogEntry>()
     private var resources: Resources? = null
+
+    data class LogEntry(val timestamp: String, val tag: String, val message: String)
 
     fun init(resources: Resources) {
         this.resources = resources
     }
 
     @Synchronized
-    fun add(message: String) {
+    fun add(tag: String, message: String) {
         val timestamp = createFormatter().format(Date())
         if (lines.size >= MAX_LINES) {
             lines.removeFirst()
         }
-        lines.addLast(formatLine(timestamp, message))
+        lines.addLast(LogEntry(timestamp, tag, message))
+    }
+
+    @Deprecated("Use add(tag, message)")
+    fun add(message: String) {
+        add("General", message)
     }
 
     @Synchronized
-    fun snapshot(): List<String> = lines.toList()
+    fun snapshot(filterTag: String? = null, query: String? = null): List<String> {
+        return lines.filter { entry ->
+            (filterTag == null || entry.tag == filterTag) &&
+            (query == null || entry.message.contains(query, ignoreCase = true) || entry.tag.contains(query, ignoreCase = true))
+        }.map { formatLine(it.timestamp, "[${it.tag}] ${it.message}") }
+    }
+
+    @Synchronized
+    fun clear() {
+        lines.clear()
+    }
+
+    @Synchronized
+    fun getTags(): List<String> = lines.map { it.tag }.distinct().sorted()
 
     private fun createFormatter(): SimpleDateFormat {
         val pattern = requireResources().getString(R.string.diagnostics_log_time_format)

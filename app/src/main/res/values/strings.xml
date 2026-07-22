@@ -69,7 +69,7 @@
     <string name="touchpad_play_pause_button">Play/Pause</string>
     <string name="touchpad_back_button">Back</string>
     <string name="touchpad_rewind_button">Rewind</string>
-    <string name="touchpad_fast_forward_button">Fast Forward</string>
+    <string name="touchpad_fast_forward_button">Forward</string>
     <string name="touchpad_hint">Tap the rectangle to activate; Back is forwarded to the external display.\nSlide: move cursor; press and slide: drag; two fingers: scroll.</string>
     <string name="touchpad_tuning">Touchpad tuning</string>
     <string name="touchpad_base_gain">Base gain</string>
@@ -118,6 +118,9 @@
     <string name="settings_section_display">Screen</string>
     <string name="settings_section_brightness">Brightness</string>
     <string name="settings_section_security">Security</string>
+    <string name="settings_section_typography">Typography</string>
+    <string name="settings_text_size">Text Size</string>
+    <string name="settings_text_size_value">%1$d%%</string>
     <string name="settings_section_navigation">Navigation</string>
     <string name="settings_touchpad_two_finger_gestures">Two-finger gestures</string>
     <string name="settings_touchpad_two_finger_summary">Enable scrolling and secondary controls with two fingers.</string>
@@ -364,10 +367,64 @@
     <string name="auto_lock_5m">5 minutes</string>
     <string name="auto_lock_7m">7 minutes</string>
     <string name="auto_lock_10m">10 minutes</string>
+
+    <string name="settings_hud_title">HUD Settings</string>
+    <string name="settings_hud_enable">Enable HUD</string>
+    <string name="settings_hud_section_panel">Status Panel</string>
+    <string name="settings_hud_status_panel">Enable Status Panel</string>
+    <string name="settings_hud_position">HUD Position</string>
+    <string name="settings_hud_size">HUD Size</string>
+    <string name="settings_hud_edge">Trigger Edge</string>
+    <string name="settings_hud_layout">Panel Layout</string>
+    <string name="settings_hud_manage_widgets">Manage Widgets</string>
+    <string name="settings_hud_zone">Activation Zone</string>
+    <string name="settings_hud_delay">Hide Delay</string>
+    <string name="settings_hud_section_notifications">Notifications</string>
+    <string name="settings_hud_enable_notifications">Enable Notifications</string>
+    <string name="settings_hud_grant_notifications">Grant Notification Access</string>
+    <string name="settings_hud_grant_location">Grant Location Permission</string>
+    <string name="settings_hud_grant_bluetooth">Grant Bluetooth Permission</string>
+    <string name="settings_hud_notification_size">Notification Size</string>
+    <string name="settings_hud_preview">Live Preview</string>
+    <string name="settings_hud_connected">Connected</string>
+    <string name="settings_hud_debug_title">HUD Debug</string>
+    <string name="settings_hud_debug_always">Always show Status Panel</string>
+    <string name="settings_hud_debug_zone">Highlight activation zone</string>
+    <string name="settings_hud_debug_bounds">Show HUD bounds</string>
+    <string name="settings_hud_debug_test">Show test notification</string>
+    <string name="settings_hud_edge_top">Top</string>
+    <string name="settings_hud_edge_bottom">Bottom</string>
+    <string name="settings_hud_edge_left">Left</string>
+    <string name="settings_hud_edge_right">Right</string>
+    <string name="settings_hud_edge_top_left">Top Left</string>
+    <string name="settings_hud_edge_top_right">Top Right</string>
+    <string name="settings_hud_edge_bottom_left">Bottom Left</string>
+    <string name="settings_hud_edge_bottom_right">Bottom Right</string>
+    <string name="settings_hud_edge_all">All Sides</string>
+    <string name="settings_hud_layout_horizontal">Horizontal</string>
+    <string name="settings_hud_layout_vertical">Vertical</string>
+    <string name="settings_hud_reset">Reset HUD Settings</string>
+
+    <string name="settings_permissions_title">Permissions</string>
+    <string name="perm_notifications_title">Notifications</string>
+    <string name="perm_notifications_desc">Required to forward smartphone notifications to the external display HUD.</string>
+    <string name="perm_bluetooth_title">Bluetooth</string>
+    <string name="perm_bluetooth_desc">Required to show connected device names and battery levels in the HUD.</string>
+    <string name="perm_location_title">Location</string>
+    <string name="perm_location_desc">Required to access WiFi SSID (Network Name) on modern Android versions.</string>
+    <string name="btn_grant">Grant</string>
+    <string name="status_granted">Granted</string>
+    <string name="status_denied">Denied</string>
+
+    <string name="battery_status_charging">Charging</string>
+    <string name="battery_status_discharging">Discharging</string>
+    <string name="status_ready">Ready</string>
+    <string name="status_no_devices">No devices</string>
+
     <string name="about_based_on_title">Based on DeskControl</string>
     <string name="about_based_on_summary">Original project (DeskControl)</string>
     <string name="about_xrdesk_title">About Project</string>
-    <string name="about_xrdesk_summary">Version 1.1 • Last update 2026.07.21</string>
+    <string name="about_xrdesk_summary">Version 1.1.0 • Last update 2026.07.21</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk is built upon the foundation of DeskControl, an open-source remote control for Android. We have extended it with a modern UI, enhanced theme engine, and specialized XR features.</string>
@@ -384,16 +441,45 @@
     <string name="about_issues_label">Report an Issue</string>
     <string name="about_whats_new">What\'s new</string>
     <string name="about_whats_new_summary">Changelog and release notes</string>
-    <string name="app_version_label">Version 1.1</string>
+    <string name="app_version_label">Version 1.1.0</string>
     <string name="app_build_label">Last update 2026.07.21</string>
     <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
     <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
     <string name="about_4pda_label">4PDA Profile</string>
     <string name="about_xrdesk_desc">XRDesk is a modern Android Remote &amp; Touchpad for External Displays and XR Glasses. It allows you to control applications running on secondary screens with a highly customizable interface and advanced input processing.</string>
     <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
+
+    <string name="hud_mode_detailed">Detailed</string>
+    <string name="hud_mode_compact">Compact</string>
+    <string name="settings_hud_size_label">HUD Size: %1$d dp</string>
+
+    <string name="dev_mode_title">Developer Mode</string>
+    <string name="dev_section_hud">HUD Debug</string>
+    <string name="dev_section_diagnostics">Diagnostics</string>
+    <string name="dev_section_about">About</string>
+    <string name="dev_version_label">Version: %1$s</string>
+    <string name="dev_build_label">Build: %1$s</string>
+    <string name="dev_disable">Disable Developer Mode</string>
+    <string name="dev_toast_steps">Developer Mode: %1$d steps away...</string>
+    <string name="dev_toast_enabled">Developer Mode enabled</string>
+    <string name="dev_toast_already">Developer Mode is already enabled</string>
+
+    <string name="net_airplane">Airplane Mode</string>
+    <string name="net_cellular">Cellular Network</string>
+    <string name="net_none">No Network</string>
+
     <string name="changelog_v1_1_0_title">Version 1.1.0</string>
     <string name="changelog_v1_1_0_date">July 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• Complete Material Design 3 interface overhaul.\n• Redesigned Theme Editor.\n• Reorganized Settings into Screen, Touchpad, and Cursor sections.\n• Unified the design of switches, buttons, and controls.\n• Improved navigation and settings layout.\n• Added connection status indicators.\n• Added screen auto-lock with configurable inactivity timeout.\n• Added pinned applications support.\n• Added quick log sharing.\n• Expanded About pages.\n• Redesigned the main screen icons.\n• Optimized the dock layout and restored application icons.\n• Added XR glasses detection with device model, display resolution, refresh rate, and HDR support.\n• Updated translations and localization.\n• Various UI, UX, performance, and stability improvements.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Entirely new XR HUD with four unique display modes.
+• Fully customizable HUD size and on-screen position.
+• New visionOS-inspired "Compact Card" with a stunning vertical clock.
+• New minimalist "Compact Bar" for essential status only.
+• New "Vertical Panel" list for structured information.
+• New "Full Information" mode for a complete status overview.
+• Integrated Developer Tools for real-time HUD debugging.
+• Enhanced readability with premium semi-transparent glass aesthetics.
+• Improved Wi-Fi, Bluetooth, and Battery indicators.
+• Important stability fixes and optimized performance on external displays.]]></string>
 
     <string name="changelog_v1_0_0_title">Version 1.0.0</string>
     <string name="changelog_v1_0_0_date">July 2026</string>

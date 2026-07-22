@@ -28,4 +28,6 @@
     <color name="premium_text_secondary">#6B7280</color>
     <color name="premium_icon">#64748B</color>
     <color name="premium_divider">#E2E8F0</color>
+    <color name="success_color">#FF4CAF50</color>
+    <color name="error_color">#FFF44336</color>
 </resources>

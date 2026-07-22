@@ -24,6 +24,7 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityWindowInfo
 import android.view.KeyEvent
 import android.media.AudioManager
+import android.view.ContextThemeWrapper
 import android.widget.Toast
 import java.util.ArrayDeque
 import kotlin.math.abs
@@ -203,9 +204,14 @@ class ControlAccessibilityService : AccessibilityService() {
         val maxY = info.height + (cursorSizePx / 4f)
         cursorX = (cursorX + dx).coerceIn(0f, maxX)
         cursorY = (cursorY + dy).coerceIn(0f, maxY)
+        
+        // Notify HUD of cursor movement
+        HUDSystemMonitor.publishCursor(cursorX, cursorY)
+        
         notifyCursorActivity()
         notifyCursorSpeed(dx, dy)
         updateOverlayPosition()
+        DiagnosticsLog.add("Accessibility", "Cursor moved: ($cursorX, $cursorY)")
         switchBarController?.onCursorMoved(cursorX, cursorY, cursorSizePx)
     }
 
@@ -1619,16 +1625,43 @@ class ControlAccessibilityService : AccessibilityService() {
 
         val display = getSystemService(DisplayManager::class.java).getDisplay(info.displayId)
         if (display == null) {
-            DiagnosticsLog.add("Accessibility: attach deferred (display missing) id=${info.displayId}")
+            android.util.Log.e("Geometry-Audit", "Display MISSING for ID=${info.displayId}")
             if (allowRetry) {
                 scheduleAttachRetry(info)
             }
             return
         }
         
-        overlayWindowContext = createDisplayContext(display)
+        val baseDisplayContext = createDisplayContext(display)
+        
+        // 1. Create WindowContext bound to the display (Fixes Geometry)
+        val windowContext = if (Build.VERSION.SDK_INT >= 30) {
+            baseDisplayContext.createWindowContext(WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY, null)
+        } else {
+            baseDisplayContext
+        }
+            
+        val themeRes = if (SettingsStore.nightMode == SettingsStore.THEME_AMOLED) 
+            R.style.Theme_XRDesk_Amoled 
+        else 
+            R.style.Theme_XRDesk
+
+        // 2. Wrap the WindowContext for Themes (Fixes Styles)
+        overlayWindowContext = android.view.ContextThemeWrapper(windowContext, themeRes)
+        
+        // 3. Get WindowManager from the WRAPPED WindowContext
         val wm = overlayWindowContext!!.getSystemService(WindowManager::class.java)
         windowManager = wm
+
+        // AUDIT LOG (FINAL CHECK)
+        if (Build.VERSION.SDK_INT >= 30) {
+            android.util.Log.e("Geometry-Audit", "[REAL HUD] WindowContext Bounds=${wm.currentWindowMetrics.bounds} " +
+                "Orientation=${windowContext.resources.configuration.orientation}")
+        }
+
+        // Initialize HUD if enabled
+        HUDManager.onDisplayConnected(overlayWindowContext!!, wm, info)
+        DiagnosticsLog.add("WindowManager", "Attached to display ${info.displayId}")
 
         if (SettingsStore.switchBarEnabled) {
             switchBarController = SwitchBarController(
@@ -1708,6 +1741,10 @@ class ControlAccessibilityService : AccessibilityService() {
         deferredBackRunnable?.let { handler.removeCallbacks(it) }
         deferredBackRunnable = null
         cancelAttachRetry()
+        
+        // Teardown HUD
+        HUDManager.onDisplayDisconnected()
+
         switchBarController?.teardown()
         switchBarController = null
         overlayView?.let { view ->

@@ -156,8 +156,8 @@ object ThemeHelper {
                     intArrayOf(android.R.attr.state_checked),
                     intArrayOf(-android.R.attr.state_checked)
                 )
-                // Checked: Accent, Unchecked: Primary Text with some alpha for contrast
-                val buttonColors = intArrayOf(accentColor, (colors.textPrimary and 0x00FFFFFF) or 0x7F000000)
+                // High-contrast states for MD3 Check circles
+                val buttonColors = intArrayOf(accentColor, colors.divider)
                 view.buttonTintList = ColorStateList(states, buttonColors)
                 view.setTextColor(colors.textPrimary)
                 view.typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)

@@ -21,6 +21,7 @@
     <string name="switch_bar_all_apps">Все приложения</string>
     <string name="app_icon_content_description">Иконка приложения</string>
     <string name="app_placeholder_name">Название приложения</string>
+    <string name="app_placeholder_package" translatable="false">com.example</string>
     <string name="app_launched_toast">Запущено %1$s</string>
     <string name="app_launch_failed_generic">Ошибка запуска</string>
     <string name="app_launch_failed_with_detail">%1$s: %2$s</string>
@@ -68,7 +69,7 @@
     <string name="touchpad_back_button">Назад</string>
     <string name="touchpad_rewind_button">Перемотка назад</string>
     <string name="touchpad_fast_forward_button">Перемотка вперед</string>
-    <string name="touchpad_hint">Нажмите на прямоугольник для активации; Назад передается на внешний дисплей.\nПролистывание: движение курсора; нажатие и пролистывание: перетаскивание; двумя пальцами: прокрутка.</string>
+    <string name="touchpad_hint">Нажмите на прямоугольник для активации; Назад передается на внешнем дисплей.\nПролистывание: движение курсора; нажатие и пролистывание: перетаскивание; двумя пальцами: прокрутка.</string>
     <string name="touchpad_tuning">Настройка тачпада</string>
     <string name="touchpad_base_gain">Базовая чувствительность</string>
     <string name="touchpad_acceleration">Ускорение</string>
@@ -274,22 +275,22 @@
     <string name="settings_touchpad_scroll_distance_default">6.0 dp</string>
     <string name="settings_touchpad_scroll_distance_summary">Ниже = легче вызвать непрерывную прокрутку. Выше = стабильнее и медленнее.</string>
     <string name="settings_touchpad_scroll_invert">Естественная прокрутка</string>
-    <string name="settings_touchpad_scroll_invert_summary">Включите для прокрутки как на экране смартфона. Выключите для классического поведения мыши.</string>
-    <string name="settings_touchpad_drag_boost">Ускорение при перетаскивании</string>
+    <string name="settings_touchpad_scroll_invert_summary">Увімкніть для прокрутки як на екрані смартфону. Вимкніть для классического поведения мыши.</string>
+    <string name="settings_touchpad_drag_boost">Ускрорення при перетягуванні</string>
     <string name="settings_touchpad_drag_boost_value">%1$.1fx</string>
     <string name="settings_touchpad_drag_boost_default">1.2x</string>
-    <string name="settings_touchpad_scroll_direct_section">Режим прямого жеста (экспериментально)</string>
-    <string name="settings_touchpad_scroll_gesture">Включить режим прямого жеста</string>
-    <string name="settings_touchpad_scroll_gesture_summary">Использовать смещение центральной точки двух пальцев для непрерывных жестов. Если включено, обычные настройки прокрутки игнорируются.</string>
-    <string name="settings_touchpad_scroll_gesture_gain">Чувствительность прямого жеста</string>
+    <string name="settings_touchpad_scroll_direct_section">Режим прямого жесту (экспериментально)</string>
+    <string name="settings_touchpad_scroll_gesture">Увімкнути режим прямого жесту</string>
+    <string name="settings_touchpad_scroll_gesture_summary">Використовувати зміщення центральної точки двох пальців для безперервних жестів. Якщо увімкнено, звичайні налаштування прокручування ігноруються.</string>
+    <string name="settings_touchpad_scroll_gesture_gain">Чутливість прямого жесту</string>
     <string name="settings_touchpad_scroll_gesture_gain_value">%1$.1fx</string>
     <string name="settings_touchpad_scroll_gesture_gain_default">1.0x</string>
-    <string name="settings_touchpad_scroll_gesture_gain_summary">Выше = быстрее прямые жесты. Начните с 1.0x и увеличивайте постепенно.</string>
-    <string name="settings_touchpad_scroll_gesture_step">Длина сегмента прямого жеста</string>
+    <string name="settings_touchpad_scroll_gesture_gain_summary">Выше = быстрее прямые жесты. Почніть з 1.0x и збільшуйте поступово.</string>
+    <string name="settings_touchpad_scroll_gesture_step">Довжина сегмента прямого жесту</string>
     <string name="settings_touchpad_scroll_gesture_step_value">%1$.0f dp</string>
     <string name="settings_touchpad_scroll_gesture_step_default">32 dp</string>
-    <string name="settings_touchpad_scroll_gesture_step_summary">Выше = каждый вводимый сегмент длиннее. Если появятся рывки, уменьшите значение.</string>
-    <string name="language_system">Системный</string>
+    <string name="settings_touchpad_scroll_gesture_step_summary">Выше = каждый вводимый сегмент довший. Якщо з’являться ривки, зменште значення.</string>
+    <string name="language_system">Системная</string>
     <string name="language_english">English</string>
     <string name="language_chinese">简体中文</string>
     <string name="language_russian">Русский</string>
@@ -297,7 +298,7 @@
     <string name="settings_cursor_section">Курсор</string>
     <string name="settings_cursor_size">Размер курсора</string>
     <string name="settings_cursor_scale_label">Масштаб</string>
-    <string name="settings_cursor_color">Цвет курсора</string>
+    <string name="settings_cursor_color">Колiр курсора</string>
     <string name="settings_cursor_opacity">Прозрачность курсора</string>
     <string name="settings_cursor_speed">Скорость курсора</string>
     <string name="settings_cursor_auto_hide">Автоскрытие курсора</string>
@@ -311,7 +312,7 @@
     <string name="settings_cursor_hide_delay_value">%1$.1fs</string>
     <string name="settings_advanced_section">Дополнительно</string>
     <string name="settings_tuning_title">Тюнинг</string>
-    <string name="settings_tuning_summary">Расширенные настройки зафиксированы на рекомендуемых значениях</string>
+    <string name="settings_tuning_summary">Расширенные настройки зафиксированы на рекомендованных значениях</string>
 
     <string name="injection_no_external_display">Нет внешнего дисплея</string>
     <string name="injection_scroll_injected">Прокрутка введена</string>
@@ -320,10 +321,10 @@
     <string name="injection_action_set_text_success">ACTION_SET_TEXT успешно</string>
     <string name="injection_action_set_text_failed">ACTION_SET_TEXT ошибка</string>
     <string name="injection_no_editable_field">Нет редактируемого поля на внешнем дисплее</string>
-    <string name="injection_tap_injected">Касание введено</string>
-    <string name="injection_tap_cancelled">Касание отменено</string>
-    <string name="injection_drag_injected">Перетаскивание введено</string>
-    <string name="injection_drag_cancelled">Перетаскивание отменено</string>
+    <string name="injection_tap_injected">Торк введення</string>
+    <string name="injection_tap_cancelled">Торк скасовано</string>
+    <string name="injection_drag_injected">Перетягування введено</string>
+    <string name="injection_drag_cancelled">Перетягування скасовано</string>
     <string name="injection_failed_with_message">Ошибка: %1$s</string>
 
     <string name="cursor_color_black">Черный</string>
@@ -365,15 +366,49 @@
     <string name="auto_lock_5m">5 минут</string>
     <string name="auto_lock_7m">7 минут</string>
     <string name="auto_lock_10m">10 минут</string>
-    <string name="about_based_on_title">Основано на DeskControl</string>
-    <string name="about_based_on_summary">Оригинальный проект (DeskControl)</string>
-    <string name="about_xrdesk_title">О проекте</string>
-    <string name="about_xrdesk_summary">Версия 1.1 • Последнее обновление 2026.07.21</string>
-    <string name="about_original_project_name">DeskControl</string>
-    <string name="about_original_project_version">v1.1.5.post2</string>
-    <string name="about_original_project_desc">XRDesk построен на базе DeskControl — пульта дистанционного управления для Android с открытым исходным кодом. Мы расширили его современным интерфейсом, улучшенным движком тем и специальными функциями для XR.</string>
-    <string name="about_original_author">Оригинальный автор: exiarepairii</string>
-    <string name="about_fork_maintainer">Поддержка: lasuriia (Crea)</string>
+
+    <string name="settings_hud_title">Настройки HUD</string>
+    <string name="settings_hud_enable">Включить HUD</string>
+    <string name="settings_hud_section_panel">Панель статуса</string>
+    <string name="settings_hud_status_panel">Включить панель статуса</string>
+    <string name="settings_hud_position">Положение HUD</string>
+    <string name="settings_hud_size">Размер HUD</string>
+    <string name="settings_hud_edge">Край активации</string>
+    <string name="settings_hud_layout">Расположение панели</string>
+    <string name="settings_hud_manage_widgets">Управление виджетами</string>
+    <string name="settings_hud_zone">Зона активации</string>
+    <string name="settings_hud_delay">Задержка скрытия</string>
+    <string name="settings_hud_section_notifications">Уведомления</string>
+    <string name="settings_hud_enable_notifications">Включить уведомления</string>
+    <string name="settings_hud_grant_notifications">Разрешить доступ к уведомлениям</string>
+    <string name="settings_hud_grant_location">Выдать права локации</string>
+    <string name="settings_hud_grant_bluetooth">Выдать права Bluetooth</string>
+    <string name="settings_hud_notification_size">Размер уведомлений</string>
+    <string name="settings_hud_preview">Предпросмотр</string>
+    <string name="settings_hud_connected">Подключено</string>
+    <string name="settings_hud_debug_title">HUD Отладка</string>
+    <string name="settings_hud_debug_always">Всегда показывать панель</string>
+    <string name="settings_hud_debug_zone">Подсветить зону активации</string>
+    <string name="settings_hud_debug_bounds">Показать границы HUD</string>
+    <string name="settings_hud_debug_test">Показать тестовое уведомление</string>
+    <string name="settings_hud_reset">Сбросить настройки HUD</string>
+
+    <string name="settings_permissions_title">Разрешения</string>
+    <string name="perm_notifications_title">Уведомления</string>
+    <string name="perm_notifications_desc">Требуется для пересылки уведомлений смартфона в HUD на внешнем дисплее.</string>
+    <string name="perm_bluetooth_title">Bluetooth</string>
+    <string name="perm_bluetooth_desc">Требуется для отображения имен подключенных устройств и уровня их заряда в HUD.</string>
+    <string name="perm_location_title">Геолокация</string>
+    <string name="perm_location_desc">Требуется для доступа к имени WiFi сети (SSID) на новых версиях Android.</string>
+    <string name="btn_grant">Предоставить</string>
+    <string name="status_granted">Предоставлено</string>
+    <string name="status_denied">Отклонено</string>
+
+    <string name="battery_status_charging">Зарядка</string>
+    <string name="battery_status_discharging">Разрядка</string>
+    <string name="status_ready">Готов</string>
+    <string name="status_no_devices">Нет устройств</string>
+
     <string name="about_fork_author_label">Автор</string>
     <string name="about_license_title">Лицензия</string>
     <string name="about_license_content">GNU General Public License v3.0 (GPL-3.0)</string>
@@ -381,22 +416,66 @@
     <string name="about_fork_project">GitHub проект (Форк)</string>
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">версия v.1.1.5.post2</string>
+    <string name="about_whats_new">Что нового</string>
+    <string name="app_version_label">Версия 1.1.0</string>
+    <string name="app_build_label">Последнее обновление 2026.07.21</string>
+    <string name="about_xrdesk_summary">Версия 1.1.0 • Последнее обновление 2026.07.21</string>
+    <string name="about_original_project_name">DeskControl</string>
+    <string name="about_original_project_version">v1.1.5.post2</string>
+    <string name="about_original_project_desc">XRDesk построен на базе DeskControl — пульта дистанционного управления для Android с открытым исходным кодом. Мы расширили его современным интерфейсом, улучшенным движком тем и специальными функциями для XR.</string>
+    <string name="about_original_author">Оригинальный автор: exiarepairii</string>
+    <string name="about_fork_maintainer">Поддержка: lasuriia (Crea)</string>
     <string name="about_github_label">Открыть на GitHub</string>
     <string name="about_issues_label">Сообщить об ошибке</string>
-    <string name="about_whats_new">Что нового</string>
-    <string name="about_whats_new_summary">Список изменений и примечания</string>
-    <string name="app_version_label">Версия 1.1</string>
-    <string name="app_build_label">Последнее обновление 2026.07.21</string>
-    <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
-    <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
+    <string name="about_whats_new_summary">История версий и изменений</string>
     <string name="about_4pda_label">Профиль 4PDA</string>
     <string name="about_xrdesk_desc">XRDesk — это современный пульт и тачпад для внешних дисплеев и XR-очков на Android. Он позволяет управлять приложениями на втором экране с помощью настраиваемого интерфейса и продвинутой обработки ввода.</string>
-    <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
+    <string name="about_based_on_title">Основано на DeskControl</string>
+    <string name="about_based_on_summary">Оригинальный проект (DeskControl)</string>
+    <string name="about_xrdesk_title">О проекте</string>
+
+    <string name="hud_mode_detailed">Подробный</string>
+    <string name="hud_mode_compact">Компактный</string>
+    <string name="settings_hud_size_label">Размер HUD: %1$d dp</string>
+
+    <string name="dev_mode_title">Режим разработчика</string>
+    <string name="dev_section_hud">Отладка HUD</string>
+    <string name="dev_section_diagnostics">Диагностика</string>
+    <string name="dev_section_about">О приложении</string>
+    <string name="dev_version_label">Версия: %1$s</string>
+    <string name="dev_build_label">Сборка: %1$s</string>
+    <string name="dev_disable">Выключить режим разработчика</string>
+    <string name="dev_toast_steps">Режим разработчика: осталось шагов: %1$d...</string>
+    <string name="dev_toast_enabled">Режим разработчика включен</string>
+    <string name="dev_toast_already">Вы уже разработчик</string>
+
+    <string name="net_airplane">Режим полета</string>
+    <string name="net_cellular">Мобильная сеть</string>
+    <string name="net_none">Нет сети</string>
+
+    <string name="settings_hud_edge_top">Сверху</string>
+    <string name="settings_hud_edge_bottom">Снизу</string>
+    <string name="settings_hud_edge_left">Слева</string>
+    <string name="settings_hud_edge_right">Справа</string>
+    <string name="settings_hud_edge_top_left">Сверху слева</string>
+    <string name="settings_hud_edge_top_right">Сверху справа</string>
+    <string name="settings_hud_edge_bottom_left">Снизу слева</string>
+    <string name="settings_hud_edge_bottom_right">Снизу справа</string>
+    <string name="settings_hud_edge_all">Со всех сторон</string>
+
     <string name="changelog_v1_1_0_title">Версия 1.1.0</string>
     <string name="changelog_v1_1_0_date">Июль 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• Полное обновление интерфейса до Material Design 3.\n• Переработан Редактор тем.\n• Настройки разделены на Экран, Тачпад и Курсор.\n• Унифицирован дизайн переключателей, кнопок и элементов управления.\n• Улучшена навигация и структура параметров.\n• Добавлены индикаторы состояния подключения.\n• Добавлена автоблокировка экрана с настраиваемым тайм-аутом.\n• Добавлена поддержка закрепленных приложений.\n• Добавлена функция быстрой отправки логов.\n• Расширены страницы «О приложении».\n• Обновлены иконки главного экрана.\n• Оптимизирована Док-панель и восстановлено отображение иконок.\n• Добавлено распознавание очков с выводом модели, разрешения, частоты и HDR.\n• Обновлены переводы и локализация.\n• Различные улучшения UI, UX, производительности и стабильности.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Полностью новый XR HUD с двумя основными режимами.
+• Подробный режим: полный обзор состояния системы.
+• Компактный режим: адаптивная строка с умным скрытием Bluetooth.
+• Настройка размера (60–120 dp) и положения HUD.
+• Живой предпросмотр в настройках.
+• Полноценный «Режим разработчика» в стиле Android.
+• Продвинутый просмотр логов с поиском и фильтрами.
+• Улучшенная читаемость в AR-очках.
+• Исправлены ошибки и повышена стабильность.]]></string>
 
     <string name="changelog_v1_0_0_title">Версия 1.0.0</string>
     <string name="changelog_v1_0_0_date">Июль 2026</string>
-    <string name="changelog_v1_0_0_content"><![CDATA[• Первый публичный релиз XRDesk.\n• Основано на DeskControl.\n• Редактор пользовательских тем.\n• Импорт и экспорт тем (JSON).\n• Светлая, Темная и AMOLED темы.\n• Поддержка английского, русского, украинского и китайского языков.\n• Начальный раздел «О приложении».]]></string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• Первый публичный релиз XRDesk.\n• Засновано на DeskControl.\n• Редактор пользовательских тем.\n• Импорт и экспорт тем (JSON).\n• Светлая, Темная и AMOLED темы.\n• Поддержка английского, русского, украинского и китайского языков.\n• Начальный раздел «О приложении».]]></string>
 </resources>

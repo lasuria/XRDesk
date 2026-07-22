@@ -1,6 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="moe.shizuku.privileged.api.permission.API_V23" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 
     <queries>
@@ -17,6 +24,10 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.XRDesk">
 
+        <activity
+            android:name=".DeveloperModeActivity"
+            android:exported="false"
+            android:label="Developer Mode" />
         <activity
             android:name=".DiagnosticsActivity"
             android:exported="false"
@@ -83,6 +94,16 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".SettingsHUDActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".PermissionsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".TouchpadActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -122,6 +143,15 @@
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <service
+            android:name=".HUDNotificationService"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
         </service>
 
         <provider

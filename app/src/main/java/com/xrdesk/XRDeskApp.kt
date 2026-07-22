@@ -20,6 +20,7 @@ class XRDeskApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        android.util.Log.e("Geometry-Audit", "XRDeskApp.onCreate()")
         SettingsStore.init(this)
         ThemeEngine.init(this)
         DiagnosticsLog.init(resources)
@@ -33,6 +34,9 @@ class XRDeskApp : Application() {
         AppCompatDelegate.setDefaultNightMode(mode)
         
         DisplaySessionManager.init(this)
+
+        // Initialize HUD System Monitor
+        HUDSystemMonitor.start(this)
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityPreCreated(activity: Activity, savedInstanceState: Bundle?) {

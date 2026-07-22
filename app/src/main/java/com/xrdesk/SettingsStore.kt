@@ -1,16 +1,14 @@
 package com.xrdesk
 
 import android.content.Context
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 object SettingsStore {
     private const val PREFS_NAME = "xrdesk_settings"
     private const val PREF_APP_LANGUAGE = "app_language"
     private const val LANGUAGE_SYSTEM = "system"
-    private const val LANGUAGE_ENGLISH = "en"
-    private const val LANGUAGE_CHINESE = "zh-CN"
-    private const val LANGUAGE_RUSSIAN = "ru"
-    private const val LANGUAGE_UKRAINIAN = "uk"
-    private const val BASE_SCROLL_SPEED = 0.4f
+    private const val PREF_SCROLL_SPEED_SCALE = "tp_scroll_scale"
 
     const val THEME_LIGHT = androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
     const val THEME_DARK = androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
@@ -21,6 +19,18 @@ object SettingsStore {
     const val DPAD_HIDDEN = 0
     const val DPAD_ABOVE = 1
     const val DPAD_BELOW = 2
+
+    // HUD MODES
+    const val HUD_MODE_FULL_INFO = 0
+    const val HUD_MODE_COMPACT_BAR = 1
+    const val HUD_MODE_COMPACT_CARD = 2
+    // Mode 3 (Vertical Panel) was removed in RC4
+
+    // HUD POSITIONS
+    const val HUD_POS_TOP = 0
+    const val HUD_POS_BOTTOM = 1
+    const val HUD_POS_LEFT = 2
+    const val HUD_POS_RIGHT = 3
 
     var nightMode = THEME_DARK
         private set
@@ -46,10 +56,6 @@ object SettingsStore {
         private set
     var touchpadScrollSpeed = 1.0f
         private set
-
-    private const val PREF_SCROLL_SPEED_SCALE = "tp_scroll_scale"
-    private const val PREF_SCROLL_SPEED_LEGACY = "tp_scroll_speed"
-
     var touchpadScrollInverted = true
         private set
     var touchpadScrollStepDp = 6.0f
@@ -71,66 +77,118 @@ object SettingsStore {
     var touchpadAutoLockTimeoutMs = 60_000L
         private set
 
-    private const val DRAG_BOOST_MIN = 0.8f
-    private const val DRAG_BOOST_MAX = 2.0f
+    // HUD SETTINGS
+    var hudEnabled = false
+        private set
+    var developerModeUnlocked = false
+        private set
+    var hudMode = HUD_MODE_COMPACT_CARD
+        private set
+    var hudPosition = HUD_POS_TOP
+        private set
+    var hudSizeDp = 64f
+        private set
+    var hudActivationZoneDp = 20f
+        private set
+    var hudHideDelayMs = 4000L
+        private set
+    var hudStatusPanelEnabled = true
+        private set
+    var hudNotificationsEnabled = true
+    var hudNotificationSizeDp = 240f
+        private set
+
+    // REACTIVE FLOWS
+    private val _hudEnabledFlow = MutableStateFlow(false)
+    val hudEnabledFlow = _hudEnabledFlow.asStateFlow()
+
+    private val _developerModeUnlockedFlow = MutableStateFlow(false)
+    val developerModeUnlockedFlow = _developerModeUnlockedFlow.asStateFlow()
+
+    private val _hudModeFlow = MutableStateFlow(HUD_MODE_COMPACT_CARD)
+    val hudModeFlow = _hudModeFlow.asStateFlow()
+
+    private val _hudPositionFlow = MutableStateFlow(HUD_POS_TOP)
+    val hudPositionFlow = _hudPositionFlow.asStateFlow()
+
+    private val _hudSizeFlow = MutableStateFlow(64f)
+    val hudSizeFlow = _hudSizeFlow.asStateFlow()
+
+    private val _hudStatusPanelEnabledFlow = MutableStateFlow(true)
+    val hudStatusPanelEnabledFlow = _hudStatusPanelEnabledFlow.asStateFlow()
+
+    private val _hudActivationZoneFlow = MutableStateFlow(20f)
+    val hudActivationZoneFlow = _hudActivationZoneFlow.asStateFlow()
+
+    private val _hudHideDelayFlow = MutableStateFlow(4000L)
+    val hudHideDelayFlow = _hudHideDelayFlow.asStateFlow()
+
+    // DEBUG
+    var developerMode = false
+        private set
+    var hudDebugAlwaysShow = false
+        private set
+    var hudDebugHighlightZone = false
+        private set
+    var hudDebugShowBounds = false
+        private set
+
+    private val _developerModeFlow = MutableStateFlow(false)
+    val developerModeFlow = _developerModeFlow.asStateFlow()
+
+    private val _hudDebugAlwaysShowFlow = MutableStateFlow(false)
+    val hudDebugAlwaysShowFlow = _hudDebugAlwaysShowFlow.asStateFlow()
+
+    private val _hudDebugHighlightZoneFlow = MutableStateFlow(false)
+    val hudDebugHighlightZoneFlow = _hudDebugHighlightZoneFlow.asStateFlow()
+
+    private val _hudDebugShowBoundsFlow = MutableStateFlow(false)
+    val hudDebugShowBoundsFlow = _hudDebugShowBoundsFlow.asStateFlow()
 
     fun init(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         nightMode = prefs.getInt("night_mode", THEME_DARK)
-        if (nightMode == -1) {
-            nightMode = THEME_DARK
-        }
-        cursorScale = prefs.getFloat("cursor_scale", cursorScale)
-        cursorAlpha = prefs.getFloat("cursor_alpha", cursorAlpha)
-        cursorHideDelayMs = prefs.getLong("cursor_hide_delay_ms", cursorHideDelayMs)
-        cursorColor = prefs.getInt("cursor_color", cursorColor)
-        appLanguageTag = prefs.getString(PREF_APP_LANGUAGE, appLanguageTag) ?: LANGUAGE_SYSTEM
-        keepScreenOn = prefs.getBoolean("keep_screen_on", keepScreenOn)
-        touchpadAutoDimEnabled = prefs.getBoolean("touchpad_auto_dim", touchpadAutoDimEnabled)
-        touchpadDimLevel = prefs.getFloat("touchpad_dim_level", touchpadDimLevel)
-        touchpadIntroShown = prefs.getBoolean("touchpad_intro_shown", touchpadIntroShown)
-        touchpadScrollSpeed = if (prefs.contains(PREF_SCROLL_SPEED_SCALE)) {
-            prefs.getFloat(PREF_SCROLL_SPEED_SCALE, touchpadScrollSpeed)
-        } else if (prefs.contains(PREF_SCROLL_SPEED_LEGACY)) {
-            val legacy = prefs.getFloat(PREF_SCROLL_SPEED_LEGACY, BASE_SCROLL_SPEED)
-            (legacy / BASE_SCROLL_SPEED)
-        } else {
-            touchpadScrollSpeed
-        }.coerceIn(0.5f, 3.0f)
-        touchpadScrollInverted = prefs.getBoolean("tp_scroll_invert", touchpadScrollInverted)
-        touchpadDirectScrollGestureEnabled = prefs.getBoolean(
-            "tp_scroll_direct_gesture",
-            touchpadDirectScrollGestureEnabled
-        )
-        touchpadDirectScrollGain = prefs.getFloat(
-            "tp_scroll_direct_gain",
-            touchpadDirectScrollGain
-        ).coerceIn(0.5f, 2.5f)
-        touchpadDirectScrollStepDp = prefs.getFloat(
-            "tp_scroll_direct_step_dp",
-            touchpadDirectScrollStepDp
-        ).coerceIn(16.0f, 80.0f)
-        touchpadAutoFocusEnabled = prefs.getBoolean(
-            "tp_auto_focus",
-            touchpadAutoFocusEnabled
-        )
-        touchpadScrollStepDp = prefs.getFloat("tp_scroll_step_dp", touchpadScrollStepDp)
-            .coerceIn(3.0f, 12.0f)
-        switchBarEnabled = prefs.getBoolean("switch_bar_enabled", switchBarEnabled)
-        switchBarScale = prefs.getFloat("switch_bar_scale", switchBarScale)
-            .coerceIn(0.7f, 1.3f)
+        cursorScale = prefs.getFloat("cursor_scale", 1.0f)
+        cursorAlpha = prefs.getFloat("cursor_alpha", 1.0f)
+        cursorHideDelayMs = prefs.getLong("cursor_hide_delay_ms", 2500L)
+        cursorColor = prefs.getInt("cursor_color", 0xFFFFFFFF.toInt())
+        appLanguageTag = prefs.getString(PREF_APP_LANGUAGE, LANGUAGE_SYSTEM) ?: LANGUAGE_SYSTEM
+        keepScreenOn = prefs.getBoolean("keep_screen_on", true)
+        touchpadAutoDimEnabled = prefs.getBoolean("touchpad_auto_dim", true)
+        touchpadDimLevel = prefs.getFloat("touchpad_dim_level", 0.03f)
+        touchpadIntroShown = prefs.getBoolean("touchpad_intro_shown", false)
+        touchpadScrollSpeed = prefs.getFloat(PREF_SCROLL_SPEED_SCALE, 1.0f)
+        touchpadScrollInverted = prefs.getBoolean("tp_scroll_invert", true)
+        touchpadDirectScrollGestureEnabled = prefs.getBoolean("tp_scroll_direct_gesture", false)
+        touchpadDirectScrollGain = prefs.getFloat("tp_scroll_direct_gain", 1.0f)
+        touchpadDirectScrollStepDp = prefs.getFloat("tp_scroll_direct_step_dp", 32.0f)
+        touchpadAutoFocusEnabled = prefs.getBoolean("tp_auto_focus", false)
+        touchpadScrollStepDp = prefs.getFloat("tp_scroll_step_dp", 6.0f)
+        switchBarEnabled = prefs.getBoolean("switch_bar_enabled", true)
+        switchBarScale = prefs.getFloat("switch_bar_scale", 1.0f)
         touchpadAutoLockEnabled = prefs.getBoolean("tp_auto_lock_enabled", false)
         touchpadAutoLockTimeoutMs = prefs.getLong("tp_auto_lock_timeout", 60_000L)
-        dPadPosition = prefs.getInt("dpad_position", dPadPosition)
+        
+        hudEnabled = prefs.getBoolean("hud_enabled", false)
+        developerModeUnlocked = prefs.getBoolean("developer_unlocked", false)
+        val savedMode = prefs.getInt("hud_mode", HUD_MODE_COMPACT_CARD)
+        // Migration: If old Vertical Panel (3) was selected, move to Compact Card (2)
+        hudMode = if (savedMode == 3) HUD_MODE_COMPACT_CARD else savedMode
+        hudPosition = prefs.getInt("hud_position", HUD_POS_TOP)
+        hudSizeDp = prefs.getFloat("hud_size_dp", 64f)
+        hudActivationZoneDp = prefs.getFloat("hud_activation_zone", 20f)
+        hudHideDelayMs = prefs.getLong("hud_hide_delay", 4000L)
+        hudStatusPanelEnabled = prefs.getBoolean("hud_status_panel_enabled", true)
+        hudNotificationSizeDp = prefs.getFloat("hud_notification_size_dp", 240f)
 
-        TouchpadTuning.baseGain = prefs.getFloat("tp_base_gain", TouchpadTuning.baseGain)
-        TouchpadTuning.maxAccelGain = prefs.getFloat("tp_max_accel", TouchpadTuning.maxAccelGain)
-        TouchpadTuning.speedForMaxAccel = prefs.getFloat("tp_speed_max", TouchpadTuning.speedForMaxAccel)
-        TouchpadTuning.jitterThresholdPx = prefs.getFloat("tp_jitter", TouchpadTuning.jitterThresholdPx)
-        TouchpadTuning.emaAlpha = prefs.getFloat("tp_smoothing", TouchpadTuning.emaAlpha)
-        TouchpadTuning.scrollStepPx = prefs.getFloat("tp_scroll_step", TouchpadTuning.scrollStepPx)
-        TouchpadTuning.dragBoost = prefs.getFloat("tp_drag_boost", TouchpadTuning.dragBoost)
-            .coerceIn(DRAG_BOOST_MIN, DRAG_BOOST_MAX)
+        developerMode = prefs.getBoolean("developer_mode", false)
+        hudDebugAlwaysShow = prefs.getBoolean("hud_debug_always_show", false)
+        hudDebugHighlightZone = prefs.getBoolean("hud_debug_highlight_zone", false)
+        hudDebugShowBounds = prefs.getBoolean("hud_debug_show_bounds", false)
+
+        dPadPosition = prefs.getInt("dpad_position", DPAD_ABOVE)
+
+        syncHudFlows()
     }
 
     fun setNightMode(context: Context, value: Int) {
@@ -144,24 +202,6 @@ object SettingsStore {
         }
         androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(modeToApply)
         XRDeskApp.recreateAllActivities()
-    }
-
-    fun getCustomThemeColors(context: Context): ThemeColors {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val json = prefs.getString("custom_theme_json", null)
-        return if (json != null) {
-            try {
-                ThemeColors.fromJson(json)
-            } catch (e: Exception) {
-                ThemeEngine.getPreset(THEME_DARK)
-            }
-        } else {
-            ThemeEngine.getPreset(THEME_DARK)
-        }
-    }
-
-    fun setCustomThemeColors(context: Context, colors: ThemeColors) {
-        persist(context) { putString("custom_theme_json", colors.toJson()) }
     }
 
     fun setCursorScale(context: Context, value: Float) {
@@ -198,33 +238,23 @@ object SettingsStore {
     }
 
     fun setTouchpadDimLevel(context: Context, value: Float) {
-        val clamped = value.coerceIn(0.01f, 0.15f)
-        touchpadDimLevel = clamped
-        persist(context) { putFloat("touchpad_dim_level", clamped) }
+        touchpadDimLevel = value
+        persist(context) { putFloat("touchpad_dim_level", value) }
     }
-
-    fun setTouchpadIntroShown(context: Context) {
-        touchpadIntroShown = true
-        persist(context) { putBoolean("touchpad_intro_shown", true) }
-    }
-
-    fun setTouchpadScrollSpeed(context: Context, value: Float) {
-        val clamped = value.coerceIn(0.5f, 3.0f)
-        touchpadScrollSpeed = clamped
-        persist(context) { putFloat(PREF_SCROLL_SPEED_SCALE, clamped) }
-    }
-
-    fun getTouchpadScrollBaseSpeed(): Float = BASE_SCROLL_SPEED
 
     fun setTouchpadScrollInverted(context: Context, inverted: Boolean) {
         touchpadScrollInverted = inverted
         persist(context) { putBoolean("tp_scroll_invert", inverted) }
     }
 
+    fun setTouchpadScrollSpeed(context: Context, value: Float) {
+        touchpadScrollSpeed = value
+        persist(context) { putFloat(PREF_SCROLL_SPEED_SCALE, value) }
+    }
+
     fun setTouchpadScrollStepDp(context: Context, value: Float) {
-        val clamped = value.coerceIn(3.0f, 12.0f)
-        touchpadScrollStepDp = clamped
-        persist(context) { putFloat("tp_scroll_step_dp", clamped) }
+        touchpadScrollStepDp = value
+        persist(context) { putFloat("tp_scroll_step_dp", value) }
     }
 
     fun setTouchpadDirectScrollGestureEnabled(context: Context, enabled: Boolean) {
@@ -233,15 +263,13 @@ object SettingsStore {
     }
 
     fun setTouchpadDirectScrollGain(context: Context, value: Float) {
-        val clamped = value.coerceIn(0.5f, 2.5f)
-        touchpadDirectScrollGain = clamped
-        persist(context) { putFloat("tp_scroll_direct_gain", clamped) }
+        touchpadDirectScrollGain = value
+        persist(context) { putFloat("tp_scroll_direct_gain", value) }
     }
 
     fun setTouchpadDirectScrollStepDp(context: Context, value: Float) {
-        val clamped = value.coerceIn(16.0f, 80.0f)
-        touchpadDirectScrollStepDp = clamped
-        persist(context) { putFloat("tp_scroll_direct_step_dp", clamped) }
+        touchpadDirectScrollStepDp = value
+        persist(context) { putFloat("tp_scroll_direct_step_dp", value) }
     }
 
     fun setTouchpadAutoFocusEnabled(context: Context, enabled: Boolean) {
@@ -256,9 +284,8 @@ object SettingsStore {
     }
 
     fun setSwitchBarScale(context: Context, value: Float) {
-        val clamped = value.coerceIn(0.7f, 1.3f)
-        switchBarScale = clamped
-        persist(context) { putFloat("switch_bar_scale", clamped) }
+        switchBarScale = value
+        persist(context) { putFloat("switch_bar_scale", value) }
         ControlAccessibilityService.requestSwitchBarRefresh()
     }
 
@@ -277,6 +304,14 @@ object SettingsStore {
         persist(context) { putInt("dpad_position", value) }
     }
 
+    fun setTouchpadSmoothing(context: Context, value: Float) {
+        persist(context) { putFloat("tp_smoothing", value) }
+    }
+
+    fun setTouchpadDragBoost(context: Context, value: Float) {
+        persist(context) { putFloat("tp_drag_boost", value) }
+    }
+
     fun setAppLanguage(context: Context, languageTag: String) {
         appLanguageTag = languageTag
         persist(context) { putString(PREF_APP_LANGUAGE, languageTag) }
@@ -292,46 +327,136 @@ object SettingsStore {
         androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(locales)
     }
 
-    fun isLanguageSystem(): Boolean = appLanguageTag == LANGUAGE_SYSTEM
-    fun isLanguageEnglish(): Boolean = appLanguageTag == LANGUAGE_ENGLISH
-    fun isLanguageChinese(): Boolean = appLanguageTag == LANGUAGE_CHINESE
-    fun isLanguageRussian(): Boolean = appLanguageTag == LANGUAGE_RUSSIAN
-    fun isLanguageUkrainian(): Boolean = appLanguageTag == LANGUAGE_UKRAINIAN
-
-    fun setPointerSpeed(context: Context, value: Float) {
-        TouchpadTuning.baseGain = value
-        persist(context) { putFloat("tp_base_gain", value) }
+    fun getCustomThemeColors(context: Context): ThemeColors {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val json = prefs.getString("custom_theme_json", null)
+        return if (json != null) ThemeColors.fromJson(json) else ThemeEngine.getPreset(THEME_DARK)
+    }
+    
+    fun setCustomThemeColors(context: Context, colors: ThemeColors) {
+        persist(context) { putString("custom_theme_json", colors.toJson()) }
     }
 
-    fun setTouchpadMaxAccel(context: Context, value: Float) {
-        TouchpadTuning.maxAccelGain = value
-        persist(context) { putFloat("tp_max_accel", value) }
+    fun setHudEnabled(context: Context, enabled: Boolean) {
+        hudEnabled = enabled
+        persist(context) { putBoolean("hud_enabled", enabled) }
+        syncHudFlows()
     }
 
-    fun setTouchpadSpeedForMaxAccel(context: Context, value: Float) {
-        TouchpadTuning.speedForMaxAccel = value
-        persist(context) { putFloat("tp_speed_max", value) }
+    fun setDeveloperModeUnlocked(context: Context, unlocked: Boolean) {
+        developerModeUnlocked = unlocked
+        persist(context) { putBoolean("developer_unlocked", unlocked) }
+        syncHudFlows()
     }
 
-    fun setTouchpadJitter(context: Context, value: Float) {
-        TouchpadTuning.jitterThresholdPx = value
-        persist(context) { putFloat("tp_jitter", value) }
+    fun setHudMode(context: Context, mode: Int) {
+        hudMode = mode
+        persist(context) { putInt("hud_mode", mode) }
+        syncHudFlows()
     }
 
-    fun setTouchpadSmoothing(context: Context, value: Float) {
-        TouchpadTuning.emaAlpha = value
-        persist(context) { putFloat("tp_smoothing", value) }
+    fun setHudPosition(context: Context, position: Int) {
+        hudPosition = position
+        persist(context) { putInt("hud_position", position) }
+        syncHudFlows()
     }
 
-    fun setTouchpadScrollStep(context: Context, value: Float) {
-        TouchpadTuning.scrollStepPx = value
-        persist(context) { putFloat("tp_scroll_step", value) }
+    fun setHudSize(context: Context, sizeDp: Float) {
+        // Snap to 5dp steps to match Slider configuration and prevent crashes
+        val snapped = Math.round(sizeDp / 5f) * 5f
+        hudSizeDp = snapped.coerceIn(60f, 120f)
+        persist(context) { putFloat("hud_size_dp", hudSizeDp) }
+        syncHudFlows()
     }
 
-    fun setTouchpadDragBoost(context: Context, value: Float) {
-        val clamped = value.coerceIn(DRAG_BOOST_MIN, DRAG_BOOST_MAX)
-        TouchpadTuning.dragBoost = clamped
-        persist(context) { putFloat("tp_drag_boost", clamped) }
+    fun setHudActivationZone(context: Context, zoneDp: Float) {
+        hudActivationZoneDp = zoneDp
+        persist(context) { putFloat("hud_activation_zone", zoneDp) }
+        _hudActivationZoneFlow.value = zoneDp
+    }
+
+    fun setHudHideDelay(context: Context, delayMs: Long) {
+        // Snap to 500ms steps to match Slider configuration and prevent crashes
+        val snapped = Math.round(delayMs / 500.0) * 500
+        hudHideDelayMs = snapped.coerceIn(1000, 10000)
+        persist(context) { putLong("hud_hide_delay", hudHideDelayMs) }
+        _hudHideDelayFlow.value = hudHideDelayMs
+    }
+
+    fun setDeveloperMode(context: Context, enabled: Boolean) {
+        developerMode = enabled
+        persist(context) { putBoolean("developer_mode", enabled) }
+        _developerModeFlow.value = enabled
+    }
+
+    fun setHudDebugAlwaysShow(context: Context, enabled: Boolean) {
+        hudDebugAlwaysShow = enabled
+        persist(context) { putBoolean("hud_debug_always_show", enabled) }
+        _hudDebugAlwaysShowFlow.value = enabled
+    }
+
+    fun setHudDebugHighlightZone(context: Context, enabled: Boolean) {
+        hudDebugHighlightZone = enabled
+        persist(context) { putBoolean("hud_debug_highlight_zone", enabled) }
+        _hudDebugHighlightZoneFlow.value = enabled
+    }
+
+    fun setHudDebugShowBounds(context: Context, enabled: Boolean) {
+        hudDebugShowBounds = enabled
+        persist(context) { putBoolean("hud_debug_show_bounds", enabled) }
+        _hudDebugShowBoundsFlow.value = enabled
+    }
+
+    fun resetHUDSettings(context: Context) {
+        hudEnabled = false
+        hudMode = HUD_MODE_COMPACT_CARD
+        hudPosition = HUD_POS_TOP
+        hudSizeDp = 64f
+        hudActivationZoneDp = 20f
+        hudHideDelayMs = 4000L
+        hudStatusPanelEnabled = true
+        hudNotificationSizeDp = 240f
+        
+        developerMode = false
+        hudDebugAlwaysShow = false
+        hudDebugHighlightZone = false
+        hudDebugShowBounds = false
+
+        persist(context) {
+            putBoolean("hud_enabled", false)
+            putInt("hud_mode", HUD_MODE_COMPACT_CARD)
+            putInt("hud_position", HUD_POS_TOP)
+            putFloat("hud_size_dp", 64f)
+            putFloat("hud_activation_zone", 20f)
+            putLong("hud_hide_delay", 4000L)
+            putBoolean("hud_status_panel_enabled", true)
+            putFloat("hud_notification_size_dp", 240f)
+            
+            putBoolean("developer_mode", false)
+            putBoolean("hud_debug_always_show", false)
+            putBoolean("hud_debug_highlight_zone", false)
+            putBoolean("hud_debug_show_bounds", false)
+        }
+        syncHudFlows()
+    }
+
+    fun setTouchpadIntroShown(context: Context) {
+        touchpadIntroShown = true
+        persist(context) { putBoolean("touchpad_intro_shown", true) }
+    }
+
+    private fun syncHudFlows() {
+        _hudEnabledFlow.value = hudEnabled
+        _developerModeUnlockedFlow.value = developerModeUnlocked
+        _hudModeFlow.value = hudMode
+        _hudPositionFlow.value = hudPosition
+        _hudSizeFlow.value = hudSizeDp
+        _hudStatusPanelEnabledFlow.value = hudStatusPanelEnabled
+        _hudActivationZoneFlow.value = hudActivationZoneDp
+        _hudHideDelayFlow.value = hudHideDelayMs
+        _hudDebugAlwaysShowFlow.value = hudDebugAlwaysShow
+        _hudDebugHighlightZoneFlow.value = hudDebugHighlightZone
+        _hudDebugShowBoundsFlow.value = hudDebugShowBounds
     }
 
     private fun persist(context: Context, block: android.content.SharedPreferences.Editor.() -> Unit) {

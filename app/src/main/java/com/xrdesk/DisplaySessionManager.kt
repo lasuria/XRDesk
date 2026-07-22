@@ -4,13 +4,17 @@ import android.content.Context
 import android.hardware.display.DisplayManager
 import android.util.DisplayMetrics
 import android.view.Display
+import kotlin.math.max
+import kotlin.math.min
 
 object DisplaySessionManager {
     data class ExternalDisplayInfo(
         val displayId: Int,
         val name: String,
-        val width: Int,
-        val height: Int,
+        val width: Int,         // Normalized: Always Landscape (max)
+        val height: Int,        // Normalized: Always Landscape (min)
+        val rawWidth: Int,      // Raw from Android
+        val rawHeight: Int,     // Raw from Android
         val densityDpi: Int,
         val rotation: Int,
         val refreshRate: Float,
@@ -151,19 +155,30 @@ object DisplaySessionManager {
         val metrics = DisplayMetrics()
         display.getRealMetrics(metrics)
         
+        val rw = metrics.widthPixels
+        val rh = metrics.heightPixels
+
+        android.util.Log.e("Geometry-Audit", "1. DisplaySessionManager: Raw=${rw}x${rh} Normalized=${max(rw, rh)}x${min(rw, rh)} Rotation=${display.rotation}")
         val hdrCaps = display.hdrCapabilities
         val hasHdr = hdrCaps != null && hdrCaps.supportedHdrTypes.isNotEmpty()
         
-        return ExternalDisplayInfo(
+        val newInfo = ExternalDisplayInfo(
             displayId = display.displayId,
             name = display.name ?: "Unknown Display",
-            width = metrics.widthPixels,
-            height = metrics.heightPixels,
+            width = max(rw, rh),
+            height = min(rw, rh),
+            rawWidth = rw,
+            rawHeight = rh,
             densityDpi = metrics.densityDpi,
             rotation = display.rotation,
             refreshRate = display.refreshRate,
             isHdr = hasHdr
         )
+        
+        android.util.Log.e("Geometry-Audit", "DisplaySessionManager: ID=${newInfo.displayId} Name=${newInfo.name} " +
+            "Raw=${rw}x${rh} Normalized=${newInfo.width}x${newInfo.height} Rotation=${newInfo.rotation}")
+            
+        return newInfo
     }
 
     private fun formatDisplays(displays: List<Display>): String {

@@ -10,53 +10,103 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/diagnosticsToolbar"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
         android:minHeight="64dp"
-        android:paddingHorizontal="12dp"
-        android:title="@string/diagnostics_title"
-        app:titleTextAppearance="?attr/textAppearanceHeadlineSmall"
-        app:titleTextColor="?attr/colorOnSurface"
-        app:titleCentered="true"
-        app:contentInsetStartWithNavigation="0dp"
-        app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="?attr/colorOnSurfaceVariant" />
+        app:title="@string/diagnostics_title"
+        app:navigationIcon="@drawable/ic_back" />
 
-    <ScrollView
+    <!-- Filter Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:gravity="center_vertical"
+        android:background="?attr/colorSurfaceVariant">
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:hint="Search logs..."
+            android:background="@drawable/touchpad_area_bg"
+            android:paddingHorizontal="12dp"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:inputType="text" />
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/tagFilterDropdown"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/touchpad_area_bg"
+            android:paddingHorizontal="12dp"
+            android:textSize="14sp"
+            android:text="All"
+            android:inputType="none"
+            android:focusable="false"
+            android:clickable="true" />
+    </LinearLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true"
-        android:overScrollMode="never"
-        android:scrollbars="none">
+        android:layout_weight="1">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/logScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="12dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/diagnostics_system_status"
-                android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="8dp" />
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <TextView
                 android:id="@+id/diagnosticsText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/empty_text"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:padding="16dp"
+                android:text=""
+                android:textAppearance="?attr/textAppearanceBodySmall"
                 android:textColor="?attr/colorOnSurface"
-                android:fontFamily="monospace"
-                android:lineSpacingExtra="4dp" />
+                android:fontFamily="monospace" />
+        </ScrollView>
 
-            <!-- Redundant "Logs" label and diagnosticsLabel were removed as content is merged in diagnosticsText -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabScrollBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_arrow_down"
+            app:fabSize="mini"
+            app:tint="?attr/colorOnPrimary"
+            android:backgroundTint="?attr/colorPrimary" />
+    </FrameLayout>
 
-        </LinearLayout>
-    </ScrollView>
+    <!-- Console Controls -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="?attr/colorSurfaceVariant">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPauseResume"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pause"
+            app:icon="@drawable/ic_play_pause" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClearLogs"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            app:icon="@drawable/ic_settings" />
+    </LinearLayout>
 </LinearLayout>
