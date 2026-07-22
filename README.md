@@ -2,9 +2,9 @@
 
 # XRDesk
 
-### Modern Android Remote & Touchpad for External Displays and XR Glasses
+### Modern Android Remote Control for TVs, External Displays and XR Glasses
 
-Turn your Android device into a touchpad and remote control for applications running on an external display.
+Turn your Android device into a powerful touchpad and remote control for Android TVs, external displays, and XR glasses with a modern Material Design 3 interface.
 
 ![Android](https://img.shields.io/badge/Android-11%2B-3DDC84?logo=android&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.x-7F52FF?logo=kotlin&logoColor=white)
@@ -14,54 +14,100 @@ Turn your Android device into a touchpad and remote control for applications run
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-- 🎮 Touchpad mode
-- 🕹️ Modern Remote Control interface
-- 🥽 XR glasses support
-- 🖥️ External monitor support
-- 🎨 Material Design 3 UI
-- 🌈 Material You
-- 🌙 AMOLED theme
-- ☀️ Light theme
-- 🌑 Dark theme
-- 🎨 Custom Theme Editor
-- ⚫ Monochrome mode
-- 💾 Theme import/export (JSON)
-- 🌍 Multi-language support
-- ▶️ Media controls
-- ⚡ Smooth and responsive interface
+## 🎮 Remote Control
+
+- Precision touchpad
+- D-Pad navigation
+- Media controls
+- Volume controls
+- Power controls
+- Home, Back and Recent Apps
+- Application launcher
+
+## 🥽 XR Experience
+
+- XR glasses support
+- External display support
+- Built-in XR HUD
+- Full and Compact HUD modes
+- Live HUD Preview
+- Automatic XR glasses detection
+- Automatic HUD recovery after reconnection
+
+## 🎨 Customization
+
+- Material Design 3
+- Material You
+- Light Theme
+- Dark Theme
+- AMOLED Theme
+- Custom Theme Editor
+- Theme import/export (JSON)
+- Monochrome mode
+
+## ⚙️ Advanced Settings
+
+- Cursor customization
+- Adjustable D-Pad position
+- Screen brightness control
+- Keep screen awake
+- Automatic screen lock
+- Material Design settings interface
+
+## 🛠 Developer Tools
+
+- Advanced Log Viewer
+- Search and filtering
+- Copy & Share logs
+- Auto-scroll
+- Hidden Developer Mode
+- HUD Debug tools
+
+## 🌍 Localization
+
+- English
+- Russian
+- Ukrainian
 
 ---
 
-## 🥽 Supported Devices
+# 🥽 Supported Devices
 
-### XR Glasses
+## XR Glasses
 
 - XREAL Air
 - XREAL Air 2
 - XREAL Air 2 Pro
 - XREAL Air 2 Ultra
+- XREAL One
 - VITURE One
 - VITURE Pro
 
-### External Displays
+## External Displays
 
 - USB-C DisplayPort monitors
+- Portable monitors
 - TVs
-- Portable displays
 - XR glasses
 
 ---
 
-## 📋 Requirements
+# 📋 Requirements
 
 - Android 11 or newer (API 30+)
 - USB-C DisplayPort Alt Mode (for external displays)
 
 ---
 
-## 🚀 Building
+# 🚀 Installation
+
+Download the latest release from the GitHub Releases page or build the project from source.
+
+---
+
+# 🔨 Building
 
 Clone the repository:
 
@@ -73,53 +119,43 @@ Open the project in Android Studio and build it normally.
 
 ---
 
-## Comparison
-
-| Feature | DeskControl | XRDesk |
-|---------|:-----------:|:-------:|
-| Material Design 3 | ❌ | ✅ |
-| Modern UI | ❌ | ✅ |
-| Theme Editor | ❌ | ✅ |
-| Light / Dark / AMOLED Themes | ❌ | ✅ |
-| Multi-language Support | ⚠️ Limited | ✅ |
-| XR HUD | ❌ | ✅ |
-| Live HUD Preview | ❌ | ✅ |
-| XR Glasses Detection | ❌ | ✅ |
-| External Display Support | Basic | ✅ Enhanced |
-| Developer Mode | ❌ | ✅ |
-| Advanced Log Viewer | ❌ | ✅ |
-| Cursor Settings | ❌ | ✅ |
-| Touchpad Customization | Basic | ✅ Advanced |
-| D-Pad Position | ❌ | ✅ |
-| Screen Lock & Keep Awake | ❌ | ✅ |
-| Material Settings UI | ❌ | ✅ |
-| Android 15/16 Optimizations | ❌ | ✅ |
-| Accessibility Service | ✅ | ✅ Improved |
-| Shizuku Support | ✅ | ✅ |
-| Open Source | ✅ | ✅ |
----
-
-## 🛠️ Technologies
+# 🛠 Technologies
 
 - Kotlin
 - Android SDK
 - AndroidX
 - Material Design 3
+- Material You
 - ViewBinding
 
 ---
 
-## 🤝 Credits
+# 🚀 Project Highlights
 
-XRDesk is based on the open-source **DeskControl** project.
-
-The original project provided the foundation, while XRDesk extends it with a redesigned interface, new customization options, XR-focused improvements, and additional functionality.
-
-Special thanks to the original DeskControl developers for making the project open source.
+- Modern Material Design 3 interface
+- Designed for XR glasses and external displays
+- Built-in XR HUD with live preview
+- Advanced Theme Editor
+- Extensive touchpad customization
+- Powerful Developer Mode
+- Advanced Log Viewer
+- Optimized for Android 15 and Android 16
+- Accessibility Service support
+- Shizuku support
 
 ---
 
-## 📄 License
+# 🤝 Acknowledgements
+
+XRDesk is built upon the open-source **DeskControl** project.
+
+While DeskControl served as the starting point, XRDesk has evolved into an independent application with a redesigned Material Design 3 interface, XR-focused features, extensive customization, and numerous functional and usability improvements.
+
+Special thanks to the original DeskControl developers for making their project available as open source.
+
+---
+
+# 📄 License
 
 This project is licensed under the **GNU General Public License v3.0**.
 
