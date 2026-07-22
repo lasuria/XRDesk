@@ -447,15 +447,7 @@
 
     <string name="changelog_v1_1_0_title">版本 1.1.0</string>
     <string name="changelog_v1_1_0_date">2026年7月</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• 全新的 XR HUD，包含两种核心模式。
-• 详细模式：系统状态的完整概览。
-• 紧凑模式：带有智能蓝牙隐藏功能的自适应行。
-• HUD 大小（60–120 dp）和位置自定义。
-• 设置中的实时预览。
-• Android 风格的完整“开发者模式”。
-• 带有搜索和过滤功能的高级日志查看器。
-• 提升了在 AR 眼镜中的可读性。
-• 修复了错误并提升了稳定性。]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• 迁移至 Material Design 3 并全面重构 UI 界面。\n• 全新的主屏幕及分类设置导航。\n• 增强型主题引擎，优化色彩、字体与对比度。\n• 可调式 D-Pad 位置与独立的光标设置。\n• 新增屏幕锁定、亮度控制及防休眠选项。\n• 全新的 XR HUD，包含“详细”与“紧凑”两种模式。\n• 设置中支持 HUD 实时交互预览。\n• 隐藏的“开发者模式”，集成 HUD 调试工具。\n• 高级日志查看器，支持搜索、过滤与暂停控制。\n• 优化 XR 眼镜检测及连接断开后的自动恢复。\n• 性能深度优化，全面兼容 Android 15/16。]]></string>
 
     <string name="changelog_v1_0_0_title">版本 1.0.0</string>
     <string name="changelog_v1_0_0_date">2026年7月</string>
