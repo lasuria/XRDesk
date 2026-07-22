@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        DiagnosticsLog.add("Main: create displayId=${display?.displayId ?: -1}")
+        DiagnosticsLog.add("Main", "Main: create displayId=${display?.displayId ?: -1}")
         WindowCompat.setDecorFitsSystemWindows(window, false)
         ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root)

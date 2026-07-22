@@ -19,7 +19,7 @@ class AppDrawerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (DisplaySessionManager.getExternalDisplayInfo() == null) {
-            DiagnosticsLog.add("Drawer: no external display, closing")
+            DiagnosticsLog.add("Drawer", "no external display, closing")
             finish()
             return
         }
@@ -34,17 +34,15 @@ class AppDrawerActivity : AppCompatActivity() {
         val spanCount = 4
         binding.appGrid.layoutManager = GridLayoutManager(this, spanCount)
         adapter = AppAdapter(loadLaunchableApps()) { entry ->
-            DiagnosticsLog.add("Drawer: launch request package=${entry.packageName}")
+            DiagnosticsLog.add("Drawer", "launch request package=${entry.packageName}")
             val result = AppLauncher.launchOnExternalDisplay(this, entry.packageName)
             if (result.success) {
-                DiagnosticsLog.add("Drawer: launch success package=${entry.packageName}")
+                DiagnosticsLog.add("Drawer", "launch success package=${entry.packageName}")
                 finish()
             } else {
                 val message = AppLauncher.buildFailureMessage(this, result)
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-                DiagnosticsLog.add(
-                    "Drawer: launch failure package=${entry.packageName} reason=${result.reason}"
-                )
+                DiagnosticsLog.add("Drawer", "launch failure package=${entry.packageName} reason=${result.reason}")
             }
         }
         binding.appGrid.adapter = adapter

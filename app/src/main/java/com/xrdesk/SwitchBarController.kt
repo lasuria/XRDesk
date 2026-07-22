@@ -56,16 +56,14 @@ class SwitchBarController(
         params.x = 0
         params.y = 0
         runCatching { windowManager.addView(view, params) }.onFailure {
-            DiagnosticsLog.add("SwitchBar: attach failed ${it.message}")
+            DiagnosticsLog.add("SwitchBar", "SwitchBar: attach failed ${it.message}")
         }
         view.doOnLayout {
             if (baseBarHeightPx == 0) {
                 baseBarHeightPx = it.height
             }
             currentBarHeightPx = it.height
-            DiagnosticsLog.add(
-                "SwitchBar: layout baseHeight=$baseBarHeightPx h=${it.height} w=${it.width}"
-            )
+            DiagnosticsLog.add("SwitchBar", "layout baseHeight=$baseBarHeightPx h=${it.height} w=${it.width}")
             updateScale()
             applyHiddenState(immediate = true)
         }
@@ -185,7 +183,7 @@ class SwitchBarController(
                 }
             }
             .start()
-        DiagnosticsLog.add(
+        DiagnosticsLog.add("SwitchBar", 
             "SwitchBar: show reason=$reason scale=${SettingsStore.switchBarScale} " +
                 "baseH=$baseBarHeightPx curH=$currentBarHeightPx inset=${view.bottomInsetPx}"
         )
@@ -196,7 +194,7 @@ class SwitchBarController(
         state = State.HIDING
         setTouchable(false)
         applyHiddenState(immediate = false)
-        DiagnosticsLog.add(
+        DiagnosticsLog.add("SwitchBar", 
             "SwitchBar: hide reason=$reason scale=${SettingsStore.switchBarScale} " +
                 "baseH=$baseBarHeightPx curH=$currentBarHeightPx inset=${view.bottomInsetPx}"
         )
@@ -223,7 +221,7 @@ class SwitchBarController(
                 }
                 .start()
         }
-        DiagnosticsLog.add(
+        DiagnosticsLog.add("SwitchBar", 
             "SwitchBar: hidden offset=$offset scale=${SettingsStore.switchBarScale} " +
                 "baseH=$baseBarHeightPx curH=$currentBarHeightPx inset=${view.bottomInsetPx}"
         )
@@ -303,13 +301,13 @@ class SwitchBarController(
         hide("click")
         if (item.isAllApps) {
             AppDrawerActivity.launchOnExternalDisplay(serviceContext, displayInfo.displayId)
-            DiagnosticsLog.add("SwitchBar: open drawer")
+            DiagnosticsLog.add("SwitchBar", "SwitchBar: open drawer")
             return
         }
         val packageName = item.packageName ?: return
         val result = AppLauncher.launchOnExternalDisplay(serviceContext, packageName)
         if (result.success) {
-            DiagnosticsLog.add("SwitchBar: launch success package=$packageName")
+            DiagnosticsLog.add("SwitchBar", "SwitchBar: launch success package=$packageName")
             if (SettingsStore.touchpadAutoFocusEnabled) {
                 handler.postDelayed(
                     { ControlAccessibilityService.requestExternalFocusWarmup("app_launch") },
@@ -319,14 +317,14 @@ class SwitchBarController(
         } else {
             val message = AppLauncher.buildFailureMessage(windowContext, result)
             Toast.makeText(windowContext, message, Toast.LENGTH_LONG).show()
-            DiagnosticsLog.add("SwitchBar: launch failure package=$packageName reason=${result.reason}")
+            DiagnosticsLog.add("SwitchBar", "SwitchBar: launch failure package=$packageName reason=${result.reason}")
         }
     }
 
     private fun updateScale() {
         val scale = SettingsStore.switchBarScale.coerceIn(0.7f, 1.3f)
         view.setContentScale(scale)
-        DiagnosticsLog.add(
+        DiagnosticsLog.add("SwitchBar", 
             "SwitchBar: scale=$scale baseH=$baseBarHeightPx curH=$currentBarHeightPx " +
                 "viewH=${view.height} inset=${view.bottomInsetPx}"
         )

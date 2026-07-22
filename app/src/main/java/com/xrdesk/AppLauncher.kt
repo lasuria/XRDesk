@@ -18,11 +18,11 @@ object AppLauncher {
     data class Result(
         val success: Boolean,
         val reason: FailureReason? = null,
-        @StringRes val detailResId: Int? = null
+        @field:StringRes val detailResId: Int? = null,
     )
 
     fun launchOnExternalDisplay(context: Context, packageName: String): Result {
-        DiagnosticsLog.add("Launch: request package=$packageName")
+        DiagnosticsLog.add("Launch", "request package=$packageName")
         val info = DisplaySessionManager.getExternalDisplayInfo()
             ?: return fail(
                 context,
@@ -49,22 +49,22 @@ object AppLauncher {
             )
 
         return try {
-            DiagnosticsLog.add("Launch: target displayId=${info.displayId}")
+            DiagnosticsLog.add("Launch", "target displayId=${info.displayId}")
             val options = ActivityOptions.makeBasic().setLaunchDisplayId(info.displayId)
             launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(launchIntent, options.toBundle())
             AppLaunchHistory.recordLaunch(context.applicationContext, packageName)
             SessionStore.lastLaunchedPackage = packageName
             SessionStore.lastLaunchFailure = null
-            DiagnosticsLog.add("Launch: success package=$packageName displayId=${info.displayId}")
+            DiagnosticsLog.add("Launch", "success package=$packageName displayId=${info.displayId}")
             Result(success = true)
-        } catch (se: SecurityException) {
+        } catch (_: SecurityException) {
             fail(
                 context,
                 FailureReason.SECURITY_EXCEPTION,
                 R.string.app_launch_detail_security_exception
             )
-        } catch (ex: Exception) {
+        } catch (_: Exception) {
             fail(context, FailureReason.START_FAILED, R.string.app_launch_detail_unknown_failure)
         }
     }
@@ -81,7 +81,7 @@ object AppLauncher {
             reasonLabel,
             detail
         )
-        DiagnosticsLog.add("Launch: failure reason=$reason detail=$detail")
+        DiagnosticsLog.add("Launch", "failure reason=$reason detail=$detail")
         return Result(false, reason, detailResId)
     }
 

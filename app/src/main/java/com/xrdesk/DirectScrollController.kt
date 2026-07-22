@@ -37,13 +37,7 @@ class DirectScrollController(
         directPendingDx = 0f
         directPendingDy = 0f
         active = true
-        DiagnosticsLog.add(
-            "Touchpad: direct scroll enter mid=(${lastScrollMidX.toInt()},${lastScrollMidY.toInt()}) " +
-                "scale=(${String.format("%.2f", scrollMapScaleX)},${String.format("%.2f", scrollMapScaleY)}) " +
-                "gain=${String.format("%.2f", directScrollGain)} " +
-                "step=${SettingsStore.touchpadDirectScrollStepDp.toInt()}dp " +
-                "anchor=(${directAnchorX.toInt()},${directAnchorY.toInt()})"
-        )
+        DiagnosticsLog.add("Touchpad", "direct scroll enter mid=(${lastScrollMidX.toInt()},${lastScrollMidY.toInt()}) scale=(${String.format("%.2f", scrollMapScaleX)},${String.format("%.2f", scrollMapScaleY)}) gain=${String.format("%.2f", directScrollGain)} step=${SettingsStore.touchpadDirectScrollStepDp.toInt()}dp anchor=(${directAnchorX.toInt()},${directAnchorY.toInt()})")
         return true
     }
 
@@ -92,7 +86,7 @@ class DirectScrollController(
         active = false
         directPendingDx = 0f
         directPendingDy = 0f
-        DiagnosticsLog.add("Touchpad: direct scroll exit")
+        DiagnosticsLog.add("Touchpad", "direct scroll exit")
     }
 
     private fun scrollMidpoint(event: MotionEvent): Pair<Float, Float> {

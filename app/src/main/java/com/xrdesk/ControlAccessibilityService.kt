@@ -172,11 +172,11 @@ class ControlAccessibilityService : AccessibilityService() {
                 AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS or
                 AccessibilityServiceInfo.FLAG_INCLUDE_NOT_IMPORTANT_VIEWS
             serviceInfo = currentInfo
-            DiagnosticsLog.add("Accessibility: flags=${currentInfo.flags}")
+            DiagnosticsLog.add("Accessibility", "Accessibility: flags=${currentInfo.flags}")
         }
         cursorSizePx = (resources.displayMetrics.density * 14f).toInt().coerceAtLeast(10)
         attachToDisplay(pendingDisplayInfo)
-        DiagnosticsLog.add("Accessibility: connected")
+        DiagnosticsLog.add("Accessibility", "Accessibility: connected")
     }
 
     override fun onDestroy() {
@@ -184,7 +184,7 @@ class ControlAccessibilityService : AccessibilityService() {
         deferredBackRunnable = null
         detachOverlay()
         instance = null
-        DiagnosticsLog.add("Accessibility: destroyed")
+        DiagnosticsLog.add("Accessibility", "Accessibility: destroyed")
         super.onDestroy()
     }
 
@@ -431,7 +431,7 @@ class ControlAccessibilityService : AccessibilityService() {
         val now = SystemClock.uptimeMillis()
         if (now - lastScrollDiagMs < 250L) return
         lastScrollDiagMs = now
-        DiagnosticsLog.add(message)
+        DiagnosticsLog.add("Scroll", message)
     }
 
     fun cancelScrollGesture() {
@@ -463,7 +463,7 @@ class ControlAccessibilityService : AccessibilityService() {
             return
         }
         notifyCursorActivity()
-        DiagnosticsLog.add("Scroll: gesture steps=$steps")
+        DiagnosticsLog.add("Scroll", "gesture steps=$steps")
         dispatchScrollGesture(steps, stepSizePx, info)
     }
 
@@ -472,7 +472,7 @@ class ControlAccessibilityService : AccessibilityService() {
         val safeRect = computeSafeRect(info)
         val clampedX = anchorX.coerceIn(safeRect.left, safeRect.right)
         val clampedY = anchorY.coerceIn(safeRect.top, safeRect.bottom)
-        DiagnosticsLog.add(
+        DiagnosticsLog.add("Scroll", 
             "ScrollMode: enter anchor=(${anchorX.toInt()},${anchorY.toInt()}) " +
                 "inject=(${clampedX.toInt()},${clampedY.toInt()}) " +
                 "insets=(${safeRect.insetsLeft},${safeRect.insetsTop}," +
@@ -505,16 +505,16 @@ class ControlAccessibilityService : AccessibilityService() {
                 } else {
                     "backward"
                 }
-                DiagnosticsLog.add("Scroll: action=$actionName axis=$axis success=$success")
+                DiagnosticsLog.add("Scroll", "action=$actionName axis=$axis success=$success")
                 if (success) return true
             } else {
-                DiagnosticsLog.add("Scroll: action target missing at (${mapped.x.toInt()},${mapped.y.toInt()})")
+                DiagnosticsLog.add("Scroll", "action target missing at (${mapped.x.toInt()},${mapped.y.toInt()})")
             }
         } else {
-            DiagnosticsLog.add("Scroll: prefer gesture injection")
+            DiagnosticsLog.add("Scroll", "prefer gesture injection")
         }
         if (gesturesInFlight > 0) {
-            DiagnosticsLog.add("Scroll: swipe skipped (gesture busy)")
+            DiagnosticsLog.add("Scroll", "swipe skipped (gesture busy)")
             return false
         }
         val safeRect = computeSafeRect(info)
@@ -612,11 +612,11 @@ class ControlAccessibilityService : AccessibilityService() {
             builder.build(),
             object : GestureResultCallback() {
                 override fun onCompleted(gestureDescription: GestureDescription?) {
-                    DiagnosticsLog.add("Scroll: swipe injected")
+                    DiagnosticsLog.add("Scroll", "swipe injected")
                 }
 
                 override fun onCancelled(gestureDescription: GestureDescription?) {
-                    DiagnosticsLog.add("Scroll: swipe cancelled")
+                    DiagnosticsLog.add("Scroll", "swipe cancelled")
                 }
             }
         )
@@ -626,14 +626,14 @@ class ControlAccessibilityService : AccessibilityService() {
     fun performBack(): Boolean {
         SessionStore.lastBackFailure = null
         val now = SystemClock.uptimeMillis()
-        DiagnosticsLog.add("Back: request t=$now")
-        DiagnosticsLog.add(
-            "Back: gestureInFlight=$gesturesInFlight dragActive=${dragStroke != null} " +
+        DiagnosticsLog.add("Back", "request t=$now")
+        DiagnosticsLog.add("Back", 
+            "gestureInFlight=$gesturesInFlight dragActive=${dragStroke != null} " +
                 "scrollActive=${scrollStroke != null}"
         )
         val info = displayInfo
         if (info == null) {
-            DiagnosticsLog.add("Back: blocked (no external display)")
+            DiagnosticsLog.add("Back", "blocked (no external display)")
             SessionStore.lastBackFailure = "no_display"
             return false
         }
@@ -641,9 +641,7 @@ class ControlAccessibilityService : AccessibilityService() {
         val externalState = resolveExternalWindowState(info, snapshot)
         logBackFocusSnapshot("before", info, snapshot, externalState)
         if (snapshot.none { it.displayId == info.displayId }) {
-            DiagnosticsLog.add(
-                "Back: no window for external displayId=${info.displayId}, skip back dispatch"
-            )
+            DiagnosticsLog.add("Back", "no window for external displayId=${info.displayId}, skip back dispatch")
             if (!SettingsStore.touchpadAutoFocusEnabled) {
                 SessionStore.lastBackFailure = "external_window_missing"
                 return false
@@ -668,7 +666,7 @@ class ControlAccessibilityService : AccessibilityService() {
                 dispatchFocusActivationGesture(info, allowFallback = true)
             ) {
                 SessionStore.lastBackFailure = "external_not_focused"
-                DiagnosticsLog.add("Back: focus activation requested; require user retry")
+                DiagnosticsLog.add("Back", "focus activation requested; require user retry")
                 return false
             }
         }
@@ -680,22 +678,22 @@ class ControlAccessibilityService : AccessibilityService() {
         allowFocusRetry: Boolean
     ): Boolean {
         val now = SystemClock.uptimeMillis()
-        DiagnosticsLog.add("Back: execute $reason t=$now")
-        DiagnosticsLog.add(
-            "Back: gesturesInFlight=$gesturesInFlight dragActive=${dragStroke != null} " +
+        DiagnosticsLog.add("Back", "execute $reason t=$now")
+        DiagnosticsLog.add("Back", 
+            "gesturesInFlight=$gesturesInFlight dragActive=${dragStroke != null} " +
                 "scrollActive=${scrollStroke != null}"
         )
         val info = displayInfo
         if (info == null) {
-            DiagnosticsLog.add("Back: blocked (no external display)")
+            DiagnosticsLog.add("Back", "blocked (no external display)")
             return false
         }
         val snapshot = snapshotWindows()
         val externalState = resolveExternalWindowState(info, snapshot)
         logBackFocusSnapshot("action", info, snapshot, externalState)
         if (externalState == null || (!externalState.isActive && !externalState.isFocused)) {
-            DiagnosticsLog.add(
-                "Back: external display not focused at action " +
+            DiagnosticsLog.add("Back", 
+                "external display not focused at action " +
                     "active=${externalState?.isActive ?: false} " +
                     "focused=${externalState?.isFocused ?: false}"
             )
@@ -704,18 +702,18 @@ class ControlAccessibilityService : AccessibilityService() {
                 dispatchFocusActivationGesture(info, allowFallback = true)
             ) {
                 SessionStore.lastBackFailure = "external_not_focused"
-                DiagnosticsLog.add("Back: focus activation requested; require user retry")
+                DiagnosticsLog.add("Back", "focus activation requested; require user retry")
                 return false
             }
             SessionStore.lastBackFailure = "external_not_focused"
-            DiagnosticsLog.add("Back: skipped (external display not focused)")
+            DiagnosticsLog.add("Back", "skipped (external display not focused)")
             return false
         }
         val success = performGlobalAction(GLOBAL_ACTION_BACK)
         if (!success) {
             SessionStore.lastBackFailure = "dispatch_failed"
         }
-        DiagnosticsLog.add("Back: dispatched success=$success")
+        DiagnosticsLog.add("Back", "dispatched success=$success")
         return success
     }
 
@@ -765,12 +763,12 @@ class ControlAccessibilityService : AccessibilityService() {
 
     private fun dumpWindows(tag: String, windows: List<AccessibilityWindowInfo>) {
         if (windows.isEmpty()) {
-            DiagnosticsLog.add("$tag: none")
+            DiagnosticsLog.add("Accessibility", "$tag: none")
             return
         }
         windows.forEach { window ->
             val packageName = window.root?.packageName?.toString() ?: "none"
-            DiagnosticsLog.add(
+            DiagnosticsLog.add("Accessibility", 
                 "$tag displayId=${window.displayId} type=${window.type} " +
                     "active=${window.isActive} focused=${window.isFocused} root=$packageName"
             )
@@ -782,46 +780,40 @@ class ControlAccessibilityService : AccessibilityService() {
         allowFallback: Boolean = false
     ): Boolean {
         if (tryTaskFocus()) {
-            DiagnosticsLog.add("Back: focus activation via task manager")
+            DiagnosticsLog.add("Back", "focus activation via task manager")
             return true
         }
         val targetWindow = pickTopAppWindow(info.displayId)
             ?: windows?.firstOrNull { it.displayId == info.displayId }
         val root = targetWindow?.root ?: run {
-            DiagnosticsLog.add("Back: focus activation skipped (no window root)")
+            DiagnosticsLog.add("Back", "focus activation skipped (no window root)")
             if (allowFallback) {
                 val nudged = dispatchFocusProbeNudge(info)
-                DiagnosticsLog.add("Back: focus activation via nudge fallback success=$nudged")
+                DiagnosticsLog.add("Back", "focus activation via nudge fallback success=$nudged")
                 return nudged
             }
             return false
         }
         if (tryFocusAtCursor(root, info)) {
-            root.recycle()
-            DiagnosticsLog.add("Back: focus activation via cursor hit")
+            DiagnosticsLog.add("Back", "focus activation via cursor hit")
             return true
         }
         val candidates = collectFocusableNodes(root, maxCount = 3)
         if (candidates.isEmpty()) {
-            root.recycle()
-            DiagnosticsLog.add("Back: focus activation skipped (no focusable node)")
+            DiagnosticsLog.add("Back", "focus activation skipped (no focusable node)")
             return false
         }
         for (node in candidates) {
             val focused = node.performAction(AccessibilityNodeInfo.ACTION_FOCUS) ||
                 node.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
-            node.recycle()
             if (focused) {
-                candidates.drop(candidates.indexOf(node) + 1).forEach { it.recycle() }
-                root.recycle()
-                DiagnosticsLog.add("Back: focus activation via node success=true")
+                DiagnosticsLog.add("Back", "focus activation via node success=true")
                 return true
             }
         }
         val rootFocused = root.performAction(AccessibilityNodeInfo.ACTION_FOCUS) ||
             root.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
-        root.recycle()
-        DiagnosticsLog.add("Back: focus activation via node success=$rootFocused")
+        DiagnosticsLog.add("Back", "focus activation via node success=$rootFocused")
         return rootFocused
     }
 
@@ -833,19 +825,16 @@ class ControlAccessibilityService : AccessibilityService() {
         val mapped = CoordinateMapper.mapForRotation(clamped.x, clamped.y, info)
         val hitNode = findNodeAtPoint(root, mapped.x.toInt(), mapped.y.toInt())
         val focusTarget = when {
-            hitNode == null -> if (root.isFocusable) AccessibilityNodeInfo.obtain(root) else findFocusableNode(root)
-            hitNode.isFocusable -> AccessibilityNodeInfo.obtain(hitNode)
+            hitNode == null -> if (root.isFocusable) copyNode(root) else findFocusableNode(root)
+            hitNode.isFocusable -> copyNode(hitNode)
             else -> findFocusableAncestor(hitNode) ?: findFocusableNode(root)
         }
-        
-        hitNode?.recycle()
         
         if (focusTarget == null) return false
         
         val success = focusTarget.performAction(AccessibilityNodeInfo.ACTION_FOCUS) ||
             focusTarget.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
         
-        focusTarget.recycle()
         return success
     }
 
@@ -857,23 +846,23 @@ class ControlAccessibilityService : AccessibilityService() {
 
     private fun warmUpExternalFocus(reason: String) {
         if (!SettingsStore.touchpadAutoFocusEnabled) {
-            DiagnosticsLog.add("Back: focus warmup skipped reason=$reason feature_disabled=true")
+            DiagnosticsLog.add("Back", "focus warmup skipped reason=$reason feature_disabled=true")
             return
         }
         val info = displayInfo ?: return
         val snapshot = snapshotWindows()
         val externalState = resolveExternalWindowState(info, snapshot)
         if (externalState?.isFocused == true || externalState?.isActive == true) {
-            DiagnosticsLog.add("Back: focus warmup skipped reason=$reason already_focused=true")
+            DiagnosticsLog.add("Back", "focus warmup skipped reason=$reason already_focused=true")
             return
         }
         val success = dispatchFocusActivationGesture(info)
-        DiagnosticsLog.add("Back: focus warmup reason=$reason success=$success")
+        DiagnosticsLog.add("Back", "focus warmup reason=$reason success=$success")
     }
 
     private fun dispatchFocusProbeNudge(info: DisplaySessionManager.ExternalDisplayInfo): Boolean {
         if (gesturesInFlight > 0) {
-            DiagnosticsLog.add("Back: focus probe nudge skipped (gesture busy)")
+            DiagnosticsLog.add("Back", "focus probe nudge skipped (gesture busy)")
             return false
         }
         val density = resources.displayMetrics.density
@@ -894,14 +883,14 @@ class ControlAccessibilityService : AccessibilityService() {
             builder.build(),
             object : GestureResultCallback() {
                 override fun onCompleted(gestureDescription: GestureDescription?) {
-                    DiagnosticsLog.add(
-                        "Back: focus probe nudge injected start=(${startX.toInt()},${y.toInt()}) " +
+                    DiagnosticsLog.add("Back", 
+                        "focus probe nudge injected start=(${startX.toInt()},${y.toInt()}) " +
                             "end=(${endX.toInt()},${y.toInt()})"
                     )
                 }
 
                 override fun onCancelled(gestureDescription: GestureDescription?) {
-                    DiagnosticsLog.add("Back: focus probe nudge cancelled")
+                    DiagnosticsLog.add("Back", "focus probe nudge cancelled")
                 }
             }
         )
@@ -913,8 +902,8 @@ class ControlAccessibilityService : AccessibilityService() {
         val runnable = Runnable {
             val current = displayInfo
             if (current == null || current.displayId != displayId) {
-                DiagnosticsLog.add(
-                    "Back: deferred dispatch dropped displayId=$displayId session_changed=true"
+                DiagnosticsLog.add("Back", 
+                    "deferred dispatch dropped displayId=$displayId session_changed=true"
                 )
                 return@Runnable
             }
@@ -922,7 +911,7 @@ class ControlAccessibilityService : AccessibilityService() {
             if (!success) {
                 SessionStore.lastBackFailure = "dispatch_failed"
             }
-            DiagnosticsLog.add("Back: deferred dispatch after focus probe success=$success")
+            DiagnosticsLog.add("Back", "deferred dispatch after focus probe success=$success")
         }
         deferredBackRunnable = runnable
         handler.postDelayed(runnable, 120L)
@@ -935,8 +924,8 @@ class ControlAccessibilityService : AccessibilityService() {
         externalState: ExternalWindowState?
     ) {
         val onDisplay = windows.count { it.displayId == info.displayId }
-        DiagnosticsLog.add(
-            "Back: focus snapshot stage=$stage displayId=${info.displayId} " +
+        DiagnosticsLog.add("Back", 
+            "focus snapshot stage=$stage displayId=${info.displayId} " +
                 "windowsOnDisplay=$onDisplay active=${externalState?.isActive ?: false} " +
                 "focused=${externalState?.isFocused ?: false} pkg=${externalState?.packageName ?: "none"}"
         )
@@ -956,11 +945,11 @@ class ControlAccessibilityService : AccessibilityService() {
     ): List<AccessibilityNodeInfo> {
         val results = ArrayList<AccessibilityNodeInfo>(maxCount)
         if (root.isFocusable && root.isVisibleToUser) {
-            results.add(AccessibilityNodeInfo.obtain(root))
+            results.add(copyNode(root))
             if (results.size >= maxCount) return results
         }
         val queue: ArrayDeque<AccessibilityNodeInfo> = ArrayDeque()
-        queue.add(AccessibilityNodeInfo.obtain(root))
+        queue.add(copyNode(root))
         var visited = 0
         while (queue.isNotEmpty() && results.size < maxCount && visited < 200) {
             val node = queue.removeFirst()
@@ -969,20 +958,14 @@ class ControlAccessibilityService : AccessibilityService() {
             for (i in 0 until count) {
                 val child = node.getChild(i) ?: continue
                 if (child.isFocusable && child.isVisibleToUser) {
-                    results.add(AccessibilityNodeInfo.obtain(child))
+                    results.add(copyNode(child))
                     if (results.size >= maxCount) {
-                        child.recycle()
-                        node.recycle()
-                        queue.forEach { it.recycle() }
                         return results
                     }
                 }
                 queue.add(child)
             }
-            node.recycle()
         }
-        // Cleanup queue if we exit due to visited limit or exhaustion
-        queue.forEach { it.recycle() }
         return results
     }
 
@@ -1009,26 +992,26 @@ class ControlAccessibilityService : AccessibilityService() {
         val tag = "XRDesk"
         val header = "=== WINDOW DIAGNOSTICS START ==="
         android.util.Log.wtf(tag, header)
-        DiagnosticsLog.add(header)
+        DiagnosticsLog.add("Diagnostics", header)
         
         try {
             val sdk = android.os.Build.VERSION.SDK_INT
-            DiagnosticsLog.add("SDK_INT=$sdk")
+            DiagnosticsLog.add("Diagnostics", "SDK_INT=$sdk")
 
             val currentDisplayId = displayInfo?.displayId ?: -1
-            DiagnosticsLog.add("Target DisplayID (from DisplayManager): $currentDisplayId")
+            DiagnosticsLog.add("Diagnostics", "Target DisplayID (from DisplayManager): $currentDisplayId")
 
             // Check DisplayManager's perspective
             val dm = getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
             val allDisplays = dm.displays
-            DiagnosticsLog.add("DisplayManager sees ${allDisplays.size} displays:")
+            DiagnosticsLog.add("Diagnostics", "DisplayManager sees ${allDisplays.size} displays:")
             allDisplays.forEach { d ->
-                DiagnosticsLog.add("  - ID=${d.displayId} Name=${d.name} Flags=${Integer.toHexString(d.flags)}")
+                DiagnosticsLog.add("Diagnostics", "  - ID=${d.displayId} Name=${d.name} Flags=${Integer.toHexString(d.flags)}")
             }
 
             // 1. Check default windows property
             val defaultWindows = windows ?: emptyList()
-            DiagnosticsLog.add("getWindows().size=${defaultWindows.size}")
+            DiagnosticsLog.add("Diagnostics", "getWindows().size=${defaultWindows.size}")
             defaultWindows.forEachIndexed { index, win ->
                 logWindowToDiagnostics("Default", index, win)
             }
@@ -1037,12 +1020,12 @@ class ControlAccessibilityService : AccessibilityService() {
             if (sdk >= Build.VERSION_CODES.R) {
                 val allWindowsSparse = getWindowsOnAllDisplays()
                 val displaysSeen = allWindowsSparse.size()
-                DiagnosticsLog.add("getWindowsOnAllDisplays().displaysSeen=$displaysSeen")
+                DiagnosticsLog.add("Diagnostics", "getWindowsOnAllDisplays().displaysSeen=$displaysSeen")
                 
                 for (i in 0 until displaysSeen) {
                     val dId = allWindowsSparse.keyAt(i)
                     val windowList = allWindowsSparse.valueAt(i)
-                    DiagnosticsLog.add("  Display $dId has ${windowList.size} windows:")
+                    DiagnosticsLog.add("Diagnostics", "  Display $dId has ${windowList.size} windows:")
                     windowList.forEachIndexed { index, win ->
                         logWindowToDiagnostics("AllDisplays", index, win)
                     }
@@ -1051,22 +1034,20 @@ class ControlAccessibilityService : AccessibilityService() {
         } catch (e: Throwable) {
             val err = "FATAL: dumpAllWindowsDebug crashed: ${e.message}"
             android.util.Log.wtf(tag, err, e)
-            DiagnosticsLog.add(err)
+            DiagnosticsLog.add("Diagnostics", err)
         } finally {
             val footer = "=== WINDOW DIAGNOSTICS END ==="
             android.util.Log.wtf(tag, footer)
-            DiagnosticsLog.add(footer)
+            DiagnosticsLog.add("Diagnostics", footer)
         }
     }
 
     private fun logWindowToDiagnostics(source: String, index: Int, win: AccessibilityWindowInfo) {
-        val rootNode = try { win.root } catch (e: Exception) { null }
+        val rootNode = try { win.root } catch (ignored: Exception) { null }
         val pkg = rootNode?.packageName ?: "unknown"
-        val title = if (Build.VERSION.SDK_INT >= 24) {
-            try { win.title ?: "no-title" } catch(e: Exception) { "n/a" }
-        } else "n/a"
+        val title = try { win.title ?: "no-title" } catch(ignored: Exception) { "n/a" }
         val detail = "    [$source][$index] id=${win.displayId} pkg=$pkg type=${win.type} title=$title active=${win.isActive} focused=${win.isFocused}"
-        DiagnosticsLog.add(detail)
+        DiagnosticsLog.add("Diagnostics", detail)
         android.util.Log.wtf("XRDesk", detail)
     }
 
@@ -1074,14 +1055,14 @@ class ControlAccessibilityService : AccessibilityService() {
         val info = displayInfo ?: return false
         
         if (DEBUG) {
-            DiagnosticsLog.add("KeyEvent: code=$keycode long=$longPress display=${info.displayId}")
+            DiagnosticsLog.add("KeyEvent", "code=$keycode long=$longPress display=${info.displayId}")
         }
 
         val shizukuAlive = ShizukuShell.isAlive()
 
         // 1. Primary Path: Shizuku Injection
         if (shizukuAlive) {
-            if (DEBUG) DiagnosticsLog.add("KeyEvent: using Shizuku path")
+            if (DEBUG) DiagnosticsLog.add("KeyEvent", "using Shizuku path")
             Thread {
                 val dId = info.displayId.toString()
                 val cmd = if (longPress) {
@@ -1092,18 +1073,18 @@ class ControlAccessibilityService : AccessibilityService() {
                 
                 val result = ShizukuShell.run(*cmd)
                 if (result.exitCode != 0 && DEBUG) {
-                    DiagnosticsLog.add("KeyEvent: Shizuku failed code=${result.exitCode} err=${result.error}")
+                    DiagnosticsLog.add("KeyEvent", "Shizuku failed code=${result.exitCode} err=${result.error}")
                 }
             }.start()
             return true
         }
 
-        // 2. Fallback Paths (Shizuku is NOT alive)
-        if (DEBUG) DiagnosticsLog.add("KeyEvent: Shizuku not available, trying fallbacks")
+        // 2. Fallback paths (Shizuku is NOT alive)
+        if (DEBUG) DiagnosticsLog.add("KeyEvent", "Shizuku not available, trying fallbacks")
 
         when (keycode) {
             KeyEvent.KEYCODE_BACK -> {
-                if (DEBUG) DiagnosticsLog.add("KeyEvent: Back Shizuku missing, trying smart Accessibility")
+                if (DEBUG) DiagnosticsLog.add("KeyEvent", "Back Shizuku missing, trying smart Accessibility")
                 
                 val snapshot = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     val all = getWindowsOnAllDisplays()
@@ -1120,24 +1101,21 @@ class ControlAccessibilityService : AccessibilityService() {
                 if (focused != null) {
                     // Try DISMISS (dialogs, menus)
                     if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_DISMISS)) {
-                        focused.recycle()
-                        if (DEBUG) DiagnosticsLog.add("Back: smart Accessibility ACTION_DISMISS success")
+                        if (DEBUG) DiagnosticsLog.add("Back", "smart Accessibility ACTION_DISMISS success")
                         return true
                     }
                     // Try COLLAPSE (dropdowns, expandable lists)
                     if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_COLLAPSE)) {
-                        focused.recycle()
-                        if (DEBUG) DiagnosticsLog.add("Back: smart Accessibility ACTION_COLLAPSE success")
+                        if (DEBUG) DiagnosticsLog.add("Back", "smart Accessibility ACTION_COLLAPSE success")
                         return true
                     }
-                    focused.recycle()
                 }
 
-                if (DEBUG) DiagnosticsLog.add("Back: smart Accessibility failed, using GLOBAL_ACTION_BACK")
+                if (DEBUG) DiagnosticsLog.add("Back", "smart Accessibility failed, using GLOBAL_ACTION_BACK")
                 return performGlobalAction(GLOBAL_ACTION_BACK)
             }
             KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
-                if (DEBUG) DiagnosticsLog.add("KeyEvent: Media fallback (AudioManager)")
+                if (DEBUG) DiagnosticsLog.add("KeyEvent", "Media fallback (AudioManager)")
                 val am = getSystemService(Context.AUDIO_SERVICE) as? AudioManager
                 if (am != null) {
                     val downTime = SystemClock.uptimeMillis()
@@ -1148,13 +1126,13 @@ class ControlAccessibilityService : AccessibilityService() {
                     am.dispatchMediaKeyEvent(upEvent)
                     return true
                 } else {
-                    if (DEBUG) DiagnosticsLog.add("KeyEvent: Media rejected (AudioManager missing)")
+                    if (DEBUG) DiagnosticsLog.add("KeyEvent", "Media rejected (AudioManager missing)")
                     showToastOnExternalDisplay(getString(R.string.touchpad_shizuku_required_media))
                     return false
                 }
             }
             else -> {
-                if (DEBUG) DiagnosticsLog.add("KeyEvent: No fallback for keycode $keycode")
+                if (DEBUG) DiagnosticsLog.add("KeyEvent", "No fallback for keycode $keycode")
                 return false
             }
         }
@@ -1213,7 +1191,6 @@ class ControlAccessibilityService : AccessibilityService() {
         if (current == null) return false
 
         val nextFocus = current.focusSearch(direction)
-        current.recycle()
         
         if (nextFocus != null) {
             val targetWindow = targetWindows.find { it.displayId == info.displayId && (it.isFocused || it.isActive) }
@@ -1228,29 +1205,28 @@ class ControlAccessibilityService : AccessibilityService() {
                 if (targetWindow != null) {
                     log.append("Window BEFORE: focused=${targetWindow.isFocused} active=${targetWindow.isActive}\n")
                 }
-                DiagnosticsLog.add(log.toString())
+                DiagnosticsLog.add("Focus", log.toString())
                 android.util.Log.i("XRDesk", log.toString())
             }
 
             // Stability: Refresh node to ensure it's not stale
             val isFresh = nextFocus.refresh()
             if (!isFresh && DEBUG) {
-                DiagnosticsLog.add("STABILITY: Node became STALE before action.")
+                DiagnosticsLog.add("Focus", "STABILITY: Node became STALE before action.")
             }
 
             // Stability: Verify node is still valid for focus
             val canFocus = nextFocus.isVisibleToUser && nextFocus.isFocusable && nextFocus.isEnabled
             if (!canFocus && DEBUG) {
-                DiagnosticsLog.add("STABILITY: Node not focusable: visible=${nextFocus.isVisibleToUser} focusable=${nextFocus.isFocusable} enabled=${nextFocus.isEnabled}")
+                DiagnosticsLog.add("Focus", "STABILITY: Node not focusable: visible=${nextFocus.isVisibleToUser} focusable=${nextFocus.isFocusable} enabled=${nextFocus.isEnabled}")
             }
 
             val resFocus = nextFocus.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
             val resAccFocus = nextFocus.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
-            nextFocus.recycle()
             
             if (DEBUG) {
                 val actionLog = "ACTION_FOCUS: $resFocus, ACTION_ACCESSIBILITY_FOCUS: $resAccFocus"
-                DiagnosticsLog.add(actionLog)
+                DiagnosticsLog.add("Focus", actionLog)
                 android.util.Log.i("XRDesk", actionLog)
             }
 
@@ -1292,10 +1268,10 @@ class ControlAccessibilityService : AccessibilityService() {
                     }
                     delayedLog.append("=== END VERIFICATION ===\n")
                     
-                    DiagnosticsLog.add(delayedLog.toString())
+                    DiagnosticsLog.add("Focus", delayedLog.toString())
                     android.util.Log.i("XRDesk", delayedLog.toString())
                 } else if (DEBUG) {
-                    DiagnosticsLog.add("D-Pad: Focus verified successfully at 100ms.")
+                    DiagnosticsLog.add("Focus", "D-Pad: Focus verified successfully at 100ms.")
                 }
             }, 100)
 
@@ -1306,9 +1282,8 @@ class ControlAccessibilityService : AccessibilityService() {
         if (bestNode != null) {
             val success = bestNode.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS) ||
                           bestNode.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
-            bestNode.recycle()
             if (success) {
-                DiagnosticsLog.add("D-Pad: geometric search success")
+                DiagnosticsLog.add("Focus", "D-Pad: geometric search success")
                 return true
             }
         }
@@ -1345,14 +1320,12 @@ class ControlAccessibilityService : AccessibilityService() {
 
         if (focused != null) {
             if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_CLICK)) {
-                focused.recycle()
                 return true
             }
             
             val rect = Rect()
             focused.getBoundsInScreen(rect)
             dispatchTap(rect.centerX().toFloat(), rect.centerY().toFloat(), info.displayId)
-            focused.recycle()
             return true
         }
 
@@ -1365,7 +1338,6 @@ class ControlAccessibilityService : AccessibilityService() {
             val root = try { win.root } catch (e: Exception) { null } ?: continue
             val focused = root.findFocus(AccessibilityNodeInfo.FOCUS_ACCESSIBILITY)
                 ?: root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
-            root.recycle()
             if (focused != null) return focused
         }
         return null
@@ -1398,7 +1370,6 @@ class ControlAccessibilityService : AccessibilityService() {
         for (win in windows) {
             val root = try { win.root } catch (e: Exception) { null } ?: continue
             collectAllFocusableNodes(root, allNodes)
-            root.recycle()
         }
         
         android.util.Log.d("XRDesk", "D-Pad: geometric search found ${allNodes.size} total candidates")
@@ -1415,7 +1386,6 @@ class ControlAccessibilityService : AccessibilityService() {
 
         for (node in allNodes) {
             if (isSameNode(node, current)) {
-                node.recycle()
                 continue
             }
             val nodeRect = Rect()
@@ -1436,12 +1406,10 @@ class ControlAccessibilityService : AccessibilityService() {
                 val dist = calculateGeometricDistance(currentRect, nodeRect, direction)
                 if (dist < minDistance) {
                     minDistance = dist
-                    bestNode?.recycle()
                     bestNode = node // bestNode now owns this node
                     continue
                 }
             }
-            node.recycle()
         }
         return bestNode
     }
@@ -1483,13 +1451,12 @@ class ControlAccessibilityService : AccessibilityService() {
 
     private fun collectAllFocusableNodes(root: AccessibilityNodeInfo, list: MutableList<AccessibilityNodeInfo>) {
         if ((root.isFocusable || root.isClickable) && root.isVisibleToUser) {
-            list.add(AccessibilityNodeInfo.obtain(root))
+            list.add(copyNode(root))
         }
         for (i in 0 until root.childCount) {
             val child = root.getChild(i)
             if (child != null) {
                 collectAllFocusableNodes(child, list)
-                child.recycle()
             }
         }
     }
@@ -1522,11 +1489,9 @@ class ControlAccessibilityService : AccessibilityService() {
         var current: AccessibilityNodeInfo? = AccessibilityNodeInfo.obtain(node)
         while (current != null) {
             if (current.performAction(action)) {
-                current.recycle()
                 return true
             }
             val parent = current.parent
-            current.recycle()
             current = parent
         }
         return false
@@ -1534,14 +1499,14 @@ class ControlAccessibilityService : AccessibilityService() {
 
     private fun logNode(prefix: String, node: AccessibilityNodeInfo?) {
         if (node == null) {
-            DiagnosticsLog.add("$prefix: null")
+            DiagnosticsLog.add("Focus", "$prefix: null")
             return
         }
         val rect = Rect()
         node.getBoundsInScreen(rect)
         val text = node.text?.toString() ?: node.contentDescription?.toString() ?: "no-text"
         val id = node.viewIdResourceName ?: "no-id"
-        DiagnosticsLog.add("$prefix: [${node.className}] \"$text\" id=$id bounds=$rect clickable=${node.isClickable}")
+        DiagnosticsLog.add("Focus", "$prefix: [${node.className}] \"$text\" id=$id bounds=$rect clickable=${node.isClickable}")
     }
 
     fun setTextOnFocused(text: String): Boolean {
@@ -1563,7 +1528,6 @@ class ControlAccessibilityService : AccessibilityService() {
                     target.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
                 }
                 if (!target.actionList.any { it.id == AccessibilityNodeInfo.ACTION_SET_TEXT }) {
-                    target.recycle()
                     return recordInjection(
                         false,
                         getString(R.string.injection_action_set_text_not_supported)
@@ -1572,7 +1536,6 @@ class ControlAccessibilityService : AccessibilityService() {
                 val args = Bundle()
                 args.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, text)
                 val success = target.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, args)
-                target.recycle()
                 return recordInjection(
                     success,
                     if (success) {
@@ -1592,13 +1555,11 @@ class ControlAccessibilityService : AccessibilityService() {
         while (queue.isNotEmpty()) {
             val node = queue.removeFirst()
             if (node.isEditable) {
-                queue.forEach { it.recycle() }
                 return node
             }
             for (i in 0 until node.childCount) {
                 node.getChild(i)?.let { queue.add(it) }
             }
-            node.recycle()
         }
         return null
     }
@@ -1617,7 +1578,7 @@ class ControlAccessibilityService : AccessibilityService() {
         }
         detachOverlay()
         displayInfo = info
-        DiagnosticsLog.add("Accessibility: attach displayId=${info.displayId}")
+        DiagnosticsLog.add("Accessibility", "Accessibility: attach displayId=${info.displayId}")
         cursorBaseSizePx = cursorBaseSizeForDisplay(info)
         cursorSizePx = cursorMaxSizeForDisplay(cursorBaseSizePx)
         cursorX = (info.width / 2f)
@@ -1696,7 +1657,7 @@ class ControlAccessibilityService : AccessibilityService() {
         runCatching { wm.addView(view, params) }.onFailure {
             detachOverlay()
             if (allowRetry) {
-                DiagnosticsLog.add("Accessibility: attach failed, retrying id=${info.displayId}")
+                DiagnosticsLog.add("Accessibility", "Accessibility: attach failed, retrying id=${info.displayId}")
                 scheduleAttachRetry(info)
             }
         }
@@ -1718,9 +1679,7 @@ class ControlAccessibilityService : AccessibilityService() {
                     handler.postDelayed(this, ATTACH_RETRY_DELAY_MS)
                 } else {
                     if (overlayView == null) {
-                        DiagnosticsLog.add(
-                            "Accessibility: attach retry exhausted id=${currentInfo.displayId}"
-                        )
+                        DiagnosticsLog.add("Accessibility", "Accessibility: attach retry exhausted id=${currentInfo.displayId}")
                     }
                     cancelAttachRetry()
                 }
@@ -1756,7 +1715,7 @@ class ControlAccessibilityService : AccessibilityService() {
         displayInfo = null
         cancelDrag()
         cancelCursorHide()
-        DiagnosticsLog.add("Accessibility: overlay detached")
+        DiagnosticsLog.add("Accessibility", "Accessibility: overlay detached")
     }
 
     private fun refreshSwitchBarSettings() {
@@ -2169,21 +2128,17 @@ class ControlAccessibilityService : AccessibilityService() {
         val root = window?.root ?: return null
         val hitNode = findNodeAtPoint(root, x.toInt(), y.toInt())
         
-        var current: AccessibilityNodeInfo? = if (hitNode != null) hitNode else AccessibilityNodeInfo.obtain(root)
+        var current: AccessibilityNodeInfo? = if (hitNode != null) hitNode else copyNode(root)
         
         while (current != null) {
             if (current.isScrollable && current.isVisibleToUser) {
-                root.recycle()
                 return current
             }
             val parent = current.parent
-            current.recycle()
             current = parent
         }
         
-        val scrollable = findScrollableNode(root)
-        root.recycle()
-        return scrollable
+        return findScrollableNode(root)
     }
 
     private fun findNodeAtPoint(
@@ -2194,7 +2149,7 @@ class ControlAccessibilityService : AccessibilityService() {
         val queue = ArrayDeque<AccessibilityNodeInfo>()
         val depths = ArrayDeque<Int>()
         
-        queue.add(AccessibilityNodeInfo.obtain(root))
+        queue.add(copyNode(root))
         depths.add(0)
         
         var best: AccessibilityNodeInfo? = null
@@ -2208,8 +2163,7 @@ class ControlAccessibilityService : AccessibilityService() {
             node.getBoundsInScreen(rect)
             if (rect.contains(x, y)) {
                 if (depth >= bestDepth) {
-                    best?.recycle()
-                    best = AccessibilityNodeInfo.obtain(node)
+                    best = copyNode(node)
                     bestDepth = depth
                 }
                 for (i in 0 until node.childCount) {
@@ -2220,57 +2174,59 @@ class ControlAccessibilityService : AccessibilityService() {
                     }
                 }
             }
-            node.recycle()
         }
         return best
     }
 
     private fun findScrollableNode(root: AccessibilityNodeInfo): AccessibilityNodeInfo? {
         val queue = ArrayDeque<AccessibilityNodeInfo>()
-        queue.add(AccessibilityNodeInfo.obtain(root))
+        queue.add(copyNode(root))
         while (queue.isNotEmpty()) {
             val node = queue.removeFirst()
             if (node.isScrollable && node.isVisibleToUser) {
-                // Return this node, clear the rest of the queue
-                queue.forEach { it.recycle() }
                 return node
             }
             for (i in 0 until node.childCount) {
                 node.getChild(i)?.let { queue.add(it) }
             }
-            node.recycle()
         }
         return null
     }
 
     private fun findFocusableNode(root: AccessibilityNodeInfo): AccessibilityNodeInfo? {
         val queue = ArrayDeque<AccessibilityNodeInfo>()
-        queue.add(AccessibilityNodeInfo.obtain(root))
+        queue.add(copyNode(root))
         while (queue.isNotEmpty()) {
             val node = queue.removeFirst()
             if (node.isFocusable && node.isVisibleToUser) {
-                queue.forEach { it.recycle() }
                 return node
             }
             for (i in 0 until node.childCount) {
                 node.getChild(i)?.let { queue.add(it) }
             }
-            node.recycle()
         }
         return null
     }
 
     private fun findFocusableAncestor(node: AccessibilityNodeInfo): AccessibilityNodeInfo? {
-        var current: AccessibilityNodeInfo? = AccessibilityNodeInfo.obtain(node)
+        var current: AccessibilityNodeInfo? = copyNode(node)
         while (current != null) {
             if (current.isFocusable && current.isVisibleToUser) {
                 return current
             }
             val parent = current.parent
-            current.recycle()
             current = parent
         }
         return null
+    }
+
+    private fun copyNode(source: AccessibilityNodeInfo): AccessibilityNodeInfo {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            AccessibilityNodeInfo(source)
+        } else {
+            @Suppress("DEPRECATION")
+            AccessibilityNodeInfo.obtain(source)
+        }
     }
 
     private fun recordInjection(success: Boolean, message: String): Boolean {

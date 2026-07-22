@@ -35,17 +35,17 @@ object DisplaySessionManager {
 
     private val displayListener = object : DisplayManager.DisplayListener {
         override fun onDisplayAdded(displayId: Int) {
-            DiagnosticsLog.add("DisplayListener: added id=$displayId registered=$listenerRegistered")
+            DiagnosticsLog.add("Display", "DisplayListener: added id=$displayId registered=$listenerRegistered")
             refreshDisplays()
         }
 
         override fun onDisplayRemoved(displayId: Int) {
-            DiagnosticsLog.add("DisplayListener: removed id=$displayId registered=$listenerRegistered")
+            DiagnosticsLog.add("Display", "DisplayListener: removed id=$displayId registered=$listenerRegistered")
             refreshDisplays()
         }
 
         override fun onDisplayChanged(displayId: Int) {
-            DiagnosticsLog.add("DisplayListener: changed id=$displayId registered=$listenerRegistered")
+            DiagnosticsLog.add("Display", "DisplayListener: changed id=$displayId registered=$listenerRegistered")
             refreshDisplays()
         }
     }
@@ -87,12 +87,12 @@ object DisplaySessionManager {
         val dm = displayManager
         val allDisplays = dm?.getDisplays()?.toList().orEmpty()
         
-        DiagnosticsLog.add("DisplayAll: count=${allDisplays.size} ${formatDisplays(allDisplays)}")
+        DiagnosticsLog.add("Display", "DisplayAll: count=${allDisplays.size} ${formatDisplays(allDisplays)}")
         val presentationDisplays = dm
             ?.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION)
             ?.toList()
             .orEmpty()
-        DiagnosticsLog.add(
+        DiagnosticsLog.add("Display", 
             "DisplayPresentation: count=${presentationDisplays.size} " +
                 formatDisplays(presentationDisplays)
         )
@@ -110,7 +110,7 @@ object DisplaySessionManager {
 
         val previousDisplayId = displayInfo?.displayId
         if (externalDisplays.isEmpty()) {
-            DiagnosticsLog.add("DisplaySelect: no external displays")
+            DiagnosticsLog.add("Display", "DisplaySelect: no external displays")
             displayInfo = null
             selectedDisplayId = null
         } else {
@@ -118,12 +118,12 @@ object DisplaySessionManager {
             if (selectedDisplayId == null ||
                 externalDisplays.none { it.displayId == selectedDisplayId }
             ) {
-                DiagnosticsLog.add(
+                DiagnosticsLog.add("Display", 
                     "DisplaySelect: choose first (candidates=[$candidates])"
                 )
                 selectedDisplayId = externalDisplays.first().displayId
             } else {
-                DiagnosticsLog.add(
+                DiagnosticsLog.add("Display", 
                     "DisplaySelect: keep selected=$selectedDisplayId (candidates=[$candidates])"
                 )
             }
@@ -139,7 +139,7 @@ object DisplaySessionManager {
             ControlAccessibilityService.requestAttachToDisplay(newInfo)
         }
         val ids = displays.joinToString { it.displayId.toString() }
-        DiagnosticsLog.add(
+        DiagnosticsLog.add("Display", 
             "Displays: count=${displays.size} ids=[$ids] selected=${selectedDisplayId ?: "none"} " +
                 "source=${if (usingFallback) "fallback" else "presentation"}"
         )

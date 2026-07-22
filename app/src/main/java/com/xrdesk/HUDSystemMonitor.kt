@@ -10,13 +10,13 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.telephony.TelephonyManager
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -34,7 +34,7 @@ object HUDSystemMonitor {
         val level: Int, 
         val isCharging: Boolean, 
         val chargeTimeRemaining: Long = -1,
-        val dischargeTimeRemaining: Long = -1
+        val dischargeTimeRemaining: Long = -1,
     )
     data class ConnectivityInfo(
         val wifiEnabled: Boolean, 
@@ -51,7 +51,7 @@ object HUDSystemMonitor {
     data class MobileInfo(val operatorName: String?, val networkType: String?)
     data class CursorEvent(val x: Float, val y: Float)
 
-    private val _batteryState = MutableStateFlow(BatteryInfo(0, false, -1, -1))
+    private val _batteryState = MutableStateFlow(BatteryInfo(level = 0, isCharging = false, chargeTimeRemaining = -1, dischargeTimeRemaining = -1))
     val batteryState = _batteryState.asStateFlow()
 
     private val _connectivityState = MutableStateFlow(ConnectivityInfo(false, 0, 0, 0, null, false))
@@ -77,12 +77,23 @@ object HUDSystemMonitor {
         }
     }
 
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: android.net.Network) {
+            appContext?.let { updateConnectivity(it) }
+        }
+        override fun onLost(network: android.net.Network) {
+            appContext?.let { updateConnectivity(it) }
+        }
+        override fun onCapabilitiesChanged(network: android.net.Network, capabilities: NetworkCapabilities) {
+            appContext?.let { updateConnectivity(it) }
+        }
+    }
+
     private val systemReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 Intent.ACTION_BATTERY_CHANGED -> updateBattery(intent)
                 BluetoothAdapter.ACTION_STATE_CHANGED -> updateConnectivity(context)
-                ConnectivityManager.CONNECTIVITY_ACTION -> updateConnectivity(context)
                 Intent.ACTION_AIRPLANE_MODE_CHANGED -> updateConnectivity(context)
             }
         }
@@ -103,11 +114,12 @@ object HUDSystemMonitor {
         val filter = IntentFilter().apply {
             addAction(Intent.ACTION_BATTERY_CHANGED)
             addAction(BluetoothAdapter.ACTION_STATE_CHANGED)
-            @Suppress("DEPRECATION")
-            addAction(ConnectivityManager.CONNECTIVITY_ACTION)
             addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
         }
         app.registerReceiver(systemReceiver, filter)
+
+        val cm = app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        cm.registerDefaultNetworkCallback(networkCallback)
 
         handler.post(timeTicker)
     }
@@ -115,6 +127,8 @@ object HUDSystemMonitor {
     fun stop() {
         if (!isStarted.compareAndSet(true, false)) return
         appContext?.unregisterReceiver(systemReceiver)
+        val cm = appContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        cm?.unregisterNetworkCallback(networkCallback)
         handler.removeCallbacks(timeTicker)
     }
 
@@ -126,8 +140,8 @@ object HUDSystemMonitor {
         val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
         val scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
         val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
-        val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || 
-                        status == BatteryManager.BATTERY_STATUS_FULL
+        val isCharging = (status == BatteryManager.BATTERY_STATUS_CHARGING || 
+                        status == BatteryManager.BATTERY_STATUS_FULL)
         
         var chargeTime = -1L
         var dischargeTime = -1L
@@ -180,9 +194,9 @@ object HUDSystemMonitor {
                 if (Build.VERSION.SDK_INT >= 30) {
                     // Map hardware standards to readable labels
                     wifiStandard = when (info.wifiStandard) {
-                        6 -> 6 // WIFI_STANDARD_11AX
-                        5 -> 5 // WIFI_STANDARD_11AC
-                        4 -> 4 // WIFI_STANDARD_11N
+                        ScanResult.WIFI_STANDARD_11AX -> 6
+                        ScanResult.WIFI_STANDARD_11AC -> 5
+                        ScanResult.WIFI_STANDARD_11N -> 4
                         else -> info.wifiStandard
                     }
                 }
@@ -212,7 +226,7 @@ object HUDSystemMonitor {
 
         val airplaneMode = Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
 
-        if (btEnabled && btAdapter != null) {
+        if (btEnabled) {
             try {
                 val hasConnectPermission = if (Build.VERSION.SDK_INT >= 31) {
                     context.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
@@ -229,7 +243,7 @@ object HUDSystemMonitor {
                     
                     // Note: Real battery level often requires profile-specific intents or metadata
                 }
-            } catch (e: Exception) {
+            } catch (ignored: Exception) {
                 // Fallback for security or hardware issues
             }
         }
@@ -252,14 +266,20 @@ object HUDSystemMonitor {
     private fun updateMobile(context: Context) {
         try {
             // Check for permission before accessing TelephonyManager
-            if (context.checkSelfPermission(android.Manifest.permission.READ_PHONE_STATE) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            if (context.checkSelfPermission(android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                 _mobileState.value = MobileInfo(null, null)
                 return
             }
 
             val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as android.telephony.TelephonyManager
             val operator = tm.networkOperatorName
-            val type = when (tm.networkType) {
+            val networkType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                tm.dataNetworkType
+            } else {
+                @Suppress("DEPRECATION")
+                tm.networkType
+            }
+            val type = when (networkType) {
                 android.telephony.TelephonyManager.NETWORK_TYPE_NR -> "5G"
                 android.telephony.TelephonyManager.NETWORK_TYPE_LTE -> "LTE"
                 android.telephony.TelephonyManager.NETWORK_TYPE_HSPA, android.telephony.TelephonyManager.NETWORK_TYPE_HSPAP -> "H+"

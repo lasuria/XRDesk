@@ -86,7 +86,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         super.onCreate(savedInstanceState)
         binding = ActivityTouchpadBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        DiagnosticsLog.add("Touchpad: create displayId=${display?.displayId ?: -1}")
+        DiagnosticsLog.add("Touchpad", "Touchpad: create displayId=${display?.displayId ?: -1}")
         applyEdgeToEdgePadding(binding.root, includeTop = false)
         applyToolbarInsets()
         val insetsController = WindowInsetsControllerCompat(window, binding.root)
@@ -114,10 +114,10 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         )
 
         binding.touchpadBack.setOnClickListener {
-            DiagnosticsLog.add("Touchpad: exit via toolbar")
+            DiagnosticsLog.add("Touchpad", "Touchpad: exit via toolbar")
             finish()
         }
-        binding.touchpadLaunch.setOnClickListener {
+  binding.touchpadLaunch.setOnClickListener {
             startActivity(Intent(this, AppPickerActivity::class.java))
         }
         binding.touchpadBlackout.setOnClickListener {
@@ -245,10 +245,10 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                             return
                         }
                         val backTimestamp = SystemClock.uptimeMillis()
-                        DiagnosticsLog.add("Touchpad: back requested t=$backTimestamp")
+                        DiagnosticsLog.add("Touchpad", "Touchpad: back requested t=$backTimestamp")
                         val service = ControlAccessibilityService.current()
                         if (service == null) {
-                            DiagnosticsLog.add("Touchpad: back failed (accessibility missing)")
+                            DiagnosticsLog.add("Touchpad", "Touchpad: back failed (accessibility missing)")
                             Toast.makeText(
                                 this@TouchpadActivity,
                                 getString(R.string.touchpad_accessibility_required_toast),
@@ -274,7 +274,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                                 service.showToastOnExternalDisplay(message)
                             }
                         }
-                        DiagnosticsLog.add("Touchpad: back forwarded")
+                        DiagnosticsLog.add("Touchpad", "Touchpad: back forwarded")
                     } else {
                         finish()
                     }
@@ -303,7 +303,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         if (SettingsStore.touchpadAutoFocusEnabled) {
             ControlAccessibilityService.requestExternalFocusWarmup("touchpad_resume")
         }
-        DiagnosticsLog.add("Touchpad: resume")
+        DiagnosticsLog.add("Touchpad", "Touchpad: resume")
     }
 
     override fun onPause() {
@@ -312,7 +312,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         cancelLongPress()
         exitScrollMode()
         updateKeepScreenOn(false)
-        DiagnosticsLog.add("Touchpad: pause")
+        DiagnosticsLog.add("Touchpad", "Touchpad: pause")
         super.onPause()
     }
 
@@ -330,7 +330,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             cancelDimAnimator()
             restoreOriginalBrightness()
             setBlackoutVisible(false)
-            DiagnosticsLog.add("Touchpad: brightness restored (external display removed)")
+            DiagnosticsLog.add("Touchpad", "Touchpad: brightness restored (external display removed)")
         } else if (touchpadActive) {
             startAutoDimSession()
         }
@@ -551,7 +551,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         } else {
             cancelAutoLockTimer()
         }
-        DiagnosticsLog.add("Touchpad: blackout=$visible")
+        DiagnosticsLog.add("Touchpad", "Touchpad: blackout=$visible")
     }
 
     private fun unlockFromBlackout() {
@@ -747,7 +747,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         binding.touchpadArea.isActivated = active
 
         if (wasActive != active) {
-            DiagnosticsLog.add("Touchpad: active=$active")
+            DiagnosticsLog.add("Touchpad", "Touchpad: active=$active")
             if (active) {
                 startAutoDimSession()
             } else {
@@ -958,13 +958,13 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         
         val setServices = ShizukuShell.runSettingsCommand("enabled_accessibility_services", updated)
         if (setServices.exitCode != 0) {
-            DiagnosticsLog.add("Shizuku: enable services failed code=${setServices.exitCode} err=${setServices.error}")
+            DiagnosticsLog.add("Shizuku", "Shizuku: enable services failed code=${setServices.exitCode} err=${setServices.error}")
             return false
         }
         
         val enable = ShizukuShell.runSettingsCommand("accessibility_enabled", "1")
         if (enable.exitCode != 0) {
-            DiagnosticsLog.add("Shizuku: enable accessibility flag failed code=${enable.exitCode} err=${enable.error}")
+            DiagnosticsLog.add("Shizuku", "Shizuku: enable accessibility flag failed code=${enable.exitCode} err=${enable.error}")
             return false
         }
         
@@ -1035,7 +1035,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             dimWindowBrightness()
         }
         handler.postDelayed(dimRunnable!!, AUTO_DIM_DELAY_MS)
-        DiagnosticsLog.add("Touchpad: dim timer started")
+        DiagnosticsLog.add("Touchpad", "Touchpad: dim timer started")
     }
 
     private fun stopAutoDimSession() {
@@ -1043,7 +1043,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         cancelDimTimer()
         cancelDimAnimator()
         restoreOriginalBrightness()
-        DiagnosticsLog.add("Touchpad: dim session stopped")
+        DiagnosticsLog.add("Touchpad", "Touchpad: dim session stopped")
     }
 
     private fun captureOriginalBrightness() {
@@ -1060,19 +1060,19 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         }
         hasOriginalWindowBrightness = false
         dimmedThisSession = false
-        DiagnosticsLog.add("Touchpad: brightness restored")
+        DiagnosticsLog.add("Touchpad", "Touchpad: brightness restored")
     }
 
     private fun dimWindowBrightness() {
         val target = computeDimTarget() ?: run {
-            DiagnosticsLog.add("Touchpad: dim skipped (avoid brightening)")
+            DiagnosticsLog.add("Touchpad", "Touchpad: dim skipped (avoid brightening)")
             return
         }
         val start = getEstimatedCurrentBrightness().coerceAtLeast(target)
         if (start <= target) {
             applyWindowBrightness(target)
             dimmedThisSession = true
-            DiagnosticsLog.add("Touchpad: dimmed target=$target")
+            DiagnosticsLog.add("Touchpad", "Touchpad: dimmed target=$target")
             return
         }
         dimAnimator = ValueAnimator.ofFloat(start, target).apply {
@@ -1083,7 +1083,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             start()
         }
         dimmedThisSession = true
-        DiagnosticsLog.add("Touchpad: dimmed target=$target")
+        DiagnosticsLog.add("Touchpad", "Touchpad: dimmed target=$target")
     }
 
     private fun applyWindowBrightness(value: Float) {

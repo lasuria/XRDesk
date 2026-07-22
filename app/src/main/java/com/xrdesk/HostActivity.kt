@@ -14,7 +14,7 @@ class HostActivity : AppCompatActivity() {
         binding = ActivityHostBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ThemeHelper.applyTheme(this)
-        DiagnosticsLog.add("Host: create displayId=${display?.displayId ?: -1}")
+        DiagnosticsLog.add("Host", "Host: create displayId=${display?.displayId ?: -1}")
 
         val info = DisplaySessionManager.getExternalDisplayInfo()
         binding.hostInfo.text = if (info == null) {

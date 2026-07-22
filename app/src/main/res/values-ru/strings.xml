@@ -69,7 +69,7 @@
     <string name="touchpad_back_button">Назад</string>
     <string name="touchpad_rewind_button">Перемотка назад</string>
     <string name="touchpad_fast_forward_button">Перемотка вперед</string>
-    <string name="touchpad_hint">Нажмите на прямоугольник для активации; Назад передается на внешнем дисплей.\nПролистывание: движение курсора; нажатие и пролистывание: перетаскивание; двумя пальцами: прокрутка.</string>
+    <string name="touchpad_hint">Нажмите на прямоугольник для активации; Назад передается на внешний дисплей.\nПролистывание: движение курсора; нажатие и пролистывание: перетаскивание; двумя пальцами: прокрутка.</string>
     <string name="touchpad_tuning">Настройка тачпада</string>
     <string name="touchpad_base_gain">Базовая чувствительность</string>
     <string name="touchpad_acceleration">Ускорение</string>
@@ -275,21 +275,21 @@
     <string name="settings_touchpad_scroll_distance_default">6.0 dp</string>
     <string name="settings_touchpad_scroll_distance_summary">Ниже = легче вызвать непрерывную прокрутку. Выше = стабильнее и медленнее.</string>
     <string name="settings_touchpad_scroll_invert">Естественная прокрутка</string>
-    <string name="settings_touchpad_scroll_invert_summary">Увімкніть для прокрутки як на екрані смартфону. Вимкніть для классического поведения мыши.</string>
-    <string name="settings_touchpad_drag_boost">Ускрорення при перетягуванні</string>
+    <string name="settings_touchpad_scroll_invert_summary">Включите для прокрутки как на экране смартфона. Выключите для классического поведения мыши.</string>
+    <string name="settings_touchpad_drag_boost">Ускорение при перетаскивании</string>
     <string name="settings_touchpad_drag_boost_value">%1$.1fx</string>
     <string name="settings_touchpad_drag_boost_default">1.2x</string>
-    <string name="settings_touchpad_scroll_direct_section">Режим прямого жесту (экспериментально)</string>
-    <string name="settings_touchpad_scroll_gesture">Увімкнути режим прямого жесту</string>
-    <string name="settings_touchpad_scroll_gesture_summary">Використовувати зміщення центральної точки двох пальців для безперервних жестів. Якщо увімкнено, звичайні налаштування прокручування ігноруються.</string>
-    <string name="settings_touchpad_scroll_gesture_gain">Чутливість прямого жесту</string>
+    <string name="settings_touchpad_scroll_direct_section">Режим прямого жеста (экспериментально)</string>
+    <string name="settings_touchpad_scroll_gesture">Включить режим прямого жеста</string>
+    <string name="settings_touchpad_scroll_gesture_summary">Использовать смещение центральной точки двух пальцев для непрерывных жестов. Если включено, обычные настройки прокрутки игнорируются.</string>
+    <string name="settings_touchpad_scroll_gesture_gain">Чувствительность прямого жеста</string>
     <string name="settings_touchpad_scroll_gesture_gain_value">%1$.1fx</string>
     <string name="settings_touchpad_scroll_gesture_gain_default">1.0x</string>
-    <string name="settings_touchpad_scroll_gesture_gain_summary">Выше = быстрее прямые жесты. Почніть з 1.0x и збільшуйте поступово.</string>
-    <string name="settings_touchpad_scroll_gesture_step">Довжина сегмента прямого жесту</string>
+    <string name="settings_touchpad_scroll_gesture_gain_summary">Выше = быстрее прямые жесты. Начните с 1.0x и увеличивайте постепенно.</string>
+    <string name="settings_touchpad_scroll_gesture_step">Длина сегмента прямого жеста</string>
     <string name="settings_touchpad_scroll_gesture_step_value">%1$.0f dp</string>
     <string name="settings_touchpad_scroll_gesture_step_default">32 dp</string>
-    <string name="settings_touchpad_scroll_gesture_step_summary">Выше = каждый вводимый сегмент довший. Якщо з’являться ривки, зменште значення.</string>
+    <string name="settings_touchpad_scroll_gesture_step_summary">Выше = каждый вводимый сегмент длиннее. Если появятся рывки, уменьшите значение.</string>
     <string name="language_system">Системная</string>
     <string name="language_english">English</string>
     <string name="language_chinese">简体中文</string>
@@ -321,10 +321,10 @@
     <string name="injection_action_set_text_success">ACTION_SET_TEXT успешно</string>
     <string name="injection_action_set_text_failed">ACTION_SET_TEXT ошибка</string>
     <string name="injection_no_editable_field">Нет редактируемого поля на внешнем дисплее</string>
-    <string name="injection_tap_injected">Торк введення</string>
-    <string name="injection_tap_cancelled">Торк скасовано</string>
-    <string name="injection_drag_injected">Перетягування введено</string>
-    <string name="injection_drag_cancelled">Перетягування скасовано</string>
+    <string name="injection_tap_injected">Касание введено</string>
+    <string name="injection_tap_cancelled">Касание отменено</string>
+    <string name="injection_drag_injected">Перетаскивание введено</string>
+    <string name="injection_drag_cancelled">Перетаскивание отменено</string>
     <string name="injection_failed_with_message">Ошибка: %1$s</string>
 
     <string name="cursor_color_black">Черный</string>

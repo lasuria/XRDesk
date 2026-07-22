@@ -133,9 +133,9 @@
     <string name="settings_category_display_title">显示</string>
     <string name="settings_category_display_summary">屏幕、亮度和锁定</string>
     <string name="settings_category_touchpad_title">触控板</string>
-    <string name="settings_category_touchpad_summary">D-Pad、滚动和焦点</string>
+    <string name="settings_category_touchpad_summary">方向键、滚动与焦点</string>
     <string name="settings_category_cursor_title">光标</string>
-    <string name="settings_category_cursor_summary">Size、颜色、速度和自动隐藏</string>
+    <string name="settings_category_cursor_summary">大小、颜色、速度和自动隐藏</string>
     <string name="settings_category_dock_title">Dock</string>
     <string name="settings_category_dock_summary">常驻应用和面板大小</string>
     <string name="settings_category_advanced_title">日志</string>
@@ -383,6 +383,8 @@
     <string name="settings_hud_edge_bottom_left">左下角</string>
     <string name="settings_hud_edge_bottom_right">右下角</string>
     <string name="settings_hud_edge_all">所有侧面</string>
+    <string name="settings_hud_layout_horizontal">横向</string>
+    <string name="settings_hud_layout_vertical">纵向</string>
     <string name="settings_hud_reset">重置 HUD 设置</string>
 
     <string name="settings_permissions_title">权限</string>

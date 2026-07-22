@@ -89,17 +89,20 @@ class DiagnosticsActivity : AppCompatActivity() {
             binding.logScrollView.fullScroll(View.FOCUS_DOWN)
         }
 
-        refreshHandler.post(refreshRunnable)
-    }
+        onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.etSearch.hasFocus()) {
+                    binding.etSearch.clearFocus()
+                    val imm = getSystemService(android.view.inputmethod.InputMethodManager::class.java)
+                    imm.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
 
-    override fun onBackPressed() {
-        if (binding.etSearch.hasFocus()) {
-            binding.etSearch.clearFocus()
-            val imm = getSystemService(android.view.inputmethod.InputMethodManager::class.java)
-            imm.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
-        } else {
-            super.onBackPressed()
-        }
+        refreshHandler.post(refreshRunnable)
     }
 
     private fun setupTagFilter() {

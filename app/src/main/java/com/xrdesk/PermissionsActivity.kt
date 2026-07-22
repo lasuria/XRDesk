@@ -43,7 +43,7 @@ class PermissionsActivity : BaseSettingsActivity() {
         // Auto-refresh status
         lifecycleScope.launch {
             while (true) {
-                updateStatusUI(statusNotifications, isNotificationAccessGranted())
+                updateStatusUI(statusNotifications, btnNotifications, isNotificationAccessGranted())
                 updatePermissionUI(statusBluetooth, btnBluetooth, android.Manifest.permission.BLUETOOTH_CONNECT)
                 updatePermissionUI(statusLocation, btnLocation, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 delay(1000)
@@ -52,13 +52,12 @@ class PermissionsActivity : BaseSettingsActivity() {
     }
 
     private fun isNotificationAccessGranted(): Boolean {
-        val contentResolver = contentResolver
-        val enabledNotificationListeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
-        val packageName = packageName
-        return enabledNotificationListeners != null && enabledNotificationListeners.contains(packageName)
+        val listeners = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+        val component = android.content.ComponentName(this, HUDNotificationService::class.java).flattenToString()
+        return listeners?.split(":")?.any { it.equals(component, ignoreCase = true) } == true
     }
 
-    private fun updateStatusUI(textView: TextView, granted: Boolean) {
+    private fun updateStatusUI(textView: TextView, button: MaterialButton?, granted: Boolean) {
         if (granted) {
             textView.text = getString(R.string.status_granted)
             textView.setTextColor(getColor(R.color.success_color))
@@ -66,11 +65,11 @@ class PermissionsActivity : BaseSettingsActivity() {
             textView.text = getString(R.string.status_denied)
             textView.setTextColor(getColor(R.color.error_color))
         }
+        button?.isEnabled = !granted
     }
 
     private fun updatePermissionUI(status: TextView, button: MaterialButton, permission: String) {
         val granted = checkSelfPermission(permission) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        updateStatusUI(status, granted)
-        button.isEnabled = !granted
+        updateStatusUI(status, button, granted)
     }
 }
