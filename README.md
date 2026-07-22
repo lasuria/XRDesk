@@ -78,13 +78,13 @@ Open the project in Android Studio and build it normally.
 | Feature | Original | XRDesk |
 |---------|:-----------:|:-------:|
 | Material Design 3 | ❌ | ✅ |
-| Material You | ❌ | ✅ |
 | AMOLED Theme | ❌ | ✅ |
 | Theme Editor | ❌ | ✅ |
 | Monochrome Mode | ❌ | ✅ |
 | Theme Import / Export | ❌ | ✅ |
 | Improved Remote UI | ❌ | ✅ |
 | Modern Settings UI | ❌ | ✅ |
+| Hud Settings UI | ❌ | ✅ |
 
 ---
 
