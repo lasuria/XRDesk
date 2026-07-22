@@ -73,19 +73,30 @@ Open the project in Android Studio and build it normally.
 
 ---
 
-## 🔥 What's New Compared to Original?
+## Comparison
 
-| Feature | Original | XRDesk |
+| Feature | DeskControl | XRDesk |
 |---------|:-----------:|:-------:|
 | Material Design 3 | ❌ | ✅ |
-| AMOLED Theme | ❌ | ✅ |
+| Modern UI | ❌ | ✅ |
 | Theme Editor | ❌ | ✅ |
-| Monochrome Mode | ❌ | ✅ |
-| Theme Import / Export | ❌ | ✅ |
-| Improved Remote UI | ❌ | ✅ |
-| Modern Settings UI | ❌ | ✅ |
-| Hud Settings UI | ❌ | ✅ |
-
+| Light / Dark / AMOLED Themes | ❌ | ✅ |
+| Multi-language Support | ⚠️ Limited | ✅ |
+| XR HUD | ❌ | ✅ |
+| Live HUD Preview | ❌ | ✅ |
+| XR Glasses Detection | ❌ | ✅ |
+| External Display Support | Basic | ✅ Enhanced |
+| Developer Mode | ❌ | ✅ |
+| Advanced Log Viewer | ❌ | ✅ |
+| Cursor Settings | ❌ | ✅ |
+| Touchpad Customization | Basic | ✅ Advanced |
+| D-Pad Position | ❌ | ✅ |
+| Screen Lock & Keep Awake | ❌ | ✅ |
+| Material Settings UI | ❌ | ✅ |
+| Android 15/16 Optimizations | ❌ | ✅ |
+| Accessibility Service | ✅ | ✅ Improved |
+| Shizuku Support | ✅ | ✅ |
+| Open Source | ✅ | ✅ |
 ---
 
 ## 🛠️ Technologies
