@@ -222,7 +222,6 @@
     <string name="theme_btn_load_light">Load Light Preset</string>
     <string name="theme_btn_load_dark">Load Dark Preset</string>
     <string name="theme_btn_load_amoled">Load AMOLED Preset</string>
-    <string name="theme_btn_load_material_you">Load Material You Preset</string>
     <string name="theme_btn_reset_all">Reset All</string>
     <string name="theme_btn_export">Export</string>
     <string name="theme_btn_import">Import</string>

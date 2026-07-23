@@ -39,7 +39,6 @@ Turn your Android device into a powerful touchpad and remote control for Android
 ## 🎨 Customization
 
 - Material Design 3
-- Material You
 - Light Theme
 - Dark Theme
 - AMOLED Theme
@@ -125,7 +124,6 @@ Open the project in Android Studio and build it normally.
 - Android SDK
 - AndroidX
 - Material Design 3
-- Material You
 - ViewBinding
 
 ---

@@ -205,7 +205,6 @@
     <string name="theme_btn_load_light">加载浅色预设</string>
     <string name="theme_btn_load_dark">加载深色预设</string>
     <string name="theme_btn_load_amoled">加载 AMOLED 预设</string>
-    <string name="theme_btn_load_material_you">加载 Material You 预设</string>
     <string name="theme_btn_reset_all">重置所有</string>
     <string name="theme_btn_export">导出</string>
     <string name="theme_btn_import">导入</string>

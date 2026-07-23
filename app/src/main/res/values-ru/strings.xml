@@ -221,7 +221,6 @@
     <string name="theme_btn_load_light">Загрузить Светлую</string>
     <string name="theme_btn_load_dark">Загрузить Темную</string>
     <string name="theme_btn_load_amoled">Загрузить AMOLED</string>
-    <string name="theme_btn_load_material_you">Загрузить Material You</string>
     <string name="theme_btn_reset_all">Сбросить всё</string>
     <string name="theme_btn_export">Экспорт</string>
     <string name="theme_btn_import">Импорт</string>

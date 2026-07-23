@@ -14,7 +14,6 @@ object SettingsStore {
     const val THEME_DARK = androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
     const val THEME_AMOLED = 3
     const val THEME_CUSTOM = 4
-    const val THEME_MATERIAL_YOU = 5
 
     const val DPAD_HIDDEN = 0
     const val DPAD_ABOVE = 1
