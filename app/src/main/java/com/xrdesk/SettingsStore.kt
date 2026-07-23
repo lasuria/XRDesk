@@ -31,11 +31,11 @@ object SettingsStore {
     const val HUD_POS_LEFT = 2
     const val HUD_POS_RIGHT = 3
 
-    var nightMode = THEME_DARK
+    var nightMode = THEME_LIGHT
         private set
     var dPadPosition = DPAD_ABOVE
         private set
-    var cursorScale = 1.0f
+    var cursorScale = 1.5f
         private set
     var cursorAlpha = 1.0f
         private set
@@ -49,7 +49,7 @@ object SettingsStore {
         private set
     var touchpadAutoDimEnabled = true
         private set
-    var touchpadDimLevel = 0.03f
+    var touchpadDimLevel = 0.05f
         private set
     var touchpadIntroShown = false
         private set
@@ -67,7 +67,7 @@ object SettingsStore {
         private set
     var touchpadAutoFocusEnabled = false
         private set
-    var switchBarEnabled = true
+    var switchBarEnabled = false
         private set
     var switchBarScale = 1.0f
         private set
@@ -81,15 +81,15 @@ object SettingsStore {
         private set
     var developerModeUnlocked = false
         private set
-    var hudMode = HUD_MODE_COMPACT_CARD
+    var hudMode = HUD_MODE_FULL_INFO
         private set
     var hudPosition = HUD_POS_TOP
         private set
-    var hudSizeDp = 64f
+    var hudSizeDp = 80f
         private set
     var hudActivationZoneDp = 20f
         private set
-    var hudHideDelayMs = 4000L
+    var hudHideDelayMs = 3000L
         private set
     var hudStatusPanelEnabled = true
         private set
@@ -104,13 +104,13 @@ object SettingsStore {
     private val _developerModeUnlockedFlow = MutableStateFlow(false)
     val developerModeUnlockedFlow = _developerModeUnlockedFlow.asStateFlow()
 
-    private val _hudModeFlow = MutableStateFlow(HUD_MODE_COMPACT_CARD)
+    private val _hudModeFlow = MutableStateFlow(HUD_MODE_FULL_INFO)
     val hudModeFlow = _hudModeFlow.asStateFlow()
 
     private val _hudPositionFlow = MutableStateFlow(HUD_POS_TOP)
     val hudPositionFlow = _hudPositionFlow.asStateFlow()
 
-    private val _hudSizeFlow = MutableStateFlow(64f)
+    private val _hudSizeFlow = MutableStateFlow(80f)
     val hudSizeFlow = _hudSizeFlow.asStateFlow()
 
     private val _hudStatusPanelEnabledFlow = MutableStateFlow(true)
@@ -119,7 +119,7 @@ object SettingsStore {
     private val _hudActivationZoneFlow = MutableStateFlow(20f)
     val hudActivationZoneFlow = _hudActivationZoneFlow.asStateFlow()
 
-    private val _hudHideDelayFlow = MutableStateFlow(4000L)
+    private val _hudHideDelayFlow = MutableStateFlow(3000L)
     val hudHideDelayFlow = _hudHideDelayFlow.asStateFlow()
 
     // DEBUG
@@ -146,15 +146,15 @@ object SettingsStore {
 
     fun init(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        nightMode = prefs.getInt("night_mode", THEME_DARK)
-        cursorScale = prefs.getFloat("cursor_scale", 1.0f)
+        nightMode = prefs.getInt("night_mode", THEME_LIGHT)
+        cursorScale = prefs.getFloat("cursor_scale", 1.5f)
         cursorAlpha = prefs.getFloat("cursor_alpha", 1.0f)
         cursorHideDelayMs = prefs.getLong("cursor_hide_delay_ms", 2500L)
         cursorColor = prefs.getInt("cursor_color", 0xFFFFFFFF.toInt())
         appLanguageTag = prefs.getString(PREF_APP_LANGUAGE, LANGUAGE_SYSTEM) ?: LANGUAGE_SYSTEM
         keepScreenOn = prefs.getBoolean("keep_screen_on", true)
         touchpadAutoDimEnabled = prefs.getBoolean("touchpad_auto_dim", true)
-        touchpadDimLevel = prefs.getFloat("touchpad_dim_level", 0.03f)
+        touchpadDimLevel = prefs.getFloat("touchpad_dim_level", 0.05f)
         touchpadIntroShown = prefs.getBoolean("touchpad_intro_shown", false)
         touchpadScrollSpeed = prefs.getFloat(PREF_SCROLL_SPEED_SCALE, 1.0f)
         touchpadScrollInverted = prefs.getBoolean("tp_scroll_invert", true)
@@ -163,20 +163,20 @@ object SettingsStore {
         touchpadDirectScrollStepDp = prefs.getFloat("tp_scroll_direct_step_dp", 32.0f)
         touchpadAutoFocusEnabled = prefs.getBoolean("tp_auto_focus", false)
         touchpadScrollStepDp = prefs.getFloat("tp_scroll_step_dp", 6.0f)
-        switchBarEnabled = prefs.getBoolean("switch_bar_enabled", true)
+        switchBarEnabled = prefs.getBoolean("switch_bar_enabled", false)
         switchBarScale = prefs.getFloat("switch_bar_scale", 1.0f)
         touchpadAutoLockEnabled = prefs.getBoolean("tp_auto_lock_enabled", false)
         touchpadAutoLockTimeoutMs = prefs.getLong("tp_auto_lock_timeout", 60_000L)
         
         hudEnabled = prefs.getBoolean("hud_enabled", false)
         developerModeUnlocked = prefs.getBoolean("developer_unlocked", false)
-        val savedMode = prefs.getInt("hud_mode", HUD_MODE_COMPACT_CARD)
-        // Migration: If old Vertical Panel (3) was selected, move to Compact Card (2)
-        hudMode = if (savedMode == 3) HUD_MODE_COMPACT_CARD else savedMode
+        val savedMode = prefs.getInt("hud_mode", HUD_MODE_FULL_INFO)
+        // Migration: If old Vertical Panel (3) was selected, move to Full Info (0)
+        hudMode = if (savedMode == 3) HUD_MODE_FULL_INFO else savedMode
         hudPosition = prefs.getInt("hud_position", HUD_POS_TOP)
-        hudSizeDp = prefs.getFloat("hud_size_dp", 64f)
+        hudSizeDp = prefs.getFloat("hud_size_dp", 80f)
         hudActivationZoneDp = prefs.getFloat("hud_activation_zone", 20f)
-        hudHideDelayMs = prefs.getLong("hud_hide_delay", 4000L)
+        hudHideDelayMs = prefs.getLong("hud_hide_delay", 3000L)
         hudStatusPanelEnabled = prefs.getBoolean("hud_status_panel_enabled", true)
         hudNotificationSizeDp = prefs.getFloat("hud_notification_size_dp", 240f)
 
@@ -408,11 +408,11 @@ object SettingsStore {
 
     fun resetHUDSettings(context: Context) {
         hudEnabled = false
-        hudMode = HUD_MODE_COMPACT_CARD
+        hudMode = HUD_MODE_FULL_INFO
         hudPosition = HUD_POS_TOP
-        hudSizeDp = 64f
+        hudSizeDp = 80f
         hudActivationZoneDp = 20f
-        hudHideDelayMs = 4000L
+        hudHideDelayMs = 3000L
         hudStatusPanelEnabled = true
         hudNotificationSizeDp = 240f
         
@@ -423,11 +423,11 @@ object SettingsStore {
 
         persist(context) {
             putBoolean("hud_enabled", false)
-            putInt("hud_mode", HUD_MODE_COMPACT_CARD)
+            putInt("hud_mode", HUD_MODE_FULL_INFO)
             putInt("hud_position", HUD_POS_TOP)
-            putFloat("hud_size_dp", 64f)
+            putFloat("hud_size_dp", 80f)
             putFloat("hud_activation_zone", 20f)
-            putLong("hud_hide_delay", 4000L)
+            putLong("hud_hide_delay", 3000L)
             putBoolean("hud_status_panel_enabled", true)
             putFloat("hud_notification_size_dp", 240f)
             
