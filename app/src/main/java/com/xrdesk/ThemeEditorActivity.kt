@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
 import com.xrdesk.databinding.ActivityThemeEditorBinding
 import com.xrdesk.databinding.ItemColorPreferenceV2Binding
 import com.xrdesk.databinding.ItemSwitchPreferenceV2Binding
@@ -66,7 +65,7 @@ class ThemeEditorActivity : BaseSettingsActivity() {
             val json = customColors.toJson()
             val clipboard = getSystemService(android.content.ClipboardManager::class.java)
             clipboard.setPrimaryClip(android.content.ClipData.newPlainText(getString(R.string.theme_json_label), json))
-            Toast.makeText(this, getString(R.string.theme_export_success), Toast.LENGTH_SHORT).show()
+            ToastHelper.show(this, R.string.theme_export_success)
         }
 
         binding.btnImport.setOnClickListener {
@@ -93,7 +92,7 @@ class ThemeEditorActivity : BaseSettingsActivity() {
                     customColors = ThemeColors.fromJson(input.text.toString())
                     applyLoadedColors()
                 } catch (e: Exception) {
-                    Toast.makeText(this, getString(R.string.theme_import_error), Toast.LENGTH_SHORT).show()
+                    ToastHelper.show(this, R.string.theme_import_error)
                 }
             }
             .setNegativeButton(R.string.color_picker_cancel, null)

@@ -33,6 +33,7 @@ class SettingsDockActivity : BaseSettingsActivity() {
         applyEdgeToEdge(findViewById(R.id.settingsDockRoot))
 
         val switchBarEnabledSwitch = findViewById<MaterialSwitch>(R.id.switchSwitchBarEnabled)
+        val dockSettingsContainer = findViewById<android.view.View>(R.id.dockSettingsContainer)
         val switchBarScaleSlider = findViewById<Slider>(R.id.sliderSwitchBarScale)
         val switchBarScaleValue = findViewById<TextView>(R.id.switchBarScaleValue)
         val switchBarSlot1 = findViewById<android.view.View>(R.id.switchBarSlot1)
@@ -54,10 +55,11 @@ class SettingsDockActivity : BaseSettingsActivity() {
         refreshSwitchBarSlotLabels()
 
         switchBarEnabledSwitch.isChecked = SettingsStore.switchBarEnabled
-        updateSwitchBarControlsEnabled(SettingsStore.switchBarEnabled, switchBarScaleSlider, switchBarScaleValue, listOf(switchBarSlot1, switchBarSlot2, switchBarSlot3))
+        dockSettingsContainer.visibility = if (SettingsStore.switchBarEnabled) android.view.View.VISIBLE else android.view.View.GONE
+        
         switchBarEnabledSwitch.setOnCheckedChangeListener { _, isChecked ->
             SettingsStore.setSwitchBarEnabled(this, isChecked)
-            updateSwitchBarControlsEnabled(isChecked, switchBarScaleSlider, switchBarScaleValue, listOf(switchBarSlot1, switchBarSlot2, switchBarSlot3))
+            dockSettingsContainer.visibility = if (isChecked) android.view.View.VISIBLE else android.view.View.GONE
             ControlAccessibilityService.requestSwitchBarForceVisible(true)
         }
 
@@ -122,12 +124,6 @@ class SettingsDockActivity : BaseSettingsActivity() {
                 }
             }
         }
-    }
-
-    private fun updateSwitchBarControlsEnabled(enabled: Boolean, scaleSlider: Slider, scaleValue: TextView, slotRows: List<android.view.View>) {
-        scaleSlider.isEnabled = enabled
-        scaleValue.alpha = if (enabled) 1f else 0.4f
-        slotRows.forEach { it.isEnabled = enabled; it.alpha = if (enabled) 1f else 0.4f }
     }
 
     override fun onPause() {

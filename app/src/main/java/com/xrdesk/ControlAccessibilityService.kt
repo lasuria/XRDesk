@@ -25,7 +25,6 @@ import android.view.accessibility.AccessibilityWindowInfo
 import android.view.KeyEvent
 import android.media.AudioManager
 import android.view.ContextThemeWrapper
-import android.widget.Toast
 import java.util.ArrayDeque
 import kotlin.math.abs
 import kotlin.math.min
@@ -377,7 +376,7 @@ class ControlAccessibilityService : AccessibilityService() {
             lineTo(end.x, end.y)
         }
         val builder = GestureDescription.Builder()
-        trySetDisplayId(builder, info.displayId)
+        builder.setDisplayId(info.displayId)
         builder.addStroke(GestureDescription.StrokeDescription(path, 0, DIRECT_SCROLL_DURATION_MS))
         dispatchGestureTracked(
             builder.build(),
@@ -606,7 +605,7 @@ class ControlAccessibilityService : AccessibilityService() {
             lineTo(end.x, end.y)
         }
         val builder = GestureDescription.Builder()
-        trySetDisplayId(builder, info.displayId)
+        builder.setDisplayId(info.displayId)
         builder.addStroke(GestureDescription.StrokeDescription(path, 0, duration))
         dispatchGestureTracked(
             builder.build(),
@@ -717,18 +716,14 @@ class ControlAccessibilityService : AccessibilityService() {
         return success
     }
 
-    fun showToastOnExternalDisplay(message: String, long: Boolean = false): Boolean {
+    fun showToastOnExternalDisplay(message: String, @Suppress("UNUSED_PARAMETER") long: Boolean = false): Boolean {
         val displayContext = overlayWindowContext ?: run {
             val info = displayInfo ?: return false
             val display = getSystemService(DisplayManager::class.java).getDisplay(info.displayId)
                 ?: return false
             createDisplayContext(display)
         }
-        Toast.makeText(
-            displayContext,
-            message,
-            if (long) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
-        ).show()
+        ToastHelper.show(displayContext, message)
         return true
     }
 
@@ -877,7 +872,7 @@ class ControlAccessibilityService : AccessibilityService() {
             lineTo(mappedEnd.x, mappedEnd.y)
         }
         val builder = GestureDescription.Builder()
-        trySetDisplayId(builder, info.displayId)
+        builder.setDisplayId(info.displayId)
         builder.addStroke(GestureDescription.StrokeDescription(path, 0, FOCUS_NUDGE_DURATION_MS))
         dispatchGestureTracked(
             builder.build(),
@@ -1697,6 +1692,7 @@ class ControlAccessibilityService : AccessibilityService() {
     }
 
     private fun detachOverlay() {
+        android.util.Log.d("Accessibility", "detachOverlay CALLED - isFinishing logic check")
         deferredBackRunnable?.let { handler.removeCallbacks(it) }
         deferredBackRunnable = null
         cancelAttachRetry()
@@ -1864,7 +1860,7 @@ class ControlAccessibilityService : AccessibilityService() {
     private fun dispatchTap(x: Float, y: Float, displayId: Int) {
         val path = Path().apply { moveTo(x, y) }
         val builder = GestureDescription.Builder()
-        trySetDisplayId(builder, displayId)
+        builder.setDisplayId(displayId)
         builder.addStroke(GestureDescription.StrokeDescription(path, 0, 50))
         dispatchGestureTracked(
             builder.build(),
@@ -1885,7 +1881,7 @@ class ControlAccessibilityService : AccessibilityService() {
         displayId: Int
     ) {
         val builder = GestureDescription.Builder()
-        trySetDisplayId(builder, displayId)
+        builder.setDisplayId(displayId)
         builder.addStroke(stroke)
         dispatchGestureTracked(
             builder.build(),
@@ -1906,7 +1902,7 @@ class ControlAccessibilityService : AccessibilityService() {
         displayId: Int
     ) {
         val builder = GestureDescription.Builder()
-        trySetDisplayId(builder, displayId)
+        builder.setDisplayId(displayId)
         builder.addStroke(stroke)
         dispatchGestureTracked(
             builder.build(),
@@ -1999,7 +1995,7 @@ class ControlAccessibilityService : AccessibilityService() {
             lineTo(end.x, end.y)
         }
         val builder = GestureDescription.Builder()
-        trySetDisplayId(builder, info.displayId)
+        builder.setDisplayId(info.displayId)
         builder.addStroke(GestureDescription.StrokeDescription(path, 0, 180))
         dispatchGestureTracked(
             builder.build(),
@@ -2237,15 +2233,5 @@ class ControlAccessibilityService : AccessibilityService() {
         }
         return success
     }
-
-    private fun trySetDisplayId(builder: GestureDescription.Builder, displayId: Int) {
-        try {
-            val method = builder.javaClass.getMethod("setDisplayId", Int::class.javaPrimitiveType)
-            method.invoke(builder, displayId)
-        } catch (ignored: Exception) {
-            // Not supported on this API level.
-        }
-    }
-
 
 }

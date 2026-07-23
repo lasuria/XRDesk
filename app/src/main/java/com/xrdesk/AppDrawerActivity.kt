@@ -3,7 +3,6 @@ package com.xrdesk
 import android.app.ActivityOptions
 import android.content.Context
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -41,7 +40,7 @@ class AppDrawerActivity : AppCompatActivity() {
                 finish()
             } else {
                 val message = AppLauncher.buildFailureMessage(this, result)
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                ToastHelper.show(this, message)
                 DiagnosticsLog.add("Drawer", "launch failure package=${entry.packageName} reason=${result.reason}")
             }
         }

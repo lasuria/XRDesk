@@ -109,6 +109,29 @@
                     app:tint="@color/apple_red" />
             </FrameLayout>
 
+            <!-- Temporary HUD Notifications Toggle -->
+            <FrameLayout
+                android:id="@+id/touchpadToggleNotif"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/comp_tonal_shape_oval"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintTop_toBottomOf="@+id/touchpadBlackout"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/icToggleNotif"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_bell"
+                    android:contentDescription="@string/settings_hud_section_notifications"
+                    app:tint="?attr/colorPrimary" />
+            </FrameLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout

@@ -94,12 +94,27 @@ object SettingsStore {
     var hudStatusPanelEnabled = true
         private set
     var hudNotificationsEnabled = true
+        private set
     var hudNotificationSizeDp = 240f
         private set
+    var appNotificationsEnabled = true
+        private set
+    var appNotificationDuration = 0 // 0 = Short, 1 = Long
+        private set
+
+    // SESSION-ONLY (Temporary Overrides)
+    var originalHudNotificationsState = true
+        private set
+    var temporaryOverrideActive = false
+        private set
+    private var isSessionCaptured = false
 
     // REACTIVE FLOWS
     private val _hudEnabledFlow = MutableStateFlow(false)
     val hudEnabledFlow = _hudEnabledFlow.asStateFlow()
+
+    private val _hudNotificationsEnabledFlow = MutableStateFlow(true)
+    val hudNotificationsEnabledFlow = _hudNotificationsEnabledFlow.asStateFlow()
 
     private val _developerModeUnlockedFlow = MutableStateFlow(false)
     val developerModeUnlockedFlow = _developerModeUnlockedFlow.asStateFlow()
@@ -146,6 +161,8 @@ object SettingsStore {
 
     fun init(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        android.util.Log.d("SettingsStore", "init: loading preferences")
+        
         nightMode = prefs.getInt("night_mode", THEME_LIGHT)
         cursorScale = prefs.getFloat("cursor_scale", 1.5f)
         cursorAlpha = prefs.getFloat("cursor_alpha", 1.0f)
@@ -179,6 +196,24 @@ object SettingsStore {
         hudHideDelayMs = prefs.getLong("hud_hide_delay", 3000L)
         hudStatusPanelEnabled = prefs.getBoolean("hud_status_panel_enabled", true)
         hudNotificationSizeDp = prefs.getFloat("hud_notification_size_dp", 240f)
+        hudNotificationsEnabled = prefs.getBoolean("hud_notifications_enabled", true)
+        appNotificationsEnabled = prefs.getBoolean("app_notifications_enabled", true)
+        appNotificationDuration = prefs.getInt("app_notification_duration", 0)
+
+        // Reset temporary session state on init (non-persistent)
+        temporaryOverrideActive = false
+        isSessionCaptured = false
+        
+        // Cleanup legacy persistent session flags if they exist from older versions
+        if (prefs.contains("temp_override_active")) {
+            android.util.Log.d("SettingsStore", "init: cleaning up legacy session flags")
+            persist(context) {
+                remove("temp_override_active")
+                remove("original_hud_notif_state")
+            }
+        }
+
+        android.util.Log.d("SettingsStore", "init: hudEnabled=$hudEnabled hudNotificationsEnabled=$hudNotificationsEnabled")
 
         developerMode = prefs.getBoolean("developer_mode", false)
         hudDebugAlwaysShow = prefs.getBoolean("hud_debug_always_show", false)
@@ -382,6 +417,76 @@ object SettingsStore {
         _hudHideDelayFlow.value = hudHideDelayMs
     }
 
+    fun setAppNotificationsEnabled(context: Context, enabled: Boolean) {
+        appNotificationsEnabled = enabled
+        persist(context) { putBoolean("app_notifications_enabled", enabled) }
+    }
+
+    fun setAppNotificationDuration(context: Context, duration: Int) {
+        appNotificationDuration = duration
+        persist(context) { putInt("app_notification_duration", duration) }
+    }
+
+    fun setHudNotificationsEnabled(context: Context, enabled: Boolean) {
+        // Global setter: Persistent
+        persist(context) { putBoolean("hud_notifications_enabled", enabled) }
+        
+        if (isSessionCaptured) {
+            // Update the baseline so when session ends, it restores to this new value
+            originalHudNotificationsState = enabled
+            // Recalculate if the current temporary state is still an override
+            temporaryOverrideActive = (hudNotificationsEnabled != enabled)
+        } else {
+            // No session: Update effective state immediately
+            hudNotificationsEnabled = enabled
+        }
+        
+        syncHudFlows()
+    }
+
+    fun initializeNotificationSession(context: Context) {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val globalState = prefs.getBoolean("hud_notifications_enabled", true)
+        
+        hudNotificationsEnabled = globalState
+        originalHudNotificationsState = globalState
+        isSessionCaptured = true
+        temporaryOverrideActive = false
+        
+        android.util.Log.d("SettingsStore", "initializeNotificationSession: globalState=$globalState")
+        syncHudFlows()
+    }
+
+
+
+    fun toggleTemporaryHudNotifications() {
+        // Session setter: Memory-only
+        val newState = !hudNotificationsEnabled
+        hudNotificationsEnabled = newState
+        temporaryOverrideActive = (newState != originalHudNotificationsState)
+        
+        android.util.Log.d("SettingsStore", "toggleTemporaryHudNotifications: newState=$newState tempOverrideActive=$temporaryOverrideActive")
+        syncHudFlows()
+    }
+
+    fun restoreOriginalHudNotificationState() {
+        // Session restorer: Memory-only
+        android.util.Log.d("SettingsStore", "restoreOriginalHudNotificationState CALLED: sessionCaptured=$isSessionCaptured tempActive=$temporaryOverrideActive")
+        
+        if (!isSessionCaptured) return
+        
+        hudNotificationsEnabled = originalHudNotificationsState
+        temporaryOverrideActive = false
+        isSessionCaptured = false
+        
+        android.util.Log.d("SettingsStore", "restoreOriginalHudNotificationState EXECUTED: restored to $hudNotificationsEnabled")
+        syncHudFlows()
+    }
+
+    fun clearTemporaryHudSession() {
+        isSessionCaptured = false
+    }
+
     fun setDeveloperMode(context: Context, enabled: Boolean) {
         developerMode = enabled
         persist(context) { putBoolean("developer_mode", enabled) }
@@ -415,6 +520,7 @@ object SettingsStore {
         hudHideDelayMs = 3000L
         hudStatusPanelEnabled = true
         hudNotificationSizeDp = 240f
+        hudNotificationsEnabled = true
         
         developerMode = false
         hudDebugAlwaysShow = false
@@ -430,6 +536,7 @@ object SettingsStore {
             putLong("hud_hide_delay", 3000L)
             putBoolean("hud_status_panel_enabled", true)
             putFloat("hud_notification_size_dp", 240f)
+            putBoolean("hud_notifications_enabled", true)
             
             putBoolean("developer_mode", false)
             putBoolean("hud_debug_always_show", false)
@@ -445,17 +552,20 @@ object SettingsStore {
     }
 
     private fun syncHudFlows() {
-        _hudEnabledFlow.value = hudEnabled
-        _developerModeUnlockedFlow.value = developerModeUnlocked
-        _hudModeFlow.value = hudMode
-        _hudPositionFlow.value = hudPosition
-        _hudSizeFlow.value = hudSizeDp
-        _hudStatusPanelEnabledFlow.value = hudStatusPanelEnabled
-        _hudActivationZoneFlow.value = hudActivationZoneDp
-        _hudHideDelayFlow.value = hudHideDelayMs
-        _hudDebugAlwaysShowFlow.value = hudDebugAlwaysShow
-        _hudDebugHighlightZoneFlow.value = hudDebugHighlightZone
-        _hudDebugShowBoundsFlow.value = hudDebugShowBounds
+        android.util.Log.d("SettingsStore", "syncHudFlows: hudEnabled=$hudEnabled hudNotifsEnabled=$hudNotificationsEnabled")
+        if (_hudEnabledFlow.value != hudEnabled) _hudEnabledFlow.value = hudEnabled
+        if (_hudNotificationsEnabledFlow.value != hudNotificationsEnabled) _hudNotificationsEnabledFlow.value = hudNotificationsEnabled
+        if (_developerModeUnlockedFlow.value != developerModeUnlocked) _developerModeUnlockedFlow.value = developerModeUnlocked
+        if (_hudModeFlow.value != hudMode) _hudModeFlow.value = hudMode
+        if (_hudPositionFlow.value != hudPosition) _hudPositionFlow.value = hudPosition
+        if (_hudSizeFlow.value != hudSizeDp) _hudSizeFlow.value = hudSizeDp
+        if (_hudStatusPanelEnabledFlow.value != hudStatusPanelEnabled) _hudStatusPanelEnabledFlow.value = hudStatusPanelEnabled
+        if (_hudActivationZoneFlow.value != hudActivationZoneDp) _hudActivationZoneFlow.value = hudActivationZoneDp
+        if (_hudHideDelayFlow.value != hudHideDelayMs) _hudHideDelayFlow.value = hudHideDelayMs
+        if (_developerModeFlow.value != developerMode) _developerModeFlow.value = developerMode
+        if (_hudDebugAlwaysShowFlow.value != hudDebugAlwaysShow) _hudDebugAlwaysShowFlow.value = hudDebugAlwaysShow
+        if (_hudDebugHighlightZoneFlow.value != hudDebugHighlightZone) _hudDebugHighlightZoneFlow.value = hudDebugHighlightZone
+        if (_hudDebugShowBoundsFlow.value != hudDebugShowBounds) _hudDebugShowBoundsFlow.value = hudDebugShowBounds
     }
 
     private fun persist(context: Context, block: android.content.SharedPreferences.Editor.() -> Unit) {

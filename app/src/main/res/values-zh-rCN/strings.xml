@@ -367,6 +367,10 @@
     <string name="settings_hud_grant_location">授予位置权限</string>
     <string name="settings_hud_grant_bluetooth">授予蓝牙权限</string>
     <string name="settings_hud_notification_size">通知大小</string>
+    <string name="settings_app_notifications_show">显示通知</string>
+    <string name="settings_app_notifications_duration">通知时长</string>
+    <string name="notification_duration_short">2秒</string>
+    <string name="notification_duration_long">3.5秒</string>
     <string name="settings_hud_preview">实时预览</string>
     <string name="settings_hud_debug_title">HUD 调试</string>
     <string name="settings_hud_debug_always">始终显示状态面板</string>
@@ -453,4 +457,14 @@
     <string name="changelog_v1_0_0_title">版本 1.0.0</string>
     <string name="changelog_v1_0_0_date">2026年7月</string>
     <string name="changelog_v1_0_0_content"><![CDATA[• XRDesk 首次公开发布。\n• 基于 DeskControl。\n• 自定义主题编辑器。\n• 主题 JSON 导出/导入。\n• 浅色、深色和 AMOLED 主题。\n• 支持英语、俄语、乌克兰语和中文支持。\n• 初始“关于”部分。]]></string>
+    <string name="settings_section_display">屏幕</string>
+    <string name="settings_section_brightness">亮度</string>
+    <string name="settings_section_security">安全</string>
+    <string name="settings_section_typography">排版</string>
+    <string name="settings_section_navigation">导航</string>
+    <string name="settings_section_scrolling">滚动</string>
+    <string name="settings_section_interaction">交互</string>
+    <string name="settings_section_appearance">外观</string>
+    <string name="settings_section_behavior">行为</string>
+    <string name="settings_section_developer">开发者</string>
 </resources>

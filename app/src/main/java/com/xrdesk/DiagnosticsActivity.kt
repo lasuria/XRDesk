@@ -43,7 +43,7 @@ class DiagnosticsActivity : AppCompatActivity() {
                     val text = binding.diagnosticsText.text?.toString().orEmpty()
                     val clip = android.content.ClipData.newPlainText("Logs", text)
                     clipboard?.setPrimaryClip(clip)
-                    android.widget.Toast.makeText(this, "Logs copied", android.widget.Toast.LENGTH_SHORT).show()
+                    ToastHelper.show(this, "Logs copied")
                     true
                 }
                 R.id.action_share_logs -> {

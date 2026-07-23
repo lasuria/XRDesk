@@ -297,7 +297,7 @@
     <string name="settings_cursor_section">Курсор</string>
     <string name="settings_cursor_size">Размер курсора</string>
     <string name="settings_cursor_scale_label">Масштаб</string>
-    <string name="settings_cursor_color">Колiр курсора</string>
+    <string name="settings_cursor_color">Цвет курсора</string>
     <string name="settings_cursor_opacity">Прозрачность курсора</string>
     <string name="settings_cursor_speed">Скорость курсора</string>
     <string name="settings_cursor_auto_hide">Автоскрытие курсора</string>
@@ -383,6 +383,10 @@
     <string name="settings_hud_grant_location">Выдать права локации</string>
     <string name="settings_hud_grant_bluetooth">Выдать права Bluetooth</string>
     <string name="settings_hud_notification_size">Размер уведомлений</string>
+    <string name="settings_app_notifications_show">Показывать уведомления</string>
+    <string name="settings_app_notifications_duration">Длительность уведомлений</string>
+    <string name="notification_duration_short">2 сек</string>
+    <string name="notification_duration_long">3.5 сек</string>
     <string name="settings_hud_preview">Предпросмотр</string>
     <string name="settings_hud_connected">Подключено</string>
     <string name="settings_hud_debug_title">HUD Отладка</string>

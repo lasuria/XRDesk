@@ -21,7 +21,11 @@ class SettingsHUDActivity : BaseSettingsActivity() {
         applyEdgeToEdge(findViewById(R.id.settingsHUDRoot))
 
         val switchHudEnabled = findViewById<MaterialSwitch>(R.id.switchHudEnabled)
+        val switchHudNotifications = findViewById<MaterialSwitch>(R.id.switchHudNotifications)
         val hudSettingsContainer = findViewById<View>(R.id.hudSettingsContainer)
+        val switchAppNotifications = findViewById<MaterialSwitch>(R.id.switchAppNotifications)
+        val notificationDurationContainer = findViewById<View>(R.id.notificationDurationContainer)
+        val durationToggleGroup = findViewById<com.google.android.material.button.MaterialButtonToggleGroup>(R.id.notificationDurationToggleGroup)
         val modeDropdown = findViewById<MaterialAutoCompleteTextView>(R.id.modeDropdown)
         val positionDropdown = findViewById<MaterialAutoCompleteTextView>(R.id.positionDropdown)
         val posContainer = findViewById<View>(R.id.positionContainer)
@@ -30,12 +34,38 @@ class SettingsHUDActivity : BaseSettingsActivity() {
         val sliderDelay = findViewById<Slider>(R.id.sliderHudDelay)
         val tvSizeLabel = findViewById<TextView>(R.id.tvHudSizeLabel)
 
-        // 1. HUD Enabled Master Toggle
+        // 1. App Notifications (Now at the top)
+        switchAppNotifications.isChecked = SettingsStore.appNotificationsEnabled
+        notificationDurationContainer.visibility = if (SettingsStore.appNotificationsEnabled) View.VISIBLE else View.GONE
+        switchAppNotifications.setOnCheckedChangeListener { _, enabled ->
+            SettingsStore.setAppNotificationsEnabled(this, enabled)
+            notificationDurationContainer.visibility = if (enabled) View.VISIBLE else View.GONE
+        }
+
+        if (SettingsStore.appNotificationDuration == 1) {
+            durationToggleGroup.check(R.id.btnDurationLong)
+        } else {
+            durationToggleGroup.check(R.id.btnDurationShort)
+        }
+
+        durationToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                val duration = if (checkedId == R.id.btnDurationLong) 1 else 0
+                SettingsStore.setAppNotificationDuration(this, duration)
+            }
+        }
+
+        // 2. HUD Enabled Master Toggle
         switchHudEnabled.isChecked = SettingsStore.hudEnabled
         hudSettingsContainer.visibility = if (SettingsStore.hudEnabled) View.VISIBLE else View.GONE
         switchHudEnabled.setOnCheckedChangeListener { _, enabled ->
             SettingsStore.setHudEnabled(this, enabled)
             hudSettingsContainer.visibility = if (enabled) View.VISIBLE else View.GONE
+        }
+
+        switchHudNotifications.isChecked = SettingsStore.hudNotificationsEnabled
+        switchHudNotifications.setOnCheckedChangeListener { _, b ->
+            SettingsStore.setHudNotificationsEnabled(this, b)
         }
 
         // 2. HUD Modes

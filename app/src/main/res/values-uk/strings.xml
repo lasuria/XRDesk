@@ -383,6 +383,10 @@
     <string name="settings_hud_grant_location">Надати дозволи локації</string>
     <string name="settings_hud_grant_bluetooth">Надати дозволи Bluetooth</string>
     <string name="settings_hud_notification_size">Розмір сповіщень</string>
+    <string name="settings_app_notifications_show">Показувати сповіщення</string>
+    <string name="settings_app_notifications_duration">Тривалість сповіщень</string>
+    <string name="notification_duration_short">2 сек</string>
+    <string name="notification_duration_long">3.5 сек</string>
     <string name="settings_hud_preview">Передперегляд</string>
     <string name="settings_hud_connected">Підключено</string>
     <string name="settings_hud_debug_title">HUD Налагодження</string>

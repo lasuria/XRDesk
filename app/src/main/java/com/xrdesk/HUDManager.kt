@@ -59,6 +59,8 @@ object HUDManager {
     }
 
     fun onDisplayDisconnected() {
+        android.util.Log.d("HUDManager", "onDisplayDisconnected: detaching HUD")
+        SettingsStore.restoreOriginalHudNotificationState()
         pauseHUD()
         contextRef = null
         currentWindowManager = null
@@ -72,22 +74,38 @@ object HUDManager {
     fun getDebugInfo(): DisplaySessionManager.ExternalDisplayInfo? = currentDisplayInfo
 
     private fun resumeHUD() {
-        val context = contextRef?.get() ?: return
-        val wm = currentWindowManager ?: return
-        val info = currentDisplayInfo ?: return
+        val context = contextRef?.get() ?: run {
+            android.util.Log.e("HUDManager", "resumeHUD: FAILED - context is NULL")
+            return
+        }
+        val wm = currentWindowManager ?: run {
+            android.util.Log.e("HUDManager", "resumeHUD: FAILED - WindowManager is NULL")
+            return
+        }
+        val info = currentDisplayInfo ?: run {
+            android.util.Log.e("HUDManager", "resumeHUD: FAILED - DisplayInfo is NULL")
+            return
+        }
         
-        if (statusPanel != null) return // Already running
+        if (statusPanel == null) {
+            HUDSystemMonitor.start(context)
+            val container = WindowManagerContainer(wm, info.width, info.height)
+            statusPanel = StatusPanelController(context, container, isPreview = false)
+            android.util.Log.d("HUD-Trace", "StatusPanel Resumed on display ${info.displayId}")
+        } else {
+            android.util.Log.d("HUDManager", "resumeHUD: StatusPanel already running")
+        }
 
-        HUDSystemMonitor.start(context)
-        
-        val container = WindowManagerContainer(wm, info.width, info.height)
-        statusPanel = StatusPanelController(context, container, isPreview = false)
-        notifications = NotificationController(context, wm)
-        
-        android.util.Log.d("HUD-Trace", "HUD Resumed on display ${info.displayId} (${info.width}x${info.height})")
+        if (notifications == null) {
+            notifications = NotificationController(context, wm)
+            android.util.Log.d("HUD-Trace", "NotificationController Resumed on display ${info.displayId}")
+        } else {
+            android.util.Log.d("HUDManager", "resumeHUD: NotificationController already running")
+        }
     }
 
     private fun pauseHUD() {
+        android.util.Log.d("HUDManager", "pauseHUD CALLED")
         statusPanel?.destroy()
         notifications?.destroy()
         statusPanel = null
@@ -95,6 +113,17 @@ object HUDManager {
     }
 
     fun postNotification(notification: HUDNotification) {
+        if (!SettingsStore.hudNotificationsEnabled) {
+            android.util.Log.d("HUDManager", "postNotification: BLOCKED (hudNotificationsEnabled is false)")
+            return
+        }
+        
+        if (notifications == null) {
+            android.util.Log.e("HUDManager", "postNotification: notifications controller is NULL! Attempting recovery...")
+            if (SettingsStore.hudEnabled && currentDisplayInfo != null) {
+                resumeHUD()
+            }
+        }
         notifications?.post(notification)
     }
     

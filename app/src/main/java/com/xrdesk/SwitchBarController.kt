@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.core.view.doOnLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
@@ -316,7 +315,7 @@ class SwitchBarController(
             }
         } else {
             val message = AppLauncher.buildFailureMessage(windowContext, result)
-            Toast.makeText(windowContext, message, Toast.LENGTH_LONG).show()
+            ToastHelper.show(windowContext, message)
             DiagnosticsLog.add("SwitchBar", "SwitchBar: launch failure package=$packageName reason=${result.reason}")
         }
     }

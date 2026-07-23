@@ -36,7 +36,7 @@ class SettingsAboutActivity : BaseSettingsActivity() {
 
     private fun handleLogoTap() {
         if (SettingsStore.developerModeUnlocked) {
-            android.widget.Toast.makeText(this, getString(R.string.dev_toast_already), android.widget.Toast.LENGTH_SHORT).show()
+            ToastHelper.show(this, R.string.dev_toast_already)
             return
         }
 
@@ -49,10 +49,10 @@ class SettingsAboutActivity : BaseSettingsActivity() {
 
         if (logoTapCount in 5..6) {
             val stepsLeft = 7 - logoTapCount
-            android.widget.Toast.makeText(this, getString(R.string.dev_toast_steps, stepsLeft), android.widget.Toast.LENGTH_SHORT).show()
+            ToastHelper.show(this, getString(R.string.dev_toast_steps, stepsLeft))
         } else if (logoTapCount >= 7) {
             SettingsStore.setDeveloperModeUnlocked(this, true)
-            android.widget.Toast.makeText(this, getString(R.string.dev_toast_enabled), android.widget.Toast.LENGTH_LONG).show()
+            ToastHelper.show(this, R.string.dev_toast_enabled)
             logoTapCount = 0
         }
     }

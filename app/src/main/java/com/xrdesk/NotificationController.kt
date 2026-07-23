@@ -35,6 +35,7 @@ class NotificationController(
     private val slideOffsetDp = 6f
 
     fun post(notification: HUDNotification) {
+        android.util.Log.d("NotificationController", "post: hudNotificationsEnabled=${SettingsStore.hudNotificationsEnabled}")
         if (!SettingsStore.hudNotificationsEnabled) return
         queue.add(notification)
         processQueue()

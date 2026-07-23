@@ -12,7 +12,6 @@ import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.ViewConfiguration
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.WindowCompat
@@ -73,17 +72,14 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         if (grantResult == PackageManager.PERMISSION_GRANTED) {
             enableAccessibilityWithShizuku()
         } else {
-            Toast.makeText(
-                this,
-                getString(R.string.touchpad_shizuku_permission_denied),
-                Toast.LENGTH_SHORT
-            ).show()
+            ToastHelper.show(this, R.string.touchpad_shizuku_permission_denied)
             updateShizukuUI()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        android.util.Log.d("TouchpadActivity", "onCreate: hudEnabled=${SettingsStore.hudEnabled} hudNotificationsEnabled=${SettingsStore.hudNotificationsEnabled}")
         binding = ActivityTouchpadBinding.inflate(layoutInflater)
         setContentView(binding.root)
         DiagnosticsLog.add("Touchpad", "Touchpad: create displayId=${display?.displayId ?: -1}")
@@ -115,6 +111,8 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
         binding.touchpadBack.setOnClickListener {
             DiagnosticsLog.add("Touchpad", "Touchpad: exit via toolbar")
+            android.util.Log.d("TouchpadActivity", "exit via toolbar, restoring state")
+            SettingsStore.restoreOriginalHudNotificationState()
             finish()
         }
   binding.touchpadLaunch.setOnClickListener {
@@ -122,6 +120,10 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         }
         binding.touchpadBlackout.setOnClickListener {
             setBlackoutVisible(true)
+        }
+        binding.touchpadToggleNotif.setOnClickListener {
+            SettingsStore.toggleTemporaryHudNotifications()
+            updateNotifButtonUI()
         }
         binding.touchpadToolbar.setOnLongClickListener {
             toggleTuningPanel()
@@ -220,6 +222,9 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         setupDPad()
         setTouchpadActive(false)
         showTouchpadIntroIfNeeded()
+        
+        SettingsStore.initializeNotificationSession(this)
+        updateNotifButtonUI()
 
         autoLockRunnable = Runnable {
             if (!binding.blackoutOverlay.isVisible) {
@@ -237,11 +242,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                         val sessionActive = displayInfo != null
                         if (!sessionActive) {
                             DiagnosticsLog.add("Touchpad: back blocked (no external display)")
-                            Toast.makeText(
-                                this@TouchpadActivity,
-                                getString(R.string.touchpad_no_external_display),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            ToastHelper.show(this@TouchpadActivity, R.string.touchpad_no_external_display)
                             return
                         }
                         val backTimestamp = SystemClock.uptimeMillis()
@@ -249,11 +250,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                         val service = ControlAccessibilityService.current()
                         if (service == null) {
                             DiagnosticsLog.add("Touchpad", "Touchpad: back failed (accessibility missing)")
-                            Toast.makeText(
-                                this@TouchpadActivity,
-                                getString(R.string.touchpad_accessibility_required_toast),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            ToastHelper.show(this@TouchpadActivity, R.string.touchpad_accessibility_required_toast)
                         } else {
                             val success = service.performBack()
                             if (!success && SessionStore.lastBackFailure == "external_not_focused") {
@@ -276,6 +273,8 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                         }
                         DiagnosticsLog.add("Touchpad", "Touchpad: back forwarded")
                     } else {
+                        android.util.Log.d("TouchpadActivity", "onBackPressed: exiting, restoring state")
+                        SettingsStore.restoreOriginalHudNotificationState()
                         finish()
                     }
                 }
@@ -294,6 +293,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         super.onResume()
         updateKeepScreenOn(true)
         resetAutoLockTimer()
+        updateNotifButtonUI()
         if (touchpadActive) {
             startAutoDimSession()
         } else {
@@ -383,6 +383,12 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     override fun onGenericMotionEvent(event: MotionEvent): Boolean {
         resetAutoLockTimer()
         return super.onGenericMotionEvent(event)
+    }
+
+    private fun updateNotifButtonUI() {
+        val enabled = SettingsStore.hudNotificationsEnabled
+        binding.icToggleNotif.setImageResource(if (enabled) R.drawable.ic_bell else R.drawable.ic_bell_off)
+        binding.touchpadToggleNotif.alpha = if (enabled) 1f else 0.6f
     }
 
     private fun handleTouch(event: MotionEvent) {
@@ -840,11 +846,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     private fun serviceOrToast(): ControlAccessibilityService? {
         val service = ControlAccessibilityService.current()
         if (service == null) {
-            Toast.makeText(
-                this,
-                getString(R.string.touchpad_accessibility_required_toast),
-                Toast.LENGTH_SHORT
-            ).show()
+            ToastHelper.show(this, R.string.touchpad_accessibility_required_toast)
         }
         return service
     }
@@ -879,7 +881,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             if (!isShizukuInstalled()) {
                 showShizukuIntroDialog()
             } else {
-                Toast.makeText(this, "Shizuku is not running", Toast.LENGTH_SHORT).show()
+                ToastHelper.show(this, "Shizuku is not running")
             }
             return
         }
@@ -897,11 +899,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         }
         
         if (Shizuku.shouldShowRequestPermissionRationale()) {
-            Toast.makeText(
-                this,
-                getString(R.string.touchpad_shizuku_permission_rationale),
-                Toast.LENGTH_SHORT
-            ).show()
+            ToastHelper.show(this, R.string.touchpad_shizuku_permission_rationale)
             return
         }
         try {
@@ -930,17 +928,9 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                 shizukuEnableInFlight = false
                 updateShizukuUI()
                 if (success) {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.touchpad_shizuku_enable_success),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    ToastHelper.show(this, R.string.touchpad_shizuku_enable_success)
                 } else {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.touchpad_shizuku_enable_failed),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    ToastHelper.show(this, R.string.touchpad_shizuku_enable_failed)
                 }
                 updateAccessibilityGate()
             }

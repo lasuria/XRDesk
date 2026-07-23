@@ -4,7 +4,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
@@ -46,16 +45,15 @@ class AppPickerActivity : AppCompatActivity() {
             } else {
                 val result = AppLauncher.launchOnExternalDisplay(this, entry.packageName)
                 if (result.success) {
-                    Toast.makeText(
+                    ToastHelper.show(
                         this,
-                        getString(R.string.app_launched_toast, entry.label),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                        getString(R.string.app_launched_toast, entry.label)
+                    )
                     startActivity(android.content.Intent(this, TouchpadActivity::class.java))
                     finish()
                 } else {
                     val message = AppLauncher.buildFailureMessage(this, result)
-                    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                    ToastHelper.show(this, message)
                 }
             }
         }

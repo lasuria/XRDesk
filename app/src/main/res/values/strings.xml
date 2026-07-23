@@ -298,8 +298,8 @@
     <string name="settings_cursor_section">Cursor</string>
     <string name="settings_cursor_size">Cursor size</string>
     <string name="settings_cursor_scale_label">Scale</string>
-    <string name="settings_cursor_color">Cursor color</string>
-    <string name="settings_cursor_opacity">Cursor opacity</string>
+    <string name="settings_cursor_color">Cursor Color</string>
+    <string name="settings_cursor_opacity">Cursor Opacity</string>
     <string name="settings_cursor_speed">Cursor speed</string>
     <string name="settings_cursor_auto_hide">Cursor auto-hide</string>
     <string name="settings_hide_delay">Hide delay</string>
@@ -384,6 +384,10 @@
     <string name="settings_hud_grant_location">Grant Location Permission</string>
     <string name="settings_hud_grant_bluetooth">Grant Bluetooth Permission</string>
     <string name="settings_hud_notification_size">Notification Size</string>
+    <string name="settings_app_notifications_show">Show Notifications</string>
+    <string name="settings_app_notifications_duration">Notification Duration</string>
+    <string name="notification_duration_short">2s</string>
+    <string name="notification_duration_long">3.5s</string>
     <string name="settings_hud_preview">Live Preview</string>
     <string name="settings_hud_connected">Connected</string>
     <string name="settings_hud_debug_title">HUD Debug</string>

@@ -13,7 +13,11 @@ class HUDNotificationService : NotificationListenerService() {
     private val TAG = "HUD-NotificationService"
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-        if (!SettingsStore.hudEnabled || !SettingsStore.hudNotificationsEnabled) return
+        val hudEnabled = SettingsStore.hudEnabled
+        val hudNotifsEnabled = SettingsStore.hudNotificationsEnabled
+        Log.d(TAG, "onNotificationPosted: hudEnabled=$hudEnabled, hudNotifsEnabled=$hudNotifsEnabled")
+        
+        if (!hudEnabled || !hudNotifsEnabled) return
 
         // Filter out ongoing notifications (media, downloads, etc.) unless desirable
         if (sbn.isOngoing) return
@@ -37,7 +41,7 @@ class HUDNotificationService : NotificationListenerService() {
             icon = icon
         )
 
-        Log.d(TAG, "Notification received from $appName: $title")
+        Log.d(TAG, "Notification received from $appName: $title (HUD Notifs Enabled: ${SettingsStore.hudNotificationsEnabled})")
         HUDManager.postNotification(hudNotification)
     }
 
