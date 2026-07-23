@@ -228,7 +228,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
         autoLockRunnable = Runnable {
             if (!binding.blackoutOverlay.isVisible) {
-                DiagnosticsLog.add("Touchpad: auto-lock triggered")
+                DiagnosticsLog.add("Touchpad", "auto-lock triggered")
                 setBlackoutVisible(true)
             }
         }
@@ -241,7 +241,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                         val displayInfo = DisplaySessionManager.getExternalDisplayInfo()
                         val sessionActive = displayInfo != null
                         if (!sessionActive) {
-                            DiagnosticsLog.add("Touchpad: back blocked (no external display)")
+                            DiagnosticsLog.add("Touchpad", "back blocked (no external display)")
                             ToastHelper.show(this@TouchpadActivity, R.string.touchpad_no_external_display)
                             return
                         }

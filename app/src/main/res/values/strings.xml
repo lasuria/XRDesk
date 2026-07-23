@@ -473,7 +473,7 @@
 
     <string name="changelog_v1_1_0_title">Version 1.1.0</string>
     <string name="changelog_v1_1_0_date">July 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• Migration to Material Design 3 and fully redesigned UI.\n• New Home and categorized Settings screens.\n• Enhanced Theme Engine with improved colors and contrast.\n• Adjustable D-Pad position and dedicated Cursor settings.\n• Screen lock, brightness control, and keep-awake options.\n• New XR HUD with Detailed and Compact display modes.\n• Interactive HUD Live Preview in settings.\n• Hidden Developer Mode with HUD debugging tools.\n• Advanced Log Viewer with search, filtering, and pause controls.\n• Improved XR glasses detection and automatic HUD recovery.\n• Optimized performance and full Android 15/16 compatibility.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Migration to Material Design 3 and fully redesigned UI.\n• New Home and categorized Settings screens.\n• Enhanced Theme Engine with improved colors and contrast.\n• Adjustable D-Pad position and dedicated Cursor settings.\n• Screen lock, brightness control, and keep-awake options.\n• Added quick control button for HUD notifications in the Remote.\n• New XR HUD with Detailed and Compact display modes.\n• Interactive HUD Live Preview in settings.\n• Hidden Developer Mode with HUD debugging tools.\n• Advanced Log Viewer with search, filtering, and pause controls.\n• Improved XR glasses detection and automatic HUD recovery.\n• Optimized performance and full Android 15/16 compatibility.]]></string>
 
     <string name="changelog_v1_0_0_title">Version 1.0.0</string>
     <string name="changelog_v1_0_0_date">July 2026</string>

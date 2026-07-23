@@ -655,7 +655,8 @@ class ControlAccessibilityService : AccessibilityService() {
         }
         if (externalState == null || (!externalState.isActive && !externalState.isFocused)) {
             DiagnosticsLog.add(
-                "Back: external display not focused before back " +
+                "Back",
+                "external display not focused before back " +
                     "active=${externalState?.isActive ?: false} " +
                     "focused=${externalState?.isFocused ?: false}"
             )
@@ -1481,7 +1482,7 @@ class ControlAccessibilityService : AccessibilityService() {
     }
 
     private fun performActionWithParentFallback(node: AccessibilityNodeInfo, action: Int): Boolean {
-        var current: AccessibilityNodeInfo? = AccessibilityNodeInfo.obtain(node)
+        var current: AccessibilityNodeInfo? = copyNode(node)
         while (current != null) {
             if (current.performAction(action)) {
                 return true
@@ -1546,7 +1547,7 @@ class ControlAccessibilityService : AccessibilityService() {
 
     private fun findEditableNode(root: AccessibilityNodeInfo): AccessibilityNodeInfo? {
         val queue = ArrayDeque<AccessibilityNodeInfo>()
-        queue.add(AccessibilityNodeInfo.obtain(root))
+        queue.add(copyNode(root))
         while (queue.isNotEmpty()) {
             val node = queue.removeFirst()
             if (node.isEditable) {
