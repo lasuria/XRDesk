@@ -4,12 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class PermissionsActivity : BaseSettingsActivity() {
+
+    private lateinit var btnNotifications: MaterialButton
+    private lateinit var statusNotifications: TextView
+    private lateinit var btnBluetooth: MaterialButton
+    private lateinit var statusBluetooth: TextView
+    private lateinit var btnLocation: MaterialButton
+    private lateinit var statusLocation: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,14 +21,14 @@ class PermissionsActivity : BaseSettingsActivity() {
         setupToolbar(R.id.settingsToolbar, getString(R.string.settings_permissions_title))
         applyEdgeToEdge(findViewById(R.id.permissionsRoot))
 
-        val btnNotifications = findViewById<MaterialButton>(R.id.btnGrantNotifications)
-        val statusNotifications = findViewById<TextView>(R.id.statusNotifications)
+        btnNotifications = findViewById(R.id.btnGrantNotifications)
+        statusNotifications = findViewById(R.id.statusNotifications)
         
-        val btnBluetooth = findViewById<MaterialButton>(R.id.btnGrantBluetooth)
-        val statusBluetooth = findViewById<TextView>(R.id.statusBluetooth)
+        btnBluetooth = findViewById(R.id.btnGrantBluetooth)
+        statusBluetooth = findViewById(R.id.statusBluetooth)
         
-        val btnLocation = findViewById<MaterialButton>(R.id.btnGrantLocation)
-        val statusLocation = findViewById<TextView>(R.id.statusLocation)
+        btnLocation = findViewById(R.id.btnGrantLocation)
+        statusLocation = findViewById(R.id.statusLocation)
 
         btnNotifications.setOnClickListener {
             startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
@@ -39,16 +43,22 @@ class PermissionsActivity : BaseSettingsActivity() {
         btnLocation.setOnClickListener {
             requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
         }
+    }
 
-        // Auto-refresh status
-        lifecycleScope.launch {
-            while (true) {
-                updateStatusUI(statusNotifications, btnNotifications, isNotificationAccessGranted())
-                updatePermissionUI(statusBluetooth, btnBluetooth, android.Manifest.permission.BLUETOOTH_CONNECT)
-                updatePermissionUI(statusLocation, btnLocation, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                delay(1000)
-            }
-        }
+    override fun onResume() {
+        super.onResume()
+        updateAllPermissions()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        updateAllPermissions()
+    }
+
+    private fun updateAllPermissions() {
+        updateStatusUI(statusNotifications, btnNotifications, isNotificationAccessGranted())
+        updatePermissionUI(statusBluetooth, btnBluetooth, android.Manifest.permission.BLUETOOTH_CONNECT)
+        updatePermissionUI(statusLocation, btnLocation, android.Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
     private fun isNotificationAccessGranted(): Boolean {
@@ -58,14 +68,14 @@ class PermissionsActivity : BaseSettingsActivity() {
     }
 
     private fun updateStatusUI(textView: TextView, button: MaterialButton?, granted: Boolean) {
-        if (granted) {
-            textView.text = getString(R.string.status_granted)
-            textView.setTextColor(getColor(R.color.success_color))
-        } else {
-            textView.text = getString(R.string.status_denied)
-            textView.setTextColor(getColor(R.color.error_color))
+        val statusText = getString(if (granted) R.string.status_granted else R.string.status_denied)
+        if (textView.text != statusText) {
+            textView.text = statusText
+            textView.setTextColor(getColor(if (granted) R.color.success_color else R.color.error_color))
         }
-        button?.isEnabled = !granted
+        if (button != null && button.isEnabled == granted) {
+            button.isEnabled = !granted
+        }
     }
 
     private fun updatePermissionUI(status: TextView, button: MaterialButton, permission: String) {

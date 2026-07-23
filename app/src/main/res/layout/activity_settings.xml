@@ -159,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="20dp"
-                    android:text="HUD"
+                    android:text="@string/settings_hud_title"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurface" />
                 <ImageView
@@ -330,7 +330,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="20dp"
-                    android:text="Developer Mode"
+                    android:text="@string/dev_mode_title"
                     android:textAppearance="?attr/textAppearanceBodyLarge"
                     android:textColor="?attr/colorOnSurface" />
                 <ImageView

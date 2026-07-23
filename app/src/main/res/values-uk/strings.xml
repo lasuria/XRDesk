@@ -418,8 +418,8 @@
     <string name="about_original_project_summary">версія v.1.1.5.post2</string>
     <string name="about_whats_new">Що нового</string>
     <string name="app_version_label">Версія 1.1.0</string>
-    <string name="app_build_label">Останнє оновлення 2026.07.21</string>
-    <string name="about_xrdesk_summary">Версія 1.1.0 • Останнє оновлення 2026.07.21</string>
+    <string name="app_build_label">Останнє оновлення 2026.07.23</string>
+    <string name="about_xrdesk_summary">Версія 1.1.0 • Останнє оновлення 2026.07.23</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk побудований на базі DeskControl — пульта дистанційного керування для Android з відкритим вихідним кодом. Ми розширили його сучасним інтерфейсом, покращеним движком тем та спеціальними функціями для XR.</string>

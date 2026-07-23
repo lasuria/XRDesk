@@ -412,8 +412,8 @@
     <string name="about_original_project_summary">版本 v.1.1.5.post2</string>
     <string name="about_whats_new">更新日志</string>
     <string name="app_version_label">版本 1.1.0</string>
-    <string name="app_build_label">最后更新 2026.07.21</string>
-    <string name="about_xrdesk_summary">版本 1.1.0 • 最后更新 2026.07.21</string>
+    <string name="app_build_label">最后更新 2026.07.23</string>
+    <string name="about_xrdesk_summary">版本 1.1.0 • 最后更新 2026.07.23</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk 是在 DeskControl 的基础上构建的，DeskControl 是一个开源的 Android 远程控制。我们通过现代 UI、增强的主题引擎和专业的 XR 功能扩展了它。</string>

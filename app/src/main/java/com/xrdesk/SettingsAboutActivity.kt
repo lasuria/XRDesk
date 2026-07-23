@@ -36,7 +36,7 @@ class SettingsAboutActivity : BaseSettingsActivity() {
 
     private fun handleLogoTap() {
         if (SettingsStore.developerModeUnlocked) {
-            android.widget.Toast.makeText(this, "Developer Mode is already enabled", android.widget.Toast.LENGTH_SHORT).show()
+            android.widget.Toast.makeText(this, getString(R.string.dev_toast_already), android.widget.Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -49,10 +49,10 @@ class SettingsAboutActivity : BaseSettingsActivity() {
 
         if (logoTapCount in 5..6) {
             val stepsLeft = 7 - logoTapCount
-            android.widget.Toast.makeText(this, "Developer Mode: $stepsLeft steps away...", android.widget.Toast.LENGTH_SHORT).show()
+            android.widget.Toast.makeText(this, getString(R.string.dev_toast_steps, stepsLeft), android.widget.Toast.LENGTH_SHORT).show()
         } else if (logoTapCount >= 7) {
             SettingsStore.setDeveloperModeUnlocked(this, true)
-            android.widget.Toast.makeText(this, "Developer Mode enabled", android.widget.Toast.LENGTH_LONG).show()
+            android.widget.Toast.makeText(this, getString(R.string.dev_toast_enabled), android.widget.Toast.LENGTH_LONG).show()
             logoTapCount = 0
         }
     }

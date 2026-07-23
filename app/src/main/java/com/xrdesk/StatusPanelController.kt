@@ -65,6 +65,56 @@ class StatusPanelController(
 
     private var currentData = getSampleData()
 
+    private var lastAppliedMode: Int? = null
+    private var lastAppliedSize: Float = -1f
+    private var lastAppliedPosition: Int = -1
+    private var lastAppliedScale: Float = -1f
+    private var lastAppliedDebugHighlight: Boolean = false
+    private var lastAppliedDebugBounds: Boolean = false
+    private var lastAppliedActivationZone: Float = -1f
+
+    private var activeCache: HUDViewCache? = null
+
+    private sealed class HUDViewCache {
+        class Detailed(
+            val trCard: MaterialCardView,
+            val timeTv: TextView,
+            val networkIconIv: ImageView,
+            val networkDivider: View,
+            val btIconIv: ImageView,
+            val btDivider: View,
+            val batteryIconIv: ImageView,
+            val batteryPctTv: TextView,
+            val blCard: MaterialCardView,
+            val networkLabelTv: TextView,
+            val networkDetailTv: TextView
+        ) : HUDViewCache()
+
+        class Compact(
+            val card: MaterialCardView,
+            val timeTv: TextView,
+            val wifiIconIv: ImageView,
+            val wifiLabelTv: TextView,
+            val btLayout: LinearLayout,
+            val btIconIv: ImageView,
+            val btLabelTv: TextView,
+            val batteryIconIv: ImageView,
+            val batteryPctTv: TextView,
+            val btSeparator: View
+        ) : HUDViewCache()
+    }
+
+    private data class UIState(
+        val time: String,
+        val networkIcon: Int,
+        val networkLabel: String,
+        val networkDetail: String?,
+        val batteryIcon: Int,
+        val batteryPct: String,
+        val showBluetooth: Boolean,
+        val btLabel: String
+    )
+
     data class HUDData(
         val time: String,
         val batteryPct: Int,
@@ -150,7 +200,6 @@ class StatusPanelController(
 
     fun refreshUI() {
         val root = rootLayout ?: return
-        root.removeAllViews()
         
         // Fix: Preview must always be visible regardless of global hudEnabled setting
         if (!isPreview && !SettingsStore.hudEnabled && !SettingsStore.hudDebugAlwaysShow) {
@@ -164,21 +213,153 @@ class StatusPanelController(
             root.alpha = 1f
         }
 
-        if (SettingsStore.hudDebugHighlightZone) {
-            drawActivationZoneDebug(root)
-        }
-
         val mode = SettingsStore.hudMode
-        when (mode) {
-            SettingsStore.HUD_MODE_FULL_INFO -> buildFullInfo(root, currentData)
-            else -> buildCompactStatus(root, currentData)
+        val size = SettingsStore.hudSizeDp
+        val pos = SettingsStore.hudPosition
+        val scale = getScale()
+        val highlight = SettingsStore.hudDebugHighlightZone
+        val showBounds = SettingsStore.hudDebugShowBounds
+        val zone = SettingsStore.hudActivationZoneDp
+
+        val needsRebuild = mode != lastAppliedMode || 
+                          size != lastAppliedSize || 
+                          pos != lastAppliedPosition || 
+                          scale != lastAppliedScale || 
+                          highlight != lastAppliedDebugHighlight ||
+                          showBounds != lastAppliedDebugBounds ||
+                          zone != lastAppliedActivationZone
+
+        if (needsRebuild) {
+            root.removeAllViews()
+            if (highlight) {
+                drawActivationZoneDebug(root)
+            }
+
+            activeCache = when (mode) {
+                SettingsStore.HUD_MODE_FULL_INFO -> buildDetailedLayout(root)
+                else -> buildCompactLayout(root)
+            }
+
+            if (showBounds) {
+                root.setBackgroundResource(R.drawable.debug_red_border)
+            } else {
+                root.background = null
+            }
+
+            lastAppliedMode = mode
+            lastAppliedSize = size
+            lastAppliedPosition = pos
+            lastAppliedScale = scale
+            lastAppliedDebugHighlight = highlight
+            lastAppliedDebugBounds = showBounds
+            lastAppliedActivationZone = zone
+
+            updateMutableProperties(force = true)
+        } else {
+            updateMutableProperties(force = false)
+        }
+    }
+
+    private fun updateMutableProperties(force: Boolean) {
+        val cache = activeCache ?: return
+        val ui = getUIState(currentData)
+
+        when (cache) {
+            is HUDViewCache.Detailed -> {
+                updateText(cache.timeTv, ui.time, force)
+                updateImage(cache.networkIconIv, ui.networkIcon, force)
+                
+                val btVisibility = if (ui.showBluetooth) View.VISIBLE else View.GONE
+                updateVisibility(cache.btIconIv, btVisibility, force)
+                updateVisibility(cache.btDivider, btVisibility, force)
+                
+                updateImage(cache.batteryIconIv, ui.batteryIcon, force)
+                updateText(cache.batteryPctTv, ui.batteryPct, force)
+                
+                updateText(cache.networkLabelTv, ui.networkLabel, force)
+                updateVisibility(cache.networkDetailTv, if (ui.networkDetail != null) View.VISIBLE else View.GONE, force)
+                ui.networkDetail?.let { updateText(cache.networkDetailTv, it, force) }
+            }
+            is HUDViewCache.Compact -> {
+                updateText(cache.timeTv, ui.time, force)
+                updateImage(cache.wifiIconIv, ui.networkIcon, force)
+                updateText(cache.wifiLabelTv, ui.networkLabel, force)
+                
+                val btVisibility = if (ui.showBluetooth) View.VISIBLE else View.GONE
+                updateVisibility(cache.btLayout, btVisibility, force)
+                updateVisibility(cache.btSeparator, btVisibility, force)
+                if (ui.showBluetooth) {
+                    updateText(cache.btLabelTv, ui.btLabel, force)
+                }
+                
+                updateImage(cache.batteryIconIv, ui.batteryIcon, force)
+                updateText(cache.batteryPctTv, ui.batteryPct, force)
+            }
+        }
+    }
+
+    private fun updateText(view: TextView, text: String, force: Boolean) {
+        if (force || view.text != text) {
+            view.text = text
+        }
+    }
+
+    private fun updateImage(view: ImageView, resId: Int, force: Boolean) {
+        if (force || view.tag != resId) {
+            view.setImageResource(resId)
+            view.tag = resId
+        }
+    }
+
+    private fun updateVisibility(view: View, visibility: Int, force: Boolean) {
+        if (force || view.visibility != visibility) {
+            view.visibility = visibility
+        }
+    }
+
+    private fun getUIState(data: HUDData): UIState {
+        val wifiSsid = data.wifiSsid
+        val airplaneMode = data.airplaneMode
+        val networkIcon: Int
+        val networkLabel: String
+        val networkDetail: String?
+        
+        when {
+            airplaneMode -> {
+                networkIcon = R.drawable.ic_airplane
+                networkLabel = context.getString(R.string.net_airplane)
+                networkDetail = null
+            }
+            !wifiSsid.isNullOrBlank() -> {
+                networkIcon = R.drawable.ic_wifi
+                networkLabel = wifiSsid
+                networkDetail = getWifiVersionLabel(data)
+            }
+            data.operator != null -> {
+                networkIcon = R.drawable.ic_mobile
+                networkLabel = data.operator
+                networkDetail = data.networkType ?: "Mobile Data"
+            }
+            else -> {
+                networkIcon = R.drawable.ic_mobile
+                networkLabel = context.getString(R.string.net_none)
+                networkDetail = null
+            }
         }
 
-        if (SettingsStore.hudDebugShowBounds) {
-            root.setBackgroundResource(R.drawable.debug_red_border)
-        } else {
-            root.background = null
-        }
+        val batteryIcon = if (data.isCharging) R.drawable.ic_bolt else R.drawable.ic_battery
+        val showBluetooth = data.btLabel != "Выкл"
+
+        return UIState(
+            time = data.time,
+            networkIcon = networkIcon,
+            networkLabel = networkLabel,
+            networkDetail = networkDetail,
+            batteryIcon = batteryIcon,
+            batteryPct = "${data.batteryPct}%",
+            showBluetooth = showBluetooth,
+            btLabel = data.btLabel
+        )
     }
 
     private fun getScale(): Float {
@@ -186,6 +367,26 @@ class StatusPanelController(
         val w = container.getWidth()
         if (w <= 0) return 0.22f
         return w.toFloat() / 1920f
+    }
+
+    private fun rebuildHierarchy(root: FrameLayout, mode: Int, highlight: Boolean, showBounds: Boolean) {
+        root.removeAllViews()
+        activeCache = null
+
+        if (highlight) {
+            drawActivationZoneDebug(root)
+        }
+
+        activeCache = when (mode) {
+            SettingsStore.HUD_MODE_FULL_INFO -> buildDetailedLayout(root)
+            else -> buildCompactLayout(root)
+        }
+
+        if (showBounds) {
+            root.setBackgroundResource(R.drawable.debug_red_border)
+        } else {
+            root.background = null
+        }
     }
 
     private fun drawActivationZoneDebug(root: FrameLayout) {
@@ -204,7 +405,7 @@ class StatusPanelController(
         }
     }
 
-    fun buildFullInfo(root: FrameLayout, data: HUDData) {
+    private fun buildDetailedLayout(root: FrameLayout): HUDViewCache.Detailed {
         val density = context.resources.displayMetrics.density
         val scale = getScale()
         val size = SettingsStore.hudSizeDp * scale
@@ -222,43 +423,20 @@ class StatusPanelController(
             setPadding(px, py, px, py)
         }
         trCard.addView(trLayout)
-        addText(trLayout, data.time, fontSizeClock, true)
+        
+        val timeTv = addText(trLayout, "", fontSizeClock, true)
         addDivider(trLayout, fontSizeClock)
         
-        val wifiSsid = data.wifiSsid
-        val airplaneMode = data.airplaneMode
-        val networkIcon: Int
-        val networkLabel: String
+        val networkIconIv = addIcon(trLayout, R.drawable.ic_wifi, iconSize)
+        val networkDivider = addDivider(trLayout, fontSizeClock)
         
-            when {
-                airplaneMode -> {
-                    networkIcon = R.drawable.ic_airplane
-                    networkLabel = context.getString(R.string.net_airplane)
-                }
-                !wifiSsid.isNullOrBlank() -> {
-                    networkIcon = R.drawable.ic_wifi
-                    networkLabel = wifiSsid
-                }
-                data.operator != null -> {
-                    networkIcon = R.drawable.ic_mobile
-                    networkLabel = data.operator
-                }
-                else -> {
-                    networkIcon = R.drawable.ic_mobile
-                    networkLabel = context.getString(R.string.net_none)
-                }
-            }
+        val btIconIv = addIcon(trLayout, R.drawable.ic_bluetooth, iconSize)
+        val btDivider = addDivider(trLayout, fontSizeClock)
         
-        addIcon(trLayout, networkIcon, iconSize)
-        addDivider(trLayout, fontSizeClock)
-        
-        if (data.btLabel != "Выкл") {
-            addIcon(trLayout, R.drawable.ic_bluetooth, iconSize)
-            addDivider(trLayout, fontSizeClock)
-        }
-        addIcon(trLayout, if (data.isCharging) R.drawable.ic_bolt else R.drawable.ic_battery, iconSize)
+        val batteryIconIv = addIcon(trLayout, R.drawable.ic_battery, iconSize)
         addSpace(trLayout, (4 * density * scale).toInt())
-        addText(trLayout, "${data.batteryPct}%", fontSizeSub, alpha = 0.85f)
+        val batteryPctTv = addText(trLayout, "", fontSizeSub, alpha = 0.85f)
+        
         root.addView(trCard, FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             gravity = Gravity.TOP or Gravity.END
             setMargins(margin, margin, margin, margin)
@@ -273,19 +451,30 @@ class StatusPanelController(
             setPadding(px, py, px, py)
         }
         blCard.addView(blLayout)
-        addText(blLayout, networkLabel, fontSizeSub, true)
-        if (!wifiSsid.isNullOrBlank()) {
-            addText(blLayout, getWifiVersionLabel(data), fontSizeSub * 0.75f, alpha = 0.75f)
-        } else if (data.operator != null) {
-            addText(blLayout, data.networkType ?: "Mobile Data", fontSizeSub * 0.75f, alpha = 0.75f)
-        }
+        val networkLabelTv = addText(blLayout, "", fontSizeSub, true)
+        val networkDetailTv = addText(blLayout, "", fontSizeSub * 0.75f, alpha = 0.75f)
+        
         root.addView(blCard, FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             gravity = Gravity.BOTTOM or Gravity.START
             setMargins(margin, margin, margin, margin)
         })
+
+        return HUDViewCache.Detailed(
+            trCard = trCard,
+            timeTv = timeTv,
+            networkIconIv = networkIconIv,
+            networkDivider = networkDivider,
+            btIconIv = btIconIv,
+            btDivider = btDivider,
+            batteryIconIv = batteryIconIv,
+            batteryPctTv = batteryPctTv,
+            blCard = blCard,
+            networkLabelTv = networkLabelTv,
+            networkDetailTv = networkDetailTv
+        )
     }
 
-    fun buildCompactStatus(root: FrameLayout, data: HUDData) {
+    private fun buildCompactLayout(root: FrameLayout): HUDViewCache.Compact {
         val density = themedContext.resources.displayMetrics.density
         val scale = getScale()
         val size = SettingsStore.hudSizeDp * scale
@@ -303,79 +492,36 @@ class StatusPanelController(
         card.addView(mainRow)
 
         // 1. Clock (Fixed)
-        val timeTv = TextView(themedContext).apply {
-            text = data.time
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, size * 0.35f)
-            setTextColor(Palette.TEXT_PRIMARY)
-            setTypeface(null, Typeface.BOLD)
-            setPadding(0, 0, (14 * density * scale).toInt(), 0)
-        }
-        mainRow.addView(timeTv)
+        val timeTv = addText(mainRow, "", size * 0.35f, true)
+        timeTv.setPadding(0, 0, (14 * density * scale).toInt(), 0)
 
         // 2. WiFi / Mobile (Flexible)
         val wifiLayout = LinearLayout(themedContext).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
             layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
-            
-            val wifiSsid = data.wifiSsid
-            val airplaneMode = data.airplaneMode
-            val wifiIcon: Int
-            val wifiLabel: String
-            
-            when {
-                airplaneMode -> {
-                    wifiIcon = R.drawable.ic_airplane
-                    wifiLabel = context.getString(R.string.net_airplane)
-                }
-                !wifiSsid.isNullOrBlank() -> {
-                    wifiIcon = R.drawable.ic_wifi
-                    wifiLabel = wifiSsid
-                }
-                data.operator != null -> {
-                    wifiIcon = R.drawable.ic_mobile
-                    wifiLabel = context.getString(R.string.net_cellular)
-                }
-                else -> {
-                    wifiIcon = R.drawable.ic_mobile
-                    wifiLabel = context.getString(R.string.net_none)
-                }
-            }
-            
-            addIcon(this, wifiIcon, size * 0.38f) // Slightly larger icons
-            addSpace(this, (8 * density * scale).toInt())
-            TextView(themedContext).apply {
-                text = wifiLabel
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, size * 0.25f)
-                setTextColor(Palette.TEXT_PRIMARY)
-                maxLines = 1
-                ellipsize = android.text.TextUtils.TruncateAt.END
-                addView(this)
-            }
         }
+        val wifiIconIv = addIcon(wifiLayout, R.drawable.ic_wifi, size * 0.38f)
+        addSpace(wifiLayout, (8 * density * scale).toInt())
+        val wifiLabelTv = addText(wifiLayout, "", size * 0.25f)
+        wifiLabelTv.maxLines = 1
+        wifiLabelTv.ellipsize = android.text.TextUtils.TruncateAt.END
         mainRow.addView(wifiLayout)
 
-        // 3. Bluetooth (Flexible) - Hide if "Выкл"
-        if (data.btLabel != "Выкл") {
-            addSpace(mainRow, (16 * density * scale).toInt())
-            val btLayout = LinearLayout(themedContext).apply {
-                orientation = LinearLayout.HORIZONTAL
-                gravity = Gravity.CENTER_VERTICAL
-                layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
-                addIcon(this, R.drawable.ic_bluetooth, size * 0.38f)
-                addSpace(this, (8 * density * scale).toInt())
-                TextView(themedContext).apply {
-                    text = data.btLabel
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, size * 0.25f)
-                    setTextColor(Palette.TEXT_PRIMARY)
-                    maxLines = 1
-                    ellipsize = android.text.TextUtils.TruncateAt.END
-                    alpha = 0.9f
-                    addView(this)
-                }
-            }
-            mainRow.addView(btLayout)
+        // 3. Bluetooth (Flexible)
+        val btSeparator = addSpace(mainRow, (16 * density * scale).toInt())
+        val btLayout = LinearLayout(themedContext).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
         }
+        val btIconIv = addIcon(btLayout, R.drawable.ic_bluetooth, size * 0.38f)
+        addSpace(btLayout, (8 * density * scale).toInt())
+        val btLabelTv = addText(btLayout, "", size * 0.25f)
+        btLabelTv.alpha = 0.9f
+        btLabelTv.maxLines = 1
+        btLabelTv.ellipsize = android.text.TextUtils.TruncateAt.END
+        mainRow.addView(btLayout)
 
         addSpace(mainRow, (16 * density * scale).toInt())
 
@@ -383,17 +529,29 @@ class StatusPanelController(
         val battLayout = LinearLayout(themedContext).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
-            val battIcon = if (data.isCharging) R.drawable.ic_bolt else R.drawable.ic_battery
-            addIcon(this, battIcon, size * 0.38f)
-            addSpace(this, (6 * density * scale).toInt())
-            addText(this, "${data.batteryPct}%", size * 0.24f)
         }
+        val batteryIconIv = addIcon(battLayout, R.drawable.ic_battery, size * 0.38f)
+        addSpace(battLayout, (6 * density * scale).toInt())
+        val batteryPctTv = addText(battLayout, "", size * 0.24f)
         mainRow.addView(battLayout)
 
         root.addView(card, FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, heightPx).apply {
             gravity = getMainCardGravity()
             setMargins(margin, margin, margin, margin)
         })
+
+        return HUDViewCache.Compact(
+            card = card,
+            timeTv = timeTv,
+            wifiIconIv = wifiIconIv,
+            wifiLabelTv = wifiLabelTv,
+            btLayout = btLayout,
+            btIconIv = btIconIv,
+            btLabelTv = btLabelTv,
+            batteryIconIv = batteryIconIv,
+            batteryPctTv = batteryPctTv,
+            btSeparator = btSeparator
+        )
     }
 
     private fun createGlassCard(heightPx: Int): MaterialCardView {
@@ -408,7 +566,7 @@ class StatusPanelController(
         }
     }
 
-    private fun addText(parent: ViewGroup, text: String, sizeSp: Float, bold: Boolean = false, alpha: Float = 1f) {
+    private fun addText(parent: ViewGroup, text: String, sizeSp: Float, bold: Boolean = false, alpha: Float = 1f): TextView {
         val tv = TextView(themedContext).apply {
             this.text = text
             setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp)
@@ -419,18 +577,20 @@ class StatusPanelController(
             ellipsize = android.text.TextUtils.TruncateAt.END
         }
         parent.addView(tv)
+        return tv
     }
 
-    private fun addIcon(parent: ViewGroup, res: Int, sizePx: Float) {
+    private fun addIcon(parent: ViewGroup, res: Int, sizePx: Float): ImageView {
         val iv = ImageView(themedContext).apply {
             setImageResource(res)
             layoutParams = LinearLayout.LayoutParams(sizePx.toInt(), sizePx.toInt())
             setColorFilter(Palette.TEXT_PRIMARY)
         }
         parent.addView(iv)
+        return iv
     }
 
-    private fun addDivider(parent: ViewGroup, sizeSp: Float) {
+    private fun addDivider(parent: ViewGroup, sizeSp: Float): View {
         val v = View(themedContext).apply {
             val scale = getScale()
             val w = (themedContext.resources.displayMetrics.density * scale * 1).toInt().coerceAtLeast(1)
@@ -441,11 +601,13 @@ class StatusPanelController(
             setBackgroundColor(Palette.DIVIDER)
         }
         parent.addView(v)
+        return v
     }
 
-    private fun addSpace(parent: ViewGroup, size: Int, vertical: Boolean = false) {
+    private fun addSpace(parent: ViewGroup, size: Int, vertical: Boolean = false): View {
         val v = View(themedContext)
         parent.addView(v, if (vertical) LinearLayout.LayoutParams(1, size) else LinearLayout.LayoutParams(size, 1))
+        return v
     }
 
     private fun getWifiVersionLabel(data: HUDData): String {

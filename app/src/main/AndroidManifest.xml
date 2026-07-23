@@ -27,7 +27,7 @@
         <activity
             android:name=".DeveloperModeActivity"
             android:exported="false"
-            android:label="Developer Mode" />
+            android:label="@string/dev_mode_title" />
         <activity
             android:name=".DiagnosticsActivity"
             android:exported="false"
