@@ -31,6 +31,7 @@ class WindowManagerContainer(
     override fun addView(view: View, params: WindowManager.LayoutParams) {
         android.util.Log.e("HUD-Lifecycle", "WindowManager.addView | view=$view")
         windowManager.addView(view, params)
+        android.util.Log.d("HUD-Lifecycle", "HUD addView success")
     }
     override fun updateViewLayout(view: View, params: WindowManager.LayoutParams) {
         android.util.Log.d("HUD-Lifecycle", "WindowManager.updateViewLayout | view=$view")
@@ -38,7 +39,9 @@ class WindowManagerContainer(
     }
     override fun removeView(view: View) {
         android.util.Log.e("HUD-Lifecycle", "WindowManager.removeView | view=$view")
-        windowManager.removeView(view)
+        if (view.isAttachedToWindow) {
+            runCatching { windowManager.removeView(view) }
+        }
     }
     override fun getWidth(): Int = displayWidth
     override fun getHeight(): Int = displayHeight

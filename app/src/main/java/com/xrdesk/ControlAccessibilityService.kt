@@ -132,6 +132,7 @@ class ControlAccessibilityService : AccessibilityService() {
     private var windowManager: WindowManager? = null
     private var overlayWindowContext: Context? = null
     private var displayInfo: DisplaySessionManager.ExternalDisplayInfo? = null
+    private var overlaySessionReady = false
     private var attachRetryInfo: DisplaySessionManager.ExternalDisplayInfo? = null
     private var attachRetryCount = 0
     private var attachRetryRunnable: Runnable? = null
@@ -645,7 +646,7 @@ class ControlAccessibilityService : AccessibilityService() {
                 SessionStore.lastBackFailure = "external_window_missing"
                 return false
             }
-            val focused = dispatchFocusActivationGesture(info, allowFallback = true)
+            val focused = dispatchFocusActivationGesture(info, snapshot, allowFallback = true)
             if (focused) {
                 scheduleDeferredBackAfterFocusProbe(info.displayId)
                 return true
@@ -663,18 +664,19 @@ class ControlAccessibilityService : AccessibilityService() {
             cancelDrag()
             cancelScrollGesture()
             if (SettingsStore.touchpadAutoFocusEnabled &&
-                dispatchFocusActivationGesture(info, allowFallback = true)
+                dispatchFocusActivationGesture(info, snapshot, allowFallback = true)
             ) {
                 SessionStore.lastBackFailure = "external_not_focused"
                 DiagnosticsLog.add("Back", "focus activation requested; require user retry")
                 return false
             }
         }
-        return executeBackWithLogging("immediate", allowFocusRetry = true)
+        return executeBackWithLogging("immediate", snapshot, allowFocusRetry = true)
     }
 
     private fun executeBackWithLogging(
         reason: String,
+        snapshot: List<AccessibilityWindowInfo>? = null,
         allowFocusRetry: Boolean
     ): Boolean {
         val now = SystemClock.uptimeMillis()
@@ -688,9 +690,9 @@ class ControlAccessibilityService : AccessibilityService() {
             DiagnosticsLog.add("Back", "blocked (no external display)")
             return false
         }
-        val snapshot = snapshotWindows()
-        val externalState = resolveExternalWindowState(info, snapshot)
-        logBackFocusSnapshot("action", info, snapshot, externalState)
+        val windowSnapshot = snapshot ?: snapshotWindows()
+        val externalState = resolveExternalWindowState(info, windowSnapshot)
+        logBackFocusSnapshot("action", info, windowSnapshot, externalState)
         if (externalState == null || (!externalState.isActive && !externalState.isFocused)) {
             DiagnosticsLog.add("Back", 
                 "external display not focused at action " +
@@ -699,7 +701,7 @@ class ControlAccessibilityService : AccessibilityService() {
             )
             if (allowFocusRetry &&
                 SettingsStore.touchpadAutoFocusEnabled &&
-                dispatchFocusActivationGesture(info, allowFallback = true)
+                dispatchFocusActivationGesture(info, windowSnapshot, allowFallback = true)
             ) {
                 SessionStore.lastBackFailure = "external_not_focused"
                 DiagnosticsLog.add("Back", "focus activation requested; require user retry")
@@ -773,14 +775,16 @@ class ControlAccessibilityService : AccessibilityService() {
 
     private fun dispatchFocusActivationGesture(
         info: DisplaySessionManager.ExternalDisplayInfo,
+        snapshot: List<AccessibilityWindowInfo>? = null,
         allowFallback: Boolean = false
     ): Boolean {
         if (tryTaskFocus()) {
             DiagnosticsLog.add("Back", "focus activation via task manager")
             return true
         }
-        val targetWindow = pickTopAppWindow(info.displayId)
-            ?: windows?.firstOrNull { it.displayId == info.displayId }
+        val windowSnapshot = snapshot ?: windows
+        val targetWindow = pickTopAppWindow(info.displayId, windowSnapshot)
+            ?: windowSnapshot?.firstOrNull { it.displayId == info.displayId }
         val root = targetWindow?.root ?: run {
             DiagnosticsLog.add("Back", "focus activation skipped (no window root)")
             if (allowFallback) {
@@ -852,7 +856,7 @@ class ControlAccessibilityService : AccessibilityService() {
             DiagnosticsLog.add("Back", "focus warmup skipped reason=$reason already_focused=true")
             return
         }
-        val success = dispatchFocusActivationGesture(info)
+        val success = dispatchFocusActivationGesture(info, snapshot)
         DiagnosticsLog.add("Back", "focus warmup reason=$reason success=$success")
     }
 
@@ -927,8 +931,12 @@ class ControlAccessibilityService : AccessibilityService() {
         )
     }
 
-    private fun pickTopAppWindow(displayId: Int): AccessibilityWindowInfo? {
-        val matches = windows?.filter { it.displayId == displayId }.orEmpty()
+    private fun pickTopAppWindow(
+        displayId: Int,
+        snapshot: List<AccessibilityWindowInfo>? = null
+    ): AccessibilityWindowInfo? {
+        val windowList = snapshot ?: windows
+        val matches = windowList?.filter { it.displayId == displayId }.orEmpty()
         if (matches.isEmpty()) return null
         val appWindows = matches.filter { it.type == AccessibilityWindowInfo.TYPE_APPLICATION }
         val candidates = if (appWindows.isNotEmpty()) appWindows else matches
@@ -1603,30 +1611,15 @@ class ControlAccessibilityService : AccessibilityService() {
         else 
             R.style.Theme_XRDesk
 
-        // 2. Wrap the WindowContext for Themes (Fixes Styles)
+        android.util.Log.e("HUD-Lifecycle", "WindowContext created")
         overlayWindowContext = android.view.ContextThemeWrapper(windowContext, themeRes)
         
-        // 3. Get WindowManager from the WRAPPED WindowContext
         val wm = overlayWindowContext!!.getSystemService(WindowManager::class.java)
         windowManager = wm
 
-        // AUDIT LOG (FINAL CHECK)
         if (Build.VERSION.SDK_INT >= 30) {
             android.util.Log.e("Geometry-Audit", "[REAL HUD] WindowContext Bounds=${wm.currentWindowMetrics.bounds} " +
                 "Orientation=${windowContext.resources.configuration.orientation}")
-        }
-
-        // Initialize HUD if enabled
-        HUDManager.onDisplayConnected(overlayWindowContext!!, wm, info)
-        DiagnosticsLog.add("WindowManager", "Attached to display ${info.displayId}")
-
-        if (SettingsStore.switchBarEnabled) {
-            switchBarController = SwitchBarController(
-                this,
-                overlayWindowContext!!,
-                wm,
-                info
-            )
         }
 
         val view = CursorOverlayView(overlayWindowContext!!)
@@ -1650,15 +1643,57 @@ class ControlAccessibilityService : AccessibilityService() {
         val tipOffset = cursorTipOffsetPx()
         params.x = (cursorX - tipOffset.x).toInt()
         params.y = (cursorY - tipOffset.y).toInt()
-        runCatching { wm.addView(view, params) }.onFailure {
+        
+        android.util.Log.d("HUD-Lifecycle", "Cursor addView started")
+        try {
+            wm.addView(view, params)
+            android.util.Log.d("HUD-Lifecycle", "Cursor addView success")
+            notifyOverlaySessionReady(info, wm, overlayWindowContext!!)
+        } catch (e: WindowManager.BadTokenException) {
+            android.util.Log.e("HUD-Lifecycle", "Cursor addView failed (BadToken): ${e.message}")
             detachOverlay()
             if (allowRetry) {
-                DiagnosticsLog.add("Accessibility", "Accessibility: attach failed, retrying id=${info.displayId}")
+                DiagnosticsLog.add("Accessibility", "Accessibility: attach failed (BadToken), retrying id=${info.displayId}")
                 scheduleAttachRetry(info)
             }
+        } catch (e: Throwable) {
+            android.util.Log.e("HUD-Lifecycle", "Cursor addView failed hard: ${e.message}")
+            detachOverlay()
+            throw e
         }
+        
         scheduleCursorHide()
         cancelAttachRetry()
+    }
+
+    /**
+     * Central entry point for initializing secondary overlay components.
+     * Called only after the primary window (cursor) has been successfully attached,
+     * ensuring that the WindowContext has a valid token.
+     */
+    private fun notifyOverlaySessionReady(
+        info: DisplaySessionManager.ExternalDisplayInfo,
+        wm: WindowManager,
+        windowContext: Context
+    ) {
+        if (overlaySessionReady) return
+        overlaySessionReady = true
+        
+        android.util.Log.e("HUD-Lifecycle", "Overlay session ready for display ${info.displayId}")
+
+        // 1. Initialize HUD
+        HUDManager.onDisplayConnected(windowContext, wm, info)
+        DiagnosticsLog.add("WindowManager", "HUD Attached to display ${info.displayId}")
+
+        // 2. Initialize SwitchBar if enabled
+        if (SettingsStore.switchBarEnabled) {
+            switchBarController = SwitchBarController(
+                this,
+                windowContext,
+                wm,
+                info
+            )
+        }
     }
 
     private fun scheduleAttachRetry(info: DisplaySessionManager.ExternalDisplayInfo) {
@@ -1693,7 +1728,9 @@ class ControlAccessibilityService : AccessibilityService() {
     }
 
     private fun detachOverlay() {
+        android.util.Log.e("HUD-Lifecycle", "Overlay session destroyed")
         android.util.Log.d("Accessibility", "detachOverlay CALLED - isFinishing logic check")
+        overlaySessionReady = false
         deferredBackRunnable?.let { handler.removeCallbacks(it) }
         deferredBackRunnable = null
         cancelAttachRetry()
@@ -1704,7 +1741,9 @@ class ControlAccessibilityService : AccessibilityService() {
         switchBarController?.teardown()
         switchBarController = null
         overlayView?.let { view ->
-            runCatching { windowManager?.removeView(view) }
+            if (view.isAttachedToWindow) {
+                runCatching { windowManager?.removeView(view) }
+            }
         }
         overlayView = null
         windowManager = null

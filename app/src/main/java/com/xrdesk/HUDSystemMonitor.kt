@@ -130,6 +130,7 @@ object HUDSystemMonitor {
         val cm = appContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
         cm?.unregisterNetworkCallback(networkCallback)
         handler.removeCallbacks(timeTicker)
+        appContext = null
     }
 
     fun publishCursor(x: Float, y: Float) {

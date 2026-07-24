@@ -39,7 +39,7 @@ object HUDManager {
     }
 
     fun onDisplayConnected(context: Context, windowManager: WindowManager, info: DisplaySessionManager.ExternalDisplayInfo) {
-        android.util.Log.e("Cursor-Debug", "onDisplayConnected: Display=${info.displayId} hudEnabled=${SettingsStore.hudEnabled}")
+        android.util.Log.d("HUD-Lifecycle", "onDisplayConnected: Display=${info.displayId} hudEnabled=${SettingsStore.hudEnabled}")
         contextRef = WeakReference(context)
         currentWindowManager = windowManager
         
@@ -88,6 +88,7 @@ object HUDManager {
         }
         
         if (statusPanel == null) {
+            android.util.Log.d("HUD-Lifecycle", "HUD initialization started")
             HUDSystemMonitor.start(context)
             val container = WindowManagerContainer(wm, info.width, info.height)
             statusPanel = StatusPanelController(context, container, isPreview = false)

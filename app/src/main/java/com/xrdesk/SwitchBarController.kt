@@ -54,9 +54,11 @@ class SwitchBarController(
         params.gravity = Gravity.BOTTOM or Gravity.START
         params.x = 0
         params.y = 0
-        runCatching { windowManager.addView(view, params) }.onFailure {
-            DiagnosticsLog.add("SwitchBar", "SwitchBar: attach failed ${it.message}")
-        }
+        
+        android.util.Log.d("HUD-Lifecycle", "SwitchBar initialization started")
+        windowManager.addView(view, params)
+        android.util.Log.d("HUD-Lifecycle", "SwitchBar addView success")
+        
         view.doOnLayout {
             if (baseBarHeightPx == 0) {
                 baseBarHeightPx = it.height
@@ -105,7 +107,9 @@ class SwitchBarController(
     fun teardown() {
         cancelShow()
         cancelHide()
-        runCatching { windowManager.removeView(view) }
+        if (view.isAttachedToWindow) {
+            runCatching { windowManager.removeView(view) }
+        }
     }
 
     fun refreshScale() {

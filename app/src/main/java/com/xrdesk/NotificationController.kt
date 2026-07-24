@@ -99,7 +99,9 @@ class NotificationController(
             .setInterpolator(interpolator)
             .setListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    runCatching { windowManager.removeView(card) }
+                    if (card.isAttachedToWindow) {
+                        runCatching { windowManager.removeView(card) }
+                    }
                     isDisplaying = false
                     currentCard = null
                     processQueue()
@@ -173,7 +175,9 @@ class NotificationController(
         handler.removeCallbacksAndMessages(null)
         queue.clear()
         currentCard?.let { 
-            runCatching { windowManager.removeView(it) }
+            if (it.isAttachedToWindow) {
+                runCatching { windowManager.removeView(it) }
+            }
         }
         currentCard = null
         isDisplaying = false

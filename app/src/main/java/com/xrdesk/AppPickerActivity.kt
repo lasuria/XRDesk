@@ -49,7 +49,12 @@ class AppPickerActivity : AppCompatActivity() {
                         this,
                         getString(R.string.app_launched_toast, entry.label)
                     )
-                    startActivity(android.content.Intent(this, TouchpadActivity::class.java))
+                    // Return result and finish. Caller (TouchpadActivity) is already in the stack.
+                    val data = android.content.Intent().apply {
+                        putExtra(EXTRA_PICK_PACKAGE, entry.packageName)
+                        putExtra(EXTRA_PICK_LABEL, entry.label)
+                    }
+                    setResult(RESULT_OK, data)
                     finish()
                 } else {
                     val message = AppLauncher.buildFailureMessage(this, result)

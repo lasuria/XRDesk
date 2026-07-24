@@ -35,6 +35,7 @@ object DisplaySessionManager {
 
     private val displayListener = object : DisplayManager.DisplayListener {
         override fun onDisplayAdded(displayId: Int) {
+            android.util.Log.e("HUD-Lifecycle", "Display detected: id=$displayId")
             DiagnosticsLog.add("Display", "DisplayListener: added id=$displayId registered=$listenerRegistered")
             refreshDisplays()
         }

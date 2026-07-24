@@ -145,7 +145,9 @@ class StatusPanelController(
             alpha = 0f
             visibility = View.GONE
         }
+        android.util.Log.d("HUD-Lifecycle", "HUD initialization started")
         container.addView(rootLayout!!, createRootParams())
+        android.util.Log.d("HUD-Lifecycle", "HUD addView success")
     }
 
     private fun observeData() {
@@ -722,7 +724,11 @@ class StatusPanelController(
     fun destroy() {
         handler.removeCallbacks(hideRunnable)
         scope.cancel()
-        rootLayout?.let { container.removeView(it) }
+        rootLayout?.let { 
+            if (it.isAttachedToWindow) {
+                container.removeView(it)
+            }
+        }
         rootLayout = null
     }
 

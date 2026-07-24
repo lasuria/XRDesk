@@ -61,6 +61,15 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     private var touchState = TouchState.IDLE
     private var suppressSingleUntilUp = false
     private var shizukuEnableInFlight = false
+
+    private val appPickerLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            // App was launched successfully. We are back in TouchpadActivity.
+            // Current UX doesn't require specific action here as AppLauncher already did the work.
+            android.util.Log.d("TouchpadActivity", "App picker returned success")
+        }
+    }
+
     private val shizukuBinderListener = Shizuku.OnBinderReceivedListener {
         updateShizukuUI()
     }
@@ -116,7 +125,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             finish()
         }
   binding.touchpadLaunch.setOnClickListener {
-            startActivity(Intent(this, AppPickerActivity::class.java))
+            appPickerLauncher.launch(Intent(this, AppPickerActivity::class.java))
         }
         binding.touchpadBlackout.setOnClickListener {
             setBlackoutVisible(true)
