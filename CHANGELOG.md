@@ -1,19 +1,25 @@
 # Changelog
 
+## 1.1.1
+- Fixed duplicate Remote opening after launching an application.
+- Improved overlay stability during display connection and disconnection.
+- Optimized window handling for better responsiveness.
+- Fixed several random crashes and improved overall stability.
+
 ## 1.1.0
 ### ✨ Features
-- Переход на Material Design 3 и полный редизайн интерфейса.
-- Новый главный экран и навигация по категориям настроек.
-- Обновлённый движок тем с улучшенным контрастом и цветами.
-- Настройка позиции D-Pad и расширенные параметры курсора.
-- Опции блокировки экрана, управления яркостью и сна.
-- Добавлена кнопка быстрого управления HUD-уведомлениями в пульте. 
-- Новый XR HUD с Подробным и Компактным режимами.
-- Интерактивный предпросмотр HUD в реальном времени.
-- Скрытый режим разработчика с инструментами отладки HUD.
-- Продвинутый журнал логов с поиском, фильтрами и паузой.
-- Улучшено распознавание XR-очков и автоматическое восстановление HUD.
-- Оптимизация производительности и поддержка Android 15/16.
+- Migration to Material Design 3 and a complete interface redesign.
+- New Home screen and navigation by setting categories.
+- Updated theme engine with improved contrast and colors.
+- Adjustable D-Pad position and advanced cursor parameters.
+- Screen lock, brightness control, and sleep options.
+- Added quick control button for HUD notifications in the Remote.
+- New XR HUD with Detailed and Compact modes.
+- Real-time interactive HUD preview.
+- Hidden developer mode with HUD debugging tools.
+- Advanced logs with search, filters, and pause.
+- Improved XR glasses detection and automatic HUD recovery.
+- Performance optimization and support for Android 15/16.
 
 ## 1.0.0
 - Initial official release of XRDesk.

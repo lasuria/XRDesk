@@ -427,7 +427,7 @@
     <string name="about_based_on_title">Based on DeskControl</string>
     <string name="about_based_on_summary">Original project (DeskControl)</string>
     <string name="about_xrdesk_title">About Project</string>
-    <string name="about_xrdesk_summary">Version 1.1.0 • Last update 2026.07.23</string>
+    <string name="about_xrdesk_summary">Version 1.1.1 • Last update 2026.07.24</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk is built upon the foundation of DeskControl, an open-source remote control for Android. We have extended it with a modern UI, enhanced theme engine, and specialized XR features.</string>
@@ -444,8 +444,8 @@
     <string name="about_issues_label">Report an Issue</string>
     <string name="about_whats_new">What\'s new</string>
     <string name="about_whats_new_summary">Changelog and release notes</string>
-    <string name="app_version_label">Version 1.1.0</string>
-    <string name="app_build_label">Last update 2026.07.23</string>
+    <string name="app_version_label">Version 1.1.1</string>
+    <string name="app_build_label">Last update 2026.07.24</string>
     <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
     <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
     <string name="about_4pda_label">4PDA Profile</string>
@@ -470,6 +470,10 @@
     <string name="net_airplane">Airplane Mode</string>
     <string name="net_cellular">Cellular Network</string>
     <string name="net_none">No Network</string>
+
+    <string name="changelog_v1_1_1_title">Version 1.1.1</string>
+    <string name="changelog_v1_1_1_date">July 24, 2026</string>
+    <string name="changelog_v1_1_1_content"><![CDATA[• Fixed duplicate Remote opening after launching an application.\n• Improved overlay stability during display connection and disconnection.\n• Optimized window handling for better responsiveness.\n• Fixed several random crashes and improved overall stability.]]></string>
 
     <string name="changelog_v1_1_0_title">Version 1.1.0</string>
     <string name="changelog_v1_1_0_date">July 2026</string>

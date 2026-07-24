@@ -414,9 +414,9 @@
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">版本 v.1.1.5.post2</string>
     <string name="about_whats_new">更新日志</string>
-    <string name="app_version_label">版本 1.1.0</string>
-    <string name="app_build_label">最后更新 2026.07.23</string>
-    <string name="about_xrdesk_summary">版本 1.1.0 • 最后更新 2026.07.23</string>
+    <string name="app_version_label">版本 1.1.1</string>
+    <string name="app_build_label">最后更新 2026.07.24</string>
+    <string name="about_xrdesk_summary">版本 1.1.1 • 最后更新 2026.07.24</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk 是在 DeskControl 的基础上构建的，DeskControl 是一个开源的 Android 远程控制。我们通过现代 UI、增强的主题引擎和专业的 XR 功能扩展了它。</string>
@@ -449,6 +449,10 @@
     <string name="net_airplane">飞行模式</string>
     <string name="net_cellular">蜂窝网络</string>
     <string name="net_none">无网络</string>
+
+    <string name="changelog_v1_1_1_title">版本 1.1.1</string>
+    <string name="changelog_v1_1_1_date">2026年7月24日</string>
+    <string name="changelog_v1_1_1_content"><![CDATA[• 修复了启动应用程序后重复打开遥控器的问题。\n• 提高了显示器连接和断开期间覆盖层的稳定性。\n• 优化了窗口处理以提高响应速度。\n• 修复了几个随机崩溃并提高了整体稳定性。]]></string>
 
     <string name="changelog_v1_1_0_title">版本 1.1.0</string>
     <string name="changelog_v1_1_0_date">2026年7月</string>

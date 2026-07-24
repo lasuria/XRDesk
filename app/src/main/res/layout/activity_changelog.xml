@@ -36,12 +36,12 @@
             android:paddingHorizontal="24dp"
             android:paddingBottom="40dp">
 
-            <!-- Version 1.1.0 -->
+            <!-- Version 1.1.1 -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="@string/changelog_v1_1_0_title"
+                android:text="@string/changelog_v1_1_1_title"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
                 android:textColor="?attr/colorOnSurface"
                 android:fontFamily="sans-serif-medium" />
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/changelog_v1_1_0_date"
+                android:text="@string/changelog_v1_1_1_date"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorPrimary" />
 
@@ -58,10 +58,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/changelog_v1_1_0_content"
+                android:text="@string/changelog_v1_1_1_content"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textColor="?attr/colorOnSurface"
                 android:lineSpacingExtra="6dp" />
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="32dp" android:background="?attr/colorOutlineVariant" />
+
+            <!-- Version 1.1.0 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/changelog_v1_1_0_title"
+                android:textAppearance="?attr/textAppearanceTitleSmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:fontFamily="sans-serif-medium"
+                android:alpha="0.6" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/changelog_v1_1_0_date"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha="0.5" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/changelog_v1_1_0_content"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha="0.6"
+                android:lineSpacingExtra="2dp" />
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginVertical="32dp" android:background="?attr/colorOutlineVariant" />
 

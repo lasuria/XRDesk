@@ -30,7 +30,7 @@ class DeveloperModeActivity : BaseSettingsActivity() {
         }
 
         findViewById<TextView>(R.id.tvVersion).text = getString(R.string.dev_version_label, BuildConfig.VERSION_NAME)
-        findViewById<TextView>(R.id.tvBuild).text = getString(R.string.dev_build_label, "2026.07.23")
+        findViewById<TextView>(R.id.tvBuild).text = getString(R.string.dev_build_label, "2026.07.24")
 
         findViewById<View>(R.id.btnResetDeveloper).setOnClickListener {
             SettingsStore.setDeveloperModeUnlocked(this, false)
