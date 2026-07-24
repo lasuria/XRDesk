@@ -47,10 +47,15 @@
     <string name="diagnostics_last_launch_failure">上次启动失败：%1$s</string>
     <string name="diagnostics_last_injection_result">上次注入结果：%1$s</string>
     <string name="diagnostics_logs_label">日志：</string>
+    <string name="diagnostics_search_hint">搜索日志…</string>
     <string name="diagnostics_logs_empty">暂无日志</string>
     <string name="diagnostics_none">无</string>
     <string name="diagnostics_copy_logs">复制</string>
     <string name="diagnostics_copy_logs_done">日志已复制</string>
+    <string name="diagnostics_tag_all">全部</string>
+    <string name="diagnostics_btn_pause">暂停</string>
+    <string name="diagnostics_btn_resume">继续</string>
+    <string name="diagnostics_btn_clear">清除</string>
 
     <string name="host_title">外接显示器托管</string>
     <string name="host_no_external_display">未检测到外接显示器</string>
@@ -114,6 +119,12 @@
     <string name="settings_switch_bar_app_add">添加常驻应用</string>
     <string name="settings_switch_bar_app_add_slot">添加常驻应用 %1$d</string>
     <string name="settings_switch_bar_app_pick_placeholder">选择应用</string>
+    <string name="settings_text_size">字体大小</string>
+    <string name="settings_text_size_value">%1$d%%</string>
+    <string name="settings_touchpad_two_finger_gestures">双指手势</string>
+    <string name="settings_touchpad_two_finger_summary">启用双指滚动和辅助控制。</string>
+    <string name="settings_touchpad_three_finger_gestures">三指手势</string>
+    <string name="settings_touchpad_three_finger_summary">启用使用三指模拟物理滑动。</string>
     <string name="touchpad_intro_title">触控板提示</string>
     <string name="touchpad_intro_got_it">知道了</string>
     <string name="touchpad_intro_gesture_move">移动：单指滑动</string>
@@ -331,7 +342,7 @@
     <string name="settings_cursor_speed_default">0.9x</string>
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
-    <string name="empty_text" translatable="false"></string>
+    <string name="empty_text" translatable="false" />
     <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
     <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
     <string name="settings_about_title">关于</string>
@@ -361,6 +372,7 @@
     <string name="settings_hud_manage_widgets">管理小部件</string>
     <string name="settings_hud_zone">激活区域</string>
     <string name="settings_hud_delay">隐藏延迟</string>
+    <string name="settings_hud_connected">已连接</string>
     <string name="settings_hud_section_notifications">通知</string>
     <string name="settings_hud_enable_notifications">启用通知</string>
     <string name="settings_hud_grant_notifications">授予通知权限</string>
@@ -442,7 +454,7 @@
     <string name="dev_version_label">版本: %1$s</string>
     <string name="dev_build_label">构建: %1$s</string>
     <string name="dev_disable">禁用开发者模式</string>
-    <string name="dev_toast_steps">开发者模式：还剩 %1$d 步...</string>
+    <string name="dev_toast_steps">开发者模式：还剩 %1$d 步…</string>
     <string name="dev_toast_enabled">开发者模式已启用</string>
     <string name="dev_toast_already">开发者模式已处于开启状态</string>
 

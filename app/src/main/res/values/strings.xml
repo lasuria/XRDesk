@@ -48,10 +48,15 @@
     <string name="diagnostics_last_launch_failure">Last launch failure: %1$s</string>
     <string name="diagnostics_last_injection_result">Last injection result: %1$s</string>
     <string name="diagnostics_logs_label">Logs:</string>
+    <string name="diagnostics_search_hint">Search logs…</string>
     <string name="diagnostics_logs_empty">No logs yet</string>
     <string name="diagnostics_none">None</string>
     <string name="diagnostics_copy_logs">Copy</string>
     <string name="diagnostics_copy_logs_done">Logs copied</string>
+    <string name="diagnostics_tag_all">All</string>
+    <string name="diagnostics_btn_pause">Pause</string>
+    <string name="diagnostics_btn_resume">Resume</string>
+    <string name="diagnostics_btn_clear">Clear</string>
 
     <string name="host_title">External Display Host</string>
     <string name="host_no_external_display">No external display detected</string>
@@ -348,7 +353,7 @@
     <string name="settings_cursor_speed_default">0.9x</string>
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
-    <string name="empty_text" translatable="false"></string>
+    <string name="empty_text" translatable="false" />
     <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
     <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
     <string name="settings_about_title">About</string>
@@ -463,7 +468,7 @@
     <string name="dev_version_label">Version: %1$s</string>
     <string name="dev_build_label">Build: %1$s</string>
     <string name="dev_disable">Disable Developer Mode</string>
-    <string name="dev_toast_steps">Developer Mode: %1$d steps away...</string>
+    <string name="dev_toast_steps">Developer Mode: %1$d steps away…</string>
     <string name="dev_toast_enabled">Developer Mode enabled</string>
     <string name="dev_toast_already">Developer Mode is already enabled</string>
 

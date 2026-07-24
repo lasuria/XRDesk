@@ -47,10 +47,15 @@
     <string name="diagnostics_last_launch_failure">Последняя ошибка запуска: %1$s</string>
     <string name="diagnostics_last_injection_result">Результат ввода: %1$s</string>
     <string name="diagnostics_logs_label">Логи:</string>
+    <string name="diagnostics_search_hint">Поиск по логам…</string>
     <string name="diagnostics_logs_empty">Логов пока нет</string>
     <string name="diagnostics_none">Нет</string>
     <string name="diagnostics_copy_logs">Копировать</string>
     <string name="diagnostics_copy_logs_done">Логи скопированы</string>
+    <string name="diagnostics_tag_all">Все</string>
+    <string name="diagnostics_btn_pause">Пауза</string>
+    <string name="diagnostics_btn_resume">Продолжить</string>
+    <string name="diagnostics_btn_clear">Очистить</string>
 
     <string name="host_title">Хост внешнего дисплея</string>
     <string name="host_no_external_display">Внешний дисплей не обнаружен</string>
@@ -347,7 +352,7 @@
     <string name="settings_cursor_speed_default">0.9x</string>
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
-    <string name="empty_text" translatable="false"></string>
+    <string name="empty_text" translatable="false" />
     <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
     <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
     <string name="settings_about_title">О приложении</string>
@@ -377,6 +382,17 @@
     <string name="settings_hud_manage_widgets">Управление виджетами</string>
     <string name="settings_hud_zone">Зона активации</string>
     <string name="settings_hud_delay">Задержка скрытия</string>
+    <string name="settings_hud_edge_top">Сверху</string>
+    <string name="settings_hud_edge_bottom">Снизу</string>
+    <string name="settings_hud_edge_left">Слева</string>
+    <string name="settings_hud_edge_right">Справа</string>
+    <string name="settings_hud_edge_top_left">Сверху слева</string>
+    <string name="settings_hud_edge_top_right">Сверху справа</string>
+    <string name="settings_hud_edge_bottom_left">Снизу слева</string>
+    <string name="settings_hud_edge_bottom_right">Снизу справа</string>
+    <string name="settings_hud_edge_all">Со всех сторон</string>
+    <string name="settings_hud_layout_horizontal">Горизонтальное</string>
+    <string name="settings_hud_layout_vertical">Вертикальное</string>
     <string name="settings_hud_section_notifications">Уведомления</string>
     <string name="settings_hud_enable_notifications">Включить уведомления</string>
     <string name="settings_hud_grant_notifications">Разрешить доступ к уведомлениям</string>
@@ -448,23 +464,13 @@
     <string name="dev_version_label">Версия: %1$s</string>
     <string name="dev_build_label">Сборка: %1$s</string>
     <string name="dev_disable">Выключить режим разработчика</string>
-    <string name="dev_toast_steps">Режим разработчика: осталось шагов: %1$d...</string>
+    <string name="dev_toast_steps">Режим разработчика: осталось шагов: %1$d…</string>
     <string name="dev_toast_enabled">Режим разработчика включен</string>
     <string name="dev_toast_already">Вы уже разработчик</string>
 
     <string name="net_airplane">Режим полета</string>
     <string name="net_cellular">Мобильная сеть</string>
     <string name="net_none">Нет сети</string>
-
-    <string name="settings_hud_edge_top">Сверху</string>
-    <string name="settings_hud_edge_bottom">Снизу</string>
-    <string name="settings_hud_edge_left">Слева</string>
-    <string name="settings_hud_edge_right">Справа</string>
-    <string name="settings_hud_edge_top_left">Сверху слева</string>
-    <string name="settings_hud_edge_top_right">Сверху справа</string>
-    <string name="settings_hud_edge_bottom_left">Снизу слева</string>
-    <string name="settings_hud_edge_bottom_right">Снизу справа</string>
-    <string name="settings_hud_edge_all">Со всех сторон</string>
 
     <string name="changelog_v1_1_1_title">Версия 1.1.1</string>
     <string name="changelog_v1_1_1_date">24 июля 2026</string>

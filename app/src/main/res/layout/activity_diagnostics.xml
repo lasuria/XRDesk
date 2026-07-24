@@ -30,12 +30,13 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:hint="Search logs..."
+            android:hint="@string/diagnostics_search_hint"
             android:background="@drawable/touchpad_area_bg"
             android:paddingHorizontal="12dp"
             android:textSize="14sp"
             android:maxLines="1"
-            android:inputType="text" />
+            android:inputType="text"
+            android:importantForAutofill="no" />
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/tagFilterDropdown"
@@ -45,7 +46,7 @@
             android:background="@drawable/touchpad_area_bg"
             android:paddingHorizontal="12dp"
             android:textSize="14sp"
-            android:text="All"
+            android:text="@string/diagnostics_tag_all"
             android:inputType="none"
             android:focusable="false"
             android:clickable="true" />
@@ -80,6 +81,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:src="@drawable/ic_arrow_down"
+            android:contentDescription="@string/diagnostics_title"
             app:fabSize="mini"
             app:tint="?attr/colorOnPrimary"
             android:backgroundTint="?attr/colorPrimary" />
@@ -98,7 +100,7 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pause"
+            android:text="@string/diagnostics_btn_pause"
             app:icon="@drawable/ic_play_pause" />
 
         <com.google.android.material.button.MaterialButton
@@ -106,7 +108,7 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Clear"
+            android:text="@string/diagnostics_btn_clear"
             app:icon="@drawable/ic_settings" />
     </LinearLayout>
 </LinearLayout>

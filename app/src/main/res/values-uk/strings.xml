@@ -47,10 +47,15 @@
     <string name="diagnostics_last_launch_failure">Остання помилка запуску: %1$s</string>
     <string name="diagnostics_last_injection_result">Результат введення: %1$s</string>
     <string name="diagnostics_logs_label">Логи:</string>
+    <string name="diagnostics_search_hint">Пошук по логах…</string>
     <string name="diagnostics_logs_empty">Логов поки немає</string>
     <string name="diagnostics_none">Немає</string>
     <string name="diagnostics_copy_logs">Копіювати</string>
     <string name="diagnostics_copy_logs_done">Логи скопійовано</string>
+    <string name="diagnostics_tag_all">Усі</string>
+    <string name="diagnostics_btn_pause">Пауза</string>
+    <string name="diagnostics_btn_resume">Продовжити</string>
+    <string name="diagnostics_btn_clear">Очистити</string>
 
     <string name="host_title">Хост зовнішнього дисплея</string>
     <string name="host_no_external_display">Зовнішній дисплей не виявлено</string>
@@ -347,7 +352,7 @@
     <string name="settings_cursor_speed_default">0.9x</string>
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
-    <string name="empty_text" translatable="false"></string>
+    <string name="empty_text" translatable="false" />
     <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
     <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
     <string name="settings_about_title">Про додаток</string>
@@ -377,6 +382,17 @@
     <string name="settings_hud_manage_widgets">Керування віджетами</string>
     <string name="settings_hud_zone">Зона активації</string>
     <string name="settings_hud_delay">Затримка приховування</string>
+    <string name="settings_hud_edge_top">Зверху</string>
+    <string name="settings_hud_edge_bottom">Знизу</string>
+    <string name="settings_hud_edge_left">Зліва</string>
+    <string name="settings_hud_edge_right">Справа</string>
+    <string name="settings_hud_edge_top_left">Зверху зліва</string>
+    <string name="settings_hud_edge_top_right">Зверху справа</string>
+    <string name="settings_hud_edge_bottom_left">Знизу зліва</string>
+    <string name="settings_hud_edge_bottom_right">Знизу справа</string>
+    <string name="settings_hud_edge_all">З усіх боків</string>
+    <string name="settings_hud_layout_horizontal">Горизонтальне</string>
+    <string name="settings_hud_layout_vertical">Вертикальне</string>
     <string name="settings_hud_section_notifications">Сповіщення</string>
     <string name="settings_hud_enable_notifications">Увімкнути сповіщення</string>
     <string name="settings_hud_grant_notifications">Надати доступ до сповіщень</string>
@@ -448,7 +464,7 @@
     <string name="dev_version_label">Версія: %1$s</string>
     <string name="dev_build_label">Збірка: %1$s</string>
     <string name="dev_disable">Вимкнути режим розробника</string>
-    <string name="dev_toast_steps">Режим розробника: залишилося кроків: %1$d...</string>
+    <string name="dev_toast_steps">Режим розробника: залишилося кроків: %1$d…</string>
     <string name="dev_toast_enabled">Режим розробника увімкнено</string>
     <string name="dev_toast_already">Ви вже є розробником</string>
 
