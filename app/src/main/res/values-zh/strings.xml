@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name" translatable="false">XRDesk</string>
     <string name="accessibility_service_description">启用后将在外接显示器上显示光标并注入触控/键盘输入。</string>
 
     <string name="external_display_label">外接显示器</string>
@@ -116,15 +117,25 @@
     <string name="settings_switch_bar_scale_default">100%</string>
     <string name="settings_switch_bar_scale_value">%1$d%%</string>
     <string name="settings_switch_bar_apps">常驻应用</string>
-    <string name="settings_switch_bar_app_add">添加常驻应用</string>
     <string name="settings_switch_bar_app_add_slot">添加常驻应用 %1$d</string>
+    <string name="settings_switch_bar_app_add">添加常驻应用</string>
     <string name="settings_switch_bar_app_pick_placeholder">选择应用</string>
+    <string name="settings_section_display">屏幕</string>
+    <string name="settings_section_brightness">亮度</string>
+    <string name="settings_section_security">安全</string>
+    <string name="settings_section_typography">排版</string>
     <string name="settings_text_size">字体大小</string>
     <string name="settings_text_size_value">%1$d%%</string>
+    <string name="settings_section_navigation">导航</string>
     <string name="settings_touchpad_two_finger_gestures">双指手势</string>
     <string name="settings_touchpad_two_finger_summary">启用双指滚动和辅助控制。</string>
     <string name="settings_touchpad_three_finger_gestures">三指手势</string>
     <string name="settings_touchpad_three_finger_summary">启用使用三指模拟物理滑动。</string>
+    <string name="settings_section_scrolling">滚动</string>
+    <string name="settings_section_interaction">交互</string>
+    <string name="settings_section_appearance">外观</string>
+    <string name="settings_section_behavior">行为</string>
+    <string name="settings_section_developer">开发者</string>
     <string name="touchpad_intro_title">触控板提示</string>
     <string name="touchpad_intro_got_it">知道了</string>
     <string name="touchpad_intro_gesture_move">移动：单指滑动</string>
@@ -363,22 +374,12 @@
 
     <string name="settings_hud_title">HUD 设置</string>
     <string name="settings_hud_enable">启用 HUD</string>
-    <string name="settings_hud_section_panel">状态面板</string>
-    <string name="settings_hud_status_panel">启用状态面板</string>
     <string name="settings_hud_position">HUD 位置</string>
     <string name="settings_hud_size">HUD 大小</string>
-    <string name="settings_hud_edge">触发边缘</string>
     <string name="settings_hud_layout">面板布局</string>
-    <string name="settings_hud_manage_widgets">管理小部件</string>
     <string name="settings_hud_zone">激活区域</string>
     <string name="settings_hud_delay">隐藏延迟</string>
-    <string name="settings_hud_connected">已连接</string>
     <string name="settings_hud_section_notifications">通知</string>
-    <string name="settings_hud_enable_notifications">启用通知</string>
-    <string name="settings_hud_grant_notifications">授予通知权限</string>
-    <string name="settings_hud_grant_location">授予位置权限</string>
-    <string name="settings_hud_grant_bluetooth">授予蓝牙权限</string>
-    <string name="settings_hud_notification_size">通知大小</string>
     <string name="settings_app_notifications_show">显示通知</string>
     <string name="settings_app_notifications_duration">通知时长</string>
     <string name="notification_duration_short">2秒</string>
@@ -388,18 +389,8 @@
     <string name="settings_hud_debug_always">始终显示状态面板</string>
     <string name="settings_hud_debug_zone">高亮激活区域</string>
     <string name="settings_hud_debug_bounds">显示 HUD 边界</string>
-    <string name="settings_hud_debug_test">显示测试通知</string>
     <string name="settings_hud_edge_top">顶部</string>
     <string name="settings_hud_edge_bottom">底部</string>
-    <string name="settings_hud_edge_left">左侧</string>
-    <string name="settings_hud_edge_right">右侧</string>
-    <string name="settings_hud_edge_top_left">左上角</string>
-    <string name="settings_hud_edge_top_right">右上角</string>
-    <string name="settings_hud_edge_bottom_left">左下角</string>
-    <string name="settings_hud_edge_bottom_right">右下角</string>
-    <string name="settings_hud_edge_all">所有侧面</string>
-    <string name="settings_hud_layout_horizontal">横向</string>
-    <string name="settings_hud_layout_vertical">纵向</string>
     <string name="settings_hud_reset">重置 HUD 设置</string>
 
     <string name="settings_permissions_title">权限</string>
@@ -418,6 +409,15 @@
     <string name="status_ready">就绪</string>
     <string name="status_no_devices">无设备</string>
 
+    <string name="about_based_on_title">基于 DeskControl</string>
+    <string name="about_based_on_summary">原始项目 (DeskControl)</string>
+    <string name="about_xrdesk_title">关于项目</string>
+    <string name="about_xrdesk_summary">版本 1.1.1 • 最后更新 2026.07.24</string>
+    <string name="about_original_project_name">DeskControl</string>
+    <string name="about_original_project_version">v1.1.5.post2</string>
+    <string name="about_original_project_desc">XRDesk 是在 DeskControl 的基础上构建的，DeskControl 是一个开源的 Android 远程控制。我们通过 modern UI、增强的主题引擎和专业的 XR 功能扩展了它。</string>
+    <string name="about_original_author">原作者: exiarepairii</string>
+    <string name="about_fork_maintainer">维护者: lasuriia (Crea)</string>
     <string name="about_fork_author_label">作者</string>
     <string name="about_license_title">许可证</string>
     <string name="about_license_content">GNU General Public License v3.0 (GPL-3.0)</string>
@@ -425,23 +425,14 @@
     <string name="about_fork_project">GitHub 项目 (Fork)</string>
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">版本 v.1.1.5.post2</string>
-    <string name="about_whats_new">更新日志</string>
-    <string name="app_version_label">版本 1.1.1</string>
-    <string name="app_build_label">最后更新 2026.07.24</string>
-    <string name="about_xrdesk_summary">版本 1.1.1 • 最后更新 2026.07.24</string>
-    <string name="about_original_project_name">DeskControl</string>
-    <string name="about_original_project_version">v1.1.5.post2</string>
-    <string name="about_original_project_desc">XRDesk 是在 DeskControl 的基础上构建的，DeskControl 是一个开源的 Android 远程控制。我们通过现代 UI、增强的主题引擎和专业的 XR 功能扩展了它。</string>
-    <string name="about_original_author">原作者: exiarepairii</string>
-    <string name="about_fork_maintainer">维护者: lasuriia (Crea)</string>
     <string name="about_github_label">在 GitHub 上查看</string>
     <string name="about_issues_label">反馈问题</string>
+    <string name="about_whats_new">更新日志</string>
     <string name="about_whats_new_summary">版本历史与更改</string>
+    <string name="app_version_label">版本 1.1.1</string>
+    <string name="app_build_label">最后更新 2026.07.24</string>
     <string name="about_4pda_label">4PDA 个人资料</string>
     <string name="about_xrdesk_desc">XRDesk 是一款面向外接显示器和 XR 眼镜的现代 Android 遥控器和触控板。它允许您通过高度可定制的界面和先进的输入处理来控制在副屏上运行的应用程序。</string>
-    <string name="about_based_on_title">基于 DeskControl</string>
-    <string name="about_based_on_summary">原始项目 (DeskControl)</string>
-    <string name="about_xrdesk_title">关于项目</string>
 
     <string name="hud_mode_detailed">详细</string>
     <string name="hud_mode_compact">紧凑</string>
@@ -473,14 +464,4 @@
     <string name="changelog_v1_0_0_title">版本 1.0.0</string>
     <string name="changelog_v1_0_0_date">2026年7月</string>
     <string name="changelog_v1_0_0_content"><![CDATA[• XRDesk 首次公开发布。\n• 基于 DeskControl。\n• 自定义主题编辑器。\n• 主题 JSON 导出/导入。\n• 浅色、深色和 AMOLED 主题。\n• 支持英语、俄语、乌克兰语和中文支持。\n• 初始“关于”部分。]]></string>
-    <string name="settings_section_display">屏幕</string>
-    <string name="settings_section_brightness">亮度</string>
-    <string name="settings_section_security">安全</string>
-    <string name="settings_section_typography">排版</string>
-    <string name="settings_section_navigation">导航</string>
-    <string name="settings_section_scrolling">滚动</string>
-    <string name="settings_section_interaction">交互</string>
-    <string name="settings_section_appearance">外观</string>
-    <string name="settings_section_behavior">行为</string>
-    <string name="settings_section_developer">开发者</string>
 </resources>

@@ -1,8 +1,8 @@
 package com.xrdesk
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
@@ -21,7 +21,6 @@ class SettingsHUDActivity : BaseSettingsActivity() {
         applyEdgeToEdge(findViewById(R.id.settingsHUDRoot))
 
         val switchHudEnabled = findViewById<MaterialSwitch>(R.id.switchHudEnabled)
-        val switchHudNotifications = findViewById<MaterialSwitch>(R.id.switchHudNotifications)
         val hudSettingsContainer = findViewById<View>(R.id.hudSettingsContainer)
         val switchAppNotifications = findViewById<MaterialSwitch>(R.id.switchAppNotifications)
         val notificationDurationContainer = findViewById<View>(R.id.notificationDurationContainer)
@@ -61,11 +60,6 @@ class SettingsHUDActivity : BaseSettingsActivity() {
         switchHudEnabled.setOnCheckedChangeListener { _, enabled ->
             SettingsStore.setHudEnabled(this, enabled)
             hudSettingsContainer.visibility = if (enabled) View.VISIBLE else View.GONE
-        }
-
-        switchHudNotifications.isChecked = SettingsStore.hudNotificationsEnabled
-        switchHudNotifications.setOnCheckedChangeListener { _, b ->
-            SettingsStore.setHudNotificationsEnabled(this, b)
         }
 
         // 2. HUD Modes
@@ -115,9 +109,6 @@ class SettingsHUDActivity : BaseSettingsActivity() {
 
         updatePositionDropdown(SettingsStore.hudMode, positionDropdown, posContainer)
         setupPreview()
-    }
-
-    private fun startStatusUpdate() { // No longer used but cleanup
     }
 
     private fun updatePositionDropdown(mode: Int, dropdown: MaterialAutoCompleteTextView, container: View) {

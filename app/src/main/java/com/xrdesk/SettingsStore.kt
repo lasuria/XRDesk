@@ -28,8 +28,6 @@ object SettingsStore {
     // HUD POSITIONS
     const val HUD_POS_TOP = 0
     const val HUD_POS_BOTTOM = 1
-    const val HUD_POS_LEFT = 2
-    const val HUD_POS_RIGHT = 3
 
     var nightMode = THEME_LIGHT
         private set
@@ -113,9 +111,6 @@ object SettingsStore {
     private val _hudEnabledFlow = MutableStateFlow(false)
     val hudEnabledFlow = _hudEnabledFlow.asStateFlow()
 
-    private val _hudNotificationsEnabledFlow = MutableStateFlow(true)
-    val hudNotificationsEnabledFlow = _hudNotificationsEnabledFlow.asStateFlow()
-
     private val _developerModeUnlockedFlow = MutableStateFlow(false)
     val developerModeUnlockedFlow = _developerModeUnlockedFlow.asStateFlow()
 
@@ -128,14 +123,8 @@ object SettingsStore {
     private val _hudSizeFlow = MutableStateFlow(80f)
     val hudSizeFlow = _hudSizeFlow.asStateFlow()
 
-    private val _hudStatusPanelEnabledFlow = MutableStateFlow(true)
-    val hudStatusPanelEnabledFlow = _hudStatusPanelEnabledFlow.asStateFlow()
-
     private val _hudActivationZoneFlow = MutableStateFlow(20f)
     val hudActivationZoneFlow = _hudActivationZoneFlow.asStateFlow()
-
-    private val _hudHideDelayFlow = MutableStateFlow(3000L)
-    val hudHideDelayFlow = _hudHideDelayFlow.asStateFlow()
 
     // DEBUG
     var developerMode = false
@@ -146,9 +135,6 @@ object SettingsStore {
         private set
     var hudDebugShowBounds = false
         private set
-
-    private val _developerModeFlow = MutableStateFlow(false)
-    val developerModeFlow = _developerModeFlow.asStateFlow()
 
     private val _hudDebugAlwaysShowFlow = MutableStateFlow(false)
     val hudDebugAlwaysShowFlow = _hudDebugAlwaysShowFlow.asStateFlow()
@@ -414,12 +400,13 @@ object SettingsStore {
         val snapped = Math.round(delayMs / 500.0) * 500
         hudHideDelayMs = snapped.coerceIn(1000, 10000)
         persist(context) { putLong("hud_hide_delay", hudHideDelayMs) }
-        _hudHideDelayFlow.value = hudHideDelayMs
     }
 
     fun setAppNotificationsEnabled(context: Context, enabled: Boolean) {
         appNotificationsEnabled = enabled
         persist(context) { putBoolean("app_notifications_enabled", enabled) }
+        // Unified logic: HUD follows master notification toggle
+        setHudNotificationsEnabled(context, enabled)
     }
 
     fun setAppNotificationDuration(context: Context, duration: Int) {
@@ -483,16 +470,6 @@ object SettingsStore {
         syncHudFlows()
     }
 
-    fun clearTemporaryHudSession() {
-        isSessionCaptured = false
-    }
-
-    fun setDeveloperMode(context: Context, enabled: Boolean) {
-        developerMode = enabled
-        persist(context) { putBoolean("developer_mode", enabled) }
-        _developerModeFlow.value = enabled
-    }
-
     fun setHudDebugAlwaysShow(context: Context, enabled: Boolean) {
         hudDebugAlwaysShow = enabled
         persist(context) { putBoolean("hud_debug_always_show", enabled) }
@@ -554,15 +531,11 @@ object SettingsStore {
     private fun syncHudFlows() {
         android.util.Log.d("SettingsStore", "syncHudFlows: hudEnabled=$hudEnabled hudNotifsEnabled=$hudNotificationsEnabled")
         if (_hudEnabledFlow.value != hudEnabled) _hudEnabledFlow.value = hudEnabled
-        if (_hudNotificationsEnabledFlow.value != hudNotificationsEnabled) _hudNotificationsEnabledFlow.value = hudNotificationsEnabled
         if (_developerModeUnlockedFlow.value != developerModeUnlocked) _developerModeUnlockedFlow.value = developerModeUnlocked
         if (_hudModeFlow.value != hudMode) _hudModeFlow.value = hudMode
         if (_hudPositionFlow.value != hudPosition) _hudPositionFlow.value = hudPosition
         if (_hudSizeFlow.value != hudSizeDp) _hudSizeFlow.value = hudSizeDp
-        if (_hudStatusPanelEnabledFlow.value != hudStatusPanelEnabled) _hudStatusPanelEnabledFlow.value = hudStatusPanelEnabled
         if (_hudActivationZoneFlow.value != hudActivationZoneDp) _hudActivationZoneFlow.value = hudActivationZoneDp
-        if (_hudHideDelayFlow.value != hudHideDelayMs) _hudHideDelayFlow.value = hudHideDelayMs
-        if (_developerModeFlow.value != developerMode) _developerModeFlow.value = developerMode
         if (_hudDebugAlwaysShowFlow.value != hudDebugAlwaysShow) _hudDebugAlwaysShowFlow.value = hudDebugAlwaysShow
         if (_hudDebugHighlightZoneFlow.value != hudDebugHighlightZone) _hudDebugHighlightZoneFlow.value = hudDebugHighlightZone
         if (_hudDebugShowBoundsFlow.value != hudDebugShowBounds) _hudDebugShowBoundsFlow.value = hudDebugShowBounds

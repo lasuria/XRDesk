@@ -47,7 +47,6 @@ class StatusPanelController(
     private object Palette {
         const val BG_CARD = 0xCC1A1C1E.toInt()
         const val TEXT_PRIMARY = 0xFFFFFFFF.toInt()
-        const val TEXT_SECONDARY = 0xB3FFFFFF.toInt()
         const val STROKE = 0x33FFFFFF.toInt()
         const val DIVIDER = 0x44FFFFFF.toInt()
         const val DEBUG_ZONE = 0x330000FF.toInt()
@@ -77,26 +76,21 @@ class StatusPanelController(
 
     private sealed class HUDViewCache {
         class Detailed(
-            val trCard: MaterialCardView,
             val timeTv: TextView,
             val networkIconIv: ImageView,
-            val networkDivider: View,
             val btIconIv: ImageView,
             val btDivider: View,
             val batteryIconIv: ImageView,
             val batteryPctTv: TextView,
-            val blCard: MaterialCardView,
             val networkLabelTv: TextView,
             val networkDetailTv: TextView
         ) : HUDViewCache()
 
         class Compact(
-            val card: MaterialCardView,
             val timeTv: TextView,
             val wifiIconIv: ImageView,
             val wifiLabelTv: TextView,
             val btLayout: LinearLayout,
-            val btIconIv: ImageView,
             val btLabelTv: TextView,
             val batteryIconIv: ImageView,
             val batteryPctTv: TextView,
@@ -371,26 +365,6 @@ class StatusPanelController(
         return w.toFloat() / 1920f
     }
 
-    private fun rebuildHierarchy(root: FrameLayout, mode: Int, highlight: Boolean, showBounds: Boolean) {
-        root.removeAllViews()
-        activeCache = null
-
-        if (highlight) {
-            drawActivationZoneDebug(root)
-        }
-
-        activeCache = when (mode) {
-            SettingsStore.HUD_MODE_FULL_INFO -> buildDetailedLayout(root)
-            else -> buildCompactLayout(root)
-        }
-
-        if (showBounds) {
-            root.setBackgroundResource(R.drawable.debug_red_border)
-        } else {
-            root.background = null
-        }
-    }
-
     private fun drawActivationZoneDebug(root: FrameLayout) {
         val density = context.resources.displayMetrics.density
         val scale = getScale()
@@ -430,7 +404,7 @@ class StatusPanelController(
         addDivider(trLayout, fontSizeClock)
         
         val networkIconIv = addIcon(trLayout, R.drawable.ic_wifi, iconSize)
-        val networkDivider = addDivider(trLayout, fontSizeClock)
+        addDivider(trLayout, fontSizeClock)
         
         val btIconIv = addIcon(trLayout, R.drawable.ic_bluetooth, iconSize)
         val btDivider = addDivider(trLayout, fontSizeClock)
@@ -462,15 +436,12 @@ class StatusPanelController(
         })
 
         return HUDViewCache.Detailed(
-            trCard = trCard,
             timeTv = timeTv,
             networkIconIv = networkIconIv,
-            networkDivider = networkDivider,
             btIconIv = btIconIv,
             btDivider = btDivider,
             batteryIconIv = batteryIconIv,
             batteryPctTv = batteryPctTv,
-            blCard = blCard,
             networkLabelTv = networkLabelTv,
             networkDetailTv = networkDetailTv
         )
@@ -517,7 +488,7 @@ class StatusPanelController(
             gravity = Gravity.CENTER_VERTICAL
             layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
         }
-        val btIconIv = addIcon(btLayout, R.drawable.ic_bluetooth, size * 0.38f)
+        addIcon(btLayout, R.drawable.ic_bluetooth, size * 0.38f)
         addSpace(btLayout, (8 * density * scale).toInt())
         val btLabelTv = addText(btLayout, "", size * 0.25f)
         btLabelTv.alpha = 0.9f
@@ -543,12 +514,10 @@ class StatusPanelController(
         })
 
         return HUDViewCache.Compact(
-            card = card,
             timeTv = timeTv,
             wifiIconIv = wifiIconIv,
             wifiLabelTv = wifiLabelTv,
             btLayout = btLayout,
-            btIconIv = btIconIv,
             btLabelTv = btLabelTv,
             batteryIconIv = batteryIconIv,
             batteryPctTv = batteryPctTv,
@@ -767,8 +736,6 @@ class StatusPanelController(
     private fun getPositionName(pos: Int) = when(pos) {
         SettingsStore.HUD_POS_TOP -> "Top"
         SettingsStore.HUD_POS_BOTTOM -> "Bottom"
-        SettingsStore.HUD_POS_LEFT -> "Left"
-        SettingsStore.HUD_POS_RIGHT -> "Right"
         else -> "Unknown"
     }
 }

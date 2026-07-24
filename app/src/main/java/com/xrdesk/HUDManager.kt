@@ -40,6 +40,9 @@ object HUDManager {
 
     fun onDisplayConnected(context: Context, windowManager: WindowManager, info: DisplaySessionManager.ExternalDisplayInfo) {
         android.util.Log.d("HUD-Lifecycle", "onDisplayConnected: Display=${info.displayId} hudEnabled=${SettingsStore.hudEnabled}")
+        
+        val isNewConnection = currentDisplayInfo == null
+        
         contextRef = WeakReference(context)
         currentWindowManager = windowManager
         
@@ -48,6 +51,10 @@ object HUDManager {
                      currentDisplayInfo?.height != info.height
         
         currentDisplayInfo = info
+
+        if (isNewConnection) {
+            SettingsStore.initializeNotificationSession(context)
+        }
         
         if (SettingsStore.hudEnabled) {
             if (changed) {

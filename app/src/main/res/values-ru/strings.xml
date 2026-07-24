@@ -316,7 +316,7 @@
     <string name="settings_cursor_hide_delay_value">%1$.1fs</string>
     <string name="settings_advanced_section">Дополнительно</string>
     <string name="settings_tuning_title">Тюнинг</string>
-    <string name="settings_tuning_summary">Расширенные настройки зафиксированы на рекомендованных значениях</string>
+    <string name="settings_tuning_summary">Расширенные настройки зафиксированы на рекомендованых значениях</string>
 
     <string name="injection_no_external_display">Нет внешнего дисплея</string>
     <string name="injection_scroll_injected">Прокрутка введена</string>
@@ -373,43 +373,23 @@
 
     <string name="settings_hud_title">Настройки HUD</string>
     <string name="settings_hud_enable">Включить HUD</string>
-    <string name="settings_hud_section_panel">Панель статуса</string>
-    <string name="settings_hud_status_panel">Включить панель статуса</string>
     <string name="settings_hud_position">Положение HUD</string>
     <string name="settings_hud_size">Размер HUD</string>
-    <string name="settings_hud_edge">Край активации</string>
     <string name="settings_hud_layout">Расположение панели</string>
-    <string name="settings_hud_manage_widgets">Управление виджетами</string>
     <string name="settings_hud_zone">Зона активации</string>
     <string name="settings_hud_delay">Задержка скрытия</string>
-    <string name="settings_hud_edge_top">Сверху</string>
-    <string name="settings_hud_edge_bottom">Снизу</string>
-    <string name="settings_hud_edge_left">Слева</string>
-    <string name="settings_hud_edge_right">Справа</string>
-    <string name="settings_hud_edge_top_left">Сверху слева</string>
-    <string name="settings_hud_edge_top_right">Сверху справа</string>
-    <string name="settings_hud_edge_bottom_left">Снизу слева</string>
-    <string name="settings_hud_edge_bottom_right">Снизу справа</string>
-    <string name="settings_hud_edge_all">Со всех сторон</string>
-    <string name="settings_hud_layout_horizontal">Горизонтальное</string>
-    <string name="settings_hud_layout_vertical">Вертикальное</string>
     <string name="settings_hud_section_notifications">Уведомления</string>
-    <string name="settings_hud_enable_notifications">Включить уведомления</string>
-    <string name="settings_hud_grant_notifications">Разрешить доступ к уведомлениям</string>
-    <string name="settings_hud_grant_location">Выдать права локации</string>
-    <string name="settings_hud_grant_bluetooth">Выдать права Bluetooth</string>
-    <string name="settings_hud_notification_size">Размер уведомлений</string>
     <string name="settings_app_notifications_show">Показывать уведомления</string>
     <string name="settings_app_notifications_duration">Длительность уведомлений</string>
     <string name="notification_duration_short">2 сек</string>
     <string name="notification_duration_long">3.5 сек</string>
     <string name="settings_hud_preview">Предпросмотр</string>
-    <string name="settings_hud_connected">Подключено</string>
     <string name="settings_hud_debug_title">HUD Отладка</string>
     <string name="settings_hud_debug_always">Всегда показывать панель</string>
     <string name="settings_hud_debug_zone">Подсветить зону активации</string>
     <string name="settings_hud_debug_bounds">Показать границы HUD</string>
-    <string name="settings_hud_debug_test">Показать тестовое уведомление</string>
+    <string name="settings_hud_edge_top">Сверху</string>
+    <string name="settings_hud_edge_bottom">Снизу</string>
     <string name="settings_hud_reset">Сбросить настройки HUD</string>
 
     <string name="settings_permissions_title">Разрешения</string>

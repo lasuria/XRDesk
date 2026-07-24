@@ -120,8 +120,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
         binding.touchpadBack.setOnClickListener {
             DiagnosticsLog.add("Touchpad", "Touchpad: exit via toolbar")
-            android.util.Log.d("TouchpadActivity", "exit via toolbar, restoring state")
-            SettingsStore.restoreOriginalHudNotificationState()
             finish()
         }
   binding.touchpadLaunch.setOnClickListener {
@@ -232,7 +230,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         setTouchpadActive(false)
         showTouchpadIntroIfNeeded()
         
-        SettingsStore.initializeNotificationSession(this)
         updateNotifButtonUI()
 
         autoLockRunnable = Runnable {
@@ -282,8 +279,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                         }
                         DiagnosticsLog.add("Touchpad", "Touchpad: back forwarded")
                     } else {
-                        android.util.Log.d("TouchpadActivity", "onBackPressed: exiting, restoring state")
-                        SettingsStore.restoreOriginalHudNotificationState()
                         finish()
                     }
                 }
