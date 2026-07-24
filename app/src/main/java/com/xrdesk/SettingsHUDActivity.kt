@@ -5,7 +5,6 @@ import android.widget.ArrayAdapter
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -38,6 +37,7 @@ class SettingsHUDActivity : BaseSettingsActivity() {
         notificationDurationContainer.visibility = if (SettingsStore.appNotificationsEnabled) View.VISIBLE else View.GONE
         switchAppNotifications.setOnCheckedChangeListener { _, enabled ->
             SettingsStore.setAppNotificationsEnabled(this, enabled)
+            SettingsStore.setHudNotificationsEnabled(this, enabled)
             notificationDurationContainer.visibility = if (enabled) View.VISIBLE else View.GONE
         }
 

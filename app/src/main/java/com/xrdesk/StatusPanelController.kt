@@ -3,7 +3,6 @@ package com.xrdesk
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Context
-import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.Typeface
 import android.os.Handler
@@ -47,9 +46,9 @@ class StatusPanelController(
     private object Palette {
         const val BG_CARD = 0xCC1A1C1E.toInt()
         const val TEXT_PRIMARY = 0xFFFFFFFF.toInt()
-        const val STROKE = 0x33FFFFFF.toInt()
-        const val DIVIDER = 0x44FFFFFF.toInt()
-        const val DEBUG_ZONE = 0x330000FF.toInt()
+        const val STROKE = 0x33FFFFFF
+        const val DIVIDER = 0x44FFFFFF
+        const val DEBUG_ZONE = 0x330000FF
     }
 
     private val handler = Handler(Looper.getMainLooper())
@@ -76,21 +75,26 @@ class StatusPanelController(
 
     private sealed class HUDViewCache {
         class Detailed(
+            val trCard: MaterialCardView,
             val timeTv: TextView,
             val networkIconIv: ImageView,
+            val networkDivider: View,
             val btIconIv: ImageView,
             val btDivider: View,
             val batteryIconIv: ImageView,
             val batteryPctTv: TextView,
+            val blCard: MaterialCardView,
             val networkLabelTv: TextView,
             val networkDetailTv: TextView
         ) : HUDViewCache()
 
         class Compact(
+            val card: MaterialCardView,
             val timeTv: TextView,
             val wifiIconIv: ImageView,
             val wifiLabelTv: TextView,
             val btLayout: LinearLayout,
+            val btIconIv: ImageView,
             val btLabelTv: TextView,
             val batteryIconIv: ImageView,
             val batteryPctTv: TextView,
@@ -358,6 +362,26 @@ class StatusPanelController(
         )
     }
 
+    private fun rebuildHierarchy(root: FrameLayout, mode: Int, highlight: Boolean, showBounds: Boolean) {
+        root.removeAllViews()
+        activeCache = null
+
+        if (highlight) {
+            drawActivationZoneDebug(root)
+        }
+
+        activeCache = when (mode) {
+            SettingsStore.HUD_MODE_FULL_INFO -> buildDetailedLayout(root)
+            else -> buildCompactLayout(root)
+        }
+
+        if (showBounds) {
+            root.setBackgroundResource(R.drawable.debug_red_border)
+        } else {
+            root.background = null
+        }
+    }
+
     private fun getScale(): Float {
         if (!isPreview) return 1.0f
         val w = container.getWidth()
@@ -404,7 +428,7 @@ class StatusPanelController(
         addDivider(trLayout, fontSizeClock)
         
         val networkIconIv = addIcon(trLayout, R.drawable.ic_wifi, iconSize)
-        addDivider(trLayout, fontSizeClock)
+        val networkDivider = addDivider(trLayout, fontSizeClock)
         
         val btIconIv = addIcon(trLayout, R.drawable.ic_bluetooth, iconSize)
         val btDivider = addDivider(trLayout, fontSizeClock)
@@ -436,12 +460,15 @@ class StatusPanelController(
         })
 
         return HUDViewCache.Detailed(
+            trCard = trCard,
             timeTv = timeTv,
             networkIconIv = networkIconIv,
+            networkDivider = networkDivider,
             btIconIv = btIconIv,
             btDivider = btDivider,
             batteryIconIv = batteryIconIv,
             batteryPctTv = batteryPctTv,
+            blCard = blCard,
             networkLabelTv = networkLabelTv,
             networkDetailTv = networkDetailTv
         )
@@ -488,7 +515,7 @@ class StatusPanelController(
             gravity = Gravity.CENTER_VERTICAL
             layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
         }
-        addIcon(btLayout, R.drawable.ic_bluetooth, size * 0.38f)
+        val btIconIv = addIcon(btLayout, R.drawable.ic_bluetooth, size * 0.38f)
         addSpace(btLayout, (8 * density * scale).toInt())
         val btLabelTv = addText(btLayout, "", size * 0.25f)
         btLabelTv.alpha = 0.9f
@@ -514,10 +541,12 @@ class StatusPanelController(
         })
 
         return HUDViewCache.Compact(
+            card = card,
             timeTv = timeTv,
             wifiIconIv = wifiIconIv,
             wifiLabelTv = wifiLabelTv,
             btLayout = btLayout,
+            btIconIv = btIconIv,
             btLabelTv = btLabelTv,
             batteryIconIv = batteryIconIv,
             batteryPctTv = batteryPctTv,

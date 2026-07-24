@@ -383,7 +383,7 @@ object SettingsStore {
 
     fun setHudSize(context: Context, sizeDp: Float) {
         // Snap to 5dp steps to match Slider configuration and prevent crashes
-        val snapped = Math.round(sizeDp / 5f) * 5f
+        val snapped = kotlin.math.round(sizeDp / 5f) * 5f
         hudSizeDp = snapped.coerceIn(60f, 120f)
         persist(context) { putFloat("hud_size_dp", hudSizeDp) }
         syncHudFlows()
@@ -397,7 +397,7 @@ object SettingsStore {
 
     fun setHudHideDelay(context: Context, delayMs: Long) {
         // Snap to 500ms steps to match Slider configuration and prevent crashes
-        val snapped = Math.round(delayMs / 500.0) * 500
+        val snapped = kotlin.math.round(delayMs / 500.0).toLong() * 500
         hudHideDelayMs = snapped.coerceIn(1000, 10000)
         persist(context) { putLong("hud_hide_delay", hudHideDelayMs) }
     }
@@ -405,8 +405,6 @@ object SettingsStore {
     fun setAppNotificationsEnabled(context: Context, enabled: Boolean) {
         appNotificationsEnabled = enabled
         persist(context) { putBoolean("app_notifications_enabled", enabled) }
-        // Unified logic: HUD follows master notification toggle
-        setHudNotificationsEnabled(context, enabled)
     }
 
     fun setAppNotificationDuration(context: Context, duration: Int) {
@@ -418,14 +416,13 @@ object SettingsStore {
         // Global setter: Persistent
         persist(context) { putBoolean("hud_notifications_enabled", enabled) }
         
+        // Update the effective state immediately
+        hudNotificationsEnabled = enabled
+        
         if (isSessionCaptured) {
-            // Update the baseline so when session ends, it restores to this new value
+            // Update baseline AND clear override since user intentionally changed global setting
             originalHudNotificationsState = enabled
-            // Recalculate if the current temporary state is still an override
-            temporaryOverrideActive = (hudNotificationsEnabled != enabled)
-        } else {
-            // No session: Update effective state immediately
-            hudNotificationsEnabled = enabled
+            temporaryOverrideActive = false
         }
         
         syncHudFlows()

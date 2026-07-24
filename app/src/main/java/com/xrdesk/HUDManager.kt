@@ -8,8 +8,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
-import kotlin.math.max
-import kotlin.math.min
 
 /**
  * Singleton orchestrator for the HUD system.
@@ -121,11 +119,6 @@ object HUDManager {
     }
 
     fun postNotification(notification: HUDNotification) {
-        if (!SettingsStore.hudNotificationsEnabled) {
-            android.util.Log.d("HUDManager", "postNotification: BLOCKED (hudNotificationsEnabled is false)")
-            return
-        }
-        
         if (notifications == null) {
             android.util.Log.e("HUDManager", "postNotification: notifications controller is NULL! Attempting recovery...")
             if (SettingsStore.hudEnabled && currentDisplayInfo != null) {
