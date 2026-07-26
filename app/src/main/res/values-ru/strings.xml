@@ -416,9 +416,9 @@
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">версия v.1.1.5.post2</string>
     <string name="about_whats_new">Что нового</string>
-    <string name="app_version_label">Версия 1.1.1</string>
-    <string name="app_build_label">Последнее обновление 2026.07.24</string>
-    <string name="about_xrdesk_summary">Версия 1.1.1 • Последнее обновление 2026.07.24</string>
+    <string name="app_version_label">Версия 1.1.2</string>
+    <string name="app_build_label">Последнее обновление 2026.07.26</string>
+    <string name="about_xrdesk_summary">Версия 1.1.2 • Последнее обновление 2026.07.26</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk построен на базе DeskControl — пульта дистанционного управления для Android с открытым исходным кодом. Мы расширили его современным интерфейсом, улучшенным движком тем и специальными функциями для XR.</string>
@@ -451,6 +451,10 @@
     <string name="net_airplane">Режим полета</string>
     <string name="net_cellular">Мобильная сеть</string>
     <string name="net_none">Нет сети</string>
+
+    <string name="changelog_v1_1_2_title">Версия 1.1.2</string>
+    <string name="changelog_v1_1_2_date">26 июля 2026</string>
+    <string name="changelog_v1_1_2_content"><![CDATA[• Удалены неиспользуемые импорты\n• Упрощены вызовы hypot()\n• Сохранена архитектура HUD и сессий]]></string>
 
     <string name="changelog_v1_1_1_title">Версия 1.1.1</string>
     <string name="changelog_v1_1_1_date">24 июля 2026</string>

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2
+- Remove unused imports
+- Simplify hypot() calls
+- Preserve HUD/session architecture
+
 ## 1.1.1
 - Fixed duplicate Remote opening after launching an application.
 - Improved overlay stability during display connection and disconnection.
