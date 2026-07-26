@@ -28,7 +28,7 @@ class TouchpadProcessor(private val tuning: TouchpadTuning) {
         smoothDx = smoothDx + tuning.emaAlpha * (rawDx - smoothDx)
         smoothDy = smoothDy + tuning.emaAlpha * (rawDy - smoothDy)
 
-        val distance = hypot(smoothDx.toDouble(), smoothDy.toDouble()).toFloat()
+        val distance = hypot(smoothDx, smoothDy)
         val deadzone = tuning.jitterThresholdPx
         if (distance <= deadzone) {
             return Output(0f, 0f)

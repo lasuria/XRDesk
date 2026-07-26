@@ -14,7 +14,6 @@ import android.view.ViewConfiguration
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.WindowCompat
 import android.content.Intent
 import android.os.Build
 import androidx.core.content.ContextCompat

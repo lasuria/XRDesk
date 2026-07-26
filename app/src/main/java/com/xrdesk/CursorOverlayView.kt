@@ -7,7 +7,6 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import kotlin.math.hypot
 import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.roundToInt
 import android.animation.ValueAnimator
 import android.os.Handler
@@ -66,7 +65,7 @@ class CursorOverlayView @JvmOverloads constructor(
 
     fun onCursorMoved(dx: Float, dy: Float, dtMs: Long) {
         if (dtMs <= 0L) return
-        val speed = hypot(dx.toDouble(), dy.toDouble()).toFloat() / (dtMs / 1000f)
+        val speed = hypot(dx, dy) / (dtMs / 1000f)
         speedEma = speedEma + SPEED_EMA_ALPHA * (speed - speedEma)
         lastMovementTime = SystemClock.uptimeMillis()
         val now = SystemClock.uptimeMillis()

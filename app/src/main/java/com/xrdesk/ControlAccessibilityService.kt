@@ -24,7 +24,6 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityWindowInfo
 import android.view.KeyEvent
 import android.media.AudioManager
-import android.view.ContextThemeWrapper
 import java.util.ArrayDeque
 import kotlin.math.abs
 import kotlin.math.min
@@ -365,7 +364,7 @@ class ControlAccessibilityService : AccessibilityService() {
         val endY = (startY + dy).coerceIn(safeRect.top, safeRect.bottom)
         val actualDx = endX - startX
         val actualDy = endY - startY
-        val pathLen = kotlin.math.hypot(actualDx.toDouble(), actualDy.toDouble()).toFloat()
+        val pathLen = kotlin.math.hypot(actualDx, actualDy)
         if (pathLen < DIRECT_SCROLL_MIN_PATH_PX) return false
         val horizontalDominant = abs(dx) >= abs(dy)
         if (horizontalDominant && abs(actualDx) < DIRECT_SCROLL_MIN_PRIMARY_PX) return false
