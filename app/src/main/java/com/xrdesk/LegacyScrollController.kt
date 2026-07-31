@@ -13,8 +13,6 @@ class LegacyScrollController(
     private var active = false
     private var scrollMidX = 0f
     private var scrollMidY = 0f
-    private var scrollInjectAnchorX = 0f
-    private var scrollInjectAnchorY = 0f
     private var scrollAccumulatorX = 0f
     private var scrollAccumulatorY = 0f
     private var scrollSpeedMultiplier = 1.0f
@@ -26,11 +24,8 @@ class LegacyScrollController(
         val mid = scrollMidpoint(event)
         scrollMidX = mid.first
         scrollMidY = mid.second
-        val anchor = service.prepareScrollMode(scrollMidX, scrollMidY)
-        scrollInjectAnchorX = anchor.x
-        scrollInjectAnchorY = anchor.y
-        virtualScrollX = anchor.x
-        virtualScrollY = anchor.y
+        virtualScrollX = mid.first
+        virtualScrollY = mid.second
         scrollAccumulatorX = 0f
         scrollAccumulatorY = 0f
         scrollSpeedMultiplier = SettingsStore.touchpadScrollSpeed
@@ -38,7 +33,7 @@ class LegacyScrollController(
         
         service.startContinuousScrollAtPoint(virtualScrollX, virtualScrollY)
         
-        DiagnosticsLog.add("Touchpad", "scroll mode enter anchor=(${scrollInjectAnchorX.toInt()},${scrollInjectAnchorY.toInt()}) speed=$scrollSpeedMultiplier")
+        DiagnosticsLog.add("Touchpad", "scroll mode enter mid=(${virtualScrollX.toInt()},${virtualScrollY.toInt()}) speed=$scrollSpeedMultiplier")
         return true
     }
 
@@ -66,18 +61,6 @@ class LegacyScrollController(
             
             service.updateContinuousScrollTo(virtualScrollX, virtualScrollY)
             
-            // Fallback for legacy mode (if USE_CONTINUOUS_GESTURES is false, this call happens inside the service)
-            if (!service.isGestureBusy()) {
-                 service.performScrollStep(
-                    direction,
-                    scrollInjectAnchorX,
-                    scrollInjectAnchorY,
-                    scrollSpeedMultiplier,
-                    preferGesture = true,
-                    axis = ControlAccessibilityService.ScrollAxis.VERTICAL
-                )
-            }
-            
             scrollAccumulatorY = 0f
         } else if (!vertical && abs(scrollAccumulatorX) >= threshold) {
             val direction = if (scrollAccumulatorX < 0) 1 else -1
@@ -86,16 +69,6 @@ class LegacyScrollController(
             
             service.updateContinuousScrollTo(virtualScrollX, virtualScrollY)
             
-            if (!service.isGestureBusy()) {
-                service.performScrollStep(
-                    direction,
-                    scrollInjectAnchorX,
-                    scrollInjectAnchorY,
-                    scrollSpeedMultiplier,
-                    preferGesture = true,
-                    axis = ControlAccessibilityService.ScrollAxis.HORIZONTAL
-                )
-            }
             scrollAccumulatorX = 0f
         }
     }

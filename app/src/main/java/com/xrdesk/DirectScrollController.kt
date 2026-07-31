@@ -71,16 +71,6 @@ class DirectScrollController(
                 // Continuous Pipeline Update
                 service.updateContinuousScrollTo(directAnchorX + stepDx, directAnchorY + stepDy)
 
-                // Legacy Fallback (discrete injection)
-                if (!service.isGestureBusy()) {
-                    service.performDirectScrollGesture(
-                        directAnchorX,
-                        directAnchorY,
-                        stepDx,
-                        stepDy
-                    )
-                }
-                
                 directAnchorX += stepDx
                 directAnchorY += stepDy
                 directPendingDx -= stepDx
