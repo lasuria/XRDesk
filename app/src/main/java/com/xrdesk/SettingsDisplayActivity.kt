@@ -16,6 +16,7 @@ class SettingsDisplayActivity : BaseSettingsActivity() {
 
         val keepScreenOnSwitch = findViewById<MaterialSwitch>(R.id.switchKeepScreenOn)
         val touchpadAutoDimSwitch = findViewById<MaterialSwitch>(R.id.switchTouchpadAutoDim)
+        val dimOnLockSwitch = findViewById<MaterialSwitch>(R.id.switchDimOnLock)
         val autoDimSliderContainer = findViewById<android.view.View>(R.id.autoDimSliderContainer)
         val touchpadDimLevelValue = findViewById<TextView>(R.id.touchpadDimLevelValue)
         val touchpadDimLevelSlider = findViewById<Slider>(R.id.sliderTouchpadDimLevel)
@@ -33,6 +34,9 @@ class SettingsDisplayActivity : BaseSettingsActivity() {
             SettingsStore.setTouchpadAutoDimEnabled(this, isChecked)
             autoDimSliderContainer.isVisible = isChecked
         }
+
+        dimOnLockSwitch.isChecked = SettingsStore.dimOnLock
+        dimOnLockSwitch.setOnCheckedChangeListener { _, isChecked -> SettingsStore.setDimOnLock(this, isChecked) }
 
         touchpadDimLevelSlider.valueFrom = 0.01f
         touchpadDimLevelSlider.valueTo = 0.15f

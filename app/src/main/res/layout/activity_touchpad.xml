@@ -10,127 +10,90 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Apple Style Toolbar -->
+        <!-- Minimalist Toolbar (Icons Only) -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/touchpadToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="56dp"
-            android:paddingHorizontal="8dp">
+            android:layout_height="64dp"
+            android:paddingHorizontal="12dp">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_toolbar"
+            <ImageButton
+                android:id="@+id/touchpadBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_back_ios"
+                android:padding="12dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/touchpad_back_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorOnSurfaceVariant" />
+
+            <LinearLayout
+                android:id="@+id/topRightControls"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="56dp" />
-
-            <LinearLayout
-                android:id="@+id/touchpadBack"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:layout_constraintBottom_toTopOf="@+id/guideline_toolbar"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_back_ios"
-                    android:contentDescription="@string/touchpad_back_button"
-                    app:tint="?attr/colorPrimary" />
+                <ImageButton
+                    android:id="@+id/touchpadLaunch"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_all_apps"
+                    android:padding="12dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/choose_app_for_display"
+                    app:tint="?attr/colorOnSurfaceVariant" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/btnBackText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageButton
+                    android:id="@+id/touchpadToggleNotif"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="4dp"
-                    android:text="@string/touchpad_back_button"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold" />
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_bell"
+                    android:padding="12dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/settings_hud_section_notifications"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+
+                <ImageButton
+                    android:id="@+id/touchpadBlackout"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_power"
+                    android:padding="12dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/touchpad_blackout"
+                    app:tint="?attr/colorError" />
+
             </LinearLayout>
+
+            <!-- Binding stubs with correct constraints -->
+            <ImageView
+                android:id="@+id/icToggleNotif"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                android:importantForAccessibility="no"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/touchpadTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/open_touchpad"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnSurface"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/guideline_toolbar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <FrameLayout
-                android:id="@+id/touchpadLaunch"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/comp_tonal_shape_oval"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_constraintBottom_toBottomOf="@+id/touchpadBack"
-                app:layout_constraintEnd_toStartOf="@+id/touchpadBlackout"
-                app:layout_constraintTop_toTopOf="@+id/touchpadBack">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_all_apps"
-                    android:contentDescription="@string/choose_app_for_display"
-                    app:tint="?attr/colorPrimary" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/touchpadBlackout"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/comp_tonal_shape_oval"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_constraintBottom_toBottomOf="@+id/touchpadBack"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/touchpadBack">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_power"
-                    android:contentDescription="@string/touchpad_blackout"
-                    app:tint="@color/apple_red" />
-            </FrameLayout>
-
-            <!-- Temporary HUD Notifications Toggle -->
-            <FrameLayout
-                android:id="@+id/touchpadToggleNotif"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/comp_tonal_shape_oval"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_constraintTop_toBottomOf="@+id/touchpadBlackout"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <ImageView
-                    android:id="@+id/icToggleNotif"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_bell"
-                    android:contentDescription="@string/settings_hud_section_notifications"
-                    app:tint="?attr/colorPrimary" />
-            </FrameLayout>
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -159,10 +122,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="4dp"
                         android:visibility="gone" />
 
-                    <!-- Touchpad Area -->
+                    <!-- Touchpad Area (Main element) -->
                     <FrameLayout
                         android:id="@+id/touchpadArea"
                         android:layout_width="match_parent"
@@ -179,7 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="4dp"
                         android:visibility="gone" />
 
                     <!-- Tuning Panel -->
@@ -298,6 +261,7 @@
                 android:focusable="true">
 
                 <ImageView
+                    android:id="@+id/iconAccessibility"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_marginBottom="24dp"

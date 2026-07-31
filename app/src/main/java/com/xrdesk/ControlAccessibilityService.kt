@@ -27,6 +27,8 @@ import android.media.AudioManager
 import java.util.ArrayDeque
 import kotlin.math.abs
 import kotlin.math.min
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.combine
 
 class ControlAccessibilityService : AccessibilityService() {
     enum class ScrollAxis { VERTICAL, HORIZONTAL }
@@ -65,8 +67,6 @@ class ControlAccessibilityService : AccessibilityService() {
         private const val SCROLL_SWIPE_MIN_DURATION_MS = 35L
         private const val SCROLL_SWIPE_MAX_DURATION_MS = 60L
         private const val MIN_SCROLL_DENSITY = 2.6f
-        private const val CURSOR_TIP_FRACTION_X = 1f / 48f
-        private const val CURSOR_TIP_FRACTION_Y = 1f / 48f
         private const val DIRECT_SCROLL_DURATION_MS = 48L
         private const val DIRECT_SCROLL_EDGE_EPSILON_PX = 2f
         private const val DIRECT_SCROLL_MIN_PATH_PX = 12f
@@ -161,6 +161,8 @@ class ControlAccessibilityService : AccessibilityService() {
     private var lastMoveTime = 0L
     private var lastParamsX = -1
     private var lastParamsY = -1
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private var cursorUpdateJob: Job? = null
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -176,6 +178,20 @@ class ControlAccessibilityService : AccessibilityService() {
         cursorSizePx = (resources.displayMetrics.density * 14f).toInt().coerceAtLeast(10)
         attachToDisplay(pendingDisplayInfo)
         DiagnosticsLog.add("Accessibility", "Accessibility: connected")
+        setupCursorObservation()
+    }
+
+    private fun setupCursorObservation() {
+        cursorUpdateJob?.cancel()
+        cursorUpdateJob = serviceScope.launch {
+            combine(
+                SettingsStore.cursorScaleFlow,
+                SettingsStore.cursorColorFlow,
+                SettingsStore.cursorAlphaFlow
+            ) { _, _, _ -> }.collect {
+                refreshCursorAppearance()
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -183,6 +199,8 @@ class ControlAccessibilityService : AccessibilityService() {
         deferredBackRunnable = null
         detachOverlay()
         instance = null
+        serviceScope.cancel()
+        attachRetryRunnable?.let { handler.removeCallbacks(it) }
         DiagnosticsLog.add("Accessibility", "Accessibility: destroyed")
         super.onDestroy()
     }
@@ -210,6 +228,7 @@ class ControlAccessibilityService : AccessibilityService() {
         notifyCursorActivity()
         notifyCursorSpeed(dx, dy)
         updateOverlayPosition()
+        
         DiagnosticsLog.add("Accessibility", "Cursor moved: ($cursorX, $cursorY)")
         switchBarController?.onCursorMoved(cursorX, cursorY, cursorSizePx)
     }
@@ -1656,9 +1675,8 @@ class ControlAccessibilityService : AccessibilityService() {
                 scheduleAttachRetry(info)
             }
         } catch (e: Throwable) {
-            android.util.Log.e("HUD-Lifecycle", "Cursor addView failed hard: ${e.message}")
+            android.util.Log.e("HUD-Lifecycle", "Cursor addView hard fail", e)
             detachOverlay()
-            throw e
         }
         
         scheduleCursorHide()
@@ -1800,8 +1818,8 @@ class ControlAccessibilityService : AccessibilityService() {
     }
 
     private fun cursorTipOffsetPx(): PointF {
-        val offsetX = cursorSizePx * CURSOR_TIP_FRACTION_X
-        val offsetY = cursorSizePx * CURSOR_TIP_FRACTION_Y
+        val offsetX = cursorSizePx * CursorOverlayView.HOTSPOT_FRACTION_X
+        val offsetY = cursorSizePx * CursorOverlayView.HOTSPOT_FRACTION_Y
         return PointF(offsetX, offsetY)
     }
     private fun updateOverlayPosition() {
@@ -1862,7 +1880,7 @@ class ControlAccessibilityService : AccessibilityService() {
     }
 
     private fun hideCursor() {
-        val view = overlayView ?: return
+        val view = overlayView ?: run { return }
         cursorVisible = false
         view.alpha = 0f
     }

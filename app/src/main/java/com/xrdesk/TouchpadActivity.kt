@@ -16,11 +16,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.OnBackPressedCallback
 import android.content.Intent
 import android.os.Build
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import com.xrdesk.databinding.ActivityTouchpadBinding
 import rikka.shizuku.Shizuku
 import kotlin.math.abs
@@ -33,9 +36,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     private var autoLockRunnable: Runnable? = null
     private var dimRunnable: Runnable? = null
     private var dimAnimator: ValueAnimator? = null
-    private var originalWindowBrightness: Float = 0f
-    private var originalSystemBrightness: Float = 1f
-    private var hasOriginalWindowBrightness = false
     private var dimmedThisSession = false
     private var focusSessionId = 0
     private var isFocused = false
@@ -91,16 +91,12 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         binding = ActivityTouchpadBinding.inflate(layoutInflater)
         setContentView(binding.root)
         DiagnosticsLog.add("Touchpad", "Touchpad: create displayId=${display?.displayId ?: -1}")
-        applyEdgeToEdgePadding(binding.root, includeTop = false)
-        applyToolbarInsets()
-        val insetsController = WindowInsetsControllerCompat(window, binding.root)
-        insetsController.hide(WindowInsetsCompat.Type.statusBars())
-        insetsController.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ThemeHelper.applyTheme(this)
+        applyEdgeToEdgePadding(binding.root)
 
-        if (Build.VERSION.SDK_INT >= 29) {
-            window.isNavigationBarContrastEnforced = false
-        }
+        window.isNavigationBarContrastEnforced = false
 
         touchSlopPx = resources.displayMetrics.density * TOUCH_SLOP_DP
         longPressCancelSlopPx = resources.displayMetrics.density * LONG_PRESS_CANCEL_DP
@@ -151,6 +147,14 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             handleTouch(event)
             true
         }
+        
+        // Sync Notifications state reactively
+        lifecycleScope.launch {
+            SettingsStore.hudNotificationsEnabledFlow.collectLatest {
+                updateNotifButtonUI()
+            }
+        }
+
         binding.blackoutOverlay.setOnTouchListener { view, event ->
             if (!binding.blackoutOverlay.isVisible) return@setOnTouchListener false
             if (event.pointerCount > 1) return@setOnTouchListener true
@@ -242,6 +246,10 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    if (binding.blackoutOverlay.isVisible) {
+                        setBlackoutVisible(false)
+                        return
+                    }
                     if (touchpadActive) {
                         val displayInfo = DisplaySessionManager.getExternalDisplayInfo()
                         val sessionActive = displayInfo != null
@@ -297,6 +305,16 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         updateKeepScreenOn(true)
         resetAutoLockTimer()
         updateNotifButtonUI()
+        
+        // Sync status bar visibility with current blackout state
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+        if (binding.blackoutOverlay.isVisible) {
+            insetsController.hide(WindowInsetsCompat.Type.statusBars())
+            insetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        } else {
+            insetsController.show(WindowInsetsCompat.Type.statusBars())
+        }
+        
         if (touchpadActive) {
             startAutoDimSession()
         } else {
@@ -390,7 +408,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     private fun updateNotifButtonUI() {
         val enabled = SettingsStore.hudNotificationsEnabled
-        binding.icToggleNotif.setImageResource(if (enabled) R.drawable.ic_bell else R.drawable.ic_bell_off)
+        binding.touchpadToggleNotif.setImageResource(if (enabled) R.drawable.ic_bell else R.drawable.ic_bell_off)
         binding.touchpadToggleNotif.alpha = if (enabled) 1f else 0.6f
     }
 
@@ -503,22 +521,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         }
     }
 
-    private fun averageY(event: MotionEvent): Float {
-        if (event.pointerCount == 1) return event.y
-        return (event.getY(0) + event.getY(1)) / 2f
-    }
-
-    private fun averageX(event: MotionEvent): Float {
-        if (event.pointerCount == 1) return event.x
-        return (event.getX(0) + event.getX(1)) / 2f
-    }
-
-    private fun resetTouchBaseline(event: MotionEvent) {
-        lastTouchX = averageX(event)
-        lastTouchY = averageY(event)
-        downX = lastTouchX
-        downY = lastTouchY
-    }
+    private fun resetTouchBaseline(event: MotionEvent) {}
 
     private fun scheduleLongPress(service: ControlAccessibilityService) {
         cancelLongPress()
@@ -541,6 +544,9 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     private fun setBlackoutVisible(visible: Boolean) {
         if (binding.blackoutOverlay.isVisible == visible) return
+        
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+        
         if (visible) {
             cancelLongPress()
             exitScrollMode()
@@ -550,9 +556,20 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             }
             hideBlackoutHint()
             binding.blackoutOverlay.translationY = 0f
+
+            if (SettingsStore.dimOnLock) {
+                captureOriginalBrightness()
+                applyWindowBrightness(SettingsStore.touchpadDimLevel)
+            }
+            
+            insetsController.hide(WindowInsetsCompat.Type.statusBars())
+            insetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         } else {
             hideBlackoutHint()
             binding.blackoutOverlay.translationY = 0f
+            restoreOriginalBrightness()
+            
+            insetsController.show(WindowInsetsCompat.Type.statusBars())
         }
         binding.blackoutOverlay.isVisible = visible
         if (!visible) {
@@ -632,29 +649,8 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         activeScrollController = ActiveScrollController.NONE
     }
 
-    private fun applyToolbarInsets() {
-        val initialTop = binding.touchpadToolbar.paddingTop
-        ViewCompat.setOnApplyWindowInsetsListener(binding.touchpadToolbar) { view, insets ->
-            val systemInsets = insets.getInsetsIgnoringVisibility(
-                WindowInsetsCompat.Type.statusBars() or WindowInsetsCompat.Type.displayCutout()
-            )
-            view.setPadding(
-                view.paddingLeft,
-                initialTop + systemInsets.top,
-                view.paddingRight,
-                view.paddingBottom
-            )
-            insets
-        }
-    }
-
     private fun toggleTuningPanel() {
-        binding.tuningPanel.visibility =
-            if (binding.tuningPanel.visibility == android.view.View.VISIBLE) {
-                android.view.View.GONE
-            } else {
-                android.view.View.VISIBLE
-            }
+        binding.tuningPanel.isVisible = !binding.tuningPanel.isVisible
     }
 
     private fun setupDPad() {
@@ -1040,18 +1036,19 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     }
 
     private fun captureOriginalBrightness() {
+        if (SessionStore.hasCapturedBrightness) return
         val current = window.attributes.screenBrightness
-        originalWindowBrightness = current
-        hasOriginalWindowBrightness = true
-        originalSystemBrightness = readSystemBrightness()
+        SessionStore.capturedBrightness = current
+        SessionStore.capturedSystemBrightness = readSystemBrightness()
+        SessionStore.hasCapturedBrightness = true
     }
 
     private fun restoreOriginalBrightness() {
-        if (!hasOriginalWindowBrightness) return
+        if (!SessionStore.hasCapturedBrightness) return
         window.attributes = window.attributes.apply {
-            screenBrightness = originalWindowBrightness
+            screenBrightness = SessionStore.capturedBrightness
         }
-        hasOriginalWindowBrightness = false
+        SessionStore.hasCapturedBrightness = false
         dimmedThisSession = false
         DiagnosticsLog.add("Touchpad", "Touchpad: brightness restored")
     }
@@ -1095,8 +1092,8 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     private fun computeDimTarget(): Float? {
         val preferred = SettingsStore.touchpadDimLevel.coerceIn(0f, 1f)
-        if (originalWindowBrightness < 0f) {
-            val systemBrightness = originalSystemBrightness.coerceIn(0f, 1f)
+        if (SessionStore.capturedBrightness < 0f) {
+            val systemBrightness = SessionStore.capturedSystemBrightness.coerceIn(0f, 1f)
             if (preferred >= systemBrightness) {
                 return null
             }

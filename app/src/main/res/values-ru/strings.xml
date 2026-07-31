@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name" translatable="false">XRDesk</string>
     <string name="accessibility_service_description">Включите, чтобы отображать курсор на внешнем дисплее и имитировать ввод касанием/клавиатурой.</string>
 
     <string name="external_display_label">Внешний дисплей</string>
@@ -8,8 +9,94 @@
     <string name="accessibility_enabled">Включено</string>
     <string name="accessibility_required">Требуется</string>
     <string name="choose_app_for_display">Запуск на внешнем дисплее</string>
-    <string name="open_touchpad">Выбор и управление</string>
+    <string name="open_touchpad">XR Launcher</string>
+    <string name="open_touchpad_description">Запуск и управление приложениями в XR</string>
+    <string name="webview_browser">XR браузер</string>
+    <string name="webview_browser_description">Просмотр сайтов и видео в XR</string>
+    <string name="xr_browser">XR браузер</string>
     <string name="settings">Настройки</string>
+    <string name="settings_description">Персонализация и управление устройством</string>
+
+    <string name="browser_hint">Введите URL</string>
+    <string name="browser_home">Главная</string>
+    <string name="browser_refresh">Обновить</string>
+    <string name="browser_back">Назад</string>
+    <string name="browser_forward">Вперёд</string>
+    <string name="browser_diagnostics">Диагностика</string>
+    <string name="browser_enabled">Включено</string>
+    <string name="browser_disabled">Выключено</string>
+    <string name="browser_open_in_player">Открыть в плеере</string>
+    <string name="browser_open_external">Во внешнем плеере</string>
+    <string name="browser_adblock_whitelist">В белый список</string>
+    <string name="player_exit">Выйти</string>
+    <string name="player_resume_title">Продолжить просмотр?</string>
+    <string name="player_resume_msg">Продолжить с %1$s?</string>
+    <string name="player_resume_btn">Продолжить</string>
+    <string name="player_restart_btn">С начала</string>
+    <string name="player_error_msg">Не удалось открыть поток</string>
+
+    <string name="player_video_quality">Качество видео</string>
+    <string name="player_audio">Аудио</string>
+    <string name="player_subtitles">Субтитры</string>
+    <string name="player_auto">Авто</string>
+    <string name="player_off">Выкл</string>
+    <string name="player_lang_ru">Русский</string>
+    <string name="player_lang_en">Английский</string>
+    <string name="player_lang_unknown">Неизвестно</string>
+    <string name="player_speed">Скорость воспроизведения</string>
+    <string name="player_speed_value" translatable="false">%1$.1fx</string>
+    <string name="player_speed_normal">Обычная (1.0x)</string>
+
+    <string name="browser_video_detected">Найдено видео</string>
+    <string name="browser_blob_video_detected">Найдено blob-видео</string>
+    <string name="browser_diag_force_new">Новая сессия</string>
+    <string name="browser_diag_active_stream">Активный поток: %1$s</string>
+    <string name="browser_state_playing">ИДЕТ ПОТОК</string>
+    <string name="browser_state_playing_confirmed">ПОДТВЕРЖДЕНО</string>
+    <string name="browser_state_active">АКТИВЕН</string>
+    <string name="browser_state_detected">ОБНАРУЖЕН</string>
+    <string name="browser_state_inactive">НЕАКТИВЕН</string>
+    <string name="browser_reason_placeholder">Заглушка/Плейсхолдер</string>
+    <string name="browser_reason_priority">Приоритет ниже активного HLS</string>
+    <string name="browser_cat_html5">HTML5 Видео</string>
+    <string name="browser_cat_blob">Blob URL Перехват</string>
+    <string name="browser_cat_iframe">Iframe Плееры</string>
+    <string name="browser_cat_network">Сетевые потоки</string>
+    <string name="browser_diag_detected_videos">Найденные видео</string>
+    <string name="browser_diag_best_candidate">Лучший кандидат для воспроизведения</string>
+    <string name="browser_video_info">%1$s Разм: %2$s • %3$s</string>
+    <string name="browser_video_type">Тип: %1$s</string>
+    <string name="browser_video_priority">Приоритет: %1$s</string>
+    <string name="browser_video_score">Баллы: %1$d</string>
+    <string name="browser_url_copied">URL скопирован в буфер обмена</string>
+
+    <string name="xr_video_searching">Поиск видео…</string>
+    <string name="xr_video_found">Видео найдено!</string>
+    <string name="xr_video_not_found">Видео не обнаружено</string>
+    <string name="xr_video_ready">Готово к плееру</string>
+    <string name="xr_video_waiting">Ожидание воспроизведения</string>
+    <string name="xr_open_video">Открыть видео</string>
+    <string name="xr_developer_mode">Режим разработчика</string>
+    <string name="xr_exit_mode">Выйти из режима XR</string>
+    <string name="xr_remote_keyboard">Клавиатура</string>
+    <string name="xr_keyboard_hint">Введите текст…</string>
+    <string name="xr_send">Отправить</string>
+    <string name="xr_enter">Enter</string>
+    <string name="xr_backspace">Backspace</string>
+    <string name="xr_zoom_in">Увеличить</string>
+    <string name="xr_zoom_out">Уменьшить</string>
+    <string name="xr_enter_mode">Войти в XR</string>
+    <string name="browser_exit">Выйти из браузера</string>
+    <string name="player_timeline">Таймлайн</string>
+    <string name="player_close">Закрыть плеер</string>
+    <string name="player_play_pause">Воспроизведение/Пауза</string>
+    <string name="player_audio_track">Аудио-дорожка</string>
+    <string name="player_subtitle_track">Субтитры</string>
+    <string name="browser_hls_master">Master Playlist (HLS)</string>
+    <string name="browser_hls_media">Media Playlist (HLS)</string>
+    <string name="browser_hls_variants">Вариантов: %1$d</string>
+    <string name="browser_hls_bandwidth">Поток: %1$.1f Мбит/с</string>
+    <string name="browser_hls_resolutions">Разрешения: %1$s</string>
 
     <string name="display_selector_title">Дисплей %1$d</string>
     <string name="display_selector_resolution">%1$dx%2$d</string>
@@ -26,28 +113,28 @@
     <string name="app_launch_failed_generic">Ошибка запуска</string>
     <string name="app_launch_failed_with_detail">%1$s: %2$s</string>
     <string name="app_launch_failed_reason_only">%1$s</string>
-    <string name="app_launch_reason_no_external_display">Нет внешнего дисплея</string>
+    <string name="app_launch_reason_no_external_display">Внешний дисплей не найден</string>
     <string name="app_launch_reason_feature_unsupported">Функция не поддерживается</string>
-    <string name="app_launch_reason_no_launch_intent">Нет интента запуска</string>
+    <string name="app_launch_reason_no_launch_intent">Нет намерения для запуска</string>
     <string name="app_launch_reason_security_exception">Ошибка безопасности</string>
     <string name="app_launch_reason_start_failed">Ошибка запуска</string>
     <string name="app_launch_detail_no_external_display">Внешний дисплей не обнаружен</string>
-    <string name="app_launch_detail_feature_unsupported">Устройство не поддерживает активности на дополнительных дисплеях</string>
+    <string name="app_launch_detail_feature_unsupported">Устройство не поддерживает активности на вторичных дисплеях</string>
     <string name="app_launch_detail_no_launch_intent">У выбранного приложения нет запускаемой активности</string>
     <string name="app_launch_detail_security_exception">SecurityException</string>
     <string name="app_launch_detail_unknown_failure">Неизвестная ошибка запуска</string>
 
-    <string name="diagnostics_title">Журнал</string>
+    <string name="diagnostics_title">Логи</string>
     <string name="diagnostics_system_status">Статус системы</string>
-    <string name="diagnostics_details_label">Подробности</string>
+    <string name="diagnostics_details_label">Детали</string>
     <string name="diagnostics_external_display_not_connected">Внешний дисплей: не подключен</string>
     <string name="diagnostics_external_display_info">Внешний дисплей: id=%1$d, размер=%2$dx%3$d, dpi=%4$d, поворот=%5$d</string>
     <string name="diagnostics_accessibility_enabled">Спец. возможности: включены</string>
     <string name="diagnostics_accessibility_disabled">Спец. возможности: выключены</string>
     <string name="diagnostics_last_launch_failure">Последняя ошибка запуска: %1$s</string>
-    <string name="diagnostics_last_injection_result">Результат ввода: %1$s</string>
+    <string name="diagnostics_last_injection_result">Последний результат инъекции: %1$s</string>
     <string name="diagnostics_logs_label">Логи:</string>
-    <string name="diagnostics_search_hint">Поиск по логам…</string>
+    <string name="diagnostics_search_hint">Поиск логов…</string>
     <string name="diagnostics_logs_empty">Логов пока нет</string>
     <string name="diagnostics_none">Нет</string>
     <string name="diagnostics_copy_logs">Копировать</string>
@@ -63,109 +150,111 @@
     <string name="host_change_app">Сменить приложение</string>
     <string name="host_end_session">Завершить сессию</string>
 
-    <string name="display_type_xr_glasses">XR-очки</string>
+    <string name="display_type_xr_glasses">XR Очки</string>
     <string name="display_type_external">Внешний дисплей</string>
     <string name="display_capability_refresh_rate">%1$d Гц</string>
     <string name="display_capability_hdr">HDR</string>
 
     <string name="touchpad_title">Тачпад</string>
     <string name="touchpad_blackout">Экран выключен</string>
-    <string name="touchpad_play_pause_button">Воспр./Пауза</string>
+    <string name="touchpad_play_pause_button">Плэй/Пауза</string>
     <string name="touchpad_back_button">Назад</string>
     <string name="touchpad_rewind_button">Перемотка назад</string>
     <string name="touchpad_fast_forward_button">Перемотка вперед</string>
-    <string name="touchpad_hint">Нажмите на прямоугольник для активации; Назад передается на внешний дисплей.\nПролистывание: движение курсора; нажатие и пролистывание: перетаскивание; двумя пальцами: прокрутка.</string>
+    <string name="touchpad_hint">Нажмите на прямоугольник для активации; Назад перенаправляется на внешний дисплей.\nДвижение: перемещение курсора; нажатие и движение: перетаскивание; два пальца: прокрутка.</string>
     <string name="touchpad_tuning">Настройка тачпада</string>
-    <string name="touchpad_base_gain">Базовая чувствительность</string>
+    <string name="touchpad_base_gain">Базовое усиление</string>
     <string name="touchpad_acceleration">Ускорение</string>
-    <string name="touchpad_speed_for_max_accel">Скорость для макс. ускорения</string>
+    <string name="touchpad_speed_for_max_accel">Скорость макс. ускорения</string>
     <string name="touchpad_jitter_threshold">Порог дрожания</string>
     <string name="touchpad_smoothing">Сглаживание (EMA)</string>
     <string name="touchpad_scroll_step">Шаг прокрутки</string>
-    <string name="touchpad_accessibility_content_description">Специальные возможности</string>
-    <string name="touchpad_accessibility_required">Нужны спец. возможности</string>
-    <string name="touchpad_accessibility_hint">Включите специальные возможности для управления курсором и отправки касаний.</string>
+    <string name="touchpad_accessibility_content_description">Спец. возможности</string>
+    <string name="touchpad_accessibility_required">Требуются спец. возможности</string>
+    <string name="touchpad_accessibility_hint">Включите спец. возможности для управления курсором и имитации нажатий.</string>
     <string name="touchpad_enable_accessibility_shizuku">Включить через Shizuku</string>
     <string name="touchpad_open_accessibility_settings">Открыть настройки спец. возможностей</string>
     <string name="touchpad_accessibility_required_toast">Сначала включите службу спец. возможностей</string>
     <string name="touchpad_shizuku_unavailable">Shizuku не запущен</string>
-    <string name="touchpad_shizuku_permission_denied">Разрешение Shizuku отклонено</string>
-    <string name="touchpad_shizuku_permission_rationale">Предоставьте разрешение Shizuku для включения спец. возможностей.</string>
+    <string name="touchpad_shizuku_permission_denied">В доступе Shizuku отказано</string>
+    <string name="touchpad_shizuku_permission_rationale">Предоставьте доступ Shizuku для автоматического включения спец. возможностей.</string>
     <string name="touchpad_shizuku_enable_success">Спец. возможности включены</string>
     <string name="touchpad_shizuku_enable_failed">Не удалось включить спец. возможности через Shizuku</string>
-    <string name="touchpad_shizuku_required_media">Перемотка требует Shizuku</string>
-    <string name="touchpad_shizuku_required_menu">Кнопка Меню требует Shizuku</string>
+    <string name="touchpad_shizuku_required_media">Медиа-клавиша требует Shizuku</string>
+    <string name="touchpad_shizuku_required_menu">Клавиша меню требует Shizuku</string>
     <string name="touchpad_shizuku_intro_title">Что такое Shizuku?</string>
-    <string name="touchpad_shizuku_intro_message">Shizuku позволяет продвинутым пользователям предоставлять доступ системного уровня через разовую авторизацию.\n\nЕсли Shizuku запущен, XRDesk может включить спец. возможности автоматически.</string>
+    <string name="touchpad_shizuku_intro_message">Shizuku позволяет продвинутым пользователям предоставлять доступ на уровне системы с единоразовой авторизацией.\n\nЕсли Shizuku запущен, XRDesk может включать спец. возможности автоматически, чтобы вам не приходилось делать это вручную каждый раз.</string>
     <string name="touchpad_shizuku_intro_ok">Понятно</string>
-    <string name="touchpad_back_external_not_focused">Внешний дисплей не в фокусе. Нажмите один раз для фокуса, затем Назад.</string>
-    <string name="touchpad_back_external_window_missing">Не удалось получить фокус на внешнем дисплее. Нажмите на контент окна, затем снова Назад.</string>
+    <string name="touchpad_back_external_not_focused">Внешний дисплей не в фокусе. Нажмите один раз для фокусировки, затем нажмите Назад.</string>
+    <string name="touchpad_back_external_window_missing">Не удалось сфокусироваться на внешнем дисплее. Нажмите на контент окна, затем снова Назад.</string>
     <string name="touchpad_back_dispatch_failed">Не удалось отправить действие Назад. Попробуйте еще раз.</string>
     <string name="touchpad_no_external_display">Нет сессии внешнего дисплея</string>
-    <string name="touchpad_base_gain_value">Базовая чувств.: %1$.2f</string>
+    <string name="touchpad_base_gain_value">Базовое усиление: %1$.2f</string>
     <string name="touchpad_acceleration_value">Ускорение: %1$.2fx</string>
-    <string name="touchpad_speed_for_max_accel_value">Скорость макс. уск.: %1$.2f пкс/мс</string>
+    <string name="touchpad_speed_for_max_accel_value">Скорость макс. ускорения: %1$.2f пкс/мс</string>
     <string name="touchpad_jitter_threshold_value">Порог дрожания: %1$.2f пкс</string>
     <string name="touchpad_smoothing_value">Сглаживание (EMA): %1$.2f</string>
     <string name="touchpad_scroll_step_value">Шаг прокрутки: %1$.0f пкс</string>
 
     <string name="settings_switch_bar_section">Док-панель</string>
-    <string name="settings_switch_bar_enabled">Показывать Док</string>
+    <string name="settings_switch_bar_enabled">Показывать Док-панель</string>
     <string name="settings_switch_bar_hint">Подведите курсор к нижнему краю, чтобы показать Док-панель.</string>
-    <string name="settings_switch_bar_scale">Размер Дока</string>
+    <string name="settings_switch_bar_scale">Размер Док-панели</string>
     <string name="settings_switch_bar_scale_default">100%</string>
     <string name="settings_switch_bar_scale_value">%1$d%%</string>
     <string name="settings_switch_bar_apps">Закрепленные приложения</string>
-    <string name="settings_switch_bar_app_add_slot">Добавить приложение в слот %1$d</string>
+    <string name="settings_switch_bar_app_add_slot">Добавить приложение %1$d</string>
     <string name="settings_switch_bar_app_add">Добавить приложение</string>
-    <string name="settings_switch_bar_app_pick_placeholder">Выбрать приложение</string>
+    <string name="settings_switch_bar_app_pick_placeholder">Выберите приложение</string>
     <string name="settings_section_display">Экран</string>
     <string name="settings_section_brightness">Яркость</string>
     <string name="settings_section_security">Безопасность</string>
     <string name="settings_section_typography">Типографика</string>
-    <string name="settings_text_size">Масштаб интерфейса</string>
+    <string name="settings_text_size">Размер текста</string>
     <string name="settings_text_size_value">%1$d%%</string>
     <string name="settings_section_navigation">Навигация</string>
     <string name="settings_touchpad_two_finger_gestures">Жесты двумя пальцами</string>
-    <string name="settings_touchpad_two_finger_summary">Включает прокрутку и управление списками двумя пальцами.</string>
+    <string name="settings_touchpad_two_finger_summary">Включить прокрутку и вторичные элементы управления двумя пальцами.</string>
     <string name="settings_touchpad_three_finger_gestures">Жесты тремя пальцами</string>
-    <string name="settings_touchpad_three_finger_summary">Включает имитацию физического свайпа тремя пальцами (Touch Scroll).</string>
+    <string name="settings_touchpad_three_finger_summary">Включить имитацию свайпов тремя пальцами.</string>
     <string name="settings_section_scrolling">Прокрутка</string>
     <string name="settings_section_interaction">Взаимодействие</string>
     <string name="settings_section_appearance">Внешний вид</string>
     <string name="settings_section_behavior">Поведение</string>
-    <string name="settings_section_developer">Разработчик</string>
+    <string name="settings_section_developer">Для разработчиков</string>
     <string name="touchpad_intro_title">Советы по тачпаду</string>
     <string name="touchpad_intro_got_it">Понятно</string>
     <string name="touchpad_intro_gesture_move">Движение: ведите одним пальцем</string>
-    <string name="touchpad_intro_gesture_tap">Клик: коснитесь один раз</string>
-    <string name="touchpad_intro_gesture_drag">Перетаскивание: зажмите и ведите. Прокрутка: ведите двумя пальцами.</string>
-    <string name="touchpad_intro_dim_behavior">Автозатемнение: через 10 секунд в зоне тачпада экран гаснет. Яркость восстанавливается при касании вне зоны тачпада или выходе с этого экрана.</string>
-    <string name="touchpad_intro_back_behavior">Назад: когда тачпад активен, кнопка Назад передается во внешнее приложение.</string>
-    <string name="touchpad_intro_exit_hint">Выход: нажмите стрелку в левом верхнем углу или коснитесь вне зоны тачпада и нажмите Назад.</string>
+    <string name="touchpad_intro_gesture_tap">Клик: нажмите один раз</string>
+    <string name="touchpad_intro_gesture_drag">Перетаскивание: нажмите и удерживайте, затем ведите. Прокрутка: ведите двумя пальцами.</string>
+    <string name="touchpad_intro_dim_behavior">Автозатемнение: через 10 сек. в области тачпада экран гаснет. Он восстанавливается при нажатии вне области или выходе с экрана.</string>
+    <string name="touchpad_intro_back_behavior">Назад: когда область тачпада активна, кнопка Назад перенаправляется во внешнее приложение.</string>
+    <string name="touchpad_intro_exit_hint">Выход: нажмите стрелку назад сверху слева или нажмите вне области тачпада, а затем Назад.</string>
     <string name="touchpad_placeholder_activate">Нажмите здесь для активации</string>
-    <string name="touchpad_instruction_compact">Нажмите на тачпад для активации. Назад передается на внешний дисплей.</string>
+    <string name="touchpad_instruction_compact">Нажмите на тачпад для активации. Назад отправляется на внешний дисплей.</string>
     <string name="touchpad_intro_message">%1$s\n%2$s\n%3$s\n\n%4$s\n%5$s\n%6$s</string>
-    <string name="touchpad_blackout_unlock_hint">Смахните вверх для разблокировки</string>
+    <string name="touchpad_blackout_unlock_hint">Проведите вверх для разблокировки</string>
 
     <string name="settings_title">Настройки</string>
     <string name="settings_category_appearance_title">Внешний вид</string>
-    <string name="settings_category_appearance_summary">Тема и язык приложения</string>
-    <string name="settings_category_display_title">Экран</string>
-    <string name="settings_category_display_summary">Яркость, сон и блокировка</string>
+    <string name="settings_category_appearance_summary">Тема и язык</string>
+    <string name="settings_category_display_title">Дисплей</string>
+    <string name="settings_category_display_summary">Экран, яркость и блокировка</string>
     <string name="settings_category_touchpad_title">Тачпад</string>
-    <string name="settings_category_touchpad_summary">Прокрутка, фокус и автозатемнение</string>
+    <string name="settings_category_touchpad_summary">D-Pad, прокрутка и фокус</string>
     <string name="settings_category_cursor_title">Курсор</string>
-    <string name="settings_category_cursor_summary">Размер, цвет, скорость и автоскрытие</string>
+    <string name="settings_category_cursor_summary">Размер, цвет, скорость и скрытие</string>
     <string name="settings_category_dock_title">Док-панель</string>
-    <string name="settings_category_dock_summary">Закрепленные приложения и размер</string>
+    <string name="settings_category_dock_summary">Приложения и размер панели</string>
+    <string name="settings_category_browser_title">Браузер</string>
+    <string name="settings_category_browser_summary">AdBlock и приватность</string>
     <string name="settings_category_advanced_title">Логи</string>
     <string name="settings_category_advanced_summary">Логи и поддержка</string>
-    <string name="settings_dpad_title">D-Pad навигация</string>
-    <string name="settings_dpad_position">Позиция D-Pad</string>
+    <string name="settings_dpad_title">Навигация D-Pad</string>
+    <string name="settings_dpad_position">Положение D-Pad</string>
     <string name="settings_dpad_model">Модель навигации</string>
-    <string name="dpad_model_accessibility">Спец. возможности (Safe)</string>
-    <string name="dpad_model_native">Нативная (Android TV, нужен Shizuku)</string>
+    <string name="dpad_model_accessibility">Спец. возможности (безопасно)</string>
+    <string name="dpad_model_native">Нативная (как в ТВ, нужен Shizuku)</string>
     <string name="dpad_pos_hidden">Скрыт</string>
     <string name="dpad_pos_above">Над тачпадом</string>
     <string name="dpad_pos_below">Под тачпадом</string>
@@ -178,16 +267,16 @@
     <string name="theme_light">Светлая тема</string>
     <string name="theme_amoled">AMOLED</string>
     <string name="theme_custom">Пользовательская тема</string>
-    <string name="theme_editor_title">Редактор тем</string>
+    <string name="theme_editor_title">Редактор темы</string>
     <string name="theme_group_load">Загрузить</string>
     <string name="theme_btn_light">Светлая</string>
     <string name="theme_btn_dark">Темная</string>
     <string name="theme_btn_amoled">AMOLED</string>
     <string name="theme_action_save">Сохранить</string>
-    <string name="customize_theme_section">Настроить тему</string>
+    <string name="customize_theme_section">Настройка темы</string>
 
     <string name="theme_monochrome_title">Монохромная тема</string>
-    <string name="theme_monochrome_summary">Привязать все цвета к основному</string>
+    <string name="theme_monochrome_summary">Синхронизировать все цвета с передним планом</string>
 
     <string name="theme_group_background">Фон</string>
     <string name="theme_group_surfaces">Поверхности</string>
@@ -195,15 +284,15 @@
     <string name="theme_group_icons">Иконки</string>
     <string name="theme_group_accent">Акцент</string>
     <string name="theme_group_dividers">Разделители</string>
-    <string name="theme_group_system_ui">Система</string>
+    <string name="theme_group_system_ui">Системный UI</string>
     <string name="theme_group_extra">Дополнительно</string>
     <string name="theme_group_live_preview">Предпросмотр</string>
 
-    <string name="theme_item_background">Задний план</string>
+    <string name="theme_item_background">Фон</string>
     <string name="theme_item_cards">Карточки</string>
     <string name="theme_item_dialogs">Диалоги</string>
     <string name="theme_item_bottom_sheets">Нижние панели</string>
-    <string name="theme_item_toolbar">Верхняя панель</string>
+    <string name="theme_item_toolbar">Панель инструментов</string>
     <string name="theme_item_text_primary">Основной текст</string>
     <string name="theme_item_text_secondary">Вторичный текст</string>
     <string name="theme_item_text_disabled">Отключенный текст</string>
@@ -211,22 +300,22 @@
     <string name="theme_item_icon_secondary">Вторичные иконки</string>
     <string name="theme_item_icon_disabled">Отключенные иконки</string>
     <string name="theme_item_accent_color">Цвет акцента</string>
-    <string name="theme_item_accent_text">Текст на акценте</string>
+    <string name="theme_item_accent_text">Текст акцента</string>
     <string name="theme_item_outline">Контур</string>
     <string name="theme_item_divider">Разделитель</string>
-    <string name="theme_item_status_bar">Статус-бар</string>
-    <string name="theme_item_navigation_bar">Нав-бар</string>
-    <string name="theme_item_light_status_icons">Светлые иконки статуса</string>
+    <string name="theme_item_status_bar">Строка состояния</string>
+    <string name="theme_item_navigation_bar">Панель навигации</string>
+    <string name="theme_item_light_status_icons">Светлые иконки состояния</string>
     <string name="theme_item_light_nav_icons">Светлые иконки навигации</string>
     <string name="theme_item_error">Ошибка</string>
     <string name="theme_item_warning">Предупреждение</string>
     <string name="theme_item_success">Успех</string>
     <string name="theme_item_info">Инфо</string>
 
-    <string name="theme_btn_load_light">Загрузить Светлую</string>
-    <string name="theme_btn_load_dark">Загрузить Темную</string>
+    <string name="theme_btn_load_light">Загрузить светлую</string>
+    <string name="theme_btn_load_dark">Загрузить темную</string>
     <string name="theme_btn_load_amoled">Загрузить AMOLED</string>
-    <string name="theme_btn_reset_all">Сбросить всё</string>
+    <string name="theme_btn_reset_all">Сбросить все</string>
     <string name="theme_btn_export">Экспорт</string>
     <string name="theme_btn_import">Импорт</string>
     <string name="theme_preset_light">Светлая</string>
@@ -237,13 +326,13 @@
     <string name="theme_export_success">JSON скопирован в буфер обмена</string>
     <string name="theme_json_label">JSON темы</string>
     <string name="theme_import_title">Импорт темы</string>
-    <string name="theme_import_hint">Вставьте JSON сюда:</string>
+    <string name="theme_import_hint">Вставьте JSON здесь:</string>
     <string name="theme_import_error">Некорректный JSON</string>
 
     <string name="color_picker_title">Выберите цвет</string>
     <string name="color_picker_select">Выбрать</string>
     <string name="color_picker_cancel">Отмена</string>
-    <string name="color_picker_hex_hint">Цвет HEX</string>
+    <string name="color_picker_hex_hint">HEX Цвет</string>
     <string name="color_picker_palette">Палитра</string>
     <string name="color_picker_red">Красный: %d</string>
     <string name="color_picker_green">Зеленый: %d</string>
@@ -251,50 +340,52 @@
 
     <string name="theme_preview_headline">Заголовок</string>
     <string name="theme_preview_subtext">Так выглядит вторичный текст.</string>
-    <string name="theme_preview_option_primary">Основная опция</string>
-    <string name="theme_preview_option_secondary">Вторичная опция</string>
+    <string name="theme_preview_option_primary">Основной вариант</string>
+    <string name="theme_preview_option_secondary">Вторичный вариант</string>
     <string name="theme_preview_button">Кнопка действия</string>
 
     <string name="settings_keep_screen_on">Не выключать экран при использовании тачпада</string>
-    <string name="settings_keep_screen_on_summary">Предотвращать автоблокировку, когда тачпад активен.</string>
+    <string name="settings_keep_screen_on_summary">Предотвращать автоблокировку при активном тачпаде.</string>
     <string name="settings_language">Язык</string>
     <string name="settings_developer_section">Для разработчиков</string>
     <string name="settings_logs_title">Логи</string>
     <string name="settings_logs_summary">Диагностика и статус системы</string>
     <string name="settings_touchpad_auto_dim">Автозатемнение при использовании тачпада</string>
-    <string name="settings_touchpad_auto_dim_summary">Автоматически снижать яркость через 10 секунд работы тачпада.</string>
-    <string name="settings_touchpad_back_section">Передача кнопки Назад</string>
+    <string name="settings_touchpad_auto_dim_summary">Снижать яркость автоматически через 10 секунд использования тачпада.</string>
+    <string name="settings_touchpad_back_section">Перенаправление Назад</string>
     <string name="settings_touchpad_auto_focus">Автоматический фокус</string>
-    <string name="settings_touchpad_auto_focus_summary">Автоматически активирует окно на внешнем дисплее. Помогает кнопке «Назад» работать корректно.</string>
+    <string name="settings_touchpad_auto_focus_summary">Автоматически активирует окно на внешнем дисплее. Обеспечивает надежную работу кнопки \"Назад\" и кликов.</string>
     <string name="settings_touchpad_dim_level">Минимальная яркость</string>
+    <string name="settings_dim_on_lock">Затемнять экран при блокировке</string>
+    <string name="settings_dim_on_lock_summary">После нажатия кнопки питания экран будет затемнен до минимальной яркости. После разблокировки вернется прежний уровень яркости.</string>
     <string name="settings_touchpad_dim_level_value">%1$d%%</string>
     <string name="settings_touchpad_dim_level_default">18%</string>
-    <string name="settings_touchpad_scroll_classic_section">Обычная прокрутка двумя пальцами</string>
+    <string name="settings_touchpad_scroll_classic_section">Стандартная прокрутка двумя пальцами</string>
     <string name="settings_touchpad_scroll_speed">Движение прокрутки за шаг</string>
     <string name="settings_touchpad_scroll_speed_value">%1$.1fx</string>
     <string name="settings_touchpad_scroll_speed_default">1.0x</string>
-    <string name="settings_touchpad_scroll_speed_summary">Выше = каждый шаг прокрутки перемещает контент дальше.</string>
-    <string name="settings_touchpad_scroll_distance">Порог срабатывания шага</string>
+    <string name="settings_touchpad_scroll_speed_summary">Больше = каждый шаг прокрутки перемещает дальше.</string>
+    <string name="settings_touchpad_scroll_distance">Дистанция срабатывания шага</string>
     <string name="settings_touchpad_scroll_distance_value">%1$.1f dp</string>
     <string name="settings_touchpad_scroll_distance_default">6.0 dp</string>
-    <string name="settings_touchpad_scroll_distance_summary">Ниже = легче вызвать непрерывную прокрутку. Выше = стабильнее и медленнее.</string>
+    <string name="settings_touchpad_scroll_distance_summary">Меньше = легче вызвать непрерывную прокрутку. Больше = стабильнее и медленнее.</string>
     <string name="settings_touchpad_scroll_invert">Естественная прокрутка</string>
-    <string name="settings_touchpad_scroll_invert_summary">Включите для прокрутки как на экране смартфона. Выключите для классического поведения мыши.</string>
-    <string name="settings_touchpad_drag_boost">Ускорение при перетаскивании</string>
+    <string name="settings_touchpad_scroll_invert_summary">Включите для прокрутки как на смартфоне. Выключите для традиционного поведения как у мыши.</string>
+    <string name="settings_touchpad_drag_boost">Ускорение при перетаскивании (долгое нажатие)</string>
     <string name="settings_touchpad_drag_boost_value">%1$.1fx</string>
     <string name="settings_touchpad_drag_boost_default">1.2x</string>
     <string name="settings_touchpad_scroll_direct_section">Режим прямого жеста (экспериментально)</string>
     <string name="settings_touchpad_scroll_gesture">Включить режим прямого жеста</string>
-    <string name="settings_touchpad_scroll_gesture_summary">Использовать смещение центральной точки двух пальцев для непрерывных жестов. Если включено, обычные настройки прокрутки игнорируются.</string>
-    <string name="settings_touchpad_scroll_gesture_gain">Чувствительность прямого жеста</string>
+    <string name="settings_touchpad_scroll_gesture_summary">Использовать дельту средней точки двух пальцев для инъекции жестов. При включении стандартные настройки игнорируются.</string>
+    <string name="settings_touchpad_scroll_gesture_gain">Усиление прямого жеста</string>
     <string name="settings_touchpad_scroll_gesture_gain_value">%1$.1fx</string>
     <string name="settings_touchpad_scroll_gesture_gain_default">1.0x</string>
-    <string name="settings_touchpad_scroll_gesture_gain_summary">Выше = быстрее прямые жесты. Начните с 1.0x и увеличивайте постепенно.</string>
-    <string name="settings_touchpad_scroll_gesture_step">Длина сегмента прямого жеста</string>
+    <string name="settings_touchpad_scroll_gesture_gain_summary">Больше = быстрее прямые жесты. Начните с 1.0x и увеличивайте постепенно.</string>
+    <string name="settings_touchpad_scroll_gesture_step">Длина шага прямого жеста</string>
     <string name="settings_touchpad_scroll_gesture_step_value">%1$.0f dp</string>
     <string name="settings_touchpad_scroll_gesture_step_default">32 dp</string>
-    <string name="settings_touchpad_scroll_gesture_step_summary">Выше = каждый вводимый сегмент длиннее. Если появятся рывки, уменьшите значение.</string>
-    <string name="language_system">Системная</string>
+    <string name="settings_touchpad_scroll_gesture_step_summary">Больше = каждый сегмент длиннее. Если появятся рывки, уменьшите значение.</string>
+    <string name="language_system">Системный</string>
     <string name="language_english">English</string>
     <string name="language_chinese">简体中文</string>
     <string name="language_russian">Русский</string>
@@ -316,18 +407,18 @@
     <string name="settings_cursor_hide_delay_value">%1$.1fs</string>
     <string name="settings_advanced_section">Дополнительно</string>
     <string name="settings_tuning_title">Тюнинг</string>
-    <string name="settings_tuning_summary">Расширенные настройки зафиксированы на рекомендованых значениях</string>
+    <string name="settings_tuning_summary">Расширенная настройка зафиксирована на рекомендуемых значениях</string>
 
     <string name="injection_no_external_display">Нет внешнего дисплея</string>
-    <string name="injection_scroll_injected">Прокрутка введена</string>
+    <string name="injection_scroll_injected">Прокрутка отправлена</string>
     <string name="injection_scroll_failed">Ошибка прокрутки</string>
-    <string name="injection_action_set_text_not_supported">Поле в фокусе не поддерживает ACTION_SET_TEXT</string>
+    <string name="injection_action_set_text_not_supported">Поле не поддерживает ACTION_SET_TEXT</string>
     <string name="injection_action_set_text_success">ACTION_SET_TEXT успешно</string>
     <string name="injection_action_set_text_failed">ACTION_SET_TEXT ошибка</string>
     <string name="injection_no_editable_field">Нет редактируемого поля на внешнем дисплее</string>
-    <string name="injection_tap_injected">Касание введено</string>
-    <string name="injection_tap_cancelled">Касание отменено</string>
-    <string name="injection_drag_injected">Перетаскивание введено</string>
+    <string name="injection_tap_injected">Нажатие отправлено</string>
+    <string name="injection_tap_cancelled">Нажатие отменено</string>
+    <string name="injection_drag_injected">Перетаскивание отправлено</string>
     <string name="injection_drag_cancelled">Перетаскивание отменено</string>
     <string name="injection_failed_with_message">Ошибка: %1$s</string>
 
@@ -343,9 +434,9 @@
     <string name="cursor_speed_default">По умолчанию</string>
     <string name="cursor_speed_fast">Быстро</string>
     <string name="cursor_hide_off">Выкл</string>
-    <string name="cursor_hide_1s">1 с</string>
-    <string name="cursor_hide_2_5s">2.5 с</string>
-    <string name="cursor_hide_5s">5 с</string>
+    <string name="cursor_hide_1s">1 сек</string>
+    <string name="cursor_hide_2_5s">2.5 сек</string>
+    <string name="cursor_hide_5s">5 сек</string>
     <string name="pref_summary_value">%1$s</string>
 
     <string name="settings_cursor_scale_default">1.0x</string>
@@ -360,7 +451,7 @@
     <string name="settings_about_summary">Версия и информация</string>
     <string name="settings_touchpad_auto_lock_title">Автоблокировка при бездействии</string>
     <string name="settings_touchpad_auto_lock_summary">Автоматически блокирует удаленное устройство после выбранного периода бездействия при использовании тачпада.</string>
-    <string name="auto_lock_disabled">Выключено</string>
+    <string name="auto_lock_disabled">Отключено</string>
     <string name="auto_lock_15s">15 секунд</string>
     <string name="auto_lock_30s">30 секунд</string>
     <string name="auto_lock_45s">45 секунд</string>
@@ -375,65 +466,78 @@
     <string name="settings_hud_enable">Включить HUD</string>
     <string name="settings_hud_position">Положение HUD</string>
     <string name="settings_hud_size">Размер HUD</string>
-    <string name="settings_hud_layout">Расположение панели</string>
+    <string name="settings_hud_layout">Макет панели</string>
     <string name="settings_hud_zone">Зона активации</string>
     <string name="settings_hud_delay">Задержка скрытия</string>
     <string name="settings_hud_section_notifications">Уведомления</string>
     <string name="settings_app_notifications_show">Показывать уведомления</string>
-    <string name="settings_app_notifications_duration">Длительность уведомлений</string>
+    <string name="settings_app_notifications_duration">Длительность уведомления</string>
     <string name="notification_duration_short">2 сек</string>
     <string name="notification_duration_long">3.5 сек</string>
     <string name="settings_hud_preview">Предпросмотр</string>
-    <string name="settings_hud_debug_title">HUD Отладка</string>
-    <string name="settings_hud_debug_always">Всегда показывать панель</string>
-    <string name="settings_hud_debug_zone">Подсветить зону активации</string>
-    <string name="settings_hud_debug_bounds">Показать границы HUD</string>
+    <string name="settings_hud_debug_title">Отладка HUD</string>
+    <string name="settings_hud_debug_always">Всегда показывать панель статуса</string>
+    <string name="settings_hud_debug_zone">Подсвечивать зону активации</string>
+    <string name="settings_hud_debug_bounds">Показывать границы HUD</string>
     <string name="settings_hud_edge_top">Сверху</string>
     <string name="settings_hud_edge_bottom">Снизу</string>
     <string name="settings_hud_reset">Сбросить настройки HUD</string>
 
+    <string name="settings_adblock_enable">Включить AdBlock</string>
+    <string name="settings_adblock_version">Версия</string>
+    <string name="settings_adblock_published">Опубликовано</string>
+    <string name="settings_adblock_last_update">Последнее обновление</string>
+    <string name="settings_adblock_check_updates">Проверить обновления</string>
+    <string name="settings_adblock_up_to_date">Фильтры AdBlock не нуждаются в обновлении.</string>
+    <string name="settings_adblock_updated">Фильтры AdBlock успешно обновлены.</string>
+    <string name="settings_adblock_error">Не удалось обновить фильтры.</string>
+    <string name="settings_adblock_checking">Проверка обновлений…</string>
+
     <string name="settings_permissions_title">Разрешения</string>
     <string name="perm_notifications_title">Уведомления</string>
-    <string name="perm_notifications_desc">Требуется для пересылки уведомлений смартфона в HUD на внешнем дисплее.</string>
+    <string name="perm_notifications_desc">Требуется для пересылки уведомлений смартфона в HUD внешнего дисплея.</string>
     <string name="perm_bluetooth_title">Bluetooth</string>
-    <string name="perm_bluetooth_desc">Требуется для отображения имен подключенных устройств и уровня их заряда в HUD.</string>
-    <string name="perm_location_title">Геолокация</string>
-    <string name="perm_location_desc">Требуется для доступа к имени WiFi сети (SSID) на новых версиях Android.</string>
+    <string name="perm_bluetooth_desc">Требуется для отображения имен подключенных устройств и уровней заряда в HUD.</string>
+    <string name="perm_location_title">Местоположение</string>
+    <string name="perm_location_desc">Требуется для доступа к SSID WiFi (названию сети) на современных версиях Android.</string>
     <string name="btn_grant">Предоставить</string>
-    <string name="status_granted">Предоставлено</string>
-    <string name="status_denied">Отклонено</string>
+    <string name="status_granted">Разрешено</string>
+    <string name="status_denied">Отказано</string>
 
     <string name="battery_status_charging">Зарядка</string>
     <string name="battery_status_discharging">Разрядка</string>
     <string name="status_ready">Готов</string>
     <string name="status_no_devices">Нет устройств</string>
 
+    <string name="about_based_on_title">Основано на DeskControl</string>
+    <string name="about_based_on_summary">Оригинальный проект (DeskControl)</string>
+    <string name="about_xrdesk_title">О проекте</string>
+    <string name="about_xrdesk_summary">Версия 1.1.2 • %1$s</string>
+    <string name="about_original_project_name">DeskControl</string>
+    <string name="about_original_project_version">v1.1.5.post2</string>
+    <string name="about_original_project_desc">XRDesk построен на базе DeskControl, пульта дистанционного управления для Android с открытым исходным кодом. Мы расширили его современным интерфейсом, улучшенным движком тем и специализированными функциями XR.</string>
+    <string name="about_original_author">Автор оригинала: exiarepairii</string>
+    <string name="about_fork_maintainer">Сопровождающий: lasuriia (Crea)</string>
     <string name="about_fork_author_label">Автор</string>
     <string name="about_license_title">Лицензия</string>
     <string name="about_license_content">GNU General Public License v3.0 (GPL-3.0)</string>
     <string name="about_original_project">Оригинальный проект</string>
-    <string name="about_fork_project">GitHub проект (Форк)</string>
+    <string name="about_fork_project">Проект на GitHub (Fork)</string>
     <string name="about_fork_project_summary">lasuria/XRDesk</string>
     <string name="about_original_project_summary">версия v.1.1.5.post2</string>
-    <string name="about_whats_new">Что нового</string>
-    <string name="app_version_label">Версия 1.1.2</string>
-    <string name="app_build_label">Последнее обновление 2026.07.26</string>
-    <string name="about_xrdesk_summary">Версия 1.1.2 • Последнее обновление 2026.07.26</string>
-    <string name="about_original_project_name">DeskControl</string>
-    <string name="about_original_project_version">v1.1.5.post2</string>
-    <string name="about_original_project_desc">XRDesk построен на базе DeskControl — пульта дистанционного управления для Android с открытым исходным кодом. Мы расширили его современным интерфейсом, улучшенным движком тем и специальными функциями для XR.</string>
-    <string name="about_original_author">Оригинальный автор: exiarepairii</string>
-    <string name="about_fork_maintainer">Поддержка: lasuriia (Crea)</string>
     <string name="about_github_label">Открыть на GitHub</string>
-    <string name="about_issues_label">Сообщить об ошибке</string>
-    <string name="about_whats_new_summary">История версий и изменений</string>
+    <string name="about_issues_label">Сообщить о проблеме</string>
+    <string name="about_whats_new">Что нового</string>
+    <string name="about_whats_new_summary">История изменений и примечания к выпуску</string>
+    <string name="app_version_label">Версия 1.1.2</string>
+    <string name="app_build_label">Обновлено %1$s</string>
+    <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
+    <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
     <string name="about_4pda_label">Профиль 4PDA</string>
-    <string name="about_xrdesk_desc">XRDesk — это современный пульт и тачпад для внешних дисплеев и XR-очков на Android. Он позволяет управлять приложениями на втором экране с помощью настраиваемого интерфейса и продвинутой обработки ввода.</string>
-    <string name="about_based_on_title">Основано на DeskControl</string>
-    <string name="about_based_on_summary">Оригинальный проект (DeskControl)</string>
-    <string name="about_xrdesk_title">О проекте</string>
+    <string name="about_xrdesk_desc">XRDesk — это современный пульт и тачпад для внешних дисплеев и XR очков. Он позволяет управлять приложениями на вторичных экранах с помощью настраиваемого интерфейса и продвинутой обработки ввода.</string>
+    <string name="about_fork_url" translatable="false">https://github.com/lasuria/XRDesk</string>
 
-    <string name="hud_mode_detailed">Подробный</string>
+    <string name="hud_mode_detailed">Детальный</string>
     <string name="hud_mode_compact">Компактный</string>
     <string name="settings_hud_size_label">Размер HUD: %1$d dp</string>
 
@@ -444,9 +548,9 @@
     <string name="dev_version_label">Версия: %1$s</string>
     <string name="dev_build_label">Сборка: %1$s</string>
     <string name="dev_disable">Выключить режим разработчика</string>
-    <string name="dev_toast_steps">Режим разработчика: осталось шагов: %1$d…</string>
+    <string name="dev_toast_steps">Режим разработчика: осталось шагов — %1$d…</string>
     <string name="dev_toast_enabled">Режим разработчика включен</string>
-    <string name="dev_toast_already">Вы уже разработчик</string>
+    <string name="dev_toast_already">Режим разработчика уже включен</string>
 
     <string name="net_airplane">Режим полета</string>
     <string name="net_cellular">Мобильная сеть</string>
@@ -454,17 +558,17 @@
 
     <string name="changelog_v1_1_2_title">Версия 1.1.2</string>
     <string name="changelog_v1_1_2_date">26 июля 2026</string>
-    <string name="changelog_v1_1_2_content"><![CDATA[• Удалены неиспользуемые импорты\n• Упрощены вызовы hypot()\n• Сохранена архитектура HUD и сессий]]></string>
+    <string name="changelog_v1_1_2_content"><![CDATA[• Удалены неиспользуемые импорты\n• Упрощены вызовы hypot()\n• Сохранена архитектура HUD/сессий]]></string>
 
     <string name="changelog_v1_1_1_title">Версия 1.1.1</string>
     <string name="changelog_v1_1_1_date">24 июля 2026</string>
-    <string name="changelog_v1_1_1_content"><![CDATA[• Исправлено дублирование открытия пульта после запуска приложения.\n• Улучшена стабильность оверлея при подключении и отключении дисплея.\n• Оптимизирована работа с окнами для лучшей отзывчивости.\n• Исправлено несколько случайных сбоев и улучшена общая стабильность.]]></string>
+    <string name="changelog_v1_1_1_content"><![CDATA[• Исправлено дублирование Remote при запуске приложения.\n• Улучшена стабильность оверлея при подключении и отключении дисплея.\n• Оптимизирована обработка окон для лучшего отклика.\n• Исправлено несколько случайных вылетов и улучшена общая стабильность.]]></string>
 
     <string name="changelog_v1_1_0_title">Версия 1.1.0</string>
     <string name="changelog_v1_1_0_date">Июль 2026</string>
-    <string name="changelog_v1_1_0_content"><![CDATA[• Переход на Material Design 3 и полный редизайн интерфейса.\n• Новый главный экран и навигация по категориям настроек.\n• Обновлённый движок тем с улучшенным контрастом и цветами.\n• Настройка позиции D-Pad и расширенные параметры курсора.\n• Опции блокировки экрана, управления яркостью и сна.\n• Добавлена кнопка быстрого управления HUD-уведомлениями в пульте.\n• Новый XR HUD с Подробным и Компактным режимами.\n• Интерактивный предпросмотр HUD в реальном времени.\n• Скрытый режим разработчика с инструментами отладки HUD.\n• Продвинутый журнал логов с поиском, фильтрами и паузой.\n• Улучшено распознавание XR-очков и автоматическое восстановление HUD.\n• Оптимизация производительности и поддержка Android 15/16.]]></string>
+    <string name="changelog_v1_1_0_content"><![CDATA[• Переход на Material Design 3 и полное обновление UI.\n• Новый главный экран и категории настроек.\n• Улучшенный движок тем с лучшими цветами и контрастом.\n• Настраиваемое положение D-Pad и выделенные настройки курсора.\n• Блокировка экрана, управление яркостью и режим \"не гаснуть\".\n• Быстрая кнопка управления уведомлениями HUD в Remote.\n• Новый XR HUD с детальным и компактным режимами.\n• Интерактивный предпросмотр HUD в настройках.\n• Скрытый режим разработчика с инструментами отладки HUD.\n• Продвинутый просмотр логов с поиском, фильтрацией и паузой.\n• Улучшено обнаружение XR очков и автовосстановление HUD.\n• Оптимизирована производительность и полная совместимость с Android 15/16.]]></string>
 
     <string name="changelog_v1_0_0_title">Версия 1.0.0</string>
     <string name="changelog_v1_0_0_date">Июль 2026</string>
-    <string name="changelog_v1_0_0_content"><![CDATA[• Первый публичный релиз XRDesk.\n• Засновано на DeskControl.\n• Редактор пользовательских тем.\n• Импорт и экспорт тем (JSON).\n• Светлая, Темная и AMOLED темы.\n• Поддержка английского, русского, украинского и китайского языков.\n• Начальный раздел «О приложении».]]></string>
+    <string name="changelog_v1_0_0_content"><![CDATA[• Первый публичный релиз XRDesk.\n• Основано на DeskControl.\n• Пользовательский редактор тем.\n• Импорт/экспорт тем (JSON).\n• Светлая, Темная и AMOLED темы.\n• Поддержка английского, русского, украинского и китайского языков.\n• Начальный раздел \"О проекте\".]]></string>
 </resources>

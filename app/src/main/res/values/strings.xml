@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">XRDesk</string>
     <string name="accessibility_service_description">Enable to show a cursor on the external display and inject touch/keyboard input.</string>
+    <string name="app_build_date" translatable="false">2026.07.30</string>
 
     <string name="external_display_label">External display</string>
     <string name="external_display_connected">Connected</string>
@@ -9,8 +10,96 @@
     <string name="accessibility_enabled">Enabled</string>
     <string name="accessibility_required">Required</string>
     <string name="choose_app_for_display">Launch on external display</string>
-    <string name="open_touchpad">Select &amp; Control</string>
+    <string name="open_touchpad">XR Launcher</string>
+    <string name="open_touchpad_description">Launch and control apps in XR</string>
+    <string name="webview_browser">XR Browser</string>
+    <string name="webview_browser_description">Browse websites and videos in XR</string>
+    <string name="xr_browser">XR Browser</string>
     <string name="settings">Settings</string>
+    <string name="settings_description">Personalization and device control</string>
+
+    <string name="browser_hint">Enter URL</string>
+    <string name="browser_home">Home</string>
+    <string name="browser_refresh">Refresh</string>
+    <string name="browser_back">Back</string>
+    <string name="browser_forward">Forward</string>
+    <string name="browser_diagnostics">Diagnostics</string>
+    <string name="browser_diagnostics_title">Browser Diagnostics</string>
+    <string name="browser_enabled">Enabled</string>
+    <string name="browser_disabled">Disabled</string>
+    <string name="browser_open_in_player">Open in Player</string>
+    <string name="browser_open_external">Open in External Player</string>
+    <string name="browser_adblock_whitelist">Whitelist This Domain</string>
+    <string name="player_exit">Exit</string>
+    <string name="player_resume_title">Resume Playback?</string>
+    <string name="player_resume_msg">Continue watching from %1$s?</string>
+    <string name="player_resume_btn">Resume</string>
+    <string name="player_restart_btn">Restart</string>
+    <string name="player_error_msg">Failed to open stream</string>
+
+    <string name="player_video_quality">Video Quality</string>
+    <string name="player_audio">Audio</string>
+    <string name="player_subtitles">Subtitles</string>
+    <string name="player_auto">Auto</string>
+    <string name="player_off">Off</string>
+    <string name="player_lang_ru">Russian</string>
+    <string name="player_lang_en">English</string>
+    <string name="player_lang_unknown">Unknown</string>
+    <string name="player_speed">Playback Speed</string>
+    <string name="player_speed_value" translatable="false">%1$.1fx</string>
+    <string name="player_speed_normal">Normal (1.0x)</string>
+
+    <string name="browser_video_detected">Video detected</string>
+    <string name="browser_blob_video_detected">Blob video detected</string>
+    <string name="browser_diag_force_new">Force New Session</string>
+    <string name="browser_diag_active_stream">Active Stream: %1$s</string>
+    <string name="browser_state_playing">PLAYING</string>
+    <string name="browser_state_playing_confirmed">CONFIRMED PLAYING</string>
+    <string name="browser_state_active">ACTIVE</string>
+    <string name="browser_state_detected">DETECTED</string>
+    <string name="browser_state_inactive">INACTIVE</string>
+    <string name="browser_reason_placeholder">Placeholder content</string>
+    <string name="browser_reason_priority">Lower priority than active HLS</string>
+    <string name="browser_cat_html5">HTML5 Videos</string>
+    <string name="browser_cat_blob">Blob URL Hooks</string>
+    <string name="browser_cat_iframe">Iframe Players</string>
+    <string name="browser_cat_network">Network Media Requests</string>
+    <string name="browser_diag_detected_videos">Detected Videos</string>
+    <string name="browser_diag_best_candidate">Best Playback Candidate</string>
+    <string name="browser_video_info">%1$s Res: %2$s • %3$s</string>
+    <string name="browser_video_type">Type: %1$s</string>
+    <string name="browser_video_priority">Priority: %1$s</string>
+    <string name="browser_video_score">Score: %1$d</string>
+    <string name="browser_url_copied">URL copied to clipboard</string>
+
+    <string name="xr_video_searching">Searching...</string>
+    <string name="xr_video_found">Video Found!</string>
+    <string name="xr_video_not_found">Video Not Found</string>
+    <string name="xr_video_ready">Ready for Player</string>
+    <string name="xr_video_waiting">Waiting for playback</string>
+    <string name="xr_open_video">Open Video</string>
+    <string name="xr_developer_mode">Developer Mode</string>
+    <string name="xr_exit_mode">Exit XR Mode</string>
+    <string name="xr_remote_keyboard">Remote Keyboard</string>
+    <string name="xr_keyboard_hint">Type text here…</string>
+    <string name="xr_send">Send</string>
+    <string name="xr_enter">Enter</string>
+    <string name="xr_backspace">Backspace</string>
+    <string name="xr_zoom_in">Zoom In</string>
+    <string name="xr_zoom_out">Zoom Out</string>
+    <string name="xr_enter_mode">Enter XR Mode</string>
+    <string name="browser_exit">Exit Browser</string>
+    <string name="player_timeline">Timeline</string>
+    <string name="player_close">Close Player</string>
+    <string name="player_play_pause">Play/Pause</string>
+    <string name="player_audio_track">Audio Track</string>
+    <string name="player_subtitle_track">Subtitle Track</string>
+
+    <string name="browser_hls_master">Master Playlist</string>
+    <string name="browser_hls_media">Media Playlist</string>
+    <string name="browser_hls_variants">Variants: %1$d</string>
+    <string name="browser_hls_bandwidth">Bandwidth: %1$.1f Mbps</string>
+    <string name="browser_hls_resolutions">Resolutions: %1$s</string>
 
     <string name="display_selector_title">Display %1$d</string>
     <string name="display_selector_resolution">%1$dx%2$d</string>
@@ -160,6 +249,8 @@
     <string name="settings_category_cursor_summary">Size, color, speed and auto-hide</string>
     <string name="settings_category_dock_title">Dock</string>
     <string name="settings_category_dock_summary">Pinned apps and panel size</string>
+    <string name="settings_category_browser_title">Browser</string>
+    <string name="settings_category_browser_summary">AdBlock and privacy</string>
     <string name="settings_category_advanced_title">Logs</string>
     <string name="settings_category_advanced_summary">Logs and support</string>
     <string name="settings_dpad_title">D-Pad Navigation</string>
@@ -268,6 +359,8 @@
     <string name="settings_touchpad_auto_focus">Automatic focus</string>
     <string name="settings_touchpad_auto_focus_summary">Automatically activates the window on the external display. Ensures the \"Back\" button and clicks work reliably.</string>
     <string name="settings_touchpad_dim_level">Minimum brightness</string>
+    <string name="settings_dim_on_lock">Dim screen on lock</string>
+    <string name="settings_dim_on_lock_summary">After pressing the power button, the screen will be dimmed to the minimum brightness. After unlocking, the previous brightness level will return.</string>
     <string name="settings_touchpad_dim_level_value">%1$d%%</string>
     <string name="settings_touchpad_dim_level_default">18%</string>
     <string name="settings_touchpad_scroll_classic_section">Default two-finger scrolling</string>
@@ -393,6 +486,16 @@
     <string name="settings_hud_edge_bottom">Bottom</string>
     <string name="settings_hud_reset">Reset HUD Settings</string>
 
+    <string name="settings_adblock_enable">Enable AdBlock</string>
+    <string name="settings_adblock_version">Version</string>
+    <string name="settings_adblock_published">Published</string>
+    <string name="settings_adblock_last_update">Last update</string>
+    <string name="settings_adblock_check_updates">Check for updates</string>
+    <string name="settings_adblock_up_to_date">AdBlock filters are up to date.</string>
+    <string name="settings_adblock_updated">AdBlock filters updated successfully.</string>
+    <string name="settings_adblock_error">Failed to update filters.</string>
+    <string name="settings_adblock_checking">Checking for updates…</string>
+
     <string name="settings_permissions_title">Permissions</string>
     <string name="perm_notifications_title">Notifications</string>
     <string name="perm_notifications_desc">Required to forward smartphone notifications to the external display HUD.</string>
@@ -412,7 +515,7 @@
     <string name="about_based_on_title">Based on DeskControl</string>
     <string name="about_based_on_summary">Original project (DeskControl)</string>
     <string name="about_xrdesk_title">About Project</string>
-    <string name="about_xrdesk_summary">Version 1.1.2 • Last update 2026.07.26</string>
+    <string name="about_xrdesk_summary">Version 1.1.2 • %1$s</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk is built upon the foundation of DeskControl, an open-source remote control for Android. We have extended it with a modern UI, enhanced theme engine, and specialized XR features.</string>
@@ -430,7 +533,7 @@
     <string name="about_whats_new">What\'s new</string>
     <string name="about_whats_new_summary">Changelog and release notes</string>
     <string name="app_version_label">Version 1.1.2</string>
-    <string name="app_build_label">Last update 2026.07.26</string>
+    <string name="app_build_label">Updated %1$s</string>
     <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
     <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
     <string name="about_4pda_label">4PDA Profile</string>

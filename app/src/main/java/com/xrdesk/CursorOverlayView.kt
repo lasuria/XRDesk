@@ -21,6 +21,9 @@ class CursorOverlayView @JvmOverloads constructor(
 
     companion object {
         const val MAX_SCALE = 1.8f
+        const val HOTSPOT_FRACTION_X = 1f / 48f
+        const val HOTSPOT_FRACTION_Y = 1f / 48f
+        
         private const val SPEED_THRESHOLD_PX_S = 1200f
         private const val SPEED_MAX_PX_S = 3200f
         private const val SPEED_EMA_ALPHA = 0.35f

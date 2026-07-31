@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface">
+
+    <!-- 1. Standard Phone Browser UI -->
+    <LinearLayout
+        android:id="@+id/standardBrowserUi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
+            app:elevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp">
+
+                <ImageButton
+                    android:id="@+id/btnExitBrowser"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_back_ios"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:contentDescription="@string/browser_exit" />
+
+                <EditText
+                    android:id="@+id/urlInput"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="8dp"
+                    android:background="@drawable/card_bg"
+                    android:backgroundTint="?attr/colorSurfaceContainerLow"
+                    android:paddingHorizontal="12dp"
+                    android:hint="@string/browser_hint"
+                    android:imeOptions="actionGo"
+                    android:inputType="textUri"
+                    android:singleLine="true"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <ImageButton
+                    android:id="@+id/btnEnterXr"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_monitor"
+                    app:tint="?attr/colorTertiary"
+                    android:contentDescription="@string/xr_enter_mode" />
+
+                <ImageButton
+                    android:id="@+id/btnMenu"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/live_tv_24"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:contentDescription="@string/settings" />
+
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="-2dp"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/webViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- Programmatically injected WebView -->
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <!-- 2. Remote UI (Shown when in XR Mode) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/remoteBrowserUi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="?attr/colorSurface">
+
+        <!-- Layer 1: Top Bar -->
+        <ImageButton
+            android:id="@+id/btnExitXr"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_monitor"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            app:tint="?attr/colorOnSurfaceVariant"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/xr_exit_mode" />
+
+        <LinearLayout
+            android:id="@+id/topRightControls"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageButton
+                android:id="@+id/btnRemoteNotif"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_bell"
+                app:tint="?attr/colorOnSurfaceVariant"
+                android:contentDescription="@string/perm_notifications_title" />
+            <ImageButton
+                android:id="@+id/btnRemotePower"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_power"
+                app:tint="?attr/colorError"
+                android:contentDescription="@string/browser_exit" />
+        </LinearLayout>
+
+        <!-- Layer 2: Address Bar + Browser Back -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardRemoteUrl"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutlineVariant"
+            app:layout_constraintTop_toBottomOf="@id/btnExitXr"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp">
+
+                <ImageButton
+                    android:id="@+id/btnRemoteBrowserBack"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_back_ios"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    app:tint="?attr/colorOnSurfaceVariant"
+                    android:contentDescription="@string/browser_back" />
+
+                <EditText
+                    android:id="@+id/remoteUrlInput"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/browser_hint"
+                    android:imeOptions="actionGo"
+                    android:layout_marginStart="4dp"
+                    android:inputType="textUri"
+                    android:singleLine="true"
+                    android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Layer 4: Touchpad Area -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTouchpad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toTopOf="@id/cardMedia"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardRemoteUrl"
+            app:strokeColor="?attr/colorOutlineVariant"
+            app:strokeWidth="1dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:alpha="0.15"
+                android:text="@string/touchpad_title"
+                android:textAppearance="?attr/textAppearanceLabelLarge" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Layer 5: Media / Control Cluster -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMedia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:padding="8dp">
+
+                <!-- Video Status Block -->
+                <LinearLayout
+                    android:id="@+id/clusterVideoStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageButton
+                        android:id="@+id/ivRemoteVideoStatus"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/live_tv_24"
+                        android:scaleType="fitCenter"
+                        android:padding="12dp"
+                        app:tint="?attr/colorOnSurfaceVariant"
+                        android:alpha="0.5"
+                        android:contentDescription="@string/xr_video_searching"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <TextView
+                        android:id="@+id/tvXrVideoStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/xr_video_searching"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                </LinearLayout>
+
+                <!-- Player Controls Cluster -->
+                <LinearLayout
+                    android:id="@+id/clusterPlayer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <!-- Row 1: Seeker -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="4dp">
+                        <TextView
+                            android:id="@+id/tvPlayerPosition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00:00"
+                            android:textAppearance="?attr/textAppearanceLabelSmall" />
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/playerSeekBar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/player_timeline"
+                            android:valueFrom="0"
+                            android:valueTo="100" />
+                        <TextView
+                            android:id="@+id/tvPlayerDuration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00:00"
+                            android:textAppearance="?attr/textAppearanceLabelSmall" />
+                    </LinearLayout>
+
+                    <!-- Row 2: Parameters -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPlayerQuality"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:text="Auto"
+                            android:minWidth="64dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPlayerSpeed"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:text="1.0x"
+                            android:minWidth="64dp" />
+
+                        <ImageButton
+                            android:id="@+id/btnPlayerAudio"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_language"
+                            android:contentDescription="@string/player_audio_track"
+                            app:tint="?attr/colorOnSurface" />
+
+                        <ImageButton
+                            android:id="@+id/btnPlayerSubs"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/subtitles_2"
+                            android:contentDescription="@string/player_subtitle_track"
+                            app:tint="?attr/colorOnSurface" />
+                    </LinearLayout>
+
+                    <!-- Row 3: Main Controls -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+
+                        <ImageButton
+                            android:id="@+id/btnPlayerRewind"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_rewind"
+                            app:tint="?attr/colorOnSurface" />
+
+                        <ImageButton
+                            android:id="@+id/btnPlayerPlayPause"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_marginHorizontal="24dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_play"
+                            app:tint="?attr/colorOnSurface"
+                            android:contentDescription="@string/player_play_pause"
+                            android:visibility="visible" />
+
+                        <ImageButton
+                            android:id="@+id/btnPlayerForward"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_fast_forward"
+                            app:tint="?attr/colorOnSurface" />
+
+                        <ImageButton
+                            android:id="@+id/btnPlayerClose"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_marginStart="16dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_close"
+                            app:tint="?attr/colorError"
+                            android:contentDescription="@string/player_close" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/fullscreenContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:visibility="gone" />
+
+    <!-- Blackout Overlay for Power Logic -->
+    <FrameLayout
+        android:id="@+id/blackoutOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/blackoutHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="56dp"
+            android:gravity="center"
+            android:text="@string/touchpad_blackout_unlock_hint"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="#CCFFFFFF"
+            android:alpha="0"
+            android:visibility="invisible" />
+    </FrameLayout>
+
+    <!-- Invisible IME Proxy for XR Mode -->
+    <EditText
+        android:id="@+id/hiddenImeProxy"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:alpha="0.01"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:background="@null"
+        android:imeOptions="actionSearch" />
+
+</FrameLayout>

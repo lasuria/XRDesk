@@ -72,10 +72,17 @@ object HUDManager {
         currentDisplayInfo = null
     }
 
-    fun requestShow() = statusPanel?.show()
-    fun requestHide() = statusPanel?.hide()
-    fun requestRefresh() = statusPanel?.refreshUI()
-    fun getDebugStatus(): String = statusPanel?.getDebugStatus() ?: "HUD not initialized"
+    /**
+     * Refreshes the HUD overlay Z-order.
+     * Call this when new display windows are shown (e.g. BrowserPresentation).
+     */
+    fun refreshHUD() {
+        if (SettingsStore.hudEnabled && currentDisplayInfo != null) {
+            android.util.Log.d("HUDManager", "refreshHUD: delegating to StatusPanel")
+            statusPanel?.reAttach()
+        }
+    }
+
     fun getDebugInfo(): DisplaySessionManager.ExternalDisplayInfo? = currentDisplayInfo
 
     private fun resumeHUD() {
@@ -126,23 +133,5 @@ object HUDManager {
             }
         }
         notifications?.post(notification)
-    }
-    
-    fun showTestNotification(context: Context) {
-        if (notifications == null) {
-            if (SettingsStore.hudEnabled && currentDisplayInfo != null) resumeHUD()
-        }
-        
-        val controller = notifications ?: return
-        
-        val testNotif = HUDNotification(
-            id = "test_${System.currentTimeMillis()}",
-            packageName = context.packageName,
-            appName = "XRDesk",
-            title = "Test Notification",
-            text = "This is how notifications look on your external display.",
-            icon = context.packageManager.getApplicationIcon(context.packageName)
-        )
-        controller.post(testNotif)
     }
 }

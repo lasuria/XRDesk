@@ -1,0 +1,11 @@
+! Title: AdGuard Base filter (Optimized)
+! Version: 2.4.80.45
+! TimeUpdated: 2026-07-30T09:56:33+00:00
+! Expires: 5 days (update frequency)
+||traffinity.pro^
+||nhgmymxth.com^
+||fqrukpjaahukp.com^
+||xl-ads.com^
+||gamengirls.com^$all
+||humiliatedaboveboardwho.com^
+||cno.jerkmate.net^$all

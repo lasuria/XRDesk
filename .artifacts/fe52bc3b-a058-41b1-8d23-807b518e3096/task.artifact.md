@@ -1,4 +1,0 @@
-- [x] Create `XrDeviceDetector.kt` with USB and DisplayManager detection
-- [x] Integrate `XrDeviceDetector` into `MainActivity.kt` for UI updates
-- [x] Add detailed logging to `XrDeviceDetector`
-- [x] Build and verify detection logic

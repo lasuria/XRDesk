@@ -41,6 +41,10 @@ class SettingsActivity : BaseSettingsActivity() {
             startActivity(Intent(this, SettingsDockActivity::class.java))
         }
 
+        findViewById<android.view.View>(R.id.rowBrowser).setOnClickListener {
+            startActivity(Intent(this, SettingsBrowserActivity::class.java))
+        }
+
         findViewById<android.view.View>(R.id.rowPermissions).setOnClickListener {
             startActivity(Intent(this, PermissionsActivity::class.java))
         }

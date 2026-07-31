@@ -21,6 +21,14 @@ object DiagnosticsLog {
 
     @Synchronized
     fun add(tag: String, message: String) {
+        // Filter out annoying system/orientation logs that clutter the internal diagnostics window
+        if (message.contains("setRequestedFrameRate") || 
+            message.contains("frameRate=-4.0") ||
+            message.contains("VRI[Browse") ||
+            message.contains("ViewPostIme")) {
+            return
+        }
+
         val formatter = timeFormatter ?: createFormatter().also { timeFormatter = it }
         val timestamp = formatter.format(Date())
         if (lines.size >= MAX_LINES) {

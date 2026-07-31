@@ -3,105 +3,105 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="12dp">
 
-    <!-- Circular D-pad Ring -->
+    <!-- Circular D-pad Ring (Refined & Smaller) -->
     <FrameLayout
         android:id="@+id/dpadRing"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
+        android:layout_width="185dp"
+        android:layout_height="185dp"
         android:background="@drawable/comp_tonal_shape_oval"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Directional Click Areas -->
+        <!-- Directional Click Areas (Proportional to ring size) -->
         <View
             android:id="@+id/btnDpadUp"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="64dp"
             android:layout_gravity="top"
             android:background="?attr/selectableItemBackgroundBorderless" />
 
         <View
             android:id="@+id/btnDpadDown"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="64dp"
             android:layout_gravity="bottom"
             android:background="?attr/selectableItemBackgroundBorderless" />
 
         <View
             android:id="@+id/btnDpadLeft"
-            android:layout_width="80dp"
+            android:layout_width="64dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="?attr/selectableItemBackgroundBorderless" />
 
         <View
             android:id="@+id/btnDpadRight"
-            android:layout_width="80dp"
+            android:layout_width="64dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:background="?attr/selectableItemBackgroundBorderless" />
 
-        <!-- Subtle Directional Icons (Modern MD3 approach) -->
+        <!-- Directional Icons -->
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_arrow_up"
             android:importantForAccessibility="no"
             app:tint="?attr/colorOnSurfaceVariant"
-            android:alpha="0.6" />
+            android:alpha="0.5" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/ic_arrow_down"
             android:importantForAccessibility="no"
             app:tint="?attr/colorOnSurfaceVariant"
-            android:alpha="0.6" />
+            android:alpha="0.5" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:src="@drawable/ic_arrow_left"
             android:importantForAccessibility="no"
             app:tint="?attr/colorOnSurfaceVariant"
-            android:alpha="0.6" />
+            android:alpha="0.5" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_arrow_right"
             android:importantForAccessibility="no"
             app:tint="?attr/colorOnSurfaceVariant"
-            android:alpha="0.6" />
+            android:alpha="0.5" />
 
-        <!-- Center Select Button -->
+        <!-- Center Select Button (Consistent with Apple Style) -->
         <View
             android:id="@+id/btnDpadOk"
-            android:layout_width="86dp"
-            android:layout_height="86dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_gravity="center"
             android:background="@drawable/comp_tonal_shape_oval"
             android:backgroundTint="?attr/colorSurfaceContainerHighest" />
 
     </FrameLayout>
 
-    <!-- Bottom Row of Buttons -->
+    <!-- Bottom Row of Buttons (Floating Icons Style) -->
     <LinearLayout
         android:id="@+id/remoteBottomRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,35 +109,35 @@
 
         <ImageButton
             android:id="@+id/btnRemoteRewind"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:background="@drawable/comp_tonal_shape_oval"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/touchpad_rewind_button"
-            android:padding="16dp"
+            android:padding="12dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_rewind"
             app:tint="?attr/colorOnSurface" />
 
         <ImageButton
             android:id="@+id/btnRemotePlayPause"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/comp_tonal_shape_oval"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/touchpad_play_pause_button"
-            android:padding="16dp"
+            android:padding="12dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_play_pause"
             app:tint="?attr/colorOnSurface" />
 
         <ImageButton
             android:id="@+id/btnRemoteFastForward"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:background="@drawable/comp_tonal_shape_oval"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/touchpad_fast_forward_button"
-            android:padding="16dp"
+            android:padding="12dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_fast_forward"
             app:tint="?attr/colorOnSurface" />

@@ -73,26 +73,21 @@ class StatusPanelController(
 
     private sealed class HUDViewCache {
         class Detailed(
-            val trCard: MaterialCardView,
             val timeTv: TextView,
             val networkIconIv: ImageView,
-            val networkDivider: View,
             val btIconIv: ImageView,
             val btDivider: View,
             val batteryIconIv: ImageView,
             val batteryPctTv: TextView,
-            val blCard: MaterialCardView,
             val networkLabelTv: TextView,
             val networkDetailTv: TextView
         ) : HUDViewCache()
 
         class Compact(
-            val card: MaterialCardView,
             val timeTv: TextView,
             val wifiIconIv: ImageView,
             val wifiLabelTv: TextView,
             val btLayout: LinearLayout,
-            val btIconIv: ImageView,
             val btLabelTv: TextView,
             val batteryIconIv: ImageView,
             val batteryPctTv: TextView,
@@ -258,6 +253,23 @@ class StatusPanelController(
         }
     }
 
+    /**
+     * Safely re-attaches the HUD root view to the WindowManager.
+     * Used to restore Z-order when new full-screen windows (like Presentations) are shown.
+     */
+    fun reAttach() {
+        if (isPreview) return
+        val root = rootLayout ?: return
+        android.util.Log.d("HUD-Lifecycle", "reAttach: refreshing HUD Z-order")
+        
+        // Safety: ensure we are on Main thread (handled by HUDManager)
+        container.removeView(root)
+        container.addView(root, createRootParams())
+        
+        // Force refresh UI state on the new surface
+        updateMutableProperties(force = true)
+    }
+
     private fun updateMutableProperties(force: Boolean) {
         val cache = activeCache ?: return
         val ui = getUIState(currentData)
@@ -360,26 +372,6 @@ class StatusPanelController(
         )
     }
 
-    private fun rebuildHierarchy(root: FrameLayout, mode: Int, highlight: Boolean, showBounds: Boolean) {
-        root.removeAllViews()
-        activeCache = null
-
-        if (highlight) {
-            drawActivationZoneDebug(root)
-        }
-
-        activeCache = when (mode) {
-            SettingsStore.HUD_MODE_FULL_INFO -> buildDetailedLayout(root)
-            else -> buildCompactLayout(root)
-        }
-
-        if (showBounds) {
-            root.setBackgroundResource(R.drawable.debug_red_border)
-        } else {
-            root.background = null
-        }
-    }
-
     private fun getScale(): Float {
         if (!isPreview) return 1.0f
         val w = container.getWidth()
@@ -426,7 +418,7 @@ class StatusPanelController(
         addDivider(trLayout, fontSizeClock)
         
         val networkIconIv = addIcon(trLayout, R.drawable.ic_wifi, iconSize)
-        val networkDivider = addDivider(trLayout, fontSizeClock)
+        addDivider(trLayout, fontSizeClock)
         
         val btIconIv = addIcon(trLayout, R.drawable.ic_bluetooth, iconSize)
         val btDivider = addDivider(trLayout, fontSizeClock)
@@ -458,15 +450,12 @@ class StatusPanelController(
         })
 
         return HUDViewCache.Detailed(
-            trCard = trCard,
             timeTv = timeTv,
             networkIconIv = networkIconIv,
-            networkDivider = networkDivider,
             btIconIv = btIconIv,
             btDivider = btDivider,
             batteryIconIv = batteryIconIv,
             batteryPctTv = batteryPctTv,
-            blCard = blCard,
             networkLabelTv = networkLabelTv,
             networkDetailTv = networkDetailTv
         )
@@ -539,12 +528,10 @@ class StatusPanelController(
         })
 
         return HUDViewCache.Compact(
-            card = card,
             timeTv = timeTv,
             wifiIconIv = wifiIconIv,
             wifiLabelTv = wifiLabelTv,
             btLayout = btLayout,
-            btIconIv = btIconIv,
             btLabelTv = btLabelTv,
             batteryIconIv = batteryIconIv,
             batteryPctTv = batteryPctTv,

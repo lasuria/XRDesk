@@ -3,6 +3,7 @@ package com.xrdesk
 import android.content.Intent
 import android.os.Bundle
 import android.animation.ObjectAnimator
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.doOnLayout
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Log.d("XR Keyboard", "MainActivity: VERSION_CHECK_LOG_1")
         DiagnosticsLog.add("Main", "Main: create displayId=${display?.displayId ?: -1}")
         WindowCompat.setDecorFitsSystemWindows(window, false)
         ThemeHelper.applyTheme(this)
@@ -37,6 +39,14 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         }
         binding.btnSettings.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
+        }
+        binding.btnBrowser.setOnClickListener {
+            startActivity(Intent(this, BrowserActivity::class.java))
+        }
+
+        binding.statusCard.setOnLongClickListener {
+            startActivity(Intent(this, IconComparisonActivity::class.java))
+            true
         }
     }
 
@@ -79,6 +89,8 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         binding.deviceStatusLabel.alpha = 1.0f
         binding.labelTouchpad.setTextColor(primaryColor)
         binding.labelTouchpad.alpha = 1.0f
+        binding.labelBrowser.setTextColor(primaryColor)
+        binding.labelBrowser.alpha = 1.0f
         binding.labelSettings.setTextColor(primaryColor)
         binding.labelSettings.alpha = 1.0f
 
@@ -251,7 +263,5 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         }
     }
 
-    private fun dpToPx(value: Int): Int {
-        return (value * resources.displayMetrics.density).toInt()
-    }
+    private fun dpToPx(dp: Int): Int = (dp * resources.displayMetrics.density).toInt()
 }

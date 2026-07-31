@@ -29,6 +29,9 @@ object SettingsStore {
     const val HUD_POS_TOP = 0
     const val HUD_POS_BOTTOM = 1
 
+    // BROWSER UA MODES
+    const val BROWSER_UA_DEFAULT = 0
+
     var nightMode = THEME_LIGHT
         private set
     var dPadPosition = DPAD_ABOVE
@@ -73,6 +76,36 @@ object SettingsStore {
         private set
     var touchpadAutoLockTimeoutMs = 60_000L
         private set
+    
+    var dimOnLock = false
+        private set
+
+    var adBlockEnabled = true
+        private set
+    var adBlockFilterVersion: String? = null
+        private set
+    var adBlockFilterPublished: String? = null
+        private set
+    var adBlockLastUpdateTimestamp: Long = 0
+        private set
+    var adBlockETag: String? = null
+        private set
+
+    const val browserUserAgentMode = BROWSER_UA_DEFAULT
+
+    var autoEnterXrMode = false
+        private set
+
+    var browserDiagnosticsEnabled = false
+        private set
+    
+    var xrZoomLevel = 150
+        private set
+
+    // Active Player Tracks (for Diagnostics)
+    var activeVideoTrack: String? = null
+    var activeAudioTrack: String? = null
+    var activeSubtitleTrack: String? = null
 
     // HUD SETTINGS
     var hudEnabled = false
@@ -126,6 +159,24 @@ object SettingsStore {
     private val _hudActivationZoneFlow = MutableStateFlow(20f)
     val hudActivationZoneFlow = _hudActivationZoneFlow.asStateFlow()
 
+    private val _hudNotificationsEnabledFlow = MutableStateFlow(true)
+    val hudNotificationsEnabledFlow = _hudNotificationsEnabledFlow.asStateFlow()
+
+    private val _cursorScaleFlow = MutableStateFlow(1.5f)
+    val cursorScaleFlow = _cursorScaleFlow.asStateFlow()
+
+    private val _cursorAlphaFlow = MutableStateFlow(1.0f)
+    val cursorAlphaFlow = _cursorAlphaFlow.asStateFlow()
+
+    private val _cursorColorFlow = MutableStateFlow(0xFFFFFFFF.toInt())
+    val cursorColorFlow = _cursorColorFlow.asStateFlow()
+
+    private val _adBlockEnabledFlow = MutableStateFlow(true)
+    val adBlockEnabledFlow = _adBlockEnabledFlow.asStateFlow()
+
+    private val _adBlockInfoFlow = MutableStateFlow(Unit)
+    val adBlockInfoFlow = _adBlockInfoFlow.asStateFlow()
+
     // DEBUG
     var developerMode = false
         private set
@@ -170,6 +221,18 @@ object SettingsStore {
         switchBarScale = prefs.getFloat("switch_bar_scale", 1.0f)
         touchpadAutoLockEnabled = prefs.getBoolean("tp_auto_lock_enabled", false)
         touchpadAutoLockTimeoutMs = prefs.getLong("tp_auto_lock_timeout", 60_000L)
+        dimOnLock = prefs.getBoolean("dim_on_lock", false)
+        
+        adBlockEnabled = prefs.getBoolean("adblock_enabled", true)
+        adBlockFilterVersion = prefs.getString("adblock_version", null)
+        adBlockFilterPublished = prefs.getString("adblock_published", null)
+        adBlockLastUpdateTimestamp = prefs.getLong("adblock_last_update", 0)
+        adBlockETag = prefs.getString("adblock_etag", null)
+
+        browserDiagnosticsEnabled = prefs.getBoolean("browser_diag_enabled", false)
+        
+        autoEnterXrMode = prefs.getBoolean("auto_enter_xr_mode", false)
+        xrZoomLevel = prefs.getInt("xr_zoom_level", 150)
         
         hudEnabled = prefs.getBoolean("hud_enabled", false)
         developerModeUnlocked = prefs.getBoolean("developer_unlocked", false)
@@ -209,6 +272,8 @@ object SettingsStore {
         dPadPosition = prefs.getInt("dpad_position", DPAD_ABOVE)
 
         syncHudFlows()
+        syncCursorFlows()
+        _adBlockEnabledFlow.value = adBlockEnabled
     }
 
     fun setNightMode(context: Context, value: Int) {
@@ -227,18 +292,21 @@ object SettingsStore {
     fun setCursorScale(context: Context, value: Float) {
         cursorScale = value
         persist(context) { putFloat("cursor_scale", value) }
+        _cursorScaleFlow.value = value
         ControlAccessibilityService.requestCursorAppearanceRefresh()
     }
 
     fun setCursorAlpha(context: Context, value: Float) {
         cursorAlpha = value
         persist(context) { putFloat("cursor_alpha", value) }
+        _cursorAlphaFlow.value = value
         ControlAccessibilityService.requestCursorAppearanceRefresh()
     }
 
     fun setCursorColor(context: Context, value: Int) {
         cursorColor = value
         persist(context) { putInt("cursor_color", value) }
+        _cursorColorFlow.value = value
         ControlAccessibilityService.requestCursorAppearanceRefresh()
     }
 
@@ -317,6 +385,47 @@ object SettingsStore {
     fun setTouchpadAutoLockTimeout(context: Context, valueMs: Long) {
         touchpadAutoLockTimeoutMs = valueMs
         persist(context) { putLong("tp_auto_lock_timeout", valueMs) }
+    }
+
+    fun setDimOnLock(context: Context, enabled: Boolean) {
+        dimOnLock = enabled
+        persist(context) { putBoolean("dim_on_lock", enabled) }
+    }
+
+    fun setAdBlockEnabled(context: Context, enabled: Boolean) {
+        adBlockEnabled = enabled
+        persist(context) { putBoolean("adblock_enabled", enabled) }
+        _adBlockEnabledFlow.value = enabled
+    }
+
+    fun setAdBlockInfo(context: Context, version: String?, published: String?, timestamp: Long, etag: String? = null) {
+        adBlockFilterVersion = version
+        adBlockFilterPublished = published
+        adBlockLastUpdateTimestamp = timestamp
+        if (etag != null) adBlockETag = etag
+        
+        persist(context) {
+            putString("adblock_version", version)
+            putString("adblock_published", published)
+            putLong("adblock_last_update", timestamp)
+            if (etag != null) putString("adblock_etag", etag)
+        }
+        _adBlockInfoFlow.value = Unit
+    }
+
+    fun setAutoEnterXrMode(context: Context, enabled: Boolean) {
+        autoEnterXrMode = enabled
+        persist(context) { putBoolean("auto_enter_xr_mode", enabled) }
+    }
+
+    fun setBrowserDiagnosticsEnabled(context: Context, enabled: Boolean) {
+        browserDiagnosticsEnabled = enabled
+        persist(context) { putBoolean("browser_diag_enabled", enabled) }
+    }
+
+    fun setXrZoomLevel(context: Context, level: Int) {
+        xrZoomLevel = level
+        persist(context) { putInt("xr_zoom_level", level) }
     }
 
     fun setDPadPosition(context: Context, value: Int) {
@@ -533,9 +642,16 @@ object SettingsStore {
         if (_hudPositionFlow.value != hudPosition) _hudPositionFlow.value = hudPosition
         if (_hudSizeFlow.value != hudSizeDp) _hudSizeFlow.value = hudSizeDp
         if (_hudActivationZoneFlow.value != hudActivationZoneDp) _hudActivationZoneFlow.value = hudActivationZoneDp
+        if (_hudNotificationsEnabledFlow.value != hudNotificationsEnabled) _hudNotificationsEnabledFlow.value = hudNotificationsEnabled
         if (_hudDebugAlwaysShowFlow.value != hudDebugAlwaysShow) _hudDebugAlwaysShowFlow.value = hudDebugAlwaysShow
         if (_hudDebugHighlightZoneFlow.value != hudDebugHighlightZone) _hudDebugHighlightZoneFlow.value = hudDebugHighlightZone
         if (_hudDebugShowBoundsFlow.value != hudDebugShowBounds) _hudDebugShowBoundsFlow.value = hudDebugShowBounds
+    }
+
+    private fun syncCursorFlows() {
+        _cursorScaleFlow.value = cursorScale
+        _cursorAlphaFlow.value = cursorAlpha
+        _cursorColorFlow.value = cursorColor
     }
 
     private fun persist(context: Context, block: android.content.SharedPreferences.Editor.() -> Unit) {
