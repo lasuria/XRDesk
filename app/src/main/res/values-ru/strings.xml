@@ -512,7 +512,7 @@
     <string name="about_based_on_title">Основано на DeskControl</string>
     <string name="about_based_on_summary">Оригинальный проект (DeskControl)</string>
     <string name="about_xrdesk_title">О проекте</string>
-    <string name="about_xrdesk_summary">Версия 1.1.2 • %1$s</string>
+    <string name="about_xrdesk_summary">Версия 1.2.0 • %1$s</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk построен на базе DeskControl, пульта дистанционного управления для Android с открытым исходным кодом. Мы расширили его современным интерфейсом, улучшенным движком тем и специализированными функциями XR.</string>
@@ -529,7 +529,7 @@
     <string name="about_issues_label">Сообщить о проблеме</string>
     <string name="about_whats_new">Что нового</string>
     <string name="about_whats_new_summary">История изменений и примечания к выпуску</string>
-    <string name="app_version_label">Версия 1.1.2</string>
+    <string name="app_version_label">Версия 1.2.0</string>
     <string name="app_build_label">Обновлено %1$s</string>
     <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
     <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
@@ -555,6 +555,10 @@
     <string name="net_airplane">Режим полета</string>
     <string name="net_cellular">Мобильная сеть</string>
     <string name="net_none">Нет сети</string>
+
+    <string name="changelog_v1_2_0_title">Версия 1.2.0</string>
+    <string name="changelog_v1_2_0_date">31 июля 2026</string>
+    <string name="changelog_v1_2_0_content"><![CDATA[• Добавлен встроенный XR-браузер с поддержкой XR-режима и специальным пультом управления.\n• Добавлен встроенный AdBlock с автоматическим обновлением фильтров.\n• Добавлено автоматическое обнаружение видео с возможностью открытия во встроенном XR Player.\n• Добавлен новый раздел «Браузер» в настройках.\n• Полностью переработан главный экран управления.\n• Обновлены кнопки и иконки.\n• Увеличена область тачпада.\n• Уменьшен размер D-Pad.\n• Добавлена обводка курсора.\n• Убраны лишние элементы интерфейса.\n• Снижено энергопотребление при просмотре видео.\n• WebView автоматически приостанавливает фоновую активность во время воспроизведения в XR Player.\n• Повышены скорость работы и стабильность браузера.\n• Раздел «Выбор и управление» переименован в XR Launcher.\n• Исправлены различные ошибки и выполнена внутренняя оптимизация кода.]]></string>
 
     <string name="changelog_v1_1_2_title">Версия 1.1.2</string>
     <string name="changelog_v1_1_2_date">26 июля 2026</string>

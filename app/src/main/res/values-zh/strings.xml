@@ -455,7 +455,7 @@
     <string name="about_based_on_title">基于 DeskControl</string>
     <string name="about_based_on_summary">原始项目 (DeskControl)</string>
     <string name="about_xrdesk_title">关于项目</string>
-    <string name="about_xrdesk_summary">版本 1.1.2 • %1$s</string>
+    <string name="about_xrdesk_summary">版本 1.2.0 • %1$s</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk 建立在开源 Android 远程控制项目 DeskControl 的基础之上。我们为其增加了现代化的 UI、增强的主题引擎以及专门的 XR 功能。</string>
@@ -472,7 +472,7 @@
     <string name="about_issues_label">报告问题</string>
     <string name="about_whats_new">更新日志</string>
     <string name="about_whats_new_summary">更改日志和发行说明</string>
-    <string name="app_version_label">版本 1.1.2</string>
+    <string name="app_version_label">版本 1.2.0</string>
     <string name="app_build_label">上次更新 %1$s</string>
     <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
     <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
@@ -498,6 +498,10 @@
     <string name="net_airplane">飞行模式</string>
     <string name="net_cellular">蜂窝网络</string>
     <string name="net_none">无网络</string>
+
+    <string name="changelog_v1_2_0_title">版本 1.2.0</string>
+    <string name="changelog_v1_2_0_date">2026年7月31日</string>
+    <string name="changelog_v1_2_0_content"><![CDATA[• 增加了支持 XR 模式和专用遥控器的内置 XR 浏览器。\n• 增加了内置 AdBlock，支持自动更新过滤器。\n• 增加了自动视频检测功能，支持在内置 XR Player 中打开。\n• 设置中新增了“浏览器”部分。\n• 全面重新设计了主控制屏幕。\n• 更新了按钮和图标。\n• 增加了触控板区域。\n• 缩小了 D-Pad 尺寸。\n• 增加了光标轮廓。\n• 移出了多余的界面元素。\n• 降低了视频播放期间的功耗。\n• WebView 在 XR Player 播放时会自动暂停后台活动。\n• 提高了浏览器的运行速度和稳定性。\n• “选择与控制”部分重命名为 XR Launcher。\n• 修复了各种错误并进行了内部代码优化。]]></string>
 
     <string name="changelog_v1_1_2_title">版本 1.1.2</string>
     <string name="changelog_v1_1_2_date">2026 年 7 月 26 日</string>

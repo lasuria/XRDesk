@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">XRDesk</string>
     <string name="accessibility_service_description">Enable to show a cursor on the external display and inject touch/keyboard input.</string>
-    <string name="app_build_date" translatable="false">2026.07.30</string>
+    <string name="app_build_date" translatable="false">2026.07.31</string>
 
     <string name="external_display_label">External display</string>
     <string name="external_display_connected">Connected</string>
@@ -515,7 +515,7 @@
     <string name="about_based_on_title">Based on DeskControl</string>
     <string name="about_based_on_summary">Original project (DeskControl)</string>
     <string name="about_xrdesk_title">About Project</string>
-    <string name="about_xrdesk_summary">Version 1.1.2 • %1$s</string>
+    <string name="about_xrdesk_summary">Version 1.2.0 • %1$s</string>
     <string name="about_original_project_name">DeskControl</string>
     <string name="about_original_project_version">v1.1.5.post2</string>
     <string name="about_original_project_desc">XRDesk is built upon the foundation of DeskControl, an open-source remote control for Android. We have extended it with a modern UI, enhanced theme engine, and specialized XR features.</string>
@@ -532,7 +532,7 @@
     <string name="about_issues_label">Report an Issue</string>
     <string name="about_whats_new">What\'s new</string>
     <string name="about_whats_new_summary">Changelog and release notes</string>
-    <string name="app_version_label">Version 1.1.2</string>
+    <string name="app_version_label">Version 1.2.0</string>
     <string name="app_build_label">Updated %1$s</string>
     <string name="about_original_url" translatable="false">https://github.com/exiarepairii/deskcontrol</string>
     <string name="about_4pda_url" translatable="false">https://4pda.to/forum/index.php?showuser=340877</string>
@@ -558,6 +558,10 @@
     <string name="net_airplane">Airplane Mode</string>
     <string name="net_cellular">Cellular Network</string>
     <string name="net_none">No Network</string>
+
+    <string name="changelog_v1_2_0_title">Version 1.2.0</string>
+    <string name="changelog_v1_2_0_date">July 31, 2026</string>
+    <string name="changelog_v1_2_0_content"><![CDATA[• Added a built-in XR Browser with XR mode support and a special remote control.\n• Added a built-in AdBlock with automatic filter updates.\n• Added automatic video detection with the ability to open in the built-in XR Player.\n• Added a new "Browser" section in settings.\n• Completely redesigned the main control screen.\n• Updated buttons and icons.\n• Increased touchpad area.\n• Reduced D-Pad size.\n• Added a cursor outline.\n• Removed unnecessary interface elements.\n• Reduced power consumption during video playback.\n• WebView automatically pauses background activity during XR Player playback.\n• Improved browser speed and stability.\n• "Select & Control" section renamed to XR Launcher.\n• Fixed various bugs and performed internal code optimization.]]></string>
 
     <string name="changelog_v1_1_2_title">Version 1.1.2</string>
     <string name="changelog_v1_1_2_date">July 26, 2026</string>

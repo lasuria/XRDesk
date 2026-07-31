@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.2.0
+- Added a built-in WebView browser with XR mode support.
+- Added remote browser control from smartphone and XR glasses.
+- Added built-in AdBlock.
+- Added automatic video detection.
+- Added integrated XR Player support for detected videos.
+- Added playback controls for detected videos.
+- Added a new **Browser** section in Settings.
+- Added the ability to enable or disable AdBlock.
+- Redesigned the main remote control.
+- Refined the layout for a cleaner appearance.
+- Removed unnecessary background elements.
+- Updated all control buttons.
+- Replaced all application icons.
+- Reduced D-Pad size and increased touchpad area.
+- Added an outlined cursor for improved visibility.
+- Optimized power consumption during video playback.
+- WebView now automatically pauses background activity while XR Player is active.
+- Improved browser responsiveness and overall stability.
+- Renamed **Select & Control** to **XR Launcher**.
+- Renamed **WebView Browser** to **XR Browser**.
+- Added new descriptions for XR Launcher and XR Browser.
+- Updated translations in English, Russian, Ukrainian and Chinese.
+- Fixed brightness restoration after unlocking Browser Remote.
+- Improved screen dimming while locked.
+- Various bug fixes, code cleanup and internal optimizations.
+
 ## 1.1.2
 - Remove unused imports
 - Simplify hypot() calls
