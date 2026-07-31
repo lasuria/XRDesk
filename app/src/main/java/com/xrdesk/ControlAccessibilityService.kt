@@ -2370,6 +2370,57 @@ class ControlAccessibilityService : AccessibilityService() {
         abandonContinuousGesture()
     }
 
+    fun startContinuousScrollAtPoint(x: Float, y: Float): Boolean {
+        if (!USE_CONTINUOUS_GESTURES) {
+            logGesture("Continuous gestures disabled. Falling back to legacy scroll logic.")
+            return false
+        }
+        val info = displayInfo ?: return false
+        
+        // Ensure any previous session (like a drag) is terminated
+        if (continuousGestureStroke != null || continuousGestureDispatchInFlight) {
+            logGesture("Scroll Start: cleaning up previous session.")
+            abandonContinuousGesture()
+        }
+
+        val clamped = clampToDisplay(x, y, info)
+        continuousGesturePointX = clamped.x
+        continuousGesturePointY = clamped.y
+        
+        val mapped = CoordinateMapper.mapForRotation(clamped.x, clamped.y, info)
+        val path = Path().apply { moveTo(mapped.x, mapped.y) }
+        val stroke = GestureDescription.StrokeDescription(path, 0, dragStartDurationMs, true)
+        
+        continuousGestureStroke = stroke
+        continuousGesturePendingPoint = null
+        continuousGestureEndRequested = false
+        
+        logGesture("Scroll Started at (${clamped.x}, ${clamped.y})")
+        notifyCursorActivity()
+        return dispatchContinuousGestureStrokeTracked(stroke, info.displayId)
+    }
+
+    fun updateContinuousScrollTo(x: Float, y: Float) {
+        if (!USE_CONTINUOUS_GESTURES) return
+        val info = displayInfo ?: return
+        if (continuousGestureStroke == null) return
+        if (!x.isFinite() || !y.isFinite()) return
+        
+        logGesture("Scroll Updated to ($x, $y)")
+        val next = clampToDisplay(x, y, info)
+        continuousGesturePendingPoint = next
+        logGesture("Pending Scroll Point: (${next.x}, ${next.y})")
+        dispatchPendingContinuousGesture()
+    }
+
+    fun endContinuousScroll() {
+        if (!USE_CONTINUOUS_GESTURES) return
+        if (continuousGestureStroke == null) return
+        logGesture("Scroll End Requested.")
+        continuousGestureEndRequested = true
+        dispatchPendingContinuousGesture()
+    }
+
     private fun dispatchContinuousGestureStrokeTracked(
         stroke: GestureDescription.StrokeDescription,
         displayId: Int

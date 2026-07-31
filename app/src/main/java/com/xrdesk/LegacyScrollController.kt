@@ -18,6 +18,8 @@ class LegacyScrollController(
     private var scrollAccumulatorX = 0f
     private var scrollAccumulatorY = 0f
     private var scrollSpeedMultiplier = 1.0f
+    private var virtualScrollX = 0f
+    private var virtualScrollY = 0f
 
     override fun enter(service: ControlAccessibilityService, event: MotionEvent): Boolean {
         if (event.pointerCount < 2) return false
@@ -27,10 +29,15 @@ class LegacyScrollController(
         val anchor = service.prepareScrollMode(scrollMidX, scrollMidY)
         scrollInjectAnchorX = anchor.x
         scrollInjectAnchorY = anchor.y
+        virtualScrollX = anchor.x
+        virtualScrollY = anchor.y
         scrollAccumulatorX = 0f
         scrollAccumulatorY = 0f
         scrollSpeedMultiplier = SettingsStore.touchpadScrollSpeed
         active = true
+        
+        service.startContinuousScrollAtPoint(virtualScrollX, virtualScrollY)
+        
         DiagnosticsLog.add("Touchpad", "scroll mode enter anchor=(${scrollInjectAnchorX.toInt()},${scrollInjectAnchorY.toInt()}) speed=$scrollSpeedMultiplier")
         return true
     }
@@ -48,27 +55,47 @@ class LegacyScrollController(
         val density = context.resources.displayMetrics.density
         val threshold = 12f * density
         val vertical = abs(scrollAccumulatorY) >= abs(scrollAccumulatorX)
+        
         if (vertical && abs(scrollAccumulatorY) >= threshold) {
             val direction = if (scrollAccumulatorY < 0) 1 else -1
-            service.performScrollStep(
-                direction,
-                scrollInjectAnchorX,
-                scrollInjectAnchorY,
-                scrollSpeedMultiplier,
-                preferGesture = true,
-                axis = ControlAccessibilityService.ScrollAxis.VERTICAL
-            )
+            
+            // Replicate exactly the legacy distance calculation to maintain "feel"
+            // Note: We use a fixed distance for legacy discrete steps, but now we apply it to a path
+            val distance = 48f * density * scrollSpeedMultiplier
+            virtualScrollY += if (direction >= 0) -distance else distance
+            
+            service.updateContinuousScrollTo(virtualScrollX, virtualScrollY)
+            
+            // Fallback for legacy mode (if USE_CONTINUOUS_GESTURES is false, this call happens inside the service)
+            if (!service.isGestureBusy()) {
+                 service.performScrollStep(
+                    direction,
+                    scrollInjectAnchorX,
+                    scrollInjectAnchorY,
+                    scrollSpeedMultiplier,
+                    preferGesture = true,
+                    axis = ControlAccessibilityService.ScrollAxis.VERTICAL
+                )
+            }
+            
             scrollAccumulatorY = 0f
         } else if (!vertical && abs(scrollAccumulatorX) >= threshold) {
             val direction = if (scrollAccumulatorX < 0) 1 else -1
-            service.performScrollStep(
-                direction,
-                scrollInjectAnchorX,
-                scrollInjectAnchorY,
-                scrollSpeedMultiplier,
-                preferGesture = true,
-                axis = ControlAccessibilityService.ScrollAxis.HORIZONTAL
-            )
+            val distance = 48f * density * scrollSpeedMultiplier
+            virtualScrollX += if (direction >= 0) -distance else distance
+            
+            service.updateContinuousScrollTo(virtualScrollX, virtualScrollY)
+            
+            if (!service.isGestureBusy()) {
+                service.performScrollStep(
+                    direction,
+                    scrollInjectAnchorX,
+                    scrollInjectAnchorY,
+                    scrollSpeedMultiplier,
+                    preferGesture = true,
+                    axis = ControlAccessibilityService.ScrollAxis.HORIZONTAL
+                )
+            }
             scrollAccumulatorX = 0f
         }
     }
@@ -78,6 +105,7 @@ class LegacyScrollController(
         active = false
         scrollAccumulatorX = 0f
         scrollAccumulatorY = 0f
+        serviceProvider()?.endContinuousScroll()
         DiagnosticsLog.add("Touchpad", "scroll mode exit")
     }
 

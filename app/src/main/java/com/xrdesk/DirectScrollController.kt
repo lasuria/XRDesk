@@ -37,6 +37,9 @@ class DirectScrollController(
         directPendingDx = 0f
         directPendingDy = 0f
         active = true
+        
+        service.startContinuousScrollAtPoint(directAnchorX, directAnchorY)
+        
         DiagnosticsLog.add("Touchpad", "direct scroll enter mid=(${lastScrollMidX.toInt()},${lastScrollMidY.toInt()}) scale=(${String.format("%.2f", scrollMapScaleX)},${String.format("%.2f", scrollMapScaleY)}) gain=${String.format("%.2f", directScrollGain)} step=${SettingsStore.touchpadDirectScrollStepDp.toInt()}dp anchor=(${directAnchorX.toInt()},${directAnchorY.toInt()})")
         return true
     }
@@ -54,7 +57,8 @@ class DirectScrollController(
         directPendingDx = directPendingDx.coerceIn(-DIRECT_SCROLL_PENDING_MAX_PX, DIRECT_SCROLL_PENDING_MAX_PX)
         directPendingDy = directPendingDy.coerceIn(-DIRECT_SCROLL_PENDING_MAX_PX, DIRECT_SCROLL_PENDING_MAX_PX)
         val service = serviceProvider()
-        if (service != null && !service.isGestureBusy()) {
+        
+        if (service != null) {
             val distance = kotlin.math.hypot(directPendingDx.toDouble(), directPendingDy.toDouble())
             if (distance >= DIRECT_SCROLL_MIN_SWIPE_PX) {
                 val stepPx = SettingsStore.touchpadDirectScrollStepDp *
@@ -63,18 +67,24 @@ class DirectScrollController(
                 val ratio = (chunkLen / distance).toFloat()
                 val stepDx = directPendingDx * ratio
                 val stepDy = directPendingDy * ratio
-                val injected = service.performDirectScrollGesture(
-                    directAnchorX,
-                    directAnchorY,
-                    stepDx,
-                    stepDy
-                )
-                if (injected) {
-                    directAnchorX += stepDx
-                    directAnchorY += stepDy
-                    directPendingDx -= stepDx
-                    directPendingDy -= stepDy
+                
+                // Continuous Pipeline Update
+                service.updateContinuousScrollTo(directAnchorX + stepDx, directAnchorY + stepDy)
+
+                // Legacy Fallback (discrete injection)
+                if (!service.isGestureBusy()) {
+                    service.performDirectScrollGesture(
+                        directAnchorX,
+                        directAnchorY,
+                        stepDx,
+                        stepDy
+                    )
                 }
+                
+                directAnchorX += stepDx
+                directAnchorY += stepDy
+                directPendingDx -= stepDx
+                directPendingDy -= stepDy
             }
         }
         lastScrollMidX = mappedX
@@ -86,6 +96,7 @@ class DirectScrollController(
         active = false
         directPendingDx = 0f
         directPendingDy = 0f
+        serviceProvider()?.endContinuousScroll()
         DiagnosticsLog.add("Touchpad", "direct scroll exit")
     }
 
