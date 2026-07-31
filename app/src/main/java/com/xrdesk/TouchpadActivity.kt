@@ -43,6 +43,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     private var lastTouchY = 0f
     private var downX = 0f
     private var downY = 0f
+    private var directStartCursor = android.graphics.PointF()
     private var touchSlopPx = 0f
     private var longPressCancelSlopPx = 0f
     private var longPressTimeout = 0
@@ -434,6 +435,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                 downY = event.y
                 lastTouchX = event.x
                 lastTouchY = event.y
+                directStartCursor = service.getCursorPosition()
                 touchState = TouchState.ONE_FINGER_DOWN
                 scheduleLongPress(service)
                 service.wakeCursor()
@@ -442,7 +444,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                 if (event.pointerCount >= 2) {
                     cancelLongPress()
                     if (touchState == TouchState.DRAGGING) {
-                        service.endDragAtCursor()
+                        service.endContinuousGesture()
                     }
                     enterScrollMode(service, event)
                 }
@@ -464,7 +466,9 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                     }
                     service.moveCursorBy(output.dx * boost, output.dy * boost)
                     if (touchState == TouchState.DRAGGING) {
-                        service.updateDragToCursor()
+                        val targetX = directStartCursor.x + (event.x - downX)
+                        val targetY = directStartCursor.y + (event.y - downY)
+                        service.updateContinuousGestureTo(targetX, targetY)
                     }
                 }
                 lastTouchX = event.x
@@ -497,7 +501,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                     return
                 }
                 if (touchState == TouchState.DRAGGING) {
-                    service.endDragAtCursor()
+                    service.endContinuousGesture()
                     touchState = TouchState.IDLE
                     return
                 }
@@ -511,7 +515,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             MotionEvent.ACTION_CANCEL -> {
                 cancelLongPress()
                 if (touchState == TouchState.DRAGGING) {
-                    service.cancelDrag()
+                    service.cancelContinuousGesture()
                 }
                 if (touchState == TouchState.SCROLL_MODE) {
                     exitScrollMode()
@@ -532,7 +536,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             if (moved) return@Runnable
             touchState = TouchState.DRAGGING
             binding.touchpadArea.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-            service.startDragAtCursor()
+            service.startContinuousGestureAtCursor()
         }
         handler.postDelayed(longPressRunnable!!, longPressTimeout.toLong())
     }
@@ -551,7 +555,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             cancelLongPress()
             exitScrollMode()
             if (touchState == TouchState.DRAGGING) {
-                ControlAccessibilityService.current()?.endDragAtCursor()
+                ControlAccessibilityService.current()?.endContinuousGesture()
                 touchState = TouchState.IDLE
             }
             hideBlackoutHint()

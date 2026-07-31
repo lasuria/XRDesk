@@ -74,6 +74,8 @@ class ControlAccessibilityService : AccessibilityService() {
         private const val FOCUS_NUDGE_DISTANCE_DP = 8f
         private const val FOCUS_NUDGE_DURATION_MS = 56L
         private const val DEBUG = true
+        private const val DEBUG_GESTURE = true
+        private const val USE_CONTINUOUS_GESTURES = true
         @Volatile
         private var instance: ControlAccessibilityService? = null
         @Volatile
@@ -158,6 +160,18 @@ class ControlAccessibilityService : AccessibilityService() {
     private var deferredBackRunnable: Runnable? = null
     private var cursorVisible = true
     private var forceCursorVisible = false
+    private var continuousGestureStroke: GestureDescription.StrokeDescription? = null
+    private var continuousGesturePointX = 0f
+    private var continuousGesturePointY = 0f
+    private var continuousGesturePendingPoint: PointF? = null
+    private var continuousGestureDispatchInFlight = false
+    private var continuousGestureEndRequested = false
+
+    private fun logGesture(message: String) {
+        if (DEBUG_GESTURE) {
+            DiagnosticsLog.add("GesturePipeline", message)
+        }
+    }
     private var lastMoveTime = 0L
     private var lastParamsX = -1
     private var lastParamsY = -1
@@ -2291,4 +2305,181 @@ class ControlAccessibilityService : AccessibilityService() {
         return success
     }
 
+    fun startContinuousGestureAtCursor(): Boolean {
+        if (!USE_CONTINUOUS_GESTURES) {
+            logGesture("Continuous gestures disabled. Falling back to legacy drag.")
+            startDragAtCursor()
+            return true
+        }
+        val info = displayInfo ?: return false
+        if (continuousGestureStroke != null || continuousGestureDispatchInFlight) {
+            logGesture("Start blocked: already in flight or session active.")
+            return false
+        }
+        
+        val clamped = clampToDisplay(cursorX, cursorY, info)
+        continuousGesturePointX = clamped.x
+        continuousGesturePointY = clamped.y
+        
+        val mapped = CoordinateMapper.mapForRotation(clamped.x, clamped.y, info)
+        val path = Path().apply { moveTo(mapped.x, mapped.y) }
+        val stroke = GestureDescription.StrokeDescription(path, 0, dragStartDurationMs, true)
+        
+        continuousGestureStroke = stroke
+        continuousGesturePendingPoint = null
+        continuousGestureEndRequested = false
+        
+        logGesture("Drag Started at (${clamped.x}, ${clamped.y})")
+        notifyCursorActivity()
+        return dispatchContinuousGestureStrokeTracked(stroke, info.displayId)
+    }
+
+    fun updateContinuousGestureTo(x: Float, y: Float) {
+        if (!USE_CONTINUOUS_GESTURES) {
+            updateDragToCursor()
+            return
+        }
+        val info = displayInfo ?: return
+        if (continuousGestureStroke == null) return
+        if (!x.isFinite() || !y.isFinite()) return
+        
+        logGesture("Drag Updated to ($x, $y)")
+        val next = clampToDisplay(x, y, info)
+        continuousGesturePendingPoint = next
+        logGesture("Pending Point Updated: (${next.x}, ${next.y})")
+        dispatchPendingContinuousGesture()
+    }
+
+    fun endContinuousGesture() {
+        if (!USE_CONTINUOUS_GESTURES) {
+            endDragAtCursor()
+            return
+        }
+        if (continuousGestureStroke == null) return
+        logGesture("End Requested.")
+        continuousGestureEndRequested = true
+        dispatchPendingContinuousGesture()
+    }
+
+    fun cancelContinuousGesture() {
+        if (!USE_CONTINUOUS_GESTURES) {
+            cancelDrag()
+            return
+        }
+        logGesture("Gesture Cancelled.")
+        abandonContinuousGesture()
+    }
+
+    private fun dispatchContinuousGestureStrokeTracked(
+        stroke: GestureDescription.StrokeDescription,
+        displayId: Int
+    ): Boolean {
+        continuousGestureDispatchInFlight = true
+        val builder = GestureDescription.Builder()
+        builder.setDisplayId(displayId)
+        builder.addStroke(stroke)
+        
+        val isClosing = !stroke.willContinue()
+        logGesture("Segment Dispatched: ${if (isClosing) "FINAL" else "CONTINUE"}")
+        
+        val accepted = dispatchGesture(
+            builder.build(),
+            object : GestureResultCallback() {
+                override fun onCompleted(gestureDescription: GestureDescription?) {
+                    gesturesInFlight = (gesturesInFlight - 1).coerceAtLeast(0)
+                    continuousGestureDispatchInFlight = false
+                    logGesture("Segment Completed. Gestures in flight: $gesturesInFlight")
+                    if (isClosing) {
+                        logGesture("Gesture Completed Successfully.")
+                    }
+                    dispatchPendingContinuousGesture()
+                }
+
+                override fun onCancelled(gestureDescription: GestureDescription?) {
+                    gesturesInFlight = (gesturesInFlight - 1).coerceAtLeast(0)
+                    continuousGestureDispatchInFlight = false
+                    logGesture("Segment CANCELLED. Gestures in flight: $gesturesInFlight")
+                    abandonContinuousGesture()
+                }
+            },
+            null
+        )
+        
+        if (accepted) {
+            gesturesInFlight += 1
+        } else {
+            logGesture("Stroke REJECTED by system.")
+            abandonContinuousGesture()
+        }
+        return accepted
+    }
+
+    private fun dispatchPendingContinuousGesture() {
+        if (continuousGestureDispatchInFlight) return
+        val info = displayInfo ?: run {
+            abandonContinuousGesture()
+            return
+        }
+        val activeStroke = continuousGestureStroke ?: return
+        val pending = continuousGesturePendingPoint
+        
+        if (pending != null) {
+            val mappedStart = CoordinateMapper.mapForRotation(
+                continuousGesturePointX,
+                continuousGesturePointY,
+                info
+            )
+            val mappedEnd = CoordinateMapper.mapForRotation(pending.x, pending.y, info)
+            continuousGesturePendingPoint = null
+            
+            val moved = abs(mappedEnd.x - mappedStart.x) >= 0.5f ||
+                abs(mappedEnd.y - mappedStart.y) >= 0.5f
+                
+            if (moved) {
+                val willContinue = !continuousGestureEndRequested
+                val path = Path().apply {
+                    moveTo(mappedStart.x, mappedStart.y)
+                    lineTo(mappedEnd.x, mappedEnd.y)
+                }
+                val stroke = activeStroke.continueStroke(
+                    path,
+                    0,
+                    dragSegmentDurationMs,
+                    willContinue
+                )
+                continuousGesturePointX = pending.x
+                continuousGesturePointY = pending.y
+                continuousGestureStroke = if (willContinue) stroke else null
+                if (!willContinue) continuousGestureEndRequested = false
+                
+                dispatchContinuousGestureStrokeTracked(stroke, info.displayId)
+                return
+            }
+        }
+        
+        if (!continuousGestureEndRequested) return
+        
+        // Finalize if end was requested but no more movement
+        val mapped = CoordinateMapper.mapForRotation(
+            continuousGesturePointX,
+            continuousGesturePointY,
+            info
+        )
+        val path = Path().apply {
+            moveTo(mapped.x, mapped.y)
+            lineTo(mapped.x, mapped.y)
+        }
+        val stroke = activeStroke.continueStroke(path, 0, dragSegmentDurationMs, false)
+        continuousGestureStroke = null
+        continuousGestureEndRequested = false
+        dispatchContinuousGestureStrokeTracked(stroke, info.displayId)
+    }
+
+    private fun abandonContinuousGesture() {
+        logGesture("Abandoning continuous gesture session.")
+        continuousGestureStroke = null
+        continuousGesturePendingPoint = null
+        continuousGestureDispatchInFlight = false
+        continuousGestureEndRequested = false
+    }
 }
