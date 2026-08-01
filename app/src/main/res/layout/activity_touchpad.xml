@@ -102,59 +102,58 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <ScrollView
+            <LinearLayout
+                android:id="@+id/touchpadContent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fillViewport="true">
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="24dp">
 
-                <LinearLayout
-                    android:id="@+id/touchpadContent"
-                    android:layout_width="match_parent"
+                <!-- D-Pad Panel Above -->
+                <include
+                    android:id="@+id/dPadAbove"
+                    layout="@layout/layout_dpad"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
-                    android:paddingBottom="24dp">
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone" />
 
-                    <!-- D-Pad Panel Above -->
-                    <include
-                        android:id="@+id/dPadAbove"
-                        layout="@layout/layout_dpad"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="4dp"
-                        android:visibility="gone" />
+                <!-- Touchpad Area (Main element) -->
+                <FrameLayout
+                    android:id="@+id/touchpadArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/touchpad_bg" />
 
-                    <!-- Touchpad Area (Main element) -->
-                    <FrameLayout
-                        android:id="@+id/touchpadArea"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/touchpad_bg" />
+                <!-- D-Pad Panel Below -->
+                <include
+                    android:id="@+id/dPadBelow"
+                    layout="@layout/layout_dpad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="4dp"
+                    android:visibility="gone" />
 
-                    <!-- D-Pad Panel Below -->
-                    <include
-                        android:id="@+id/dPadBelow"
-                        layout="@layout/layout_dpad"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="4dp"
-                        android:visibility="gone" />
+                <!-- Tuning Panel (Self-contained scroll) -->
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/tuningPanel"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/card_bg"
+                    android:visibility="gone">
 
-                    <!-- Tuning Panel -->
                     <LinearLayout
-                        android:id="@+id/tuningPanel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone"
-                        android:background="@drawable/card_bg"
-                        android:padding="20dp"
-                        android:layout_marginTop="8dp">
+                        android:padding="20dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -171,6 +170,7 @@
                             android:layout_marginTop="16dp"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAppearance="?attr/textAppearanceBodySmall" />
+
                         <SeekBar
                             android:id="@+id/sliderBaseGain"
                             android:layout_width="match_parent"
@@ -184,6 +184,7 @@
                             android:layout_marginTop="16dp"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAppearance="?attr/textAppearanceBodySmall" />
+
                         <SeekBar
                             android:id="@+id/sliderAccel"
                             android:layout_width="match_parent"
@@ -197,6 +198,7 @@
                             android:layout_marginTop="16dp"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAppearance="?attr/textAppearanceBodySmall" />
+
                         <SeekBar
                             android:id="@+id/sliderSpeed"
                             android:layout_width="match_parent"
@@ -210,6 +212,7 @@
                             android:layout_marginTop="16dp"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAppearance="?attr/textAppearanceBodySmall" />
+
                         <SeekBar
                             android:id="@+id/sliderJitter"
                             android:layout_width="match_parent"
@@ -223,6 +226,7 @@
                             android:layout_marginTop="16dp"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAppearance="?attr/textAppearanceBodySmall" />
+
                         <SeekBar
                             android:id="@+id/sliderSmoothing"
                             android:layout_width="match_parent"
@@ -236,6 +240,7 @@
                             android:layout_marginTop="16dp"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textAppearance="?attr/textAppearanceBodySmall" />
+
                         <SeekBar
                             android:id="@+id/sliderScroll"
                             android:layout_width="match_parent"
@@ -243,9 +248,9 @@
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
 
-                </LinearLayout>
-            </ScrollView>
+            </LinearLayout>
 
             <!-- Accessibility Gate Overlay -->
             <LinearLayout
