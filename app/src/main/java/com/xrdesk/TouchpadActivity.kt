@@ -61,6 +61,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     private var touchState = TouchState.IDLE
     private var suppressSingleUntilUp = false
     private lateinit var accessibilityGate: AccessibilityGateController
+    private lateinit var backController: ControlSurfaceBackController
 
     private val appPickerLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
@@ -132,6 +133,18 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                 val dpadAlpha = if (alive) 1f else 0.6f
                 binding.dPadAbove.root.alpha = dpadAlpha
                 binding.dPadBelow.root.alpha = dpadAlpha
+            }
+        )
+
+        backController = ControlSurfaceBackController(
+            activity = this,
+            logName = "Touchpad",
+            isControlActive = { touchpadActive },
+            preBackHandler = {
+                if (binding.blackoutOverlay.isVisible) {
+                    setBlackoutVisible(false)
+                    true
+                } else false
             }
         )
 
@@ -233,56 +246,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                 setBlackoutVisible(true)
             }
         }
-
-        onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (binding.blackoutOverlay.isVisible) {
-                        setBlackoutVisible(false)
-                        return
-                    }
-                    if (touchpadActive) {
-                        val displayInfo = DisplaySessionManager.getExternalDisplayInfo()
-                        val sessionActive = displayInfo != null
-                        if (!sessionActive) {
-                            DiagnosticsLog.add("Touchpad", "back blocked (no external display)")
-                            ToastHelper.show(this@TouchpadActivity, R.string.touchpad_no_external_display)
-                            return
-                        }
-                        val backTimestamp = SystemClock.uptimeMillis()
-                        DiagnosticsLog.add("Touchpad", "Touchpad: back requested t=$backTimestamp")
-                        val service = ControlAccessibilityService.current()
-                        if (service == null) {
-                            DiagnosticsLog.add("Touchpad", "Touchpad: back failed (accessibility missing)")
-                            ToastHelper.show(this@TouchpadActivity, R.string.touchpad_accessibility_required_toast)
-                        } else {
-                            val success = service.performBack()
-                            if (!success && SessionStore.lastBackFailure == "external_not_focused") {
-                                val message =
-                                    getString(R.string.touchpad_back_external_not_focused)
-                                service.showToastOnExternalDisplay(message)
-                            } else if (!success &&
-                                SessionStore.lastBackFailure == "external_window_missing"
-                            ) {
-                                val message =
-                                    getString(R.string.touchpad_back_external_window_missing)
-                                service.showToastOnExternalDisplay(message)
-                            } else if (!success &&
-                                SessionStore.lastBackFailure == "dispatch_failed"
-                            ) {
-                                val message =
-                                    getString(R.string.touchpad_back_dispatch_failed)
-                                service.showToastOnExternalDisplay(message)
-                            }
-                        }
-                        DiagnosticsLog.add("Touchpad", "Touchpad: back forwarded")
-                    } else {
-                        finish()
-                    }
-                }
-            }
-        )
     }
 
     override fun onStart() {
@@ -312,10 +275,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         } else {
             stopAutoDimSession()
         }
-        ControlAccessibilityService.current()?.warmUpBackPipeline()
-        if (SettingsStore.touchpadAutoFocusEnabled) {
-            ControlAccessibilityService.requestExternalFocusWarmup("touchpad_resume")
-        }
+        backController.warmUpOnResume("touchpad_resume")
         DiagnosticsLog.add("Touchpad", "Touchpad: resume")
     }
 
@@ -377,10 +337,8 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             binding.touchpadArea.getGlobalVisibleRect(rect)
             val inTouchpad = rect.contains(event.rawX.toInt(), event.rawY.toInt())
             setTouchpadActive(inTouchpad)
-            if (inTouchpad && SettingsStore.touchpadAutoFocusEnabled) {
-                // Proactively warm up external focus on first finger down to reduce
-                // "back no-op due to missing focus" right after returning to touchpad.
-                ControlAccessibilityService.requestExternalFocusWarmup("touch_down")
+            if (inTouchpad) {
+                backController.warmUpOnActivation("touch_down")
             }
         }
         return super.dispatchTouchEvent(event)
