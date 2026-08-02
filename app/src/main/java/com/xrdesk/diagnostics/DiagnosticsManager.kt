@@ -134,9 +134,8 @@ object DiagnosticsManager {
         
         try {
             FileOutputStream(file, true).use { fos ->
-                fos.write("$ENTRY_START\n".toByteArray())
-                fos.write(entry.toString().toByteArray())
-                fos.write("\n$ENTRY_END\n".toByteArray())
+                fos.write(entry.toJson().toByteArray())
+                fos.write("\n".toByteArray())
             }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to write to log file", e)
@@ -172,12 +171,23 @@ object DiagnosticsManager {
         
         fun parseFile(file: File) {
             if (!file.exists()) return
+            
             val content = file.readText()
-            val blocks = content.split("$ENTRY_START\n")
-            blocks.forEach { block ->
-                val entryContent = block.split("\n$ENTRY_END").firstOrNull()
-                if (!entryContent.isNullOrBlank()) {
-                    DiagnosticEntry.parse(entryContent)?.let { entries.add(it) }
+            if (content.contains(ENTRY_START)) {
+                // Legacy block-based parsing
+                val blocks = content.split("$ENTRY_START\n")
+                blocks.forEach { block ->
+                    val entryContent = block.split("\n$ENTRY_END").firstOrNull()
+                    if (!entryContent.isNullOrBlank()) {
+                        DiagnosticEntry.parse(entryContent)?.let { entries.add(it) }
+                    }
+                }
+            } else {
+                // New JSON Lines parsing
+                file.bufferedReader().useLines { lines ->
+                    lines.forEach { line ->
+                        DiagnosticEntry.parse(line)?.let { entries.add(it) }
+                    }
                 }
             }
         }
@@ -193,9 +203,18 @@ object DiagnosticsManager {
         var count = 0
         fun countInFile(file: File) {
             if (!file.exists()) return
-            val content = file.readText()
-            // Subtract 1 because split on N items gives N+1 blocks
-            count += content.split("$ENTRY_START\n").size - 1
+            
+            // Check if it's the old format or new format
+            val isOldFormat = file.bufferedReader().use { it.readLine()?.contains(ENTRY_START) == true }
+            
+            if (isOldFormat) {
+                val content = file.readText()
+                count += content.split("$ENTRY_START\n").size - 1
+            } else {
+                file.bufferedReader().useLines { lines ->
+                    count += lines.count { it.isNotBlank() }
+                }
+            }
         }
         countInFile(File(dir, PREV_LOG_FILE_NAME))
         countInFile(File(dir, LOG_FILE_NAME))

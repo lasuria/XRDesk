@@ -55,6 +55,7 @@ class XRDeskApp : Application() {
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
             override fun onActivityDestroyed(activity: Activity) {
                 activeActivities.remove(activity)
+                // Fix: Skip session end if we're just rotating (recreating)
                 if (activeActivities.isEmpty() && activity.isFinishing && !activity.isChangingConfigurations) {
                     com.xrdesk.diagnostics.DiagnosticsManager.sessionEnd()
                 }

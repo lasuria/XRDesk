@@ -41,6 +41,7 @@ object HUDManager {
         
         val isNewConnection = currentDisplayInfo == null
         
+        // Use ApplicationContext for persistent state if possible, but we need windowContext for UI
         contextRef = WeakReference(context)
         currentWindowManager = windowManager
         
