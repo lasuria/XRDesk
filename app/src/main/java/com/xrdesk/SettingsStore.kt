@@ -109,6 +109,8 @@ object SettingsStore {
 // HUD SETTINGS
     var hudEnabled = false
         private set
+    var diagnosticsEnabled = true
+        private set
     var developerModeUnlocked = false
         private set
     var hudMode = HUD_MODE_FULL_INFO
@@ -240,6 +242,7 @@ object SettingsStore {
         xrZoomLevel = prefs.getInt("xr_zoom_level", 150)
         
         hudEnabled = prefs.getBoolean("hud_enabled", false)
+        diagnosticsEnabled = prefs.getBoolean("diagnostics_enabled", true)
         developerModeUnlocked = prefs.getBoolean("developer_unlocked", false)
         val savedMode = prefs.getInt("hud_mode", HUD_MODE_FULL_INFO)
         // Migration: If old Vertical Panel (3) was selected, move to Full Info (0)
@@ -493,6 +496,11 @@ fun setXrZoomLevel(context: Context, level: Int) {
         hudEnabled = enabled
         persist(context) { putBoolean("hud_enabled", enabled) }
         syncHudFlows()
+    }
+
+    fun setDiagnosticsEnabled(context: Context, enabled: Boolean) {
+        diagnosticsEnabled = enabled
+        persist(context) { putBoolean("diagnostics_enabled", enabled) }
     }
 
     fun setDeveloperModeUnlocked(context: Context, unlocked: Boolean) {

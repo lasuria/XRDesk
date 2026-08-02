@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
+import com.xrdesk.diagnostics.DiagnosticsManager
 
 object WebViewSettings {
 
@@ -98,6 +99,7 @@ object WebViewSettings {
             """.trimIndent()
             
             android.util.Log.d("WebViewMode", log)
+            DiagnosticsManager.info("Browser", "Diag: $tag w=${webView.width} inner=$innerWidthValue")
         }
     }
 

@@ -23,6 +23,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import com.xrdesk.databinding.ActivityPlayerBinding
 import com.xrdesk.databinding.DialogTrackSelectionBinding
+import com.xrdesk.diagnostics.DiagnosticsManager
 import java.util.Locale
 
 @OptIn(UnstableApi::class)
@@ -100,6 +101,7 @@ class PlayerActivity : AppCompatActivity() {
             }
 
             override fun onPlayerError(error: PlaybackException) {
+                DiagnosticsManager.error("Player", "Playback error: ${error.message}", error)
                 showError(error)
             }
 

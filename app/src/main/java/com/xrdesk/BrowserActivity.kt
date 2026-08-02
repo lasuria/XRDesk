@@ -41,6 +41,7 @@ import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import com.xrdesk.databinding.ActivityBrowserBinding
 import com.xrdesk.databinding.DialogTrackSelectionBinding
+import com.xrdesk.diagnostics.DiagnosticsManager
 import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.hypot
@@ -239,6 +240,7 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
+                DiagnosticsManager.info("Browser", "Page loaded: $url")
                 if (isTarget(url)) {
                     val visibilityLog = "Visibility: isShown=${view?.isShown}, vis=${view?.visibility}, winVis=${view?.windowVisibility}"
                     val msg = "onPageFinished: $url | $visibilityLog"
@@ -283,12 +285,24 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
             @SuppressLint("WebViewClientOnReceivedSslError")
             override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: android.net.http.SslError?) {
+                DiagnosticsManager.warning("Browser", "SSL Error: ${error?.url}")
                 AlertDialog.Builder(this@BrowserActivity)
                     .setTitle("SSL Error")
                     .setMessage("SSL certificate is invalid. Proceed anyway?")
                     .setPositiveButton("Proceed") { _, _ -> handler?.proceed() }
                     .setNegativeButton("Cancel") { _, _ -> handler?.cancel() }
                     .show()
+            }
+
+            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                if (request?.isForMainFrame == true) {
+                    DiagnosticsManager.error("Browser", "Main frame error: ${error?.description} (${error?.errorCode}) url=${request.url}")
+                }
+            }
+
+            override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?): Boolean {
+                DiagnosticsManager.error("Browser", "Renderer crashed: crashed=${detail?.didCrash()}")
+                return false // Let system handle it
             }
         }
 

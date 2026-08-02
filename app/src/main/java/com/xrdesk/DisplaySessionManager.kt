@@ -4,6 +4,7 @@ import android.content.Context
 import android.hardware.display.DisplayManager
 import android.util.DisplayMetrics
 import android.view.Display
+import com.xrdesk.diagnostics.DiagnosticsManager
 import kotlin.math.max
 import kotlin.math.min
 
@@ -36,14 +37,17 @@ object DisplaySessionManager {
     private val displayListener = object : DisplayManager.DisplayListener {
         override fun onDisplayAdded(displayId: Int) {
             android.util.Log.e("HUD-Lifecycle", "Display detected: id=$displayId")
+            DiagnosticsManager.info("Display", "Display added: id=$displayId")
             refreshDisplays()
         }
 
         override fun onDisplayRemoved(displayId: Int) {
+            DiagnosticsManager.info("Display", "Display removed: id=$displayId")
             refreshDisplays()
         }
 
         override fun onDisplayChanged(displayId: Int) {
+            DiagnosticsManager.info("Display", "Display changed: id=$displayId")
             refreshDisplays()
         }
     }

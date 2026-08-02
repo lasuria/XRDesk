@@ -136,6 +136,16 @@
         </activity>
 
         <activity
+            android:name=".diagnostics.DiagnosticsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".diagnostics.LogViewerActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".BrowserActivity"
             android:configChanges="orientation|screenSize|keyboard|keyboardHidden"
             android:exported="false"
@@ -167,6 +177,16 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
 
         <provider
             android:name="rikka.shizuku.ShizukuProvider"

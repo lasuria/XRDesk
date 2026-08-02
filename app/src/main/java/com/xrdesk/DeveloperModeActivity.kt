@@ -1,5 +1,6 @@
 package com.xrdesk
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -23,6 +24,15 @@ class DeveloperModeActivity : BaseSettingsActivity() {
         val swShowBounds = findViewById<MaterialSwitch>(R.id.switchDebugShowBounds)
         swShowBounds.isChecked = SettingsStore.hudDebugShowBounds
         swShowBounds.setOnCheckedChangeListener { _, b -> SettingsStore.setHudDebugShowBounds(this, b) }
+
+        // Diagnostics
+        findViewById<View>(R.id.rowDiagnostics).setOnClickListener {
+            startActivity(Intent(this, com.xrdesk.diagnostics.DiagnosticsActivity::class.java))
+        }
+
+        val swDiag = findViewById<MaterialSwitch>(R.id.switchDiagnostics)
+        swDiag.isChecked = SettingsStore.diagnosticsEnabled
+        swDiag.setOnCheckedChangeListener { _, b -> SettingsStore.setDiagnosticsEnabled(this, b) }
 
         findViewById<TextView>(R.id.tvVersion).text = getString(R.string.dev_version_label, BuildConfig.VERSION_NAME)
         findViewById<TextView>(R.id.tvBuild).text = getString(R.string.dev_build_label, getString(R.string.app_build_date))
