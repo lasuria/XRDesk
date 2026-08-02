@@ -34,10 +34,6 @@
             android:name=".IconComparisonActivity"
             android:exported="false"
             android:label="Icon Comparison" />
-        <activity
-            android:name=".DiagnosticsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name=".SettingsActivity"

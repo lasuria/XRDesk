@@ -33,7 +33,6 @@ class LegacyScrollController(
         
         service.startContinuousScrollAtPoint(virtualScrollX, virtualScrollY)
         
-        DiagnosticsLog.add("Touchpad", "scroll mode enter mid=(${virtualScrollX.toInt()},${virtualScrollY.toInt()}) speed=$scrollSpeedMultiplier")
         return true
     }
 
@@ -79,7 +78,6 @@ class LegacyScrollController(
         scrollAccumulatorX = 0f
         scrollAccumulatorY = 0f
         serviceProvider()?.endContinuousScroll()
-        DiagnosticsLog.add("Touchpad", "scroll mode exit")
     }
 
     private fun scrollMidpoint(event: MotionEvent): Pair<Float, Float> {

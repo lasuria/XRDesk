@@ -85,8 +85,8 @@ class ControlAccessibilityService : AccessibilityService() {
             instance?.setSwitchBarForceVisible(enabled)
         }
 
-        fun requestExternalFocusWarmup(reason: String) {
-            instance?.warmUpExternalFocus(reason)
+        fun requestExternalFocusWarmup() {
+            instance?.warmUpExternalFocus()
         }
     }
 
@@ -133,11 +133,9 @@ class ControlAccessibilityService : AccessibilityService() {
                 AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS or
                 AccessibilityServiceInfo.FLAG_INCLUDE_NOT_IMPORTANT_VIEWS
             serviceInfo = currentInfo
-            DiagnosticsLog.add("Accessibility", "Accessibility: flags=${currentInfo.flags}")
         }
         cursorSizePx = (resources.displayMetrics.density * 14f).toInt().coerceAtLeast(10)
         attachToDisplay(pendingDisplayInfo)
-        DiagnosticsLog.add("Accessibility", "Accessibility: connected")
         setupCursorObservation()
     }
 
@@ -161,7 +159,6 @@ class ControlAccessibilityService : AccessibilityService() {
         instance = null
         serviceScope.cancel()
         attachRetryRunnable?.let { handler.removeCallbacks(it) }
-        DiagnosticsLog.add("Accessibility", "Accessibility: destroyed")
         super.onDestroy()
     }
 
@@ -189,7 +186,6 @@ class ControlAccessibilityService : AccessibilityService() {
         notifyCursorSpeed(dx, dy)
         updateOverlayPosition()
         
-        DiagnosticsLog.add("Accessibility", "Cursor moved: ($cursorX, $cursorY)")
         switchBarController?.onCursorMoved(cursorX, cursorY, cursorSizePx)
     }
 
@@ -207,22 +203,15 @@ class ControlAccessibilityService : AccessibilityService() {
 
     fun performBack(): Boolean {
         SessionStore.lastBackFailure = null
-        val now = SystemClock.uptimeMillis()
-        DiagnosticsLog.add("Back", "request t=$now")
-        DiagnosticsLog.add("Back", 
-            "gesturesInFlight=$gesturesInFlight continuousActive=${continuousGestureStroke != null}"
-        )
         val info = displayInfo
         if (info == null) {
-            DiagnosticsLog.add("Back", "blocked (no external display)")
             SessionStore.lastBackFailure = "no_display"
             return false
         }
         val snapshot = snapshotWindows()
         val externalState = resolveExternalWindowState(info, snapshot)
-        logBackFocusSnapshot("before", info, snapshot, externalState)
+        logBackFocusSnapshot()
         if (snapshot.none { it.displayId == info.displayId }) {
-            DiagnosticsLog.add("Back", "no window for external displayId=${info.displayId}, skip back dispatch")
             if (!SettingsStore.touchpadAutoFocusEnabled) {
                 SessionStore.lastBackFailure = "external_window_missing"
                 return false
@@ -236,65 +225,43 @@ class ControlAccessibilityService : AccessibilityService() {
             return false
         }
         if (externalState == null || (!externalState.isActive && !externalState.isFocused)) {
-            DiagnosticsLog.add(
-                "Back",
-                "external display not focused before back " +
-                    "active=${externalState?.isActive ?: false} " +
-                    "focused=${externalState?.isFocused ?: false}"
-            )
             cancelContinuousGesture()
             if (SettingsStore.touchpadAutoFocusEnabled &&
                 dispatchFocusActivationGesture(info, snapshot, allowFallback = true)
             ) {
                 SessionStore.lastBackFailure = "external_not_focused"
-                DiagnosticsLog.add("Back", "focus activation requested; require user retry")
                 return false
             }
         }
-        return executeBackWithLogging("immediate", snapshot, allowFocusRetry = true)
+        return executeBackWithLogging(snapshot, allowFocusRetry = true)
     }
 
     private fun executeBackWithLogging(
-        reason: String,
         snapshot: List<AccessibilityWindowInfo>? = null,
         allowFocusRetry: Boolean
     ): Boolean {
-        val now = SystemClock.uptimeMillis()
-        DiagnosticsLog.add("Back", "execute $reason t=$now")
-        DiagnosticsLog.add("Back", 
-            "gesturesInFlight=$gesturesInFlight continuousActive=${continuousGestureStroke != null}"
-        )
         val info = displayInfo
         if (info == null) {
-            DiagnosticsLog.add("Back", "blocked (no external display)")
             return false
         }
         val windowSnapshot = snapshot ?: snapshotWindows()
         val externalState = resolveExternalWindowState(info, windowSnapshot)
-        logBackFocusSnapshot("action", info, windowSnapshot, externalState)
+        logBackFocusSnapshot()
         if (externalState == null || (!externalState.isActive && !externalState.isFocused)) {
-            DiagnosticsLog.add("Back", 
-                "external display not focused at action " +
-                    "active=${externalState?.isActive ?: false} " +
-                    "focused=${externalState?.isFocused ?: false}"
-            )
             if (allowFocusRetry &&
                 SettingsStore.touchpadAutoFocusEnabled &&
                 dispatchFocusActivationGesture(info, windowSnapshot, allowFallback = true)
             ) {
                 SessionStore.lastBackFailure = "external_not_focused"
-                DiagnosticsLog.add("Back", "focus activation requested; require user retry")
                 return false
             }
             SessionStore.lastBackFailure = "external_not_focused"
-            DiagnosticsLog.add("Back", "skipped (external display not focused)")
             return false
         }
         val success = performGlobalAction(GLOBAL_ACTION_BACK)
         if (!success) {
             SessionStore.lastBackFailure = "dispatch_failed"
         }
-        DiagnosticsLog.add("Back", "dispatched success=$success")
         return success
     }
 
@@ -338,19 +305,7 @@ class ControlAccessibilityService : AccessibilityService() {
         )
     }
 
-    private fun dumpWindows(tag: String, windows: List<AccessibilityWindowInfo>) {
-        if (windows.isEmpty()) {
-            DiagnosticsLog.add("Accessibility", "$tag: none")
-            return
-        }
-        windows.forEach { window ->
-            val packageName = window.root?.packageName?.toString() ?: "none"
-            DiagnosticsLog.add("Accessibility", 
-                "$tag displayId=${window.displayId} type=${window.type} " +
-                    "active=${window.isActive} focused=${window.isFocused} root=$packageName"
-            )
-        }
-    }
+
 
     private fun dispatchFocusActivationGesture(
         info: DisplaySessionManager.ExternalDisplayInfo,
@@ -358,41 +313,34 @@ class ControlAccessibilityService : AccessibilityService() {
         allowFallback: Boolean = false
     ): Boolean {
         if (tryTaskFocus()) {
-            DiagnosticsLog.add("Back", "focus activation via task manager")
             return true
         }
         val windowSnapshot = snapshot ?: windows
         val targetWindow = pickTopAppWindow(info.displayId, windowSnapshot)
             ?: windowSnapshot?.firstOrNull { it.displayId == info.displayId }
         val root = targetWindow?.root ?: run {
-            DiagnosticsLog.add("Back", "focus activation skipped (no window root)")
             if (allowFallback) {
                 val nudged = dispatchFocusProbeNudge(info)
-                DiagnosticsLog.add("Back", "focus activation via nudge fallback success=$nudged")
                 return nudged
             }
             return false
         }
         if (tryFocusAtCursor(root, info)) {
-            DiagnosticsLog.add("Back", "focus activation via cursor hit")
             return true
         }
         val candidates = collectFocusableNodes(root, maxCount = 3)
         if (candidates.isEmpty()) {
-            DiagnosticsLog.add("Back", "focus activation skipped (no focusable node)")
             return false
         }
         for (node in candidates) {
             val focused = node.performAction(AccessibilityNodeInfo.ACTION_FOCUS) ||
                 node.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
             if (focused) {
-                DiagnosticsLog.add("Back", "focus activation via node success=true")
                 return true
             }
         }
         val rootFocused = root.performAction(AccessibilityNodeInfo.ACTION_FOCUS) ||
             root.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS)
-        DiagnosticsLog.add("Back", "focus activation via node success=$rootFocused")
         return rootFocused
     }
 
@@ -423,25 +371,21 @@ class ControlAccessibilityService : AccessibilityService() {
         return false
     }
 
-    private fun warmUpExternalFocus(reason: String) {
+    private fun warmUpExternalFocus() {
         if (!SettingsStore.touchpadAutoFocusEnabled) {
-            DiagnosticsLog.add("Back", "focus warmup skipped reason=$reason feature_disabled=true")
             return
         }
         val info = displayInfo ?: return
         val snapshot = snapshotWindows()
         val externalState = resolveExternalWindowState(info, snapshot)
         if (externalState?.isFocused == true || externalState?.isActive == true) {
-            DiagnosticsLog.add("Back", "focus warmup skipped reason=$reason already_focused=true")
             return
         }
-        val success = dispatchFocusActivationGesture(info, snapshot)
-        DiagnosticsLog.add("Back", "focus warmup reason=$reason success=$success")
+        dispatchFocusActivationGesture(info, snapshot)
     }
 
     private fun dispatchFocusProbeNudge(info: DisplaySessionManager.ExternalDisplayInfo): Boolean {
         if (gesturesInFlight > 0) {
-            DiagnosticsLog.add("Back", "focus probe nudge skipped (gesture busy)")
             return false
         }
         val density = resources.displayMetrics.density
@@ -462,14 +406,9 @@ class ControlAccessibilityService : AccessibilityService() {
             builder.build(),
             object : GestureResultCallback() {
                 override fun onCompleted(gestureDescription: GestureDescription?) {
-                    DiagnosticsLog.add("Back", 
-                        "focus probe nudge injected start=(${startX.toInt()},${y.toInt()}) " +
-                            "end=(${endX.toInt()},${y.toInt()})"
-                    )
                 }
 
                 override fun onCancelled(gestureDescription: GestureDescription?) {
-                    DiagnosticsLog.add("Back", "focus probe nudge cancelled")
                 }
             }
         )
@@ -481,33 +420,19 @@ class ControlAccessibilityService : AccessibilityService() {
         val runnable = Runnable {
             val current = displayInfo
             if (current == null || current.displayId != displayId) {
-                DiagnosticsLog.add("Back", 
-                    "deferred dispatch dropped displayId=$displayId session_changed=true"
-                )
                 return@Runnable
             }
             val success = performGlobalAction(GLOBAL_ACTION_BACK)
             if (!success) {
                 SessionStore.lastBackFailure = "dispatch_failed"
             }
-            DiagnosticsLog.add("Back", "deferred dispatch after focus probe success=$success")
         }
         deferredBackRunnable = runnable
         handler.postDelayed(runnable, 120L)
     }
 
     private fun logBackFocusSnapshot(
-        stage: String,
-        info: DisplaySessionManager.ExternalDisplayInfo,
-        windows: List<AccessibilityWindowInfo>,
-        externalState: ExternalWindowState?
     ) {
-        val onDisplay = windows.count { it.displayId == info.displayId }
-        DiagnosticsLog.add("Back", 
-            "focus snapshot stage=$stage displayId=${info.displayId} " +
-                "windowsOnDisplay=$onDisplay active=${externalState?.isActive ?: false} " +
-                "focused=${externalState?.isFocused ?: false} pkg=${externalState?.packageName ?: "none"}"
-        )
     }
 
     private fun pickTopAppWindow(
@@ -571,81 +496,17 @@ class ControlAccessibilityService : AccessibilityService() {
 
     fun hasExternalDisplaySession(): Boolean = displayInfo != null
 
-    fun dumpAllWindowsDebug() {
-        val tag = "XRDesk"
-        val header = "=== WINDOW DIAGNOSTICS START ==="
-        android.util.Log.wtf(tag, header)
-        DiagnosticsLog.add("Diagnostics", header)
-        
-        try {
-            val sdk = android.os.Build.VERSION.SDK_INT
-            DiagnosticsLog.add("Diagnostics", "SDK_INT=$sdk")
 
-            val currentDisplayId = displayInfo?.displayId ?: -1
-            DiagnosticsLog.add("Diagnostics", "Target DisplayID (from DisplayManager): $currentDisplayId")
 
-            // Check DisplayManager's perspective
-            val dm = getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
-            val allDisplays = dm.displays
-            DiagnosticsLog.add("Diagnostics", "DisplayManager sees ${allDisplays.size} displays:")
-            allDisplays.forEach { d ->
-                DiagnosticsLog.add("Diagnostics", "  - ID=${d.displayId} Name=${d.name} Flags=${Integer.toHexString(d.flags)}")
-            }
 
-            // 1. Check default windows property
-            val defaultWindows = windows ?: emptyList()
-            DiagnosticsLog.add("Diagnostics", "getWindows().size=${defaultWindows.size}")
-            defaultWindows.forEachIndexed { index, win ->
-                logWindowToDiagnostics("Default", index, win)
-            }
-
-            // 2. Check all displays (API 30+)
-            if (sdk >= Build.VERSION_CODES.R) {
-                val allWindowsSparse = getWindowsOnAllDisplays()
-                val displaysSeen = allWindowsSparse.size()
-                DiagnosticsLog.add("Diagnostics", "getWindowsOnAllDisplays().displaysSeen=$displaysSeen")
-                
-                for (i in 0 until displaysSeen) {
-                    val dId = allWindowsSparse.keyAt(i)
-                    val windowList = allWindowsSparse.valueAt(i)
-                    DiagnosticsLog.add("Diagnostics", "  Display $dId has ${windowList.size} windows:")
-                    windowList.forEachIndexed { index, win ->
-                        logWindowToDiagnostics("AllDisplays", index, win)
-                    }
-                }
-            }
-        } catch (e: Throwable) {
-            val err = "FATAL: dumpAllWindowsDebug crashed: ${e.message}"
-            android.util.Log.wtf(tag, err, e)
-            DiagnosticsLog.add("Diagnostics", err)
-        } finally {
-            val footer = "=== WINDOW DIAGNOSTICS END ==="
-            android.util.Log.wtf(tag, footer)
-            DiagnosticsLog.add("Diagnostics", footer)
-        }
-    }
-
-    private fun logWindowToDiagnostics(source: String, index: Int, win: AccessibilityWindowInfo) {
-        val rootNode = try { win.root } catch (ignored: Exception) { null }
-        val pkg = rootNode?.packageName ?: "unknown"
-        val title = try { win.title ?: "no-title" } catch(ignored: Exception) { "n/a" }
-        val detail = "    [$source][$index] id=${win.displayId} pkg=$pkg type=${win.type} title=$title active=${win.isActive} focused=${win.isFocused}"
-        DiagnosticsLog.add("Diagnostics", detail)
-        android.util.Log.wtf("XRDesk", detail)
-    }
 
     fun injectKeyEvent(keycode: Int, longPress: Boolean = false): Boolean {
         val info = displayInfo ?: return false
         
-        if (DEBUG) {
-            DiagnosticsLog.add("KeyEvent", "code=$keycode long=$longPress display=${info.displayId}")
-        }
-
         val shizukuAlive = ShizukuShell.isAlive()
 
         // 1. Primary Path: Shizuku Injection
         if (shizukuAlive) {
-            if (DEBUG) DiagnosticsLog.add("KeyEvent", "using Shizuku path")
             Thread {
                 val dId = info.displayId.toString()
                 val cmd = if (longPress) {
@@ -654,21 +515,14 @@ class ControlAccessibilityService : AccessibilityService() {
                     arrayOf("input", "-d", dId, "keyevent", keycode.toString())
                 }
                 
-                val result = ShizukuShell.run(*cmd)
-                if (result.exitCode != 0 && DEBUG) {
-                    DiagnosticsLog.add("KeyEvent", "Shizuku failed code=${result.exitCode} err=${result.error}")
-                }
+                ShizukuShell.run(*cmd)
             }.start()
             return true
         }
 
         // 2. Fallback paths (Shizuku is NOT alive)
-        if (DEBUG) DiagnosticsLog.add("KeyEvent", "Shizuku not available, trying fallbacks")
-
         when (keycode) {
             KeyEvent.KEYCODE_BACK -> {
-                if (DEBUG) DiagnosticsLog.add("KeyEvent", "Back Shizuku missing, trying smart Accessibility")
-                
                 val snapshot = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     val all = getWindowsOnAllDisplays()
                     val list = mutableListOf<AccessibilityWindowInfo>()
@@ -684,21 +538,17 @@ class ControlAccessibilityService : AccessibilityService() {
                 if (focused != null) {
                     // Try DISMISS (dialogs, menus)
                     if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_DISMISS)) {
-                        if (DEBUG) DiagnosticsLog.add("Back", "smart Accessibility ACTION_DISMISS success")
                         return true
                     }
                     // Try COLLAPSE (dropdowns, expandable lists)
                     if (performActionWithParentFallback(focused, AccessibilityNodeInfo.ACTION_COLLAPSE)) {
-                        if (DEBUG) DiagnosticsLog.add("Back", "smart Accessibility ACTION_COLLAPSE success")
                         return true
                     }
                 }
 
-                if (DEBUG) DiagnosticsLog.add("Back", "smart Accessibility failed, using GLOBAL_ACTION_BACK")
                 return performGlobalAction(GLOBAL_ACTION_BACK)
             }
             KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
-                if (DEBUG) DiagnosticsLog.add("KeyEvent", "Media fallback (AudioManager)")
                 val am = getSystemService(Context.AUDIO_SERVICE) as? AudioManager
                 if (am != null) {
                     val downTime = SystemClock.uptimeMillis()
@@ -709,13 +559,11 @@ class ControlAccessibilityService : AccessibilityService() {
                     am.dispatchMediaKeyEvent(upEvent)
                     return true
                 } else {
-                    if (DEBUG) DiagnosticsLog.add("KeyEvent", "Media rejected (AudioManager missing)")
                     showToastOnExternalDisplay(getString(R.string.touchpad_shizuku_required_media))
                     return false
                 }
             }
             else -> {
-                if (DEBUG) DiagnosticsLog.add("KeyEvent", "No fallback for keycode $keycode")
                 return false
             }
         }
@@ -788,20 +636,15 @@ class ControlAccessibilityService : AccessibilityService() {
                 if (targetWindow != null) {
                     log.append("Window BEFORE: focused=${targetWindow.isFocused} active=${targetWindow.isActive}\n")
                 }
-                DiagnosticsLog.add("Focus", log.toString())
                 android.util.Log.i("XRDesk", log.toString())
             }
 
             // Stability: Refresh node to ensure it's not stale
-            val isFresh = nextFocus.refresh()
-            if (!isFresh && DEBUG) {
-                DiagnosticsLog.add("Focus", "STABILITY: Node became STALE before action.")
-            }
+            nextFocus.refresh()
 
             // Stability: Verify node is still valid for focus
             val canFocus = nextFocus.isVisibleToUser && nextFocus.isFocusable && nextFocus.isEnabled
             if (!canFocus && DEBUG) {
-                DiagnosticsLog.add("Focus", "STABILITY: Node not focusable: visible=${nextFocus.isVisibleToUser} focusable=${nextFocus.isFocusable} enabled=${nextFocus.isEnabled}")
             }
 
             val resFocus = nextFocus.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
@@ -809,7 +652,6 @@ class ControlAccessibilityService : AccessibilityService() {
             
             if (DEBUG) {
                 val actionLog = "ACTION_FOCUS: $resFocus, ACTION_ACCESSIBILITY_FOCUS: $resAccFocus"
-                DiagnosticsLog.add("Focus", actionLog)
                 android.util.Log.i("XRDesk", actionLog)
             }
 
@@ -851,10 +693,8 @@ class ControlAccessibilityService : AccessibilityService() {
                     }
                     delayedLog.append("=== END VERIFICATION ===\n")
                     
-                    DiagnosticsLog.add("Focus", delayedLog.toString())
                     android.util.Log.i("XRDesk", delayedLog.toString())
                 } else if (DEBUG) {
-                    DiagnosticsLog.add("Focus", "D-Pad: Focus verified successfully at 100ms.")
                 }
             }, 100)
 
@@ -866,7 +706,6 @@ class ControlAccessibilityService : AccessibilityService() {
             val success = bestNode.performAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS) ||
                           bestNode.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
             if (success) {
-                DiagnosticsLog.add("Focus", "D-Pad: geometric search success")
                 return true
             }
         }
@@ -1080,17 +919,7 @@ class ControlAccessibilityService : AccessibilityService() {
         return false
     }
 
-    private fun logNode(prefix: String, node: AccessibilityNodeInfo?) {
-        if (node == null) {
-            DiagnosticsLog.add("Focus", "$prefix: null")
-            return
-        }
-        val rect = Rect()
-        node.getBoundsInScreen(rect)
-        val text = node.text?.toString() ?: node.contentDescription?.toString() ?: "no-text"
-        val id = node.viewIdResourceName ?: "no-id"
-        DiagnosticsLog.add("Focus", "$prefix: [${node.className}] \"$text\" id=$id bounds=$rect clickable=${node.isClickable}")
-    }
+
 
     fun setTextOnFocused(text: String): Boolean {
         val info = displayInfo ?: return recordInjection(
@@ -1161,7 +990,6 @@ class ControlAccessibilityService : AccessibilityService() {
         }
         detachOverlay()
         displayInfo = info
-        DiagnosticsLog.add("Accessibility", "Accessibility: attach displayId=${info.displayId}")
         cursorBaseSizePx = cursorBaseSizeForDisplay(info)
         cursorSizePx = cursorMaxSizeForDisplay(cursorBaseSizePx)
         cursorX = (info.width / 2f)
@@ -1232,7 +1060,6 @@ class ControlAccessibilityService : AccessibilityService() {
             android.util.Log.e("HUD-Lifecycle", "Cursor addView failed (BadToken): ${e.message}")
             detachOverlay()
             if (allowRetry) {
-                DiagnosticsLog.add("Accessibility", "Accessibility: attach failed (BadToken), retrying id=${info.displayId}")
                 scheduleAttachRetry(info)
             }
         } catch (e: Throwable) {
@@ -1261,7 +1088,6 @@ class ControlAccessibilityService : AccessibilityService() {
 
         // 1. Initialize HUD
         HUDManager.onDisplayConnected(windowContext, wm, info)
-        DiagnosticsLog.add("WindowManager", "HUD Attached to display ${info.displayId}")
 
         // 2. Initialize SwitchBar if enabled
         if (SettingsStore.switchBarEnabled) {
@@ -1287,9 +1113,6 @@ class ControlAccessibilityService : AccessibilityService() {
                 if (overlayView == null && attachRetryCount < ATTACH_RETRY_MAX) {
                     handler.postDelayed(this, ATTACH_RETRY_DELAY_MS)
                 } else {
-                    if (overlayView == null) {
-                        DiagnosticsLog.add("Accessibility", "Accessibility: attach retry exhausted id=${currentInfo.displayId}")
-                    }
                     cancelAttachRetry()
                 }
             }
@@ -1329,7 +1152,6 @@ class ControlAccessibilityService : AccessibilityService() {
         displayInfo = null
         cancelContinuousGesture()
         cancelCursorHide()
-        DiagnosticsLog.add("Accessibility", "Accessibility: overlay detached")
     }
 
     private fun refreshSwitchBarSettings() {

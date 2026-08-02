@@ -22,7 +22,7 @@
     <string name="browser_refresh">Обновить</string>
     <string name="browser_back">Назад</string>
     <string name="browser_forward">Вперёд</string>
-    <string name="browser_diagnostics">Диагностика</string>
+
     <string name="browser_enabled">Включено</string>
     <string name="browser_disabled">Выключено</string>
     <string name="browser_open_in_player">Открыть в плеере</string>
@@ -125,25 +125,7 @@
     <string name="app_launch_detail_security_exception">SecurityException</string>
     <string name="app_launch_detail_unknown_failure">Неизвестная ошибка запуска</string>
 
-    <string name="diagnostics_title">Логи</string>
-    <string name="diagnostics_system_status">Статус системы</string>
-    <string name="diagnostics_details_label">Детали</string>
-    <string name="diagnostics_external_display_not_connected">Внешний дисплей: не подключен</string>
-    <string name="diagnostics_external_display_info">Внешний дисплей: id=%1$d, размер=%2$dx%3$d, dpi=%4$d, поворот=%5$d</string>
-    <string name="diagnostics_accessibility_enabled">Спец. возможности: включены</string>
-    <string name="diagnostics_accessibility_disabled">Спец. возможности: выключены</string>
-    <string name="diagnostics_last_launch_failure">Последняя ошибка запуска: %1$s</string>
-    <string name="diagnostics_last_injection_result">Последний результат инъекции: %1$s</string>
-    <string name="diagnostics_logs_label">Логи:</string>
-    <string name="diagnostics_search_hint">Поиск логов…</string>
-    <string name="diagnostics_logs_empty">Логов пока нет</string>
-    <string name="diagnostics_none">Нет</string>
-    <string name="diagnostics_copy_logs">Копировать</string>
-    <string name="diagnostics_copy_logs_done">Логи скопированы</string>
-    <string name="diagnostics_tag_all">Все</string>
-    <string name="diagnostics_btn_pause">Пауза</string>
-    <string name="diagnostics_btn_resume">Продолжить</string>
-    <string name="diagnostics_btn_clear">Очистить</string>
+
 
     <string name="host_title">Хост внешнего дисплея</string>
     <string name="host_no_external_display">Внешний дисплей не обнаружен</string>
@@ -445,8 +427,7 @@
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
     <string name="empty_text" translatable="false" />
-    <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
-    <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
+
     <string name="settings_about_title">О приложении</string>
     <string name="settings_section_information">Информация</string>
     <string name="settings_about_summary">Версия и информация</string>

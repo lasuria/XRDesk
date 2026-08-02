@@ -84,16 +84,7 @@
     <string name="app_launch_detail_security_exception">SecurityException</string>
     <string name="app_launch_detail_unknown_failure">未知启动失败</string>
 
-    <string name="diagnostics_title">日志</string>
-    <string name="diagnostics_system_status">系统状态</string>
-    <string name="diagnostics_details_label">详情</string>
-    <string name="diagnostics_external_display_not_connected">外接显示器：未连接</string>
-    <string name="diagnostics_external_display_info">外接显示器：id=%1$d, 大小=%2$dx%3$d, dpi=%4$d, 旋转=%5$d</string>
-    <string name="diagnostics_accessibility_enabled">无障碍：已启用</string>
-    <string name="diagnostics_accessibility_disabled">无障碍：已禁用</string>
-    <string name="diagnostics_last_launch_failure">上次启动失败：%1$s</string>
-    <string name="diagnostics_last_injection_result">上次注入结果：%1$s</string>
-    <string name="diagnostics_logs_label">日志：</string>
+
 
     <string name="display_type_external">外接显示器</string>
     <string name="display_capability_refresh_rate">%1$d Hz</string>
@@ -388,8 +379,7 @@
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
     <string name="empty_text" translatable="false" />
-    <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
-    <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
+
     <string name="settings_about_title">关于</string>
     <string name="settings_section_information">信息</string>
     <string name="settings_about_summary">应用版本和信息</string>

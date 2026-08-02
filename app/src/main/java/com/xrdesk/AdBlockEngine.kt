@@ -125,7 +125,6 @@ object AdBlockEngine {
                 val duration = System.currentTimeMillis() - startTime
                 val type = if (url.contains(".js")) "SCRIPT" else "RESOURCE"
                 Log.w(TAG, "BLOCKED ($type by $reason, ${duration}ms): $url")
-                DiagnosticsLog.add("AdBlock", "Blocked $type: $url")
             } else {
                 Log.v(TAG, "Blocked: $url")
             }

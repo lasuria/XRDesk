@@ -36,7 +36,6 @@ class ResourceInterceptor(context: Context) {
         
         // 1. AdBlock check (First Priority)
         if (AdBlockEngine.isBlocked(url, isTarget)) {
-            if (isTarget) DiagnosticsLog.add("Browser", "Resource blocked by AdBlock: $url")
             return WebResourceResponse("text/plain", "UTF-8", 204, "No Content", emptyMap(), null)
         }
 
@@ -44,7 +43,6 @@ class ResourceInterceptor(context: Context) {
         if (url.startsWith("http://www.world-art.ru/") && 
             (url.endsWith(".jpg") || url.endsWith(".png") || url.endsWith(".gif") || url.endsWith(".webp") || url.contains("/img/"))) {
             
-            DiagnosticsLog.add("Browser", "Intercepting resource: $url")
             return try {
                 val okRequest = Request.Builder()
                     .url(url)
@@ -74,8 +72,7 @@ class ResourceInterceptor(context: Context) {
                 } else {
                     null
                 }
-            } catch (e: Exception) {
-                DiagnosticsLog.add("Browser", "Failed to intercept $url: ${e.message}")
+            } catch (_: Exception) {
                 null
             }
         }

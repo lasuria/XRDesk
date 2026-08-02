@@ -56,8 +56,6 @@ class BrowserPresentation(
         setupWebViewContainer()
         setupCursorObservation()
         
-        DiagnosticsLog.add("Browser", "PRESENTATION_READY: display=${display.name} res=${display.mode.physicalWidth}x${display.mode.physicalHeight}")
-
         // Initialize cursor position to center
         binding.root.post {
             cursorX = binding.root.width / 2f
@@ -224,14 +222,12 @@ class BrowserPresentation(
     fun zoomIn() {
         mainHandler.post { 
             webView.zoomIn()
-            DiagnosticsLog.add("Browser", "WebView Zoom In")
         }
     }
 
     fun zoomOut() {
         mainHandler.post { 
             webView.zoomOut()
-            DiagnosticsLog.add("Browser", "WebView Zoom Out")
         }
     }
 

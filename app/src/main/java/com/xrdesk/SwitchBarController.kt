@@ -64,7 +64,6 @@ class SwitchBarController(
                 baseBarHeightPx = it.height
             }
             currentBarHeightPx = it.height
-            DiagnosticsLog.add("SwitchBar", "layout baseHeight=$baseBarHeightPx h=${it.height} w=${it.width}")
             updateScale()
             applyHiddenState(immediate = true)
         }
@@ -72,7 +71,7 @@ class SwitchBarController(
 
     fun onCursorMoved(x: Float, y: Float, cursorSizePx: Int) {
         if (forceVisible) {
-            scheduleShow("force")
+            scheduleShow()
             cancelHide()
             return
         }
@@ -94,12 +93,12 @@ class SwitchBarController(
         onBarHoverChanged(insideBar)
 
         if (inShowZone) {
-            scheduleShow("edge")
+            scheduleShow()
             cancelHide()
         } else {
             cancelShow()
             if (state == State.SHOWN && !insideBar) {
-                scheduleHide("leave")
+                scheduleHide()
             }
         }
     }
@@ -124,7 +123,7 @@ class SwitchBarController(
         forceVisible = enabled
         if (enabled) {
             cancelHide()
-            show("force")
+            show()
         }
     }
 
@@ -136,25 +135,25 @@ class SwitchBarController(
         }
     }
 
-    private fun scheduleShow(reason: String) {
+    private fun scheduleShow() {
         if (state != State.HIDDEN) return
         cancelHide()
         if (showRunnable != null) return
         showRunnable = Runnable {
             showRunnable = null
             rebuildItems()
-            show(reason)
+            show()
         }
         handler.postDelayed(showRunnable!!, showDelayMs)
     }
 
-    private fun scheduleHide(reason: String) {
+    private fun scheduleHide() {
         if (state != State.SHOWN) return
         if (forceVisible) return
         if (hideRunnable != null) return
         hideRunnable = Runnable {
             hideRunnable = null
-            hide(reason)
+            hide()
         }
         handler.postDelayed(hideRunnable!!, hideDelayMs)
     }
@@ -169,7 +168,7 @@ class SwitchBarController(
         hideRunnable = null
     }
 
-    private fun show(reason: String) {
+    private fun show() {
         if (state == State.SHOWN || state == State.SHOWING) return
         state = State.SHOWING
         setTouchable(true)
@@ -186,21 +185,13 @@ class SwitchBarController(
                 }
             }
             .start()
-        DiagnosticsLog.add("SwitchBar", 
-            "SwitchBar: show reason=$reason scale=${SettingsStore.switchBarScale} " +
-                "baseH=$baseBarHeightPx curH=$currentBarHeightPx inset=${view.bottomInsetPx}"
-        )
     }
 
-    private fun hide(reason: String) {
+    private fun hide() {
         if (state == State.HIDDEN || state == State.HIDING) return
         state = State.HIDING
         setTouchable(false)
         applyHiddenState(immediate = false)
-        DiagnosticsLog.add("SwitchBar", 
-            "SwitchBar: hide reason=$reason scale=${SettingsStore.switchBarScale} " +
-                "baseH=$baseBarHeightPx curH=$currentBarHeightPx inset=${view.bottomInsetPx}"
-        )
     }
 
     private fun applyHiddenState(immediate: Boolean) {
@@ -224,10 +215,6 @@ class SwitchBarController(
                 }
                 .start()
         }
-        DiagnosticsLog.add("SwitchBar", 
-            "SwitchBar: hidden offset=$offset scale=${SettingsStore.switchBarScale} " +
-                "baseH=$baseBarHeightPx curH=$currentBarHeightPx inset=${view.bottomInsetPx}"
-        )
     }
 
     private fun setTouchable(touchable: Boolean) {
@@ -301,36 +288,29 @@ class SwitchBarController(
     private fun handleItemClick(item: SwitchBarOverlayView.Item) {
         cancelShow()
         cancelHide()
-        hide("click")
+        hide()
         if (item.isAllApps) {
             AppDrawerActivity.launchOnExternalDisplay(serviceContext, displayInfo.displayId)
-            DiagnosticsLog.add("SwitchBar", "SwitchBar: open drawer")
             return
         }
         val packageName = item.packageName ?: return
         val result = AppLauncher.launchOnExternalDisplay(serviceContext, packageName)
         if (result.success) {
-            DiagnosticsLog.add("SwitchBar", "SwitchBar: launch success package=$packageName")
             if (SettingsStore.touchpadAutoFocusEnabled) {
                 handler.postDelayed(
-                    { ControlAccessibilityService.requestExternalFocusWarmup("app_launch") },
+                    { ControlAccessibilityService.requestExternalFocusWarmup() },
                     120L
                 )
             }
         } else {
             val message = AppLauncher.buildFailureMessage(windowContext, result)
             ToastHelper.show(windowContext, message)
-            DiagnosticsLog.add("SwitchBar", "SwitchBar: launch failure package=$packageName reason=${result.reason}")
         }
     }
 
     private fun updateScale() {
         val scale = SettingsStore.switchBarScale.coerceIn(0.7f, 1.3f)
         view.setContentScale(scale)
-        DiagnosticsLog.add("SwitchBar", 
-            "SwitchBar: scale=$scale baseH=$baseBarHeightPx curH=$currentBarHeightPx " +
-                "viewH=${view.height} inset=${view.bottomInsetPx}"
-        )
         view.doOnLayout {
             currentBarHeightPx = it.height
             if (state == State.SHOWN || state == State.SHOWING) {

@@ -1,6 +1,6 @@
 package com.xrdesk
 
-import android.os.SystemClock
+
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 
@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
  */
 class ControlSurfaceBackController(
     private val activity: AppCompatActivity,
-    private val logName: String,
     private val isControlActive: () -> Boolean,
     private val preBackHandler: () -> Boolean = { false }
 ) {
@@ -27,37 +26,33 @@ class ControlSurfaceBackController(
     }
 
     /** Warm up focus when the control surface becomes visible/resumed. */
-    fun warmUpOnResume(reason: String) {
+    fun warmUpOnResume() {
         ControlAccessibilityService.current()?.warmUpBackPipeline()
         if (SettingsStore.touchpadAutoFocusEnabled) {
-            ControlAccessibilityService.requestExternalFocusWarmup(reason)
+            ControlAccessibilityService.requestExternalFocusWarmup()
         }
     }
 
     /** Warm up focus when the control surface is specifically activated by user touch. */
-    fun warmUpOnActivation(reason: String) {
+    fun warmUpOnActivation() {
         if (SettingsStore.touchpadAutoFocusEnabled) {
-            ControlAccessibilityService.requestExternalFocusWarmup(reason)
+            ControlAccessibilityService.requestExternalFocusWarmup()
         }
     }
 
     private fun handleBack() {
         if (!isControlActive()) {
-            DiagnosticsLog.add(logName, "back exits inactive control page")
             activity.finish()
             return
         }
 
         if (DisplaySessionManager.getExternalDisplayInfo() == null) {
-            DiagnosticsLog.add(logName, "back blocked (no external display)")
             ToastHelper.show(activity, R.string.touchpad_no_external_display)
             return
         }
 
-        DiagnosticsLog.add(logName, "back requested t=${SystemClock.uptimeMillis()}")
         val service = ControlAccessibilityService.current()
         if (service == null) {
-            DiagnosticsLog.add(logName, "back failed (accessibility missing)")
             ToastHelper.show(activity, R.string.touchpad_accessibility_required_toast)
             return
         }
@@ -72,6 +67,5 @@ class ControlSurfaceBackController(
             }
             messageRes?.let { service.showToastOnExternalDisplay(activity.getString(it)) }
         }
-        DiagnosticsLog.add(logName, "back forwarded success=$success")
     }
 }

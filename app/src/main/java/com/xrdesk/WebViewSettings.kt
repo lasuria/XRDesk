@@ -98,7 +98,6 @@ object WebViewSettings {
             """.trimIndent()
             
             android.util.Log.d("WebViewMode", log)
-            DiagnosticsLog.add("Browser", "Diag: $tag w=${webView.width} inner=$innerWidthValue")
         }
     }
 
@@ -114,8 +113,6 @@ object WebViewSettings {
             webView.clearCache(true)
         }
 
-        DiagnosticsLog.add("Browser", "UA Applied: Default, UA=${settings.userAgentString}")
-        
         if (triggerReload) {
             webView.reload()
         }

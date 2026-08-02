@@ -65,7 +65,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         android.util.Log.d("TouchpadActivity", "onCreate: hudEnabled=${SettingsStore.hudEnabled} hudNotificationsEnabled=${SettingsStore.hudNotificationsEnabled}")
         binding = ActivityTouchpadBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        DiagnosticsLog.add("Touchpad", "Touchpad: create displayId=${display?.displayId ?: -1}")
         
         blackoutManager = BlackoutManager(this)
         
@@ -90,7 +89,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         )
 
         binding.touchpadBack.setOnClickListener {
-            DiagnosticsLog.add("Touchpad", "Touchpad: exit via toolbar")
             finish()
         }
   binding.touchpadLaunch.setOnClickListener {
@@ -128,7 +126,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
         backController = ControlSurfaceBackController(
             activity = this,
-            logName = "Touchpad",
             isControlActive = { touchpadActive },
             preBackHandler = { false }
         )
@@ -169,15 +166,13 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         val insetsController = WindowCompat.getInsetsController(window, window.decorView)
         insetsController.show(WindowInsetsCompat.Type.statusBars())
         
-        backController.warmUpOnResume("touchpad_resume")
-        DiagnosticsLog.add("Touchpad", "Touchpad: resume")
+        backController.warmUpOnResume()
     }
 
     override fun onPause() {
         cancelLongPress()
         exitScrollMode()
         updateKeepScreenOn(false)
-        DiagnosticsLog.add("Touchpad", "Touchpad: pause")
         super.onPause()
     }
 
@@ -210,7 +205,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             val inTouchpad = rect.contains(event.rawX.toInt(), event.rawY.toInt())
             setTouchpadActive(inTouchpad)
             if (inTouchpad) {
-                backController.warmUpOnActivation("touch_down")
+                backController.warmUpOnActivation()
             }
         }
         return super.dispatchTouchEvent(event)
@@ -492,13 +487,8 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     }
 
     private fun setTouchpadActive(active: Boolean) {
-        val wasActive = touchpadActive
         touchpadActive = active
         binding.touchpadArea.isActivated = active
-
-        if (wasActive != active) {
-            DiagnosticsLog.add("Touchpad", "Touchpad: active=$active")
-        }
     }
 
     private fun setupTuningControls() {

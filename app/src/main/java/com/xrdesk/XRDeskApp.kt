@@ -23,7 +23,6 @@ class XRDeskApp : Application() {
         android.util.Log.e("Geometry-Audit", "XRDeskApp.onCreate()")
         SettingsStore.init(this)
         ThemeEngine.init(this)
-        DiagnosticsLog.init(resources)
         SettingsStore.applyAppLanguage()
         
         val mode = if (SettingsStore.nightMode == SettingsStore.THEME_AMOLED) {

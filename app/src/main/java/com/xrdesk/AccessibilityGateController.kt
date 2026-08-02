@@ -157,13 +157,11 @@ class AccessibilityGateController(
         
         val setServices = ShizukuShell.runSettingsCommand("enabled_accessibility_services", updated)
         if (setServices.exitCode != 0) {
-            DiagnosticsLog.add("Shizuku", "Shizuku: enable services failed code=${setServices.exitCode} err=${setServices.error}")
             return false
         }
         
         val enable = ShizukuShell.runSettingsCommand("accessibility_enabled", "1")
         if (enable.exitCode != 0) {
-            DiagnosticsLog.add("Shizuku", "Shizuku: enable accessibility flag failed code=${enable.exitCode} err=${enable.error}")
             return false
         }
         

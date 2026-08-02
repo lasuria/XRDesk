@@ -106,12 +106,6 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        val oldHandler = Thread.getDefaultUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
-            DiagnosticsLog.add("Crash", "BrowserActivity fatal: ${throwable.message}")
-            oldHandler?.uncaughtException(thread, throwable)
-        }
-
         binding = ActivityBrowserBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
@@ -221,7 +215,6 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 if (isTarget(url)) {
                     val msg = "onPageStarted: $url"
-                    DiagnosticsLog.add("Nav", msg)
                     Log.d("WebViewNav", msg)
                 }
                 binding.progressBar.isVisible = true
@@ -249,7 +242,6 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                 if (isTarget(url)) {
                     val visibilityLog = "Visibility: isShown=${view?.isShown}, vis=${view?.visibility}, winVis=${view?.windowVisibility}"
                     val msg = "onPageFinished: $url | $visibilityLog"
-                    DiagnosticsLog.add("Nav", msg)
                     Log.d("WebViewNav", msg)
                 }
                 binding.progressBar.isVisible = false
@@ -323,8 +315,6 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             }
 
             override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-                val msg = "JS [${consoleMessage?.messageLevel()}]: ${consoleMessage?.message()} (line: ${consoleMessage?.lineNumber()})"
-                DiagnosticsLog.add("Nav-JS", msg)
                 return super.onConsoleMessage(consoleMessage)
             }
 
@@ -463,7 +453,6 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
                         if (!isPinchMode && abs(currentDist - initialPinchDist) > 40f) {
                             isPinchMode = true
                             isScrollMode = false
-                            DiagnosticsLog.add("Touchpad", "PINCH_MODE: Start")
                         }
                         
                         if (isPinchMode) {
@@ -790,62 +779,15 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         val popup = PopupMenu(this, anchor)
         popup.menu.add(0, 1, 0, getString(R.string.browser_home))
         if (resolvedSource != null) popup.menu.add(0, 4, 0, "▶ Open Video")
-        if (SettingsStore.developerModeUnlocked && SettingsStore.browserDiagnosticsEnabled) popup.menu.add(0, 3, 0, getString(R.string.browser_diagnostics))
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 1 -> webView.loadUrl("https://www.google.com")
-                3 -> showDiagnostics()
                 4 -> openPhonePlayer()
             }; true
         }; popup.show()
     }
 
-    private fun showDiagnostics() {
-        browserManager.getExtendedDiagnostics(webView, legacyVideoDetector, videoResolver) { diag ->
-            val dialogBinding = com.xrdesk.databinding.DialogBrowserDiagnosticsBinding.inflate(layoutInflater)
-            val info = StringBuilder()
-            
-            info.append("--- XR WEBVIEW STATE ---\n\n")
-            val dm = getSystemService(Context.DISPLAY_SERVICE) as android.hardware.display.DisplayManager
-            val displayInfo = DisplaySessionManager.getExternalDisplayInfo()
-            val display = dm.getDisplay(displayInfo?.displayId ?: -1)
-            
-            info.append("Display: ${if (isXrModeActive) "External (${display?.name ?: "Unknown"})" else "Phone"}\n")
-            info.append("Mode: ${if (isXrModeActive) "TABLET" else "MOBILE"}\n")
-            info.append("Resolution: ${display?.mode?.physicalWidth ?: webView.width}x${display?.mode?.physicalHeight ?: webView.height}\n")
-            info.append("WebView Width: ${webView.width}px\n\n")
-
-            info.append("UA String: ${webView.settings.userAgentString}\n\n")
-
-            presentation?.getWebViewMetrics { metricsJson ->
-                runOnUiThread {
-                    try {
-                        val metrics = org.json.JSONObject(metricsJson)
-                        info.append("navigator.userAgent: ${metrics.optString("userAgent")}\n")
-                        info.append("innerWidth: ${metrics.optInt("innerWidth")}\n")
-                        info.append("clientWidth: ${metrics.optInt("documentWidth")}\n")
-                        info.append("devicePixelRatio: ${metrics.optDouble("devicePixelRatio")}\n\n")
-                    } catch(e: Exception) {}
-                    
-                    info.append("Current URL: ${diag["currentUrl"]}\n")
-                    info.append("Browser Version: ${diag["version"]}\n")
-                    
-                    dialogBinding.textGeneralInfo.text = info.toString()
-                }
-            }
-            
-            val abDiag = AdBlockEngine.isBlocked("test.com", false)
-            dialogBinding.textJSMetrics.text = "AdBlock: Active"
-            
-            AlertDialog.Builder(this)
-                .setTitle(R.string.browser_diagnostics_title)
-                .setView(dialogBinding.root)
-                .setPositiveButton(android.R.string.ok, null)
-                .show()
-        }
-    }
-
-    private fun showQualityMenu() {
+private fun showQualityMenu() {
         val p = MediaSessionManager.getPlayer(this)
         val videoGroup = p.currentTracks.groups.find { it.type == C.TRACK_TYPE_VIDEO } ?: return
         val dialogBinding = DialogTrackSelectionBinding.inflate(layoutInflater)

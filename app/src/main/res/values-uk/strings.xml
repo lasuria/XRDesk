@@ -84,16 +84,7 @@
     <string name="app_launch_detail_security_exception">SecurityException</string>
     <string name="app_launch_detail_unknown_failure">Невідома помилка запуску</string>
 
-    <string name="diagnostics_title">Логи</string>
-    <string name="diagnostics_system_status">Статус системи</string>
-    <string name="diagnostics_details_label">Деталі</string>
-    <string name="diagnostics_external_display_not_connected">Зовнішній дисплей: не підключений</string>
-    <string name="diagnostics_external_display_info">Зовнішній дисплей: id=%1$d, розмір=%2$dx%3$d, dpi=%4$d, поворот=%5$d</string>
-    <string name="diagnostics_accessibility_enabled">Спец. можливості: увімкнені</string>
-    <string name="diagnostics_accessibility_disabled">Спец. можливості: вимкнені</string>
-    <string name="diagnostics_last_launch_failure">Остання помилка запуску: %1$s</string>
-    <string name="diagnostics_last_injection_result">Останній результат ін\'єкції: %1$s</string>
-    <string name="diagnostics_logs_label">Логи:</string>
+
 
     <string name="display_type_external">Зовнішній дисплей</string>
     <string name="display_capability_refresh_rate">%1$d Гц</string>
@@ -388,8 +379,7 @@
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
     <string name="empty_text" translatable="false" />
-    <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
-    <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
+
     <string name="settings_about_title">Про додаток</string>
     <string name="settings_section_information">Інформація</string>
     <string name="settings_about_summary">Версія та інформація</string>

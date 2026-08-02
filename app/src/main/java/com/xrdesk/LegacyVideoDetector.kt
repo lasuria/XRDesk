@@ -241,7 +241,6 @@ class LegacyVideoDetector(private val onVideoDetected: (DetectedVideo) -> Unit) 
             }
         }
         bestCandidate = null
-        DiagnosticsLog.add("Browser", "New Session: $reason\nPage: $pageUrl")
     }
 
     private fun isSamePage(url1: String, url2: String): Boolean {
@@ -550,14 +549,7 @@ class LegacyVideoDetector(private val onVideoDetected: (DetectedVideo) -> Unit) 
             .firstOrNull()
 
         if (newBest != null && (bestCandidate == null || newBest.url != bestCandidate?.url || newBest.score != bestCandidate?.score)) {
-            val oldScore = bestCandidate?.score ?: 0
-            val oldUrl = bestCandidate?.url ?: "None"
             bestCandidate = newBest
-            
-            if (oldUrl != newBest.url) {
-                val reason = if (oldUrl == "None") "Initial" else "Higher priority detected"
-                DiagnosticsLog.add("Browser", "Best stream changed: $oldScore -> ${newBest.score}\nURL: ${newBest.url}\nReason: $reason")
-            }
         }
     }
 

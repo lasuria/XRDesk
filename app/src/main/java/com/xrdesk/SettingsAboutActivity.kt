@@ -32,8 +32,6 @@ class SettingsAboutActivity : BaseSettingsActivity() {
         }
 
         findViewById<android.widget.TextView>(R.id.tvAppBuild).text = getString(R.string.app_build_label, getString(R.string.app_build_date))
-
-        findViewById<View>(R.id.rowDiagnostics).visibility = View.GONE
     }
 
     private fun handleLogoTap() {

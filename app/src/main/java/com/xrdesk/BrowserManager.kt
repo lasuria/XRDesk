@@ -1,8 +1,6 @@
 package com.xrdesk
 
 import android.content.Context
-import android.webkit.WebView
-import android.os.Build
 
 class BrowserManager(private val context: Context) {
 
@@ -20,19 +18,4 @@ class BrowserManager(private val context: Context) {
         return url
     }
 
-    fun getExtendedDiagnostics(
-        webView: WebView,
-        videoDetector: LegacyVideoDetector,
-        videoResolver: VideoResolverManager,
-        callback: (Map<String, Any>) -> Unit
-    ) {
-        val diag = mutableMapOf<String, Any>()
-        diag["currentUrl"] = webView.url ?: "None"
-        diag["version"] = "Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})"
-        
-        // Add more diagnostics if needed from detector/resolver
-        diag["candidates"] = videoResolver.candidatesCount
-        
-        callback(diag)
-    }
 }

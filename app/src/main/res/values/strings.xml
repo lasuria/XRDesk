@@ -23,8 +23,7 @@
     <string name="browser_refresh">Refresh</string>
     <string name="browser_back">Back</string>
     <string name="browser_forward">Forward</string>
-    <string name="browser_diagnostics">Diagnostics</string>
-    <string name="browser_diagnostics_title">Browser Diagnostics</string>
+
     <string name="browser_enabled">Enabled</string>
     <string name="browser_disabled">Disabled</string>
     <string name="browser_open_in_player">Open in Player</string>
@@ -128,25 +127,7 @@
     <string name="app_launch_detail_security_exception">SecurityException</string>
     <string name="app_launch_detail_unknown_failure">Unknown launch failure</string>
 
-    <string name="diagnostics_title">Logs</string>
-    <string name="diagnostics_system_status">System Status</string>
-    <string name="diagnostics_details_label">Details</string>
-    <string name="diagnostics_external_display_not_connected">External display: not connected</string>
-    <string name="diagnostics_external_display_info">External display: id=%1$d, size=%2$dx%3$d, dpi=%4$d, rotation=%5$d</string>
-    <string name="diagnostics_accessibility_enabled">Accessibility: enabled</string>
-    <string name="diagnostics_accessibility_disabled">Accessibility: disabled</string>
-    <string name="diagnostics_last_launch_failure">Last launch failure: %1$s</string>
-    <string name="diagnostics_last_injection_result">Last injection result: %1$s</string>
-    <string name="diagnostics_logs_label">Logs:</string>
-    <string name="diagnostics_search_hint">Search logs…</string>
-    <string name="diagnostics_logs_empty">No logs yet</string>
-    <string name="diagnostics_none">None</string>
-    <string name="diagnostics_copy_logs">Copy</string>
-    <string name="diagnostics_copy_logs_done">Logs copied</string>
-    <string name="diagnostics_tag_all">All</string>
-    <string name="diagnostics_btn_pause">Pause</string>
-    <string name="diagnostics_btn_resume">Resume</string>
-    <string name="diagnostics_btn_clear">Clear</string>
+
 
     <string name="host_title">External Display Host</string>
     <string name="host_no_external_display">No external display detected</string>
@@ -448,8 +429,7 @@
     <string name="settings_cursor_opacity_default">100%</string>
     <string name="settings_cursor_hide_delay_default">2.5s</string>
     <string name="empty_text" translatable="false" />
-    <string name="diagnostics_log_time_format" translatable="false">HH:mm:ss</string>
-    <string name="diagnostics_log_line_format" translatable="false">[%1$s] %2$s</string>
+
     <string name="settings_about_title">About</string>
     <string name="settings_section_information">Information</string>
     <string name="settings_about_summary">App version and information</string>

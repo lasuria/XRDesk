@@ -36,17 +36,14 @@ object DisplaySessionManager {
     private val displayListener = object : DisplayManager.DisplayListener {
         override fun onDisplayAdded(displayId: Int) {
             android.util.Log.e("HUD-Lifecycle", "Display detected: id=$displayId")
-            DiagnosticsLog.add("Display", "DisplayListener: added id=$displayId registered=$listenerRegistered")
             refreshDisplays()
         }
 
         override fun onDisplayRemoved(displayId: Int) {
-            DiagnosticsLog.add("Display", "DisplayListener: removed id=$displayId registered=$listenerRegistered")
             refreshDisplays()
         }
 
         override fun onDisplayChanged(displayId: Int) {
-            DiagnosticsLog.add("Display", "DisplayListener: changed id=$displayId registered=$listenerRegistered")
             refreshDisplays()
         }
     }
@@ -86,17 +83,11 @@ object DisplaySessionManager {
 
     private fun refreshDisplays() {
         val dm = displayManager
-        val allDisplays = dm?.getDisplays()?.toList().orEmpty()
         
-        DiagnosticsLog.add("Display", "DisplayAll: count=${allDisplays.size} ${formatDisplays(allDisplays)}")
         val presentationDisplays = dm
             ?.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION)
             ?.toList()
             .orEmpty()
-        DiagnosticsLog.add("Display", 
-            "DisplayPresentation: count=${presentationDisplays.size} " +
-                formatDisplays(presentationDisplays)
-        )
         val usingFallback = presentationDisplays.isEmpty()
         val displays = if (!usingFallback) {
             presentationDisplays
@@ -111,22 +102,13 @@ object DisplaySessionManager {
 
         val previousInfo = displayInfo
         if (externalDisplays.isEmpty()) {
-            DiagnosticsLog.add("Display", "DisplaySelect: no external displays")
             displayInfo = null
             selectedDisplayId = null
         } else {
-            val candidates = externalDisplays.joinToString { it.displayId.toString() }
             if (selectedDisplayId == null ||
                 externalDisplays.none { it.displayId == selectedDisplayId }
             ) {
-                DiagnosticsLog.add("Display", 
-                    "DisplaySelect: choose first (candidates=[$candidates])"
-                )
                 selectedDisplayId = externalDisplays.first().displayId
-            } else {
-                DiagnosticsLog.add("Display", 
-                    "DisplaySelect: keep selected=$selectedDisplayId (candidates=[$candidates])"
-                )
             }
             displayInfo = externalDisplays.first { it.displayId == selectedDisplayId }
         }
@@ -139,11 +121,6 @@ object DisplaySessionManager {
         ) {
             ControlAccessibilityService.requestAttachToDisplay(newInfo)
         }
-        val ids = displays.joinToString { it.displayId.toString() }
-        DiagnosticsLog.add("Display", 
-            "Displays: count=${displays.size} ids=[$ids] selected=${selectedDisplayId ?: "none"} " +
-                "source=${if (usingFallback) "fallback" else "presentation"}"
-        )
 
         listeners.forEach {
             it.onDisplaysUpdated(externalDisplays, selectedDisplayId)
@@ -182,25 +159,5 @@ object DisplaySessionManager {
         return newInfo
     }
 
-    private fun formatDisplays(displays: List<Display>): String {
-        if (displays.isEmpty()) return "[]"
-        return displays.joinToString(prefix = "[", postfix = "]") { display ->
-            val flags = formatDisplayFlags(display.flags)
-            "id=${display.displayId} name=${display.name} valid=${display.isValid} " +
-                "state=${display.state} flags=$flags"
-        }
-    }
 
-    private fun formatDisplayFlags(flags: Int): String {
-        val labels = mutableListOf<String>()
-        if (flags and Display.FLAG_PRESENTATION != 0) labels.add("PRESENTATION")
-        if (flags and Display.FLAG_PRIVATE != 0) labels.add("PRIVATE")
-        if (flags and Display.FLAG_SECURE != 0) labels.add("SECURE")
-        if (flags and Display.FLAG_SUPPORTS_PROTECTED_BUFFERS != 0) {
-            labels.add("PROTECTED")
-        }
-        if (flags and Display.FLAG_ROUND != 0) labels.add("ROUND")
-        val labelText = if (labels.isEmpty()) "none" else labels.joinToString("|")
-        return "0x${flags.toString(16)}($labelText)"
-    }
 }

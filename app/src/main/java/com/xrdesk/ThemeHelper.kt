@@ -112,7 +112,7 @@ object ThemeHelper {
                                        activityName == "SettingsTouchpadActivity" || activityName == "SettingsCursorActivity" ||
                                        activityName == "SettingsDockActivity" || activityName == "SettingsAboutActivity" ||
                                        activityName == "AboutXRDeskActivity" || activityName == "AboutBasedOnActivity" ||
-                                       activityName == "DiagnosticsActivity" || activityName == "SettingsChangelogActivity"
+                                       activityName == "SettingsChangelogActivity"
 
                     if (!isKnownCard && !isFlatActivity) {
                         view.background = createCardDrawable(view.context, colors, clickable = view.isClickable)

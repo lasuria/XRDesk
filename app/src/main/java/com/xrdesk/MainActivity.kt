@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Log.d("XR Keyboard", "MainActivity: VERSION_CHECK_LOG_1")
-        DiagnosticsLog.add("Main", "Main: create displayId=${display?.displayId ?: -1}")
         WindowCompat.setDecorFitsSystemWindows(window, false)
         ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root)

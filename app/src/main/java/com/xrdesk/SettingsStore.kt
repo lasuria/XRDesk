@@ -97,18 +97,16 @@ object SettingsStore {
     var autoEnterXrMode = false
         private set
 
-    var browserDiagnosticsEnabled = false
-        private set
-    
-    var xrZoomLevel = 150
-        private set
-
-    // Active Player Tracks (for Diagnostics)
+    // SESSION-ONLY (Player Diagnostics)
     var activeVideoTrack: String? = null
     var activeAudioTrack: String? = null
     var activeSubtitleTrack: String? = null
 
-    // HUD SETTINGS
+
+    var xrZoomLevel = 150
+        private set
+
+// HUD SETTINGS
     var hudEnabled = false
         private set
     var developerModeUnlocked = false
@@ -237,8 +235,7 @@ object SettingsStore {
         adBlockLastUpdateTimestamp = prefs.getLong("adblock_last_update", 0)
         adBlockETag = prefs.getString("adblock_etag", null)
 
-        browserDiagnosticsEnabled = prefs.getBoolean("browser_diag_enabled", false)
-        
+
         autoEnterXrMode = prefs.getBoolean("auto_enter_xr_mode", false)
         xrZoomLevel = prefs.getInt("xr_zoom_level", 150)
         
@@ -449,12 +446,7 @@ object SettingsStore {
         persist(context) { putBoolean("auto_enter_xr_mode", enabled) }
     }
 
-    fun setBrowserDiagnosticsEnabled(context: Context, enabled: Boolean) {
-        browserDiagnosticsEnabled = enabled
-        persist(context) { putBoolean("browser_diag_enabled", enabled) }
-    }
-
-    fun setXrZoomLevel(context: Context, level: Int) {
+fun setXrZoomLevel(context: Context, level: Int) {
         xrZoomLevel = level
         persist(context) { putInt("xr_zoom_level", level) }
     }
