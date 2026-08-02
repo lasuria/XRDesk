@@ -1,14 +1,13 @@
 package com.xrdesk.diagnostics
 
-import android.content.Context
 import android.util.Log
 
-class CrashHandler(private val context: Context) : Thread.UncaughtExceptionHandler {
+class CrashHandler : Thread.UncaughtExceptionHandler {
     private val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
 
     companion object {
-        fun init(context: Context) {
-            val handler = CrashHandler(context)
+        fun init() {
+            val handler = CrashHandler()
             Thread.setDefaultUncaughtExceptionHandler(handler)
         }
     }

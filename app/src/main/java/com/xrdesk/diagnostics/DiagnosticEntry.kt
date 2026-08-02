@@ -23,11 +23,14 @@ data class DiagnosticEntry(
     override fun toString(): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US)
         val sb = StringBuilder()
-        sb.append("${sdf.format(Date(timestamp))} | ${level.name} | $tag | $message")
-        // Metadata on the next line to make parsing easier if needed, but for now we keep it simple
-        sb.append("\n[META] Device: $deviceModel | Android: $androidVersion | Version: $appVersion")
+        // Use unique field delimiters that are unlikely to appear in logs
+        sb.append("[T]${sdf.format(Date(timestamp))}[/T]")
+        sb.append("[L]${level.name}[/L]")
+        sb.append("[TAG]$tag[/TAG]")
+        sb.append("[MSG]$message[/MSG]")
+        sb.append("[META]Device: $deviceModel | Android: $androidVersion | Version: $appVersion[/META]")
         if (!stacktrace.isNullOrEmpty()) {
-            sb.append("\n[STACK]\n$stacktrace")
+            sb.append("[STACK]\n$stacktrace\n[/STACK]")
         }
         return sb.toString()
     }
@@ -37,36 +40,39 @@ data class DiagnosticEntry(
 
         fun parse(block: String): DiagnosticEntry? {
             try {
-                val lines = block.trim().split("\n")
-                if (lines.isEmpty()) return null
+                // Extracting using tags
+                val timeStr = block.substringAfter("[T]", "").substringBefore("[/T]")
+                val levelStr = block.substringAfter("[L]", "").substringBefore("[/L]")
+                val tag = block.substringAfter("[TAG]", "").substringBefore("[/TAG]")
+                val message = block.substringAfter("[MSG]", "").substringBefore("[/MSG]")
+                val metaStr = block.substringAfter("[META]", "").substringBefore("[/META]")
+                val stacktrace = if (block.contains("[STACK]")) {
+                    block.substringAfter("[STACK]\n", "").substringBefore("\n[/STACK]")
+                } else null
 
-                val headerParts = lines[0].split(" | ")
-                if (headerParts.size < 4) return null
+                if (timeStr.isEmpty() || levelStr.isEmpty()) {
+                    // Fallback for older format if needed, but the user said "prefer structured"
+                    // and we just started implementation, so we can ignore legacy if it's too messy.
+                    // Let's try a basic regex-free parse for speed.
+                    return null
+                }
 
-                val date = sdf.parse(headerParts[0]) ?: return null
-                val level = Level.valueOf(headerParts[1])
-                val tag = headerParts[2]
-                val message = headerParts[3]
+                val date = sdf.parse(timeStr) ?: return null
+                val level = Level.valueOf(levelStr)
 
                 var deviceModel = "Unknown"
                 var androidVersion = 0
                 var appVersion = "Unknown"
-                var stacktrace: String? = null
 
-                if (lines.size > 1 && lines[1].startsWith("[META]")) {
-                    val meta = lines[1].removePrefix("[META] ").split(" | ")
-                    meta.forEach { part ->
+                if (metaStr.isNotEmpty()) {
+                    val metaParts = metaStr.split(" | ")
+                    metaParts.forEach { part ->
                         when {
                             part.startsWith("Device: ") -> deviceModel = part.removePrefix("Device: ")
                             part.startsWith("Android: ") -> androidVersion = part.removePrefix("Android: ").toIntOrNull() ?: 0
                             part.startsWith("Version: ") -> appVersion = part.removePrefix("Version: ")
                         }
                     }
-                }
-
-                val stackIdx = lines.indexOf("[STACK]")
-                if (stackIdx != -1 && stackIdx < lines.size - 1) {
-                    stacktrace = lines.subList(stackIdx + 1, lines.size).joinToString("\n")
                 }
 
                 return DiagnosticEntry(

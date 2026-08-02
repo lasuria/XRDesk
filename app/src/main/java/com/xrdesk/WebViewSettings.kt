@@ -50,7 +50,7 @@ object WebViewSettings {
         }
 
         // Apply saved UA mode (No reload during initial config)
-        applyUserAgentMode(webView, SettingsStore.browserUserAgentMode, clearCache = false, triggerReload = false)
+        applyUserAgentMode(webView, SettingsStore.BROWSER_USER_AGENT_MODE, clearCache = false, triggerReload = false)
 
         configureCookies(webView)
     }

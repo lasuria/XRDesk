@@ -11,11 +11,13 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.xrdesk.BaseSettingsActivity
 import com.xrdesk.R
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.launch
 
 class LogViewerActivity : BaseSettingsActivity() {
 
@@ -45,8 +47,10 @@ class LogViewerActivity : BaseSettingsActivity() {
     }
 
     private fun loadLogs() {
-        allEntries = DiagnosticsManager.loadEntries()
-        adapter.submitList(allEntries)
+        lifecycleScope.launch {
+            allEntries = DiagnosticsManager.loadEntries()
+            adapter.submitList(allEntries)
+        }
     }
 
     private fun filterLogs(query: String) {

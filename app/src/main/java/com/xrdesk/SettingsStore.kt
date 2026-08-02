@@ -92,7 +92,7 @@ object SettingsStore {
     var adBlockETag: String? = null
         private set
 
-    const val browserUserAgentMode = BROWSER_UA_DEFAULT
+    const val BROWSER_USER_AGENT_MODE = BROWSER_UA_DEFAULT
 
     var autoEnterXrMode = false
         private set

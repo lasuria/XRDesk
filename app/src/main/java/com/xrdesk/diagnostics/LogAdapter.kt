@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.xrdesk.R
+import com.xrdesk.ThemeEngine
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -46,11 +47,12 @@ class LogAdapter(private val onItemClick: (DiagnosticEntry) -> Unit) :
             tvTag.text = entry.tag
             tvMessage.text = entry.message
 
+            val themeColors = ThemeEngine.getColors()
             val color = when (entry.level) {
-                DiagnosticEntry.Level.INFO -> 0xFF4CAF50.toInt()
-                DiagnosticEntry.Level.WARNING -> 0xFFFFC107.toInt()
-                DiagnosticEntry.Level.ERROR -> 0xFFF44336.toInt()
-                DiagnosticEntry.Level.FATAL -> 0xFFB71C1C.toInt()
+                DiagnosticEntry.Level.INFO -> themeColors.colorSuccess
+                DiagnosticEntry.Level.WARNING -> 0xFFFFC107.toInt() // Amber (standard Warning)
+                DiagnosticEntry.Level.ERROR -> themeColors.colorError
+                DiagnosticEntry.Level.FATAL -> themeColors.colorError
             }
             tvLevel.setTextColor(color)
         }

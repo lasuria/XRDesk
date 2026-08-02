@@ -22,7 +22,7 @@ class XRDeskApp : Application() {
         super.onCreate()
         SettingsStore.init(this)
         com.xrdesk.diagnostics.DiagnosticsManager.init(this)
-        com.xrdesk.diagnostics.CrashHandler.init(this)
+        com.xrdesk.diagnostics.CrashHandler.init()
         
         android.util.Log.e("Geometry-Audit", "XRDeskApp.onCreate()")
         ThemeEngine.init(this)
@@ -55,7 +55,7 @@ class XRDeskApp : Application() {
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
             override fun onActivityDestroyed(activity: Activity) {
                 activeActivities.remove(activity)
-                if (activeActivities.isEmpty() && activity.isFinishing) {
+                if (activeActivities.isEmpty() && activity.isFinishing && !activity.isChangingConfigurations) {
                     com.xrdesk.diagnostics.DiagnosticsManager.sessionEnd()
                 }
             }

@@ -8,9 +8,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import com.xrdesk.BaseSettingsActivity
 import com.xrdesk.R
-import java.io.OutputStream
+import kotlinx.coroutines.launch
 
 class DiagnosticsActivity : BaseSettingsActivity() {
 
@@ -39,8 +40,10 @@ class DiagnosticsActivity : BaseSettingsActivity() {
                 .setTitle(R.string.diagnostics_action_clear)
                 .setMessage(R.string.diagnostics_clear_confirm)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    DiagnosticsManager.clearLogs()
-                    refreshStats()
+                    lifecycleScope.launch {
+                        DiagnosticsManager.clearLogs()
+                        refreshStats()
+                    }
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .show()
@@ -48,11 +51,13 @@ class DiagnosticsActivity : BaseSettingsActivity() {
     }
 
     private fun refreshStats() {
-        findViewById<TextView>(R.id.tvLogCount).text = DiagnosticsManager.getEntryCount().toString()
-        val hasCrash = DiagnosticsManager.getLogs().contains("PREVIOUS SESSION CRASHED")
-        findViewById<TextView>(R.id.tvLastCrash).apply {
-            text = if (hasCrash) "CRASH DETECTED" else getString(R.string.diagnostics_no_crash)
-            setTextColor(if (hasCrash) 0xFFF44336.toInt() else 0xFF4CAF50.toInt())
+        lifecycleScope.launch {
+            findViewById<TextView>(R.id.tvLogCount).text = DiagnosticsManager.getEntryCount().toString()
+            val hasCrash = DiagnosticsManager.getLogs().contains("PREVIOUS SESSION CRASHED")
+            findViewById<TextView>(R.id.tvLastCrash).apply {
+                text = if (hasCrash) "CRASH DETECTED" else getString(R.string.diagnostics_no_crash)
+                setTextColor(if (hasCrash) 0xFFF44336.toInt() else 0xFF4CAF50.toInt())
+            }
         }
     }
 
@@ -80,28 +85,32 @@ class DiagnosticsActivity : BaseSettingsActivity() {
     }
 
     private fun saveLogsToUri(uri: Uri) {
-        try {
-            contentResolver.openOutputStream(uri)?.use { os ->
-                os.write(DiagnosticsManager.getLogs().toByteArray())
+        lifecycleScope.launch {
+            try {
+                contentResolver.openOutputStream(uri)?.use { os ->
+                    os.write(DiagnosticsManager.getLogs().toByteArray())
+                }
+                Toast.makeText(this@DiagnosticsActivity, getString(R.string.diagnostics_save_success, uri.path), Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(this@DiagnosticsActivity, R.string.diagnostics_save_error, Toast.LENGTH_SHORT).show()
             }
-            Toast.makeText(this, getString(R.string.diagnostics_save_success, uri.path), Toast.LENGTH_SHORT).show()
-        } catch (e: Exception) {
-            Toast.makeText(this, R.string.diagnostics_save_error, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun shareLogs() {
-        val file = DiagnosticsManager.exportLogs(this)
-        if (file != null && file.exists()) {
-            val uri = FileProvider.getUriForFile(this, "${packageName}.fileprovider", file)
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_STREAM, uri)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        lifecycleScope.launch {
+            val file = DiagnosticsManager.exportLogs(this@DiagnosticsActivity)
+            if (file != null && file.exists()) {
+                val uri = FileProvider.getUriForFile(this@DiagnosticsActivity, "$packageName.fileprovider", file)
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                startActivity(Intent.createChooser(intent, getString(R.string.diagnostics_action_export)))
+            } else {
+                Toast.makeText(this@DiagnosticsActivity, R.string.diagnostics_export_error, Toast.LENGTH_SHORT).show()
             }
-            startActivity(Intent.createChooser(intent, getString(R.string.diagnostics_action_export)))
-        } else {
-            Toast.makeText(this, R.string.diagnostics_export_error, Toast.LENGTH_SHORT).show()
         }
     }
 }
