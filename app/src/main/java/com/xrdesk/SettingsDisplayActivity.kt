@@ -1,10 +1,15 @@
 package com.xrdesk
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import android.widget.TextView
 import androidx.core.view.isVisible
-import com.google.android.material.slider.Slider
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.slider.Slider
+import com.google.android.material.textfield.TextInputEditText
 
 class SettingsDisplayActivity : BaseSettingsActivity() {
 
@@ -14,76 +19,119 @@ class SettingsDisplayActivity : BaseSettingsActivity() {
         setupToolbar(R.id.settingsToolbar, getString(R.string.settings_category_display_title))
         applyEdgeToEdge(findViewById(R.id.settingsDisplayRoot))
 
+        // Power
         val keepScreenOnSwitch = findViewById<MaterialSwitch>(R.id.switchKeepScreenOn)
-        val touchpadAutoDimSwitch = findViewById<MaterialSwitch>(R.id.switchTouchpadAutoDim)
-        val dimOnLockSwitch = findViewById<MaterialSwitch>(R.id.switchDimOnLock)
-        val autoDimSliderContainer = findViewById<android.view.View>(R.id.autoDimSliderContainer)
-        val touchpadDimLevelValue = findViewById<TextView>(R.id.touchpadDimLevelValue)
-        val touchpadDimLevelSlider = findViewById<Slider>(R.id.sliderTouchpadDimLevel)
-        val touchpadAutoLockSwitch = findViewById<MaterialSwitch>(R.id.switchTouchpadAutoLock)
-        val autoLockSliderContainer = findViewById<android.view.View>(R.id.autoLockSliderContainer)
-        val touchpadAutoLockValue = findViewById<TextView>(R.id.touchpadAutoLockValue)
-        val touchpadAutoLockSlider = findViewById<Slider>(R.id.sliderTouchpadAutoLock)
-
         keepScreenOnSwitch.isChecked = SettingsStore.keepScreenOn
         keepScreenOnSwitch.setOnCheckedChangeListener { _, isChecked -> SettingsStore.setKeepScreenOn(this, isChecked) }
 
-        touchpadAutoDimSwitch.isChecked = SettingsStore.touchpadAutoDimEnabled
-        autoDimSliderContainer.isVisible = SettingsStore.touchpadAutoDimEnabled
-        touchpadAutoDimSwitch.setOnCheckedChangeListener { _, isChecked ->
-            SettingsStore.setTouchpadAutoDimEnabled(this, isChecked)
-            autoDimSliderContainer.isVisible = isChecked
+        // Unlock Hint
+        val showHintSwitch = findViewById<MaterialSwitch>(R.id.switchShowUnlockHint)
+        val showArrowSwitch = findViewById<MaterialSwitch>(R.id.switchShowHintArrow)
+        val hintOptions = findViewById<View>(R.id.unlockHintOptions)
+        val sliderTimeout = findViewById<Slider>(R.id.sliderHintTimeout)
+        val textTimeout = findViewById<TextView>(R.id.hintTimeoutValue)
+        val editHintText = findViewById<TextInputEditText>(R.id.editHintText)
+        val sliderFontSize = findViewById<Slider>(R.id.sliderHintFontSize)
+        val textFontSize = findViewById<TextView>(R.id.hintFontSizeValue)
+        val sliderOpacity = findViewById<Slider>(R.id.sliderHintOpacity)
+        val textOpacity = findViewById<TextView>(R.id.hintOpacityValue)
+        val btnReset = findViewById<MaterialButton>(R.id.btnResetUnlockHint)
+
+        showHintSwitch.isChecked = SettingsStore.blackoutShowHint
+        hintOptions.isVisible = SettingsStore.blackoutShowHint
+        showHintSwitch.setOnCheckedChangeListener { _, isChecked ->
+            SettingsStore.setBlackoutShowHint(this, isChecked)
+            hintOptions.isVisible = isChecked
         }
 
-        dimOnLockSwitch.isChecked = SettingsStore.dimOnLock
-        dimOnLockSwitch.setOnCheckedChangeListener { _, isChecked -> SettingsStore.setDimOnLock(this, isChecked) }
-
-        touchpadDimLevelSlider.valueFrom = 0.01f
-        touchpadDimLevelSlider.valueTo = 0.15f
-        touchpadDimLevelSlider.stepSize = 0.01f
-        touchpadDimLevelSlider.value = SettingsStore.touchpadDimLevel.coerceIn(0.01f, 0.15f)
-        touchpadDimLevelValue.text = getString(R.string.settings_touchpad_dim_level_value, (touchpadDimLevelSlider.value * 100).toInt())
-        touchpadDimLevelSlider.addOnChangeListener { _, value, fromUser ->
-            touchpadDimLevelValue.text = getString(R.string.settings_touchpad_dim_level_value, (value * 100).toInt())
-            if (fromUser) SettingsStore.setTouchpadDimLevel(this, value)
+        showArrowSwitch.isChecked = SettingsStore.blackoutShowArrow
+        showArrowSwitch.setOnCheckedChangeListener { _, isChecked ->
+            SettingsStore.setBlackoutShowArrow(this, isChecked)
         }
 
-        // Auto-lock Timeout Setup
-        val lockTimeouts = listOf(15_000L, 30_000L, 45_000L, 60_000L, 120_000L, 180_000L, 300_000L, 420_000L, 600_000L)
-        val lockLabels = listOf(
-            R.string.auto_lock_15s,
-            R.string.auto_lock_30s,
-            R.string.auto_lock_45s,
-            R.string.auto_lock_1m,
-            R.string.auto_lock_2m,
-            R.string.auto_lock_3m,
-            R.string.auto_lock_5m,
-            R.string.auto_lock_7m,
-            R.string.auto_lock_10m
-        )
-
-        touchpadAutoLockSwitch.isChecked = SettingsStore.touchpadAutoLockEnabled
-        autoLockSliderContainer.isVisible = SettingsStore.touchpadAutoLockEnabled
-        touchpadAutoLockSwitch.setOnCheckedChangeListener { _, isChecked ->
-            SettingsStore.setTouchpadAutoLockEnabled(this, isChecked)
-            autoLockSliderContainer.isVisible = isChecked
-        }
-
-        touchpadAutoLockSlider.valueFrom = 0f
-        touchpadAutoLockSlider.valueTo = (lockTimeouts.size - 1).toFloat()
-        touchpadAutoLockSlider.stepSize = 1f
+        // Timeout
+        sliderTimeout.valueFrom = 0f
+        sliderTimeout.valueTo = 15f
+        sliderTimeout.stepSize = 1f
         
-        val currentTimeout = SettingsStore.touchpadAutoLockTimeoutMs
-        val currentIndex = lockTimeouts.indexOf(currentTimeout).coerceAtLeast(0)
-        touchpadAutoLockSlider.value = currentIndex.toFloat()
-        touchpadAutoLockValue.text = getString(lockLabels[currentIndex])
+        fun refreshTimeoutUI() {
+            val timeout = SettingsStore.blackoutHintTimeout
+            sliderTimeout.value = timeout.toFloat().coerceIn(0f, 15f)
+            updateTimeoutText(textTimeout, timeout)
+        }
+        refreshTimeoutUI()
+        
+        sliderTimeout.addOnChangeListener { _, value, fromUser ->
+            val timeout = value.toInt()
+            updateTimeoutText(textTimeout, timeout)
+            if (fromUser) SettingsStore.setBlackoutHintTimeout(this, timeout)
+        }
 
-        touchpadAutoLockSlider.addOnChangeListener { _, value, fromUser ->
-            val index = value.toInt().coerceIn(lockTimeouts.indices)
-            touchpadAutoLockValue.text = getString(lockLabels[index])
-            if (fromUser) {
-                SettingsStore.setTouchpadAutoLockTimeout(this, lockTimeouts[index])
+        // Text
+        editHintText.setText(SettingsStore.blackoutHintText)
+        editHintText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                SettingsStore.setBlackoutHintText(this@SettingsDisplayActivity, s.toString())
             }
+        })
+
+        // Font Size
+        sliderFontSize.valueFrom = 12f
+        sliderFontSize.valueTo = 32f
+        sliderFontSize.stepSize = 1f
+        
+        fun refreshFontSizeUI() {
+            val size = SettingsStore.blackoutHintFontSize
+            sliderFontSize.value = size.coerceIn(12f, 32f)
+            textFontSize.text = getString(R.string.settings_hint_font_size_value, size.toInt())
+        }
+        refreshFontSizeUI()
+        
+        sliderFontSize.addOnChangeListener { _, value, fromUser ->
+            textFontSize.text = getString(R.string.settings_hint_font_size_value, value.toInt())
+            if (fromUser) SettingsStore.setBlackoutHintFontSize(this, value)
+        }
+
+        // Opacity
+        sliderOpacity.valueFrom = 30f
+        sliderOpacity.valueTo = 100f
+        sliderOpacity.stepSize = 5f
+        
+        fun refreshOpacityUI() {
+            val opacityPercent = (SettingsStore.blackoutHintOpacity * 100).toInt()
+            sliderOpacity.value = opacityPercent.toFloat().coerceIn(30f, 100f)
+            textOpacity.text = getString(R.string.settings_hint_opacity_value, opacityPercent)
+        }
+        refreshOpacityUI()
+        
+        sliderOpacity.addOnChangeListener { _, value, fromUser ->
+            textOpacity.text = getString(R.string.settings_hint_opacity_value, value.toInt())
+            if (fromUser) SettingsStore.setBlackoutHintOpacity(this, value / 100f)
+        }
+
+        // Reset
+        btnReset.setOnClickListener {
+            SettingsStore.resetBlackoutHintSettings(this)
+            
+            // Refresh all UI components
+            showHintSwitch.isChecked = SettingsStore.blackoutShowHint
+            showArrowSwitch.isChecked = SettingsStore.blackoutShowArrow
+            hintOptions.isVisible = SettingsStore.blackoutShowHint
+            
+            refreshTimeoutUI()
+            editHintText.setText(SettingsStore.blackoutHintText)
+            refreshFontSizeUI()
+            refreshOpacityUI()
+        }
+    }
+
+    private fun updateTimeoutText(view: TextView, value: Int) {
+        view.text = if (value == 0) {
+            getString(R.string.settings_hint_timeout_persistent)
+        } else {
+            getString(R.string.settings_hint_timeout_value, value)
         }
     }
 }

@@ -120,6 +120,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
             <ImageButton
+                android:id="@+id/btnRemoteBlackout"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/lock_24"
+                app:tint="?attr/colorError"
+                android:contentDescription="@string/browser_blackout" />
+            <ImageButton
                 android:id="@+id/btnRemoteNotif"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -127,14 +135,6 @@
                 android:src="@drawable/ic_bell"
                 app:tint="?attr/colorOnSurfaceVariant"
                 android:contentDescription="@string/perm_notifications_title" />
-            <ImageButton
-                android:id="@+id/btnRemotePower"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_power"
-                app:tint="?attr/colorError"
-                android:contentDescription="@string/browser_exit" />
         </LinearLayout>
 
         <!-- Layer 2: Address Bar + Browser Back -->
@@ -398,30 +398,6 @@
         android:layout_height="match_parent"
         android:background="#000000"
         android:visibility="gone" />
-
-    <!-- Blackout Overlay for Power Logic -->
-    <FrameLayout
-        android:id="@+id/blackoutOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/blackoutHint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="56dp"
-            android:gravity="center"
-            android:text="@string/touchpad_blackout_unlock_hint"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textColor="#CCFFFFFF"
-            android:alpha="0"
-            android:visibility="invisible" />
-    </FrameLayout>
 
     <!-- Invisible IME Proxy for XR Mode -->
     <EditText

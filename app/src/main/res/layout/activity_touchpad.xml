@@ -69,7 +69,7 @@
                     android:layout_height="48dp"
                     android:layout_marginStart="4dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_power"
+                    android:src="@drawable/lock_24"
                     android:padding="12dp"
                     android:scaleType="fitCenter"
                     android:contentDescription="@string/touchpad_blackout"
@@ -315,28 +315,5 @@
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/blackoutOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/blackoutHint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="56dp"
-            android:gravity="center"
-            android:text="@string/touchpad_blackout_unlock_hint"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textColor="#CCFFFFFF"
-            android:alpha="0"
-            android:visibility="invisible" />
-    </FrameLayout>
 
 </FrameLayout>

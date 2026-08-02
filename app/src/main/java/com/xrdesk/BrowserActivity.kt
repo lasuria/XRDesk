@@ -50,6 +50,7 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     private lateinit var binding: ActivityBrowserBinding
     private lateinit var webView: WebView
+    private lateinit var blackoutManager: BlackoutManager
     private val mainHandler = android.os.Handler(android.os.Looper.getMainLooper())
     private lateinit var browserManager: BrowserManager
     private lateinit var resourceInterceptor: ResourceInterceptor
@@ -93,16 +94,6 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         }
     }
 
-    // Power/Blackout State
-    private var originalWindowBrightness: Float = -1f
-    private var originalSystemBrightness: Float = 1f
-    private var hasOriginalWindowBrightness = false
-    private var dimmedThisSession = false
-    private var dimAnimator: ValueAnimator? = null
-    private var blackoutMoved = false
-    private var blackoutDownX = 0f
-    private var blackoutDownY = 0f
-
     private val playbackTicker = object : Runnable {
         override fun run() {
             if (isPlayerActiveInXr) {
@@ -124,6 +115,8 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         binding = ActivityBrowserBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
+        blackoutManager = BlackoutManager(this)
+        
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.setFlags(android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED)
         ThemeHelper.applyTheme(this)
@@ -142,7 +135,6 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         setupWebView()
         setupStandardControls()
         setupXrControls()
-        setupBlackoutLogic()
         setupImeProxy()
 
         setVolumeControlStream(android.media.AudioManager.STREAM_MUSIC)
@@ -159,9 +151,7 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.blackoutOverlay.isVisible) {
-                    setBlackoutVisible(false)
-                } else if (isPlayerActiveInXr) {
+                if (isPlayerActiveInXr) {
                     closeXrPlayer()
                 } else if (isXrModeActive) {
                     toggleXrMode(false)
@@ -372,11 +362,7 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         binding.btnExitBrowser.setOnClickListener { finish() }
         binding.btnEnterXr.setOnClickListener { toggleXrMode(true) }
         
-        binding.btnMenu.setOnClickListener { 
-            if (resolvedSource != null) {
-                openPhonePlayer()
-            }
-        }
+        binding.btnMenu.setOnClickListener { showMenu(it) }
 
         updateVideoButtonState()
 
@@ -395,7 +381,7 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     @SuppressLint("ClickableViewAccessibility")
     private fun setupXrControls() {
         binding.btnExitXr.setOnClickListener { toggleXrMode(false) }
-        binding.btnRemotePower.setOnClickListener { setBlackoutVisible(true) }
+        binding.btnRemoteBlackout.setOnClickListener { blackoutManager.show() }
         binding.btnRemoteNotif.setOnClickListener {
             SettingsStore.toggleTemporaryHudNotifications()
             updateXrNotifButtonUI()
@@ -572,8 +558,6 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             }
             if (info != null && !isXrModeActive && SettingsStore.autoEnterXrMode) toggleXrMode(true)
             else if (info == null && isXrModeActive) {
-                restoreOriginalBrightness()
-                setBlackoutVisible(false)
                 toggleXrMode(false)
             }
             updateXrNotifButtonUI()
@@ -730,42 +714,6 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun setupBlackoutLogic() {
-        binding.blackoutOverlay.setOnTouchListener { view, event ->
-            if (!binding.blackoutOverlay.isVisible) return@setOnTouchListener false
-            if (event.pointerCount > 1) return@setOnTouchListener true
-            when (event.actionMasked) {
-                MotionEvent.ACTION_DOWN -> {
-                    blackoutDownX = event.x; blackoutDownY = event.y
-                    blackoutMoved = false
-                    view.translationY = 0f
-                    binding.blackoutHint.alpha = 1f
-                    binding.blackoutHint.isVisible = true
-                    restoreOriginalBrightness()
-                    true
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val dy = event.y - blackoutDownY
-                    if (abs(dy) > tapThreshold) blackoutMoved = true
-                    if (blackoutMoved) view.translationY = dy.coerceAtMost(0f)
-                    true
-                }
-                MotionEvent.ACTION_UP -> {
-                    val dy = event.y - blackoutDownY
-                    if (dy < -200f && abs(dy) > abs(event.x - blackoutDownX)) {
-                        setBlackoutVisible(false)
-                    } else {
-                        view.animate().translationY(0f).setDuration(200).start()
-                        mainHandler.postDelayed({ binding.blackoutHint.isVisible = false }, 2000)
-                    }
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
     private fun setupImeProxy() {
         // We override the view to provide our bridge InputConnection
         imeProxy = object : androidx.appcompat.widget.AppCompatEditText(this) {
@@ -836,56 +784,6 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             WindowCompat.getInsetsController(window, imeProxy).show(WindowInsetsCompat.Type.ime())
             Log.d("XR Keyboard", "Activity: Proxy focus hasFocus=${imeProxy.hasFocus()}")
         }
-    }
-
-    private fun setBlackoutVisible(visible: Boolean) {
-        if (binding.blackoutOverlay.isVisible == visible) return
-        
-        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
-        
-        if (visible) {
-            insetsController.hide(WindowInsetsCompat.Type.statusBars())
-            insetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            dimWindowBrightness()
-        } else {
-            restoreOriginalBrightness()
-            insetsController.show(WindowInsetsCompat.Type.statusBars())
-        }
-        binding.blackoutOverlay.isVisible = visible
-    }
-
-    private fun dimWindowBrightness() {
-        if (!hasOriginalWindowBrightness) captureOriginalBrightness()
-        val target = SettingsStore.touchpadDimLevel
-        val start = getEstimatedCurrentBrightness()
-        dimAnimator = ValueAnimator.ofFloat(start, target).apply {
-            duration = 400
-            addUpdateListener { applyWindowBrightness(it.animatedValue as Float) }
-            start()
-        }
-    }
-
-    private fun restoreOriginalBrightness() {
-        if (!hasOriginalWindowBrightness) return
-        applyWindowBrightness(originalWindowBrightness)
-        hasOriginalWindowBrightness = false
-    }
-
-    private fun captureOriginalBrightness() {
-        originalWindowBrightness = window.attributes.screenBrightness
-        originalSystemBrightness = try {
-            Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS) / 255f
-        } catch (e: Exception) { 1f }
-        hasOriginalWindowBrightness = true
-    }
-
-    private fun applyWindowBrightness(value: Float) {
-        window.attributes = window.attributes.apply { screenBrightness = value.coerceIn(0f, 1f) }
-    }
-
-    private fun getEstimatedCurrentBrightness(): Float {
-        val win = window.attributes.screenBrightness
-        return if (win >= 0f) win else originalSystemBrightness
     }
 
     private fun showMenu(anchor: View) {
@@ -1141,14 +1039,9 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         super.onResume()
         Log.d("WebViewNav", "Activity onResume")
         
-        // Sync status bar visibility with current blackout state
+        // Sync status bar visibility
         val insetsController = WindowCompat.getInsetsController(window, window.decorView)
-        if (binding.blackoutOverlay.isVisible) {
-            insetsController.hide(WindowInsetsCompat.Type.statusBars())
-            insetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        } else {
-            insetsController.show(WindowInsetsCompat.Type.statusBars())
-        }
+        insetsController.show(WindowInsetsCompat.Type.statusBars())
         
         if (!isPlayerActiveInXr) {
             resumeBrowser()
@@ -1184,6 +1077,7 @@ class BrowserActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         DisplaySessionManager.removeListener(this)
         presentation?.let { it.detachWebView(); it.dismiss() }
         MediaSessionManager.release()
+        blackoutManager.destroy()
         super.onDestroy()
     }
 }

@@ -32,13 +32,8 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     private lateinit var binding: ActivityTouchpadBinding
     private val processor = TouchpadProcessor(TouchpadTuning)
+    private lateinit var blackoutManager: BlackoutManager
     private val handler = Handler(Looper.getMainLooper())
-    private var autoLockRunnable: Runnable? = null
-    private var dimRunnable: Runnable? = null
-    private var dimAnimator: ValueAnimator? = null
-    private var dimmedThisSession = false
-    private var focusSessionId = 0
-    private var isFocused = false
     private var lastTouchX = 0f
     private var lastTouchY = 0f
     private var downX = 0f
@@ -48,12 +43,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     private var longPressCancelSlopPx = 0f
     private var longPressTimeout = 0
     private var longPressRunnable: Runnable? = null
-    private var blackoutHintFadeRunnable: Runnable? = null
-    private var blackoutDownX = 0f
-    private var blackoutDownY = 0f
-    private var blackoutMoved = false
-    private var blackoutSwipeMinPx = 0f
-    private var blackoutSwipeOffset = 0f
     private lateinit var legacyScrollController: LegacyScrollController
     private lateinit var directScrollController: DirectScrollController
     private var activeScrollController = ActiveScrollController.NONE
@@ -78,6 +67,8 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         setContentView(binding.root)
         DiagnosticsLog.add("Touchpad", "Touchpad: create displayId=${display?.displayId ?: -1}")
         
+        blackoutManager = BlackoutManager(this)
+        
         WindowCompat.setDecorFitsSystemWindows(window, false)
         ThemeHelper.applyTheme(this)
         applyEdgeToEdgePadding(binding.root)
@@ -86,7 +77,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
         touchSlopPx = resources.displayMetrics.density * TOUCH_SLOP_DP
         longPressCancelSlopPx = resources.displayMetrics.density * LONG_PRESS_CANCEL_DP
-        blackoutSwipeMinPx = resources.displayMetrics.density * BLACKOUT_SWIPE_MIN_DP
         longPressTimeout = ViewConfiguration.getLongPressTimeout()
         legacyScrollController = LegacyScrollController(
             context = this,
@@ -107,7 +97,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             appPickerLauncher.launch(Intent(this, AppPickerActivity::class.java))
         }
         binding.touchpadBlackout.setOnClickListener {
-            setBlackoutVisible(true)
+            blackoutManager.show()
         }
         binding.touchpadToggleNotif.setOnClickListener {
             SettingsStore.toggleTemporaryHudNotifications()
@@ -140,12 +130,7 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             activity = this,
             logName = "Touchpad",
             isControlActive = { touchpadActive },
-            preBackHandler = {
-                if (binding.blackoutOverlay.isVisible) {
-                    setBlackoutVisible(false)
-                    true
-                } else false
-            }
+            preBackHandler = { false }
         )
 
         binding.touchpadArea.setOnTouchListener { _, event ->
@@ -160,92 +145,12 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             }
         }
 
-        binding.blackoutOverlay.setOnTouchListener { view, event ->
-            if (!binding.blackoutOverlay.isVisible) return@setOnTouchListener false
-            if (event.pointerCount > 1) return@setOnTouchListener true
-            when (event.actionMasked) {
-                MotionEvent.ACTION_DOWN -> {
-                    blackoutDownX = event.x
-                    blackoutDownY = event.y
-                    blackoutMoved = false
-                    blackoutSwipeOffset = 0f
-                    view.translationY = 0f
-                    showBlackoutHintImmediate()
-                    restoreOriginalBrightness()
-                    if (binding.blackoutOverlay.isVisible || touchpadActive) {
-                        startAutoDimSession()
-                    }
-                    true
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val dx = event.x - blackoutDownX
-                    val dy = event.y - blackoutDownY
-                    if (!blackoutMoved && (abs(dx) > touchSlopPx || abs(dy) > touchSlopPx)) {
-                        blackoutMoved = true
-                    }
-                    showBlackoutHintImmediate()
-                    if (blackoutMoved) {
-                        val offset = minOf(0f, dy)
-                        blackoutSwipeOffset += (offset - blackoutSwipeOffset) * BLACKOUT_SWIPE_SMOOTHING
-                        view.translationY = blackoutSwipeOffset
-                    }
-                    true
-                }
-                MotionEvent.ACTION_UP -> {
-                    val dx = event.x - blackoutDownX
-                    val dy = event.y - blackoutDownY
-                    val isSwipeUp = dy <= -blackoutSwipeMinPx && abs(dy) > abs(dx)
-                    if (isSwipeUp) {
-                        val target = -view.height.toFloat().coerceAtLeast(1f)
-                        view.animate()
-                            .translationY(target)
-                            .setDuration(BLACKOUT_SWIPE_ANIM_MS)
-                            .withEndAction {
-                                view.translationY = 0f
-                                blackoutSwipeOffset = 0f
-                                unlockFromBlackout()
-                            }
-                            .start()
-                    } else if (!blackoutMoved) {
-                        showBlackoutHintImmediate()
-                        view.animate()
-                            .translationY(0f)
-                            .setDuration(BLACKOUT_SWIPE_ANIM_MS)
-                            .withEndAction { blackoutSwipeOffset = 0f }
-                            .start()
-                    } else {
-                        view.animate()
-                            .translationY(0f)
-                            .setDuration(BLACKOUT_SWIPE_ANIM_MS)
-                            .withEndAction { blackoutSwipeOffset = 0f }
-                            .start()
-                    }
-                    if (!isSwipeUp) {
-                        scheduleBlackoutHintFade()
-                    }
-                    true
-                }
-                MotionEvent.ACTION_CANCEL -> {
-                    scheduleBlackoutHintFade()
-                    true
-                }
-                else -> false
-            }
-        }
-
         setupTuningControls()
         setupDPad()
         setTouchpadActive(false)
         showTouchpadIntroIfNeeded()
         
         updateNotifButtonUI()
-
-        autoLockRunnable = Runnable {
-            if (!binding.blackoutOverlay.isVisible) {
-                DiagnosticsLog.add("Touchpad", "auto-lock triggered")
-                setBlackoutVisible(true)
-            }
-        }
     }
 
     override fun onStart() {
@@ -257,31 +162,18 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     override fun onResume() {
         super.onResume()
         updateKeepScreenOn(true)
-        resetAutoLockTimer()
         updateNotifButtonUI()
         accessibilityGate.refresh()
         
-        // Sync status bar visibility with current blackout state
+        // Sync status bar visibility
         val insetsController = WindowCompat.getInsetsController(window, window.decorView)
-        if (binding.blackoutOverlay.isVisible) {
-            insetsController.hide(WindowInsetsCompat.Type.statusBars())
-            insetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        } else {
-            insetsController.show(WindowInsetsCompat.Type.statusBars())
-        }
+        insetsController.show(WindowInsetsCompat.Type.statusBars())
         
-        if (touchpadActive) {
-            startAutoDimSession()
-        } else {
-            stopAutoDimSession()
-        }
         backController.warmUpOnResume("touchpad_resume")
         DiagnosticsLog.add("Touchpad", "Touchpad: resume")
     }
 
     override fun onPause() {
-        stopAutoDimSession()
-        cancelAutoLockTimer()
         cancelLongPress()
         exitScrollMode()
         updateKeepScreenOn(false)
@@ -291,27 +183,16 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     override fun onStop() {
         DisplaySessionManager.removeListener(this)
-        stopAutoDimSession()
         cancelLongPress()
         exitScrollMode()
         super.onStop()
     }
 
     override fun onDisplayChanged(info: DisplaySessionManager.ExternalDisplayInfo?) {
-        if (info == null) {
-            cancelDimTimer()
-            cancelDimAnimator()
-            restoreOriginalBrightness()
-            setBlackoutVisible(false)
-            DiagnosticsLog.add("Touchpad", "Touchpad: brightness restored (external display removed)")
-        } else if (touchpadActive) {
-            startAutoDimSession()
-        }
     }
 
     override fun onDestroy() {
-        stopAutoDimSession()
-        cancelAutoLockTimer()
+        blackoutManager.destroy()
         cancelLongPress()
         exitScrollMode()
         accessibilityGate.onDestroy()
@@ -320,18 +201,9 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
-            resetAutoLockTimer()
-        } else {
-            cancelAutoLockTimer()
-        }
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        resetAutoLockTimer()
-        if (binding.blackoutOverlay.isVisible) {
-            return super.dispatchTouchEvent(event)
-        }
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
             val rect = android.graphics.Rect()
             binding.touchpadArea.getGlobalVisibleRect(rect)
@@ -345,12 +217,10 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
     }
 
     override fun dispatchKeyEvent(event: android.view.KeyEvent): Boolean {
-        resetAutoLockTimer()
         return super.dispatchKeyEvent(event)
     }
 
     override fun onGenericMotionEvent(event: MotionEvent): Boolean {
-        resetAutoLockTimer()
         return super.onGenericMotionEvent(event)
     }
 
@@ -493,82 +363,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         longPressRunnable = null
     }
 
-    private fun setBlackoutVisible(visible: Boolean) {
-        if (binding.blackoutOverlay.isVisible == visible) return
-        
-        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
-        
-        if (visible) {
-            cancelLongPress()
-            exitScrollMode()
-            if (touchState == TouchState.DRAGGING) {
-                ControlAccessibilityService.current()?.endContinuousGesture()
-                touchState = TouchState.IDLE
-            }
-            hideBlackoutHint()
-            binding.blackoutOverlay.translationY = 0f
-
-            if (SettingsStore.dimOnLock) {
-                captureOriginalBrightness()
-                applyWindowBrightness(SettingsStore.touchpadDimLevel)
-            }
-            
-            insetsController.hide(WindowInsetsCompat.Type.statusBars())
-            insetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        } else {
-            hideBlackoutHint()
-            binding.blackoutOverlay.translationY = 0f
-            restoreOriginalBrightness()
-            
-            insetsController.show(WindowInsetsCompat.Type.statusBars())
-        }
-        binding.blackoutOverlay.isVisible = visible
-        if (!visible) {
-            resetAutoLockTimer()
-        } else {
-            cancelAutoLockTimer()
-        }
-        DiagnosticsLog.add("Touchpad", "Touchpad: blackout=$visible")
-    }
-
-    private fun unlockFromBlackout() {
-        setBlackoutVisible(false)
-        restoreOriginalBrightness()
-        if (touchpadActive) {
-            startAutoDimSession()
-        }
-    }
-
-    private fun showBlackoutHintImmediate() {
-        val hint = binding.blackoutHint
-        hint.animate().cancel()
-        blackoutHintFadeRunnable?.let { handler.removeCallbacks(it) }
-        hint.alpha = 1f
-        hint.isVisible = true
-    }
-
-    private fun scheduleBlackoutHintFade() {
-        blackoutHintFadeRunnable?.let { handler.removeCallbacks(it) }
-        blackoutHintFadeRunnable = Runnable {
-            val hint = binding.blackoutHint
-            if (!binding.blackoutOverlay.isVisible) return@Runnable
-            hint.animate()
-                .alpha(0f)
-                .setDuration(BLACKOUT_HINT_FADE_MS)
-                .withEndAction { hint.isVisible = false }
-                .start()
-        }
-        handler.postDelayed(blackoutHintFadeRunnable!!, BLACKOUT_HINT_VISIBLE_MS)
-    }
-
-    private fun hideBlackoutHint() {
-        blackoutHintFadeRunnable?.let { handler.removeCallbacks(it) }
-        blackoutHintFadeRunnable = null
-        binding.blackoutHint.animate().cancel()
-        binding.blackoutHint.alpha = 0f
-        binding.blackoutHint.isVisible = false
-    }
-
     private fun enterScrollMode(service: ControlAccessibilityService, event: MotionEvent) {
         touchState = TouchState.SCROLL_MODE
         val useDirect = SettingsStore.touchpadDirectScrollGestureEnabled &&
@@ -704,11 +498,6 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
 
         if (wasActive != active) {
             DiagnosticsLog.add("Touchpad", "Touchpad: active=$active")
-            if (active) {
-                startAutoDimSession()
-            } else {
-                stopAutoDimSession()
-            }
         }
     }
 
@@ -816,9 +605,9 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
             getString(R.string.touchpad_intro_gesture_move),
             getString(R.string.touchpad_intro_gesture_tap),
             getString(R.string.touchpad_intro_gesture_drag),
-            getString(R.string.touchpad_intro_dim_behavior),
             getString(R.string.touchpad_intro_back_behavior),
-            getString(R.string.touchpad_intro_exit_hint)
+            getString(R.string.touchpad_intro_exit_hint),
+            "" // Placeholder for removed dim behavior
         )
         androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle(R.string.touchpad_intro_title)
@@ -828,144 +617,9 @@ class TouchpadActivity : AppCompatActivity(), DisplaySessionManager.Listener {
         SettingsStore.setTouchpadIntroShown(this)
     }
 
-    private fun startAutoDimSession() {
-        isFocused = true
-        focusSessionId += 1
-        dimmedThisSession = false
-        cancelDimTimer()
-        cancelDimAnimator()
-        captureOriginalBrightness()
-
-        if (!SettingsStore.touchpadAutoDimEnabled) return
-        val sessionId = focusSessionId
-        dimRunnable = Runnable {
-            if (!isFocused || sessionId != focusSessionId || dimmedThisSession) return@Runnable
-            dimWindowBrightness()
-        }
-        handler.postDelayed(dimRunnable!!, AUTO_DIM_DELAY_MS)
-        DiagnosticsLog.add("Touchpad", "Touchpad: dim timer started")
-    }
-
-    private fun stopAutoDimSession() {
-        isFocused = false
-        cancelDimTimer()
-        cancelDimAnimator()
-        restoreOriginalBrightness()
-        DiagnosticsLog.add("Touchpad", "Touchpad: dim session stopped")
-    }
-
-    private fun captureOriginalBrightness() {
-        if (SessionStore.hasCapturedBrightness) return
-        val current = window.attributes.screenBrightness
-        SessionStore.capturedBrightness = current
-        SessionStore.capturedSystemBrightness = readSystemBrightness()
-        SessionStore.hasCapturedBrightness = true
-    }
-
-    private fun restoreOriginalBrightness() {
-        if (!SessionStore.hasCapturedBrightness) return
-        window.attributes = window.attributes.apply {
-            screenBrightness = SessionStore.capturedBrightness
-        }
-        SessionStore.hasCapturedBrightness = false
-        dimmedThisSession = false
-        DiagnosticsLog.add("Touchpad", "Touchpad: brightness restored")
-    }
-
-    private fun dimWindowBrightness() {
-        val target = computeDimTarget() ?: run {
-            DiagnosticsLog.add("Touchpad", "Touchpad: dim skipped (avoid brightening)")
-            return
-        }
-        val start = getEstimatedCurrentBrightness().coerceAtLeast(target)
-        if (start <= target) {
-            applyWindowBrightness(target)
-            dimmedThisSession = true
-            DiagnosticsLog.add("Touchpad", "Touchpad: dimmed target=$target")
-            return
-        }
-        dimAnimator = ValueAnimator.ofFloat(start, target).apply {
-            duration = DIM_ANIMATION_DURATION_MS
-            addUpdateListener { animator ->
-                applyWindowBrightness(animator.animatedValue as Float)
-            }
-            start()
-        }
-        dimmedThisSession = true
-        DiagnosticsLog.add("Touchpad", "Touchpad: dimmed target=$target")
-    }
-
-    private fun applyWindowBrightness(value: Float) {
-        window.attributes = window.attributes.apply {
-            screenBrightness = value.coerceIn(0f, 1f)
-        }
-    }
-
-    private fun getEstimatedCurrentBrightness(): Float {
-        val windowValue = window.attributes.screenBrightness
-        if (windowValue >= 0f) {
-            return windowValue.coerceIn(0f, 1f)
-        }
-        return readSystemBrightness()
-    }
-
-    private fun computeDimTarget(): Float? {
-        val preferred = SettingsStore.touchpadDimLevel.coerceIn(0f, 1f)
-        if (SessionStore.capturedBrightness < 0f) {
-            val systemBrightness = SessionStore.capturedSystemBrightness.coerceIn(0f, 1f)
-            if (preferred >= systemBrightness) {
-                return null
-            }
-            return preferred.coerceAtMost(systemBrightness)
-        }
-        val current = getEstimatedCurrentBrightness()
-        return minOf(preferred, current)
-    }
-
-    private fun readSystemBrightness(): Float {
-        return try {
-            val systemValue = Settings.System.getInt(
-                contentResolver,
-                Settings.System.SCREEN_BRIGHTNESS
-            )
-            (systemValue / 255f).coerceIn(0f, 1f)
-        } catch (e: Exception) {
-            SettingsStore.touchpadDimLevel.coerceIn(0f, 1f)
-        }
-    }
-
-    private fun cancelDimTimer() {
-        dimRunnable?.let { handler.removeCallbacks(it) }
-        dimRunnable = null
-    }
-
-    private fun cancelDimAnimator() {
-        dimAnimator?.cancel()
-        dimAnimator = null
-    }
-
-    private fun resetAutoLockTimer() {
-        cancelAutoLockTimer()
-        if (SettingsStore.touchpadAutoLockEnabled && !binding.blackoutOverlay.isVisible) {
-            val timeout = SettingsStore.touchpadAutoLockTimeoutMs
-            autoLockRunnable?.let { handler.postDelayed(it, timeout) }
-        }
-    }
-
-    private fun cancelAutoLockTimer() {
-        autoLockRunnable?.let { handler.removeCallbacks(it) }
-    }
-
     companion object {
-        private const val AUTO_DIM_DELAY_MS = 10_000L
-        private const val DIM_ANIMATION_DURATION_MS = 400L
         private const val TOUCH_SLOP_DP = 8f
         private const val LONG_PRESS_CANCEL_DP = 3f
-        private const val BLACKOUT_SWIPE_MIN_DP = 120f
-        private const val BLACKOUT_HINT_VISIBLE_MS = 2000L
-        private const val BLACKOUT_HINT_FADE_MS = 400L
-        private const val BLACKOUT_SWIPE_ANIM_MS = 180L
-        private const val BLACKOUT_SWIPE_SMOOTHING = 0.25f
     }
 
 

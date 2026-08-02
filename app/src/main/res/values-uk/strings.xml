@@ -17,6 +17,7 @@
     <string name="settings">Налаштування</string>
     <string name="settings_description">Персоналізація та керування пристроєм</string>
 
+    <string name="browser_blackout">Вимкнути екран</string>
     <string name="browser_hint">Введіть URL</string>
     <string name="browser_home">Головна</string>
     <string name="browser_refresh">Оновити</string>
@@ -99,7 +100,7 @@
     <string name="display_capability_hdr">HDR</string>
 
     <string name="touchpad_title">Тачпад</string>
-    <string name="touchpad_blackout">Екран вимкнено</string>
+    <string name="touchpad_blackout">Вимкнути екран</string>
     <string name="touchpad_play_pause_button">Плей/Пауза</string>
     <string name="touchpad_back_button">Назад</string>
     <string name="touchpad_rewind_button">Перемотка назад</string>
@@ -150,6 +151,21 @@
     <string name="settings_switch_bar_app_add">Добавить додаток</string>
     <string name="settings_switch_bar_app_pick_placeholder">Виберіть додаток</string>
     <string name="settings_section_display">Екран</string>
+    <string name="settings_section_unlock_hint">Підказка розблокування</string>
+    <string name="settings_show_unlock_hint">Показувати підказку</string>
+    <string name="settings_show_unlock_hint_summary">Показувати або приховувати підказку \"Проведіть вгору, щоб розблокувати\" під час вимкнення екрана.</string>
+    <string name="settings_show_hint_arrow">Показувати стрілку</string>
+    <string name="settings_show_hint_arrow_summary">Показувати індикатор стрілки над текстом підказки.</string>
+    <string name="settings_hint_timeout">Тайм-аут підказки</string>
+    <string name="settings_hint_timeout_value">%1$d секунд</string>
+    <string name="settings_hint_timeout_persistent">До розблокування</string>
+    <string name="settings_hint_text">Текст підказки</string>
+    <string name="settings_hint_font_size">Розмір шрифту</string>
+    <string name="settings_hint_font_size_value">%1$d sp</string>
+    <string name="settings_hint_opacity">Прозорість</string>
+    <string name="settings_hint_opacity_value">%1$d%%</string>
+    <string name="settings_reset_unlock_hint">Скинути налаштування</string>
+    <string name="blackout_hint_default">Проведіть вгору, щоб розблокувати</string>
     <string name="settings_section_brightness">Яскравість</string>
     <string name="settings_section_security">Безпека</string>
     <string name="settings_section_typography">Типографіка</string>
@@ -170,19 +186,17 @@
     <string name="touchpad_intro_gesture_move">Рух: ведіть одним пальцем</string>
     <string name="touchpad_intro_gesture_tap">Клік: натисніть один раз</string>
     <string name="touchpad_intro_gesture_drag">Перетягування: натисніть та утримуйте, потім ведіть. Прокрутка: ведіть двома пальцями.</string>
-    <string name="touchpad_intro_dim_behavior">Автозатемнення: через 10 сек. в області тачпада екран гасне. Він відновлюється при натисканні поза областю або виході з екрана.</string>
     <string name="touchpad_intro_back_behavior">Назад: коли область тачпада активна, кнопка Назад перенаправляється в зовнішній додаток.</string>
     <string name="touchpad_intro_exit_hint">Вихід: натисніть стрілку назад зверху зліва або натисніть поза областю тачпада, а потім Назад.</string>
     <string name="touchpad_placeholder_activate">Натисніть тут для активації</string>
     <string name="touchpad_instruction_compact">Натисніть на тачпад для активації. Назад відправляється на зовнішній дисплей.</string>
-    <string name="touchpad_intro_message">%1$s\n%2$s\n%3$s\n\n%4$s\n%5$s\n%6$s</string>
-    <string name="touchpad_blackout_unlock_hint">Проведіть вгору для розблокування</string>
+    <string name="touchpad_intro_message">%1$s\n%2$s\n%3$s\n\n%4$s\n%5$s</string>
 
     <string name="settings_title">Налаштування</string>
     <string name="settings_category_appearance_title">Зовнішній вигляд</string>
     <string name="settings_category_appearance_summary">Тема та мова</string>
     <string name="settings_category_display_title">Дисплей</string>
-    <string name="settings_category_display_summary">Екран, яскравість та блокування</string>
+    <string name="settings_category_display_summary">Екран та яскравість</string>
     <string name="settings_category_touchpad_title">Тачпад</string>
     <string name="settings_category_touchpad_summary">D-Pad, прокрутка та фокус</string>
     <string name="settings_category_cursor_title">Курсор</string>
@@ -290,19 +304,6 @@
     <string name="settings_keep_screen_on">Не вимикати екран при використанні тачпада</string>
     <string name="settings_keep_screen_on_summary">Запобігати автоблокуванню при активному тачпаді.</string>
     <string name="settings_language">Мова</string>
-    <string name="settings_developer_section">Для розробників</string>
-    <string name="settings_logs_title">Логи</string>
-    <string name="settings_logs_summary">Діагностика та статус системи</string>
-    <string name="settings_touchpad_auto_dim">Автозатемнення при використанні тачпада</string>
-    <string name="settings_touchpad_auto_dim_summary">Знижувати яскравість автоматично через 10 секунд використання тачпада.</string>
-    <string name="settings_touchpad_back_section">Перенаправлення Назад</string>
-    <string name="settings_touchpad_auto_focus">Автоматичний фокус</string>
-    <string name="settings_touchpad_auto_focus_summary">Автоматично активує вікно на зовнішньому дисплеї. Забезпечує надійну роботу кнопки \"Назад\" та кліків.</string>
-    <string name="settings_touchpad_dim_level">Мінімальна яскравість</string>
-    <string name="settings_dim_on_lock">Затемнювати екран при блокуванні</string>
-    <string name="settings_dim_on_lock_summary">Після натискання кнопки живлення екран буде затемнено до мінімальної яскравості. Після розблокування повернеться попередня яскравість.</string>
-    <string name="settings_touchpad_dim_level_value">%1$d%%</string>
-    <string name="settings_touchpad_dim_level_default">18%</string>
     <string name="settings_touchpad_scroll_classic_section">Стандартна прокрутка двома пальцями</string>
     <string name="settings_touchpad_scroll_speed">Рух прокрутки за крок</string>
     <string name="settings_touchpad_scroll_speed_value">%1$.1fx</string>
@@ -392,18 +393,12 @@
     <string name="settings_about_title">Про додаток</string>
     <string name="settings_section_information">Інформація</string>
     <string name="settings_about_summary">Версія та інформація</string>
-    <string name="settings_touchpad_auto_lock_title">Автоблокування при бездіяльності</string>
-    <string name="settings_touchpad_auto_lock_summary">Автоматично блокує віддалений пристрій після вибраного періоду бездіяльності при використанні тачпада.</string>
-    <string name="auto_lock_disabled">Вимкнено</string>
-    <string name="auto_lock_15s">15 секунд</string>
-    <string name="auto_lock_30s">30 секунд</string>
-    <string name="auto_lock_45s">45 секунд</string>
-    <string name="auto_lock_1m">1 хвилина</string>
-    <string name="auto_lock_2m">2 хвилини</string>
-    <string name="auto_lock_3m">3 хвилини</string>
-    <string name="auto_lock_5m">5 хвилин</string>
-    <string name="auto_lock_7m">7 хвилин</string>
-    <string name="auto_lock_10m">10 хвилин</string>
+    <string name="settings_developer_section">Для розробників</string>
+    <string name="settings_logs_title">Логи</string>
+    <string name="settings_logs_summary">Діагностика та статус системи</string>
+    <string name="settings_touchpad_back_section">Перенаправлення Назад</string>
+    <string name="settings_touchpad_auto_focus">Автоматичний фокус</string>
+    <string name="settings_touchpad_auto_focus_summary">Автоматично активує вікно на зовнішньому дисплеї. Забезпечує надійну роботу кнопки \"Назад\" та кліків.</string>
 
     <string name="settings_hud_title">Налаштування HUD</string>
     <string name="settings_hud_enable">Увімкнути HUD</string>

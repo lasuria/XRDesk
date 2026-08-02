@@ -17,6 +17,7 @@
     <string name="settings">设置</string>
     <string name="settings_description">个性化与设备控制</string>
 
+    <string name="browser_blackout">关闭屏幕</string>
     <string name="browser_hint">输入网址</string>
     <string name="browser_home">首页</string>
     <string name="browser_refresh">刷新</string>
@@ -99,7 +100,7 @@
     <string name="display_capability_hdr">HDR</string>
 
     <string name="touchpad_title">触控板</string>
-    <string name="touchpad_blackout">屏幕关闭</string>
+    <string name="touchpad_blackout">关闭屏幕</string>
     <string name="touchpad_play_pause_button">播放/暂停</string>
     <string name="touchpad_back_button">返回</string>
     <string name="touchpad_rewind_button">快退</string>
@@ -150,6 +151,21 @@
     <string name="settings_switch_bar_app_add">添加固定应用</string>
     <string name="settings_switch_bar_app_pick_placeholder">选择应用程序</string>
     <string name="settings_section_display">屏幕</string>
+    <string name="settings_section_unlock_hint">解锁提示</string>
+    <string name="settings_show_unlock_hint">显示解锁提示</string>
+    <string name="settings_show_unlock_hint_summary">在屏幕关闭期间显示或隐藏“向上滑动解锁”提示。</string>
+    <string name="settings_show_hint_arrow">显示箭头</string>
+    <string name="settings_show_hint_arrow_summary">在提示文本上方显示箭头指示器。</string>
+    <string name="settings_hint_timeout">提示超时</string>
+    <string name="settings_hint_timeout_value">%1$d 秒</string>
+    <string name="settings_hint_timeout_persistent">始终显示直到退出</string>
+    <string name="settings_hint_text">提示文本</string>
+    <string name="settings_hint_font_size">提示字体大小</string>
+    <string name="settings_hint_font_size_value">%1$d sp</string>
+    <string name="settings_hint_opacity">提示不透明度</string>
+    <string name="settings_hint_opacity_value">%1$d%%</string>
+    <string name="settings_reset_unlock_hint">恢复默认设置</string>
+    <string name="blackout_hint_default">向上滑动解锁</string>
     <string name="settings_section_brightness">亮度</string>
     <string name="settings_section_security">安全</string>
     <string name="settings_section_typography">字体排版</string>
@@ -170,19 +186,17 @@
     <string name="touchpad_intro_gesture_move">移动：单指滑动</string>
     <string name="touchpad_intro_gesture_tap">点击：点击一次</string>
     <string name="touchpad_intro_gesture_drag">拖动：按住并滑动。滚动：双指滑动。</string>
-    <string name="touchpad_intro_dim_behavior">自动变暗：在触控板区域内停留 10 秒后，屏幕将变暗。点击触控板区域外或离开此屏幕时恢复。</string>
     <string name="touchpad_intro_back_behavior">返回：当触控板区域激活时，返回键将转发至外部应用。</string>
     <string name="touchpad_intro_exit_hint">退出：点击左上角的返回箭头，或点击触控板区域外然后按返回键。</string>
     <string name="touchpad_placeholder_activate">点击此处激活</string>
     <string name="touchpad_instruction_compact">点击触控板以激活。返回键发送至外接显示器。</string>
-    <string name="touchpad_intro_message">%1$s\n%2$s\n%3$s\n\n%4$s\n%5$s\n%6$s</string>
-    <string name="touchpad_blackout_unlock_hint">向上滑动解锁</string>
+    <string name="touchpad_intro_message">%1$s\n%2$s\n%3$s\n\n%4$s\n%5$s</string>
 
     <string name="settings_title">设置</string>
     <string name="settings_category_appearance_title">外观</string>
     <string name="settings_category_appearance_summary">主题和语言</string>
     <string name="settings_category_display_title">显示</string>
-    <string name="settings_category_display_summary">屏幕、亮度和锁定</string>
+    <string name="settings_category_display_summary">屏幕和亮度</string>
     <string name="settings_category_touchpad_title">触控板</string>
     <string name="settings_category_touchpad_summary">方向键、滚动和聚焦</string>
     <string name="settings_category_cursor_title">光标</string>
@@ -290,19 +304,6 @@
     <string name="settings_keep_screen_on">使用触控板时保持屏幕开启</string>
     <string name="settings_keep_screen_on_summary">防止触控板激活时自动锁定。</string>
     <string name="settings_language">语言</string>
-    <string name="settings_developer_section">开发者</string>
-    <string name="settings_logs_title">日志</string>
-    <string name="settings_logs_summary">诊断和系统状态</string>
-    <string name="settings_touchpad_auto_dim">使用触控板时自动变暗</string>
-    <string name="settings_touchpad_auto_dim_summary">使用触控板 10 秒后自动降低亮度。</string>
-    <string name="settings_touchpad_back_section">返回键转发</string>
-    <string name="settings_touchpad_auto_focus">自动聚焦</string>
-    <string name="settings_touchpad_auto_focus_summary">自动激活外接显示器上的窗口。确保“返回”按钮和点击可靠运行。</string>
-    <string name="settings_touchpad_dim_level">最低亮度</string>
-    <string name="settings_dim_on_lock">锁定后变暗屏幕</string>
-    <string name="settings_dim_on_lock_summary">按下电源按钮后，屏幕将调至最低亮度。解锁后将恢复之前的亮度。</string>
-    <string name="settings_touchpad_dim_level_value">%1$d%%</string>
-    <string name="settings_touchpad_dim_level_default">18%</string>
     <string name="settings_touchpad_scroll_classic_section">默认双指滚动</string>
     <string name="settings_touchpad_scroll_speed">每步滚动位移</string>
     <string name="settings_touchpad_scroll_speed_value">%1$.1fx</string>
@@ -392,18 +393,12 @@
     <string name="settings_about_title">关于</string>
     <string name="settings_section_information">信息</string>
     <string name="settings_about_summary">应用版本和信息</string>
-    <string name="settings_touchpad_auto_lock_title">闲置自动锁定</string>
-    <string name="settings_touchpad_auto_lock_summary">使用触控板时，在选定的闲置时间后自动锁定远程设备。</string>
-    <string name="auto_lock_disabled">已禁用</string>
-    <string name="auto_lock_15s">15 秒</string>
-    <string name="auto_lock_30s">30 秒</string>
-    <string name="auto_lock_45s">45 秒</string>
-    <string name="auto_lock_1m">1 分钟</string>
-    <string name="auto_lock_2m">2 分钟</string>
-    <string name="auto_lock_3m">3 分钟</string>
-    <string name="auto_lock_5m">5 分钟</string>
-    <string name="auto_lock_7m">7 分钟</string>
-    <string name="auto_lock_10m">10 分钟</string>
+    <string name="settings_developer_section">开发者</string>
+    <string name="settings_logs_title">日志</string>
+    <string name="settings_logs_summary">诊断和系统状态</string>
+    <string name="settings_touchpad_back_section">返回键转发</string>
+    <string name="settings_touchpad_auto_focus">自动聚焦</string>
+    <string name="settings_touchpad_auto_focus_summary">自动激活外接显示器上的窗口。确保“返回”按钮和点击可靠运行。</string>
 
     <string name="settings_hud_title">HUD 设置</string>
     <string name="settings_hud_enable">启用 HUD</string>

@@ -16,23 +16,11 @@ object SessionStore {
     @Volatile
     var lastLaunchedPackage: String? = null
 
-    @Volatile
-    var capturedBrightness: Float = -1f
-
-    @Volatile
-    var capturedSystemBrightness: Float = 1f
-
-    @Volatile
-    var hasCapturedBrightness: Boolean = false
-
     fun clear() {
         lastLaunchFailure = null
         lastInjectionResult = null
         lastBackWarmupUptime = 0L
         lastBackFailure = null
         lastLaunchedPackage = null
-        capturedBrightness = -1f
-        capturedSystemBrightness = 1f
-        hasCapturedBrightness = false
     }
 }

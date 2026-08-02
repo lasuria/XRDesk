@@ -48,9 +48,17 @@ object SettingsStore {
         private set
     var keepScreenOn = true
         private set
-    var touchpadAutoDimEnabled = true
+    var blackoutShowHint = true
         private set
-    var touchpadDimLevel = 0.05f
+    var blackoutShowArrow = true
+        private set
+    var blackoutHintTimeout = 5
+        private set
+    var blackoutHintText = ""
+        private set
+    var blackoutHintFontSize = 16f
+        private set
+    var blackoutHintOpacity = 0.85f
         private set
     var touchpadIntroShown = false
         private set
@@ -72,14 +80,7 @@ object SettingsStore {
         private set
     var switchBarScale = 1.0f
         private set
-    var touchpadAutoLockEnabled = false
-        private set
-    var touchpadAutoLockTimeoutMs = 60_000L
-        private set
     
-    var dimOnLock = false
-        private set
-
     var adBlockEnabled = true
         private set
     var adBlockFilterVersion: String? = null
@@ -207,8 +208,18 @@ object SettingsStore {
         cursorColor = prefs.getInt("cursor_color", 0xFFFFFFFF.toInt())
         appLanguageTag = prefs.getString(PREF_APP_LANGUAGE, LANGUAGE_SYSTEM) ?: LANGUAGE_SYSTEM
         keepScreenOn = prefs.getBoolean("keep_screen_on", true)
-        touchpadAutoDimEnabled = prefs.getBoolean("touchpad_auto_dim", true)
-        touchpadDimLevel = prefs.getFloat("touchpad_dim_level", 0.05f)
+        blackoutShowHint = prefs.getBoolean("blackout_show_hint", true)
+        blackoutShowArrow = prefs.getBoolean("blackout_show_arrow", true)
+        blackoutHintTimeout = prefs.getInt("blackout_hint_timeout", 5)
+        blackoutHintText = prefs.getString("blackout_hint_text", "") ?: ""
+        blackoutHintFontSize = prefs.getFloat("blackout_hint_font_size", 16f)
+        blackoutHintOpacity = prefs.getFloat("blackout_hint_opacity", 0.85f)
+
+        // Migration: Purge removed hint color setting
+        if (prefs.contains("blackout_hint_font_color")) {
+            persist(context) { remove("blackout_hint_font_color") }
+        }
+        
         touchpadIntroShown = prefs.getBoolean("touchpad_intro_shown", false)
         touchpadScrollSpeed = prefs.getFloat(PREF_SCROLL_SPEED_SCALE, 1.0f)
         touchpadScrollInverted = prefs.getBoolean("tp_scroll_invert", true)
@@ -219,9 +230,6 @@ object SettingsStore {
         touchpadScrollStepDp = prefs.getFloat("tp_scroll_step_dp", 6.0f)
         switchBarEnabled = prefs.getBoolean("switch_bar_enabled", false)
         switchBarScale = prefs.getFloat("switch_bar_scale", 1.0f)
-        touchpadAutoLockEnabled = prefs.getBoolean("tp_auto_lock_enabled", false)
-        touchpadAutoLockTimeoutMs = prefs.getLong("tp_auto_lock_timeout", 60_000L)
-        dimOnLock = prefs.getBoolean("dim_on_lock", false)
         
         adBlockEnabled = prefs.getBoolean("adblock_enabled", true)
         adBlockFilterVersion = prefs.getString("adblock_version", null)
@@ -320,14 +328,52 @@ object SettingsStore {
         persist(context) { putBoolean("keep_screen_on", enabled) }
     }
 
-    fun setTouchpadAutoDimEnabled(context: Context, enabled: Boolean) {
-        touchpadAutoDimEnabled = enabled
-        persist(context) { putBoolean("touchpad_auto_dim", enabled) }
+    fun setBlackoutShowHint(context: Context, value: Boolean) {
+        blackoutShowHint = value
+        persist(context) { putBoolean("blackout_show_hint", value) }
     }
 
-    fun setTouchpadDimLevel(context: Context, value: Float) {
-        touchpadDimLevel = value
-        persist(context) { putFloat("touchpad_dim_level", value) }
+    fun setBlackoutShowArrow(context: Context, value: Boolean) {
+        blackoutShowArrow = value
+        persist(context) { putBoolean("blackout_show_arrow", value) }
+    }
+
+    fun setBlackoutHintTimeout(context: Context, value: Int) {
+        blackoutHintTimeout = value
+        persist(context) { putInt("blackout_hint_timeout", value) }
+    }
+
+    fun setBlackoutHintText(context: Context, value: String) {
+        blackoutHintText = value
+        persist(context) { putString("blackout_hint_text", value) }
+    }
+
+    fun setBlackoutHintFontSize(context: Context, value: Float) {
+        blackoutHintFontSize = value
+        persist(context) { putFloat("blackout_hint_font_size", value) }
+    }
+
+    fun setBlackoutHintOpacity(context: Context, value: Float) {
+        blackoutHintOpacity = value
+        persist(context) { putFloat("blackout_hint_opacity", value) }
+    }
+
+    fun resetBlackoutHintSettings(context: Context) {
+        blackoutShowHint = true
+        blackoutShowArrow = true
+        blackoutHintTimeout = 5
+        blackoutHintText = ""
+        blackoutHintFontSize = 16f
+        blackoutHintOpacity = 0.85f
+
+        persist(context) {
+            putBoolean("blackout_show_hint", true)
+            putBoolean("blackout_show_arrow", true)
+            putInt("blackout_hint_timeout", 5)
+            putString("blackout_hint_text", "")
+            putFloat("blackout_hint_font_size", 16f)
+            putFloat("blackout_hint_opacity", 0.85f)
+        }
     }
 
     fun setTouchpadScrollInverted(context: Context, inverted: Boolean) {
@@ -375,21 +421,6 @@ object SettingsStore {
         switchBarScale = value
         persist(context) { putFloat("switch_bar_scale", value) }
         ControlAccessibilityService.requestSwitchBarRefresh()
-    }
-
-    fun setTouchpadAutoLockEnabled(context: Context, enabled: Boolean) {
-        touchpadAutoLockEnabled = enabled
-        persist(context) { putBoolean("tp_auto_lock_enabled", enabled) }
-    }
-
-    fun setTouchpadAutoLockTimeout(context: Context, valueMs: Long) {
-        touchpadAutoLockTimeoutMs = valueMs
-        persist(context) { putLong("tp_auto_lock_timeout", valueMs) }
-    }
-
-    fun setDimOnLock(context: Context, enabled: Boolean) {
-        dimOnLock = enabled
-        persist(context) { putBoolean("dim_on_lock", enabled) }
     }
 
     fun setAdBlockEnabled(context: Context, enabled: Boolean) {
